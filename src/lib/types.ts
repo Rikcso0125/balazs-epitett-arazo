@@ -43,6 +43,21 @@ export interface TemplatePhotoItem {
   description: string;
 }
 
+export interface TemplateSelectablePreset {
+  id: string;
+  label: string;
+  val: number;
+  isCustom?: boolean;
+}
+
+export interface TemplateCustomExtraItem {
+  id: string;
+  name: string;
+  priceEur: number;
+  mode: 'base' | 'optional' | 'gift';
+  selected: boolean;
+}
+
 export interface ModelPricingRule {
   id: string;
   name: string;
@@ -82,6 +97,13 @@ export interface ModelPricingRule {
   allowUvegfalSide?: boolean;
   customGiftLabel?: string;
   pdfPhotos?: TemplatePhotoItem[];
+  selectedMotorIds?: string[];
+  customMotorPresets?: TemplateSelectablePreset[];
+  selectedRemoteIds?: string[];
+  customRemotePresets?: TemplateSelectablePreset[];
+  selectedLedIds?: string[];
+  customLedPresets?: TemplateSelectablePreset[];
+  customExtraItems?: TemplateCustomExtraItem[];
 }
 
 export interface AdminConfig {
@@ -174,6 +196,7 @@ export interface CalculatedModelOption {
   tetoArnyekoloEur?: number;
   tetoArnyekoloHuf?: number;
   pdfPhotos?: TemplatePhotoItem[];
+  customExtraItems?: TemplateCustomExtraItem[];
 }
 
 export interface TrackingEvent {

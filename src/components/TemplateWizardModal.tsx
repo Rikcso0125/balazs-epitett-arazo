@@ -34,11 +34,36 @@ import {
   CustomCategoryConfig,
   M2PriceTier,
   ModelPricingRule,
+  TemplateCustomExtraItem,
   TemplatePhotoItem,
   TemplatePricingMethod,
+  TemplateSelectablePreset,
   TermekTipusId,
 } from '@/lib/types';
 import { formatCurrency } from './DashboardAnalyticsView';
+
+const DEFAULT_MOTOR_PRESETS: TemplateSelectablePreset[] = [
+  { id: 'motor_0', label: '0 EUR (Alapárban benne van / Fix)', val: 0 },
+  { id: 'motor_523', label: '523 EUR (Bioklimatikus motor)', val: 523 },
+  { id: 'motor_600', label: '600 EUR (Somfy IO motor)', val: 600 },
+  { id: 'motor_800', label: '800 EUR (Erősített Somfy motor)', val: 800 },
+  { id: 'motor_1000', label: '1000 EUR (Dupla motor)', val: 1000 },
+];
+
+const DEFAULT_REMOTE_PRESETS: TemplateSelectablePreset[] = [
+  { id: 'rem_0', label: '0 EUR (Nincs külön távirányító díj)', val: 0 },
+  { id: 'rem_100', label: '100 EUR (1 csatornás Somfy távirányító)', val: 100 },
+  { id: 'rem_150', label: '150 EUR (5 csatornás Somfy távirányító)', val: 150 },
+  { id: 'rem_250', label: '250 EUR (Somfy Tahoma Switch okosvezérlő)', val: 250 },
+];
+
+const DEFAULT_LED_PRESETS: TemplateSelectablePreset[] = [
+  { id: 'led_0', label: '0 EUR (Nem kérhető LED)', val: 0 },
+  { id: 'led_400', label: '400 EUR (Alap LED világítás)', val: 400 },
+  { id: 'led_679', label: '679 EUR (6 db Spot világítás lamellákban)', val: 679 },
+  { id: 'led_700', label: '700 EUR (Integrált perimetrikus LED)', val: 700 },
+  { id: 'led_900', label: '900 EUR (Prémium RGBW / Dimmeres LED)', val: 900 },
+];
 
 interface GalleryImageItem {
   id: string;
@@ -198,16 +223,227 @@ export function TemplateWizardModal({
     initialModelToEdit?.fixFelarEur ?? 0
   );
 
-  // Step 4 state
+  // Step 4 state: Multi-select + custom presets for Motor, Remote, LED + Custom Extra Items
   const [motorEur, setMotorEur] = useState<number>(
     initialModelToEdit?.motorEur ?? 0
   );
+  const [customMotorPresets, setCustomMotorPresets] = useState<
+    TemplateSelectablePreset[]
+  >(initialModelToEdit?.customMotorPresets || []);
+  const [selectedMotorIds, setSelectedMotorIds] = useState<string[]>(() => {
+    if (initialModelToEdit?.selectedMotorIds?.length) {
+      return initialModelToEdit.selectedMotorIds;
+    }
+    const initVal = initialModelToEdit?.motorEur ?? 0;
+    const match = DEFAULT_MOTOR_PRESETS.find((p) => p.val === initVal);
+    return match ? [match.id] : [];
+  });
+  const [newMotorLabel, setNewMotorLabel] = useState('');
+  const [newMotorVal, setNewMotorVal] = useState<string>('');
+
   const [taviranyitoEur, setTaviranyitoEur] = useState<number>(
     initialModelToEdit?.taviranyitoEur ?? 100
   );
+  const [customRemotePresets, setCustomRemotePresets] = useState<
+    TemplateSelectablePreset[]
+  >(initialModelToEdit?.customRemotePresets || []);
+  const [selectedRemoteIds, setSelectedRemoteIds] = useState<string[]>(() => {
+    if (initialModelToEdit?.selectedRemoteIds?.length) {
+      return initialModelToEdit.selectedRemoteIds;
+    }
+    const initVal = initialModelToEdit?.taviranyitoEur ?? 100;
+    const match = DEFAULT_REMOTE_PRESETS.find((p) => p.val === initVal);
+    return match ? [match.id] : [];
+  });
+  const [newRemoteLabel, setNewRemoteLabel] = useState('');
+  const [newRemoteVal, setNewRemoteVal] = useState<string>('');
+
   const [ledEur, setLedEur] = useState<number>(
     initialModelToEdit?.ledEur ?? 700
   );
+  const [customLedPresets, setCustomLedPresets] = useState<
+    TemplateSelectablePreset[]
+  >(initialModelToEdit?.customLedPresets || []);
+  const [selectedLedIds, setSelectedLedIds] = useState<string[]>(() => {
+    if (initialModelToEdit?.selectedLedIds?.length) {
+      return initialModelToEdit.selectedLedIds;
+    }
+    const initVal = initialModelToEdit?.ledEur ?? 700;
+    const match = DEFAULT_LED_PRESETS.find((p) => p.val === initVal);
+    return match ? [match.id] : [];
+  });
+  const [newLedLabel, setNewLedLabel] = useState('');
+  const [newLedVal, setNewLedVal] = useState<string>('');
+
+  const [customExtraItems, setCustomExtraItems] = useState<
+    TemplateCustomExtraItem[]
+  >(
+    initialModelToEdit?.customExtraItems || [
+      {
+        id: 'extra_tahoma',
+        name: 'Somfy Tahoma Switch okosotthon vezérlő központ',
+        priceEur: 250,
+        mode: 'optional',
+        selected: false,
+      },
+      {
+        id: 'extra_spot6',
+        name: 'LED spot világítás a lamellákban (6 db szabályozható)',
+        priceEur: 679,
+        mode: 'optional',
+        selected: false,
+      },
+      {
+        id: 'extra_vizkopo',
+        name: 'Rejtett vízköpő / vízelvezető kivezető szett',
+        priceEur: 120,
+        mode: 'base',
+        selected: false,
+      },
+    ]
+  );
+  const [newExtraName, setNewExtraName] = useState('');
+  const [newExtraPrice, setNewExtraPrice] = useState<string>('');
+  const [newExtraMode, setNewExtraMode] = useState<
+    'base' | 'optional' | 'gift'
+  >('base');
+
+  const allMotorPresets = useMemo(
+    () => [...DEFAULT_MOTOR_PRESETS, ...customMotorPresets],
+    [customMotorPresets]
+  );
+  const allRemotePresets = useMemo(
+    () => [...DEFAULT_REMOTE_PRESETS, ...customRemotePresets],
+    [customRemotePresets]
+  );
+  const allLedPresets = useMemo(
+    () => [...DEFAULT_LED_PRESETS, ...customLedPresets],
+    [customLedPresets]
+  );
+
+  const toggleMultiPreset = (
+    clicked: TemplateSelectablePreset,
+    zeroId: string,
+    allList: TemplateSelectablePreset[],
+    selectedIds: string[],
+    setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>,
+    setTotalEur: React.Dispatch<React.SetStateAction<number>>
+  ) => {
+    if (clicked.id === zeroId || clicked.val === 0) {
+      setSelectedIds([zeroId]);
+      setTotalEur(0);
+      return;
+    }
+    const withoutZero = selectedIds.filter((id) => id !== zeroId);
+    const exists = withoutZero.includes(clicked.id);
+    const nextIds = exists
+      ? withoutZero.filter((id) => id !== clicked.id)
+      : [...withoutZero, clicked.id];
+
+    if (nextIds.length === 0) {
+      setSelectedIds([zeroId]);
+      setTotalEur(0);
+      return;
+    }
+    setSelectedIds(nextIds);
+    const sum = nextIds.reduce((acc, id) => {
+      const found = allList.find((item) => item.id === id);
+      return acc + (found ? Number(found.val) || 0 : 0);
+    }, 0);
+    setTotalEur(sum);
+  };
+
+  const handleAddCustomMotorPreset = () => {
+    const labelClean = newMotorLabel.trim();
+    const valNum = Number(newMotorVal) || 0;
+    if (!labelClean) return;
+    const newItem: TemplateSelectablePreset = {
+      id: `custom_motor_${Date.now()}`,
+      label: `${valNum} EUR (${labelClean})`,
+      val: valNum,
+      isCustom: true,
+    };
+    const nextCustom = [...customMotorPresets, newItem];
+    setCustomMotorPresets(nextCustom);
+    const nextList = [...DEFAULT_MOTOR_PRESETS, ...nextCustom];
+    const withoutZero = selectedMotorIds.filter((id) => id !== 'motor_0');
+    const nextIds = [...withoutZero, newItem.id];
+    setSelectedMotorIds(nextIds);
+    const sum = nextIds.reduce((acc, id) => {
+      const found = nextList.find((item) => item.id === id);
+      return acc + (found ? Number(found.val) || 0 : 0);
+    }, 0);
+    setMotorEur(sum);
+    setNewMotorLabel('');
+    setNewMotorVal('');
+  };
+
+  const handleAddCustomRemotePreset = () => {
+    const labelClean = newRemoteLabel.trim();
+    const valNum = Number(newRemoteVal) || 0;
+    if (!labelClean) return;
+    const newItem: TemplateSelectablePreset = {
+      id: `custom_rem_${Date.now()}`,
+      label: `${valNum} EUR (${labelClean})`,
+      val: valNum,
+      isCustom: true,
+    };
+    const nextCustom = [...customRemotePresets, newItem];
+    setCustomRemotePresets(nextCustom);
+    const nextList = [...DEFAULT_REMOTE_PRESETS, ...nextCustom];
+    const withoutZero = selectedRemoteIds.filter((id) => id !== 'rem_0');
+    const nextIds = [...withoutZero, newItem.id];
+    setSelectedRemoteIds(nextIds);
+    const sum = nextIds.reduce((acc, id) => {
+      const found = nextList.find((item) => item.id === id);
+      return acc + (found ? Number(found.val) || 0 : 0);
+    }, 0);
+    setTaviranyitoEur(sum);
+    setNewRemoteLabel('');
+    setNewRemoteVal('');
+  };
+
+  const handleAddCustomLedPreset = () => {
+    const labelClean = newLedLabel.trim();
+    const valNum = Number(newLedVal) || 0;
+    if (!labelClean) return;
+    const newItem: TemplateSelectablePreset = {
+      id: `custom_led_${Date.now()}`,
+      label: `${valNum} EUR (${labelClean})`,
+      val: valNum,
+      isCustom: true,
+    };
+    const nextCustom = [...customLedPresets, newItem];
+    setCustomLedPresets(nextCustom);
+    const nextList = [...DEFAULT_LED_PRESETS, ...nextCustom];
+    const withoutZero = selectedLedIds.filter((id) => id !== 'led_0');
+    const nextIds = [...withoutZero, newItem.id];
+    setSelectedLedIds(nextIds);
+    const sum = nextIds.reduce((acc, id) => {
+      const found = nextList.find((item) => item.id === id);
+      return acc + (found ? Number(found.val) || 0 : 0);
+    }, 0);
+    setLedEur(sum);
+    setNewLedLabel('');
+    setNewLedVal('');
+  };
+
+  const handleAddCustomExtraItem = () => {
+    const nameClean = newExtraName.trim();
+    if (!nameClean) return;
+    const priceNum =
+      newExtraMode === 'gift' ? 0 : Math.max(0, Number(newExtraPrice) || 0);
+    const newItem: TemplateCustomExtraItem = {
+      id: `extra_${Date.now()}`,
+      name: nameClean,
+      priceEur: priceNum,
+      mode: newExtraMode,
+      selected: true,
+    };
+    setCustomExtraItems((prev) => [...prev, newItem]);
+    setNewExtraName('');
+    setNewExtraPrice('');
+  };
 
   // Step 5 state
   const [szerelesMode, setSzerelesMode] = useState<'percentage' | 'fixed'>(
@@ -426,6 +662,13 @@ export function TemplateWizardModal({
     allowUvegfalSide,
     customGiftLabel: customGiftLabel.trim() || undefined,
     pdfPhotos,
+    selectedMotorIds,
+    customMotorPresets,
+    selectedRemoteIds,
+    customRemotePresets,
+    selectedLedIds,
+    customLedPresets,
+    customExtraItems,
   };
 
   const livePreview = calculateSingleCustomTemplate(
@@ -1285,136 +1528,473 @@ export function TemplateWizardModal({
           )}
 
           {/* ================================================================= */}
-          {/* STEP 4: MOTOR, TÁVIRÁNYÍTÓ & LED VILÁGÍTÁS                        */}
+          {/* STEP 4: MOTOR, TÁVIRÁNYÍTÓ, LED VILÁGÍTÁS & EGYEDI TÉTELEK        */}
           {/* ================================================================= */}
           {step === 4 && (
             <div className="space-y-6">
-              {/* Motor */}
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 px-4 py-2.5 text-xs font-semibold text-emerald-900">
+                💡 <b>Tipp:</b> Mostantól minden kategóriában <b>több tételt is kijelölhetsz egyszerre</b> (a kijelölt tételek EUR összege automatikusan összeadódik), és bármelyik blokkban (vagy a 4. Egyedi tételek résznél) <b>saját egyedi tételt is hozzáadhatsz</b>!
+              </div>
+
+              {/* 1. Motorizáció */}
               <div className="rounded-xl border border-[#e4e4e7] bg-[#fafafa] p-4 space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <div className="text-sm font-extrabold text-[#0a0a0a]">
-                      1. Motorizáció díja (EUR)
+                      1. Motorizáció díja (EUR) — Több is kijelölhető
                     </div>
                     <p className="text-xs text-[#71717a]">
-                      Ha a szerkezet alapára már tartalmazza a motort (vagy fix tetős), válaszd a 0 EUR-t.
+                      Kattints egy vagy több motorra a kijelöléshez (összeadódnak), vagy adj hozzá egyedi motort alul!
                     </p>
                   </div>
-                  <div className="w-32">
-                    <input
-                      type="number"
-                      value={motorEur}
-                      onChange={(e) => setMotorEur(Number(e.target.value))}
-                      className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
-                    />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-[#71717a]">Összesen (EUR):</span>
+                    <div className="w-32">
+                      <input
+                        type="number"
+                        value={motorEur}
+                        onChange={(e) => setMotorEur(Number(e.target.value))}
+                        className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
+                      />
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: '0 EUR (Alapárban benne van / Fix)', val: 0 },
-                    { label: '523 EUR (Bioklimatikus motor)', val: 523 },
-                    { label: '600 EUR (Somfy IO motor)', val: 600 },
-                    { label: '800 EUR (Erősített Somfy motor)', val: 800 },
-                    { label: '1000 EUR (Dupla motor)', val: 1000 },
-                  ].map((m) => (
-                    <button
-                      key={m.label}
-                      type="button"
-                      onClick={() => setMotorEur(m.val)}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
-                        motorEur === m.val
-                          ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white'
-                          : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
-                      }`}
-                    >
-                      {m.label}
-                    </button>
-                  ))}
+                  {allMotorPresets.map((m) => {
+                    const isSelected =
+                      selectedMotorIds.includes(m.id) ||
+                      (selectedMotorIds.length === 0 && motorEur === m.val);
+                    return (
+                      <div key={m.id} className="inline-flex items-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toggleMultiPreset(
+                              m,
+                              'motor_0',
+                              allMotorPresets,
+                              selectedMotorIds,
+                              setSelectedMotorIds,
+                              setMotorEur
+                            )
+                          }
+                          className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
+                            isSelected
+                              ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white shadow-xs'
+                              : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
+                          }`}
+                        >
+                          {isSelected && <Check className="h-3.5 w-3.5 text-emerald-400" />}
+                          {m.label}
+                        </button>
+                        {m.isCustom && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextCustom = customMotorPresets.filter(
+                                (x) => x.id !== m.id
+                              );
+                              setCustomMotorPresets(nextCustom);
+                              const nextIds = selectedMotorIds.filter(
+                                (id) => id !== m.id
+                              );
+                              setSelectedMotorIds(nextIds);
+                              const nextList = [
+                                ...DEFAULT_MOTOR_PRESETS,
+                                ...nextCustom,
+                              ];
+                              const sum = nextIds.reduce((acc, id) => {
+                                const found = nextList.find((it) => it.id === id);
+                                return acc + (found ? Number(found.val) || 0 : 0);
+                              }, 0);
+                              setMotorEur(sum);
+                            }}
+                            title="Egyedi motor törlése"
+                            className="ml-1 rounded p-1 text-rose-500 hover:bg-rose-50"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Add custom motor preset inline */}
+                <div className="flex flex-wrap items-center gap-2 border-t border-[#e4e4e7] pt-3">
+                  <input
+                    type="text"
+                    value={newMotorLabel}
+                    onChange={(e) => setNewMotorLabel(e.target.value)}
+                    placeholder="Egyedi motor megnevezése (pl. Somfy J4 WT motor)..."
+                    className="glass-input flex-1 min-w-[200px] rounded-lg px-3 py-1.5 text-xs font-semibold"
+                  />
+                  <input
+                    type="number"
+                    value={newMotorVal}
+                    onChange={(e) => setNewMotorVal(e.target.value)}
+                    placeholder="Ár (EUR)"
+                    className="glass-input w-28 rounded-lg px-3 py-1.5 text-xs font-bold"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomMotorPreset}
+                    className="inline-flex items-center gap-1 rounded-lg bg-[#0a0a0a] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#27272a] transition"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Egyedi motor hozzáadása
+                  </button>
                 </div>
               </div>
 
-              {/* Távirányító */}
+              {/* 2. Távirányító / vezérlő */}
               <div className="rounded-xl border border-[#e4e4e7] bg-[#fafafa] p-4 space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <div className="text-sm font-extrabold text-[#0a0a0a]">
-                      2. Távirányító / vezérlő díja (EUR)
+                      2. Távirányító / vezérlő díja (EUR) — Több is kijelölhető
                     </div>
                     <p className="text-xs text-[#71717a]">
-                      Hány EUR-ért szerepeljen a távirányító az alapszerkezet kalkulációban?
+                      Jelölj ki egy vagy több vezérlőt (pl. távirányító + fali kapcsoló + Tahoma), vagy adj hozzá egyedit!
                     </p>
                   </div>
-                  <div className="w-32">
-                    <input
-                      type="number"
-                      value={taviranyitoEur}
-                      onChange={(e) => setTaviranyitoEur(Number(e.target.value))}
-                      className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
-                    />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-[#71717a]">Összesen (EUR):</span>
+                    <div className="w-32">
+                      <input
+                        type="number"
+                        value={taviranyitoEur}
+                        onChange={(e) => setTaviranyitoEur(Number(e.target.value))}
+                        className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
+                      />
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: '0 EUR (Nincs külön távirányító díj)', val: 0 },
-                    { label: '100 EUR (1 csatornás Somfy távirányító)', val: 100 },
-                    { label: '150 EUR (5 csatornás Somfy távirányító)', val: 150 },
-                  ].map((t) => (
-                    <button
-                      key={t.label}
-                      type="button"
-                      onClick={() => setTaviranyitoEur(t.val)}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
-                        taviranyitoEur === t.val
-                          ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white'
-                          : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
-                      }`}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
+                  {allRemotePresets.map((t) => {
+                    const isSelected =
+                      selectedRemoteIds.includes(t.id) ||
+                      (selectedRemoteIds.length === 0 && taviranyitoEur === t.val);
+                    return (
+                      <div key={t.id} className="inline-flex items-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toggleMultiPreset(
+                              t,
+                              'rem_0',
+                              allRemotePresets,
+                              selectedRemoteIds,
+                              setSelectedRemoteIds,
+                              setTaviranyitoEur
+                            )
+                          }
+                          className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
+                            isSelected
+                              ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white shadow-xs'
+                              : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
+                          }`}
+                        >
+                          {isSelected && <Check className="h-3.5 w-3.5 text-emerald-400" />}
+                          {t.label}
+                        </button>
+                        {t.isCustom && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextCustom = customRemotePresets.filter(
+                                (x) => x.id !== t.id
+                              );
+                              setCustomRemotePresets(nextCustom);
+                              const nextIds = selectedRemoteIds.filter(
+                                (id) => id !== t.id
+                              );
+                              setSelectedRemoteIds(nextIds);
+                              const nextList = [
+                                ...DEFAULT_REMOTE_PRESETS,
+                                ...nextCustom,
+                              ];
+                              const sum = nextIds.reduce((acc, id) => {
+                                const found = nextList.find((it) => it.id === id);
+                                return acc + (found ? Number(found.val) || 0 : 0);
+                              }, 0);
+                              setTaviranyitoEur(sum);
+                            }}
+                            title="Egyedi vezérlő törlése"
+                            className="ml-1 rounded p-1 text-rose-500 hover:bg-rose-50"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Add custom remote preset inline */}
+                <div className="flex flex-wrap items-center gap-2 border-t border-[#e4e4e7] pt-3">
+                  <input
+                    type="text"
+                    value={newRemoteLabel}
+                    onChange={(e) => setNewRemoteLabel(e.target.value)}
+                    placeholder="Egyedi távirányító / vezérlő neve (pl. Fali Smoove kapcsoló)..."
+                    className="glass-input flex-1 min-w-[200px] rounded-lg px-3 py-1.5 text-xs font-semibold"
+                  />
+                  <input
+                    type="number"
+                    value={newRemoteVal}
+                    onChange={(e) => setNewRemoteVal(e.target.value)}
+                    placeholder="Ár (EUR)"
+                    className="glass-input w-28 rounded-lg px-3 py-1.5 text-xs font-bold"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomRemotePreset}
+                    className="inline-flex items-center gap-1 rounded-lg bg-[#0a0a0a] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#27272a] transition"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Egyedi vezérlő hozzáadása
+                  </button>
                 </div>
               </div>
 
-              {/* LED */}
+              {/* 3. LED világítás */}
               <div className="rounded-xl border border-[#e4e4e7] bg-[#fafafa] p-4 space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <div className="text-sm font-extrabold text-[#0a0a0a]">
-                      3. Opcionális LED világítás díja (EUR)
+                      3. Opcionális LED világítás díja (EUR) — Több is kijelölhető
                     </div>
                     <p className="text-xs text-[#71717a]">
-                      Opcionális tételként jelenik meg az árajánlatban (integrált LED szalag vagy Spot).
+                      Opcionális tételként jelenik meg az árajánlatban (több világítás típus is kijelölhető vagy hozzáadható).
                     </p>
                   </div>
-                  <div className="w-32">
-                    <input
-                      type="number"
-                      value={ledEur}
-                      onChange={(e) => setLedEur(Number(e.target.value))}
-                      className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
-                    />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-[#71717a]">Összesen (EUR):</span>
+                    <div className="w-32">
+                      <input
+                        type="number"
+                        value={ledEur}
+                        onChange={(e) => setLedEur(Number(e.target.value))}
+                        className="glass-input w-full rounded-lg px-3 py-2 text-right text-sm font-extrabold"
+                      />
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: '0 EUR (Nem kérhető LED)', val: 0 },
-                    { label: '400 EUR (Alap LED világítás)', val: 400 },
-                    { label: '700 EUR (Integrált perimetrikus LED)', val: 700 },
-                    { label: '900 EUR (Prémium RGBW / Dimmeres LED)', val: 900 },
-                  ].map((l) => (
-                    <button
-                      key={l.label}
-                      type="button"
-                      onClick={() => setLedEur(l.val)}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
-                        ledEur === l.val
+                  {allLedPresets.map((l) => {
+                    const isSelected =
+                      selectedLedIds.includes(l.id) ||
+                      (selectedLedIds.length === 0 && ledEur === l.val);
+                    return (
+                      <div key={l.id} className="inline-flex items-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toggleMultiPreset(
+                              l,
+                              'led_0',
+                              allLedPresets,
+                              selectedLedIds,
+                              setSelectedLedIds,
+                              setLedEur
+                            )
+                          }
+                          className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
+                            isSelected
+                              ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white shadow-xs'
+                              : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
+                          }`}
+                        >
+                          {isSelected && <Check className="h-3.5 w-3.5 text-emerald-400" />}
+                          {l.label}
+                        </button>
+                        {l.isCustom && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextCustom = customLedPresets.filter(
+                                (x) => x.id !== l.id
+                              );
+                              setCustomLedPresets(nextCustom);
+                              const nextIds = selectedLedIds.filter(
+                                (id) => id !== l.id
+                              );
+                              setSelectedLedIds(nextIds);
+                              const nextList = [
+                                ...DEFAULT_LED_PRESETS,
+                                ...nextCustom,
+                              ];
+                              const sum = nextIds.reduce((acc, id) => {
+                                const found = nextList.find((it) => it.id === id);
+                                return acc + (found ? Number(found.val) || 0 : 0);
+                              }, 0);
+                              setLedEur(sum);
+                            }}
+                            title="Egyedi világítás törlése"
+                            className="ml-1 rounded p-1 text-rose-500 hover:bg-rose-50"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Add custom LED preset inline */}
+                <div className="flex flex-wrap items-center gap-2 border-t border-[#e4e4e7] pt-3">
+                  <input
+                    type="text"
+                    value={newLedLabel}
+                    onChange={(e) => setNewLedLabel(e.target.value)}
+                    placeholder="Egyedi világítás neve (pl. Oszlopba integrált LED csík)..."
+                    className="glass-input flex-1 min-w-[200px] rounded-lg px-3 py-1.5 text-xs font-semibold"
+                  />
+                  <input
+                    type="number"
+                    value={newLedVal}
+                    onChange={(e) => setNewLedVal(e.target.value)}
+                    placeholder="Ár (EUR)"
+                    className="glass-input w-28 rounded-lg px-3 py-1.5 text-xs font-bold"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomLedPreset}
+                    className="inline-flex items-center gap-1 rounded-lg bg-[#0a0a0a] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#27272a] transition"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Egyedi világítás hozzáadása
+                  </button>
+                </div>
+              </div>
+
+              {/* 4. EGYEDI TÉTELEK / PLUSZ DOLGOK HOZZÁADÁSA */}
+              <div className="rounded-xl border-2 border-[#0a0a0a] bg-white p-4 space-y-3 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <div className="text-sm font-extrabold text-[#0a0a0a]">
+                      4. Egyedi tételek / Kiegészítők hozzáadása (Több is kijelölhető)
+                    </div>
+                    <p className="text-xs text-[#71717a]">
+                      Ha bármilyen egyedi tétel, kiegészítő, konzol, szenzor vagy extra tartozik a sablonhoz, itt felveheted és bepipálhatod!
+                    </p>
+                  </div>
+                </div>
+
+                {/* Checkable list of custom extra items */}
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {customExtraItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`flex items-center justify-between gap-2 rounded-xl border p-3 transition ${
+                        item.selected
                           ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white'
-                          : 'border-[#e4e4e7] bg-white text-[#52525b] hover:border-[#0a0a0a]'
+                          : 'border-[#e4e4e7] bg-[#fafafa] text-[#0a0a0a]'
                       }`}
                     >
-                      {l.label}
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCustomExtraItems((prev) =>
+                            prev.map((x) =>
+                              x.id === item.id
+                                ? { ...x, selected: !x.selected }
+                                : x
+                            )
+                          )
+                        }
+                        className="flex flex-1 items-center gap-2.5 text-left min-w-0"
+                      >
+                        <div
+                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                            item.selected
+                              ? 'border-emerald-400 bg-emerald-500 text-white'
+                              : 'border-[#a1a1aa] bg-white'
+                          }`}
+                        >
+                          {item.selected && <Check className="h-3.5 w-3.5" />}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-xs font-extrabold">
+                            {item.name}
+                          </div>
+                          <div
+                            className={`text-[10.5px] font-semibold ${
+                              item.selected ? 'text-zinc-300' : 'text-[#71717a]'
+                            }`}
+                          >
+                            {item.mode === 'gift'
+                              ? '0 EUR (Ajándék tétel)'
+                              : item.mode === 'base'
+                              ? `+${item.priceEur} EUR (Alapárba számolva)`
+                              : `+${item.priceEur} EUR (Opcionális tétel)`}
+                          </div>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCustomExtraItems((prev) =>
+                            prev.filter((x) => x.id !== item.id)
+                          )
+                        }
+                        title="Tétel törlése"
+                        className={`rounded p-1 transition ${
+                          item.selected
+                            ? 'text-zinc-300 hover:bg-zinc-800 hover:text-rose-400'
+                            : 'text-[#71717a] hover:bg-rose-50 hover:text-rose-600'
+                        }`}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   ))}
+                </div>
+
+                {/* Add new custom extra item form */}
+                <div className="flex flex-wrap items-center gap-2 border-t border-[#e4e4e7] pt-3">
+                  <input
+                    type="text"
+                    value={newExtraName}
+                    onChange={(e) => setNewExtraName(e.target.value)}
+                    placeholder="Új egyedi dolog megnevezése (pl. Egyedi tartókonzol, Hóteher megerősítés)..."
+                    className="glass-input flex-1 min-w-[220px] rounded-lg px-3 py-2 text-xs font-semibold"
+                  />
+                  <select
+                    value={newExtraMode}
+                    onChange={(e) =>
+                      setNewExtraMode(
+                        e.target.value as 'base' | 'optional' | 'gift'
+                      )
+                    }
+                    className="glass-input rounded-lg px-3 py-2 text-xs font-bold text-[#0a0a0a]"
+                  >
+                    <option value="base">Alapárba számolva (+EUR)</option>
+                    <option value="optional">Opcionális tétel (+EUR)</option>
+                    <option value="gift">Ajándék (0 EUR)</option>
+                  </select>
+                  {newExtraMode !== 'gift' && (
+                    <input
+                      type="number"
+                      value={newExtraPrice}
+                      onChange={(e) => setNewExtraPrice(e.target.value)}
+                      placeholder="Ár (EUR)"
+                      className="glass-input w-28 rounded-lg px-3 py-2 text-xs font-bold"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleAddCustomExtraItem}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-extrabold text-white hover:bg-emerald-700 transition shadow-xs"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    + Egyedi tétel hozzáadása
+                  </button>
                 </div>
               </div>
             </div>

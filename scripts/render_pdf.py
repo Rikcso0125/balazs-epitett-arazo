@@ -519,6 +519,41 @@ def build_story_sections(quote, config, legacy_root, work_img_dir, cat_photos):
 
         motor_note = "Az ár tartalmazza a motort" if motor_eur_val == 0 else ""
 
+        custom_extra_items = opt.get("customExtraItems") or []
+        custom_base_rows_html = ""
+        custom_opt_rows_html = ""
+        for citem in custom_extra_items:
+            if not citem.get("selected", True):
+                continue
+            c_label = citem.get("name") or citem.get("label") or "Egyedi tétel"
+            c_eur = round(float(citem.get("priceEur", 0)))
+            c_lista = round(c_eur * 1.25) if c_eur > 0 else 400
+            c_mode = citem.get("mode", "base")
+            if c_mode == "gift":
+                custom_base_rows_html += f"""
+          <tr>
+            <td style="width:42%;">{c_label}</td>
+            <td style="width:16%;text-align:right;">{fmt_plain(c_lista)}</td>
+            <td style="width:24%;text-align:right;font-weight:bold;">0</td>
+            <td style="width:18%;font-weight:bold;">Ajándék</td>
+          </tr>"""
+            elif c_mode == "base":
+                custom_base_rows_html += f"""
+          <tr>
+            <td style="width:42%;">{c_label}</td>
+            <td style="width:16%;text-align:right;">{fmt_plain(c_lista)}</td>
+            <td style="width:24%;text-align:right;font-weight:bold;">{fmt_plain(c_eur)}</td>
+            <td style="width:18%;">&nbsp;</td>
+          </tr>"""
+            else:
+                custom_opt_rows_html += f"""
+          <tr>
+            <td style="width:42%;">{c_label}</td>
+            <td style="width:16%;text-align:right;">{fmt_plain(c_lista)}</td>
+            <td style="width:24%;text-align:right;font-weight:bold;">{fmt_plain(c_eur)}</td>
+            <td style="width:18%;font-weight:bold;">Opció-kedvezmény-</td>
+          </tr>"""
+
         opt_price_html = f"""
         {top_block}
         <table>
@@ -557,7 +592,7 @@ def build_story_sections(quote, config, legacy_root, work_img_dir, cat_photos):
             <td style="width:16%;text-align:right;">200</td>
             <td style="width:24%;text-align:right;font-weight:bold;">0</td>
             <td style="width:18%;font-weight:bold;">{"Ajándék" if has_sensors else "-"}</td>
-          </tr>
+          </tr>{custom_base_rows_html}
           <tr>
             <td style="width:42%;">Szerelés</td>
             <td style="width:16%;">&nbsp;</td>
@@ -575,7 +610,7 @@ def build_story_sections(quote, config, legacy_root, work_img_dir, cat_photos):
             <td style="width:16%;text-align:right;">{fmt_plain(led_lista_val)}</td>
             <td style="width:24%;text-align:right;font-weight:bold;">{fmt_plain(led_eur_val)}</td>
             <td style="width:18%;font-weight:bold;">Opció-kedvezmény-</td>
-          </tr>
+          </tr>{custom_opt_rows_html}
         </table>
 
         <p style="text-align:center;margin-top:6pt;">

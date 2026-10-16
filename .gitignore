@@ -27,3 +27,5 @@ yarn-error.log*
 /data/_live_preview.pdf
 /data/_tmp_*.json
 /data/_pdf_assets_cache/
+
+.vercel

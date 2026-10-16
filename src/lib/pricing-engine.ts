@@ -1296,7 +1296,15 @@ export function calculateSingleCustomTemplate(
 
   const motorEur = Number(rule.motorEur) || 0;
   const taviranyitoEur = Number(rule.taviranyitoEur) || 0;
-  const osszesenEur = kedvAlap + motorEur + taviranyitoEur + szerelesEur;
+  const activeExtraItems = (rule.customExtraItems || []).filter(
+    (it) => it.selected
+  );
+  const extraBaseEur = activeExtraItems
+    .filter((it) => it.mode === 'base')
+    .reduce((sum, it) => sum + (Number(it.priceEur) || 0), 0);
+
+  const osszesenEur =
+    kedvAlap + motorEur + taviranyitoEur + szerelesEur + extraBaseEur;
 
   // Side options (ZIP & Üvegfal)
   const allowZip = rule.allowZipSide !== false;
@@ -1384,6 +1392,7 @@ export function calculateSingleCustomTemplate(
     uvegfalOsszesenEur: uvegOssz,
     uvegfalOsszesenHuf: roundHuf(uvegOssz, eurHufRate),
     pdfPhotos: rule.pdfPhotos,
+    customExtraItems: activeExtraItems,
   };
 }
 
@@ -1391,7 +1400,24 @@ export function calculateQuoteOptions(
   input: QuoteCalculationInput,
   config: AdminConfig
 ): CalculatedModelOption[] {
-  const builtinResults = calculateBuiltinQuoteOptions(input, config);
+  const builtinResults = calculateBuiltinQuoteOptions(input, config).map(
+    (opt) => {
+      const rule = config.models?.[opt.modelId];
+      const activeExtraItems = (rule?.customExtraItems || []).filter(
+        (it) => it.selected
+      );
+      const extraBaseEur = activeExtraItems
+        .filter((it) => it.mode === 'base')
+        .reduce((sum, it) => sum + (Number(it.priceEur) || 0), 0);
+      const nextOsszesenEur = opt.alapszerkezetOsszesenEur + extraBaseEur;
+      return {
+        ...opt,
+        alapszerkezetOsszesenEur: nextOsszesenEur,
+        alapszerkezetOsszesenHuf: roundHuf(nextOsszesenEur, input.eurHufRate),
+        customExtraItems: activeExtraItems,
+      };
+    }
+  );
   const builtinIds = new Set(builtinResults.map((r) => r.modelId));
 
   const customRules = Object.values(config.models || {}).filter(

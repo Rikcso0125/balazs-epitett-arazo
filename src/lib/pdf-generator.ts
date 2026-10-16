@@ -380,6 +380,14 @@ async function renderQuotePdfWithPdfLib(
           '0',
           quote.hasSensors ? 'Ajándék' : '-',
         ],
+        ...(opt.customExtraItems || [])
+          .filter((ci) => ci.selected && (ci.mode === 'base' || ci.mode === 'gift'))
+          .map((ci): [string, string, string, string] => [
+            ci.name,
+            fmtPlain(ci.priceEur > 0 ? Math.round(ci.priceEur * listaSzorzo) : 400),
+            ci.mode === 'gift' ? '0' : fmtPlain(ci.priceEur),
+            ci.mode === 'gift' ? 'Ajándék' : '',
+          ]),
         ['Szerelés', '', fmtPlain(opt.szerelesEur), ''],
         [
           'Alapszerkezet szereléssel ÖSSZESEN:',
@@ -393,6 +401,14 @@ async function renderQuotePdfWithPdfLib(
           `+ ${fmtDot(opt.ledEur)} EUR`,
           `${fmtDot(opt.ledHuf)} Ft`,
         ],
+        ...(opt.customExtraItems || [])
+          .filter((ci) => ci.selected && ci.mode === 'optional')
+          .map((ci): [string, string, string, string] => [
+            `Opció: ${ci.name}`,
+            fmtPlain(Math.round(ci.priceEur * listaSzorzo)),
+            `+ ${fmtDot(ci.priceEur)} EUR`,
+            `${fmtDot(Math.round(ci.priceEur * eurRate))} Ft`,
+          ]),
       ];
 
       if (quote.hasZip && opt.zipOsszesenEur > 0) {
