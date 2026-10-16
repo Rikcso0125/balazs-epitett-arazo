@@ -95,6 +95,37 @@ async function embedImageSafe(
   }
 }
 
+async function embedPhotoSource(
+  pdfDoc: PDFDocument,
+  urlOrData: string | undefined
+): Promise<PDFImage | null> {
+  if (!urlOrData) return null;
+  const trimmed = urlOrData.trim();
+  if (trimmed.startsWith('data:image/')) {
+    try {
+      const commaIdx = trimmed.indexOf(',');
+      if (commaIdx === -1) return null;
+      const b64 = trimmed.slice(commaIdx + 1);
+      const bytes = Buffer.from(b64, 'base64');
+      if (trimmed.startsWith('data:image/png')) {
+        try {
+          return await pdfDoc.embedPng(bytes);
+        } catch {
+          return await pdfDoc.embedJpg(bytes);
+        }
+      }
+      try {
+        return await pdfDoc.embedJpg(bytes);
+      } catch {
+        return await pdfDoc.embedPng(bytes);
+      }
+    } catch {
+      return null;
+    }
+  }
+  return embedImageSafe(pdfDoc, resolvePhotoFilePath(trimmed));
+}
+
 function wrapTextLines(
   text: string,
   font: PDFFont,
@@ -282,67 +313,70 @@ async function renderQuotePdfWithPdfLib(
           ? modelCfg.pdfPhotos
           : getDefaultPhotosForModel(opt.modelId, quote.termekTipus);
 
-      const photo1Img = await embedImageSafe(
-        pdfDoc,
-        resolvePhotoFilePath(photos[0]?.url)
-      );
-      const photo2Img = await embedImageSafe(
-        pdfDoc,
-        resolvePhotoFilePath(photos[1]?.url)
-      );
+      const photo1Img = await embedPhotoSource(pdfDoc, photos[0]?.url);
+      const photo2Img = await embedPhotoSource(pdfDoc, photos[1]?.url);
 
       // PAGE A: Intro & Photo 1 (+ Photo 2 if idx > 0)
       const p1 = addBrandedPage();
       let y = TOP_Y;
 
       if (idx === 0) {
-        y = drawParagraph(p1, `Tisztelt ${greeting}!`, y, {
+        y = drawParagraph(p1, `Kedves ${greeting}!`, y, {
           bold: true,
-          size: 11,
+          size: 10.5,
         });
         y = drawParagraph(
           p1,
-          'Köszönjük megkeresését és érdeklődését termékeink iránt! Az Ön által megadott adatok és méretek alapján, elkészítettem az előzetes árajánlatot az alumínium pergolákra és kiegészítőire.',
+          `Örömmel fogadtuk megkeresését! Kérésének megfelelően küldjük tájékoztató jellegű árajánlatunkat az Ön által megadott paraméterek alapján: 1db ${proj}x${wid}x${hei} cm-es pergola szerkezetre (${beepites}).`,
           y,
-          { size: 9.8 }
+          { size: 9.6 }
         );
         y = drawParagraph(
           p1,
-          `A kiválasztott pergola adatai: ${beepites} • Méret: ${proj} cm (kinyúlás) x ${wid} cm (szélesség) x ${hei} cm (magasság)`,
+          'Azért ajánljuk ezeket a lamellás szerkezeteket, mert télen-nyáron használhatóak, és a lamellák dőlésszögének állításával nem csak a bejutó fény mennyiségét tudjuk szabályozni, hanem a szellőzést is, így megvalósul a bioklimatikus hatás. Illetve ezeket a termékeket lehet körbe szerelni elcsúsztatható üvegfalrendszerrel és oldalsó árnyékolókkal, így megnövelve a terasz kihasználhatóságát.',
           y,
-          { bold: true, size: 10 }
+          { size: 9.4 }
+        );
+        y = drawParagraph(
+          p1,
+          '• Hóterhelés: Kedry Skylife 250 kg/m2 | SEESKYBIO 200 kg/m2 | Solare 400 150 kg/m2\n• Szélterhelése az EN 13561 szabvány szerinti legmagasabb, 6. osztályba sorolt (119 km/h).',
+          y,
+          { bold: true, size: 9.2 }
         );
       }
 
       y -= 4;
-      y = drawParagraph(p1, `${idx + 1}. ${opt.modelName}`, y, {
+      y = drawParagraph(p1, `${idx + 1}. ${opt.modelName} (${proj}x${wid}x${hei} cm):`, y, {
         bold: true,
-        size: 12,
+        size: 11.5,
       });
       if (photos[0]?.description) {
         y = drawParagraph(p1, photos[0].description, y, {
-          bold: true,
-          size: 9.5,
+          size: 9.4,
         });
       }
-      y = drawCenteredImage(p1, photo1Img, y - 4, 340, 175);
+      // Auto-fit Photo 1 into remaining vertical space on Page 1
+      const maxPhoto1H = Math.max(85, Math.min(185, y - BOTTOM_Y - 38));
+      y = drawCenteredImage(p1, photo1Img, y - 4, 345, maxPhoto1H);
 
       y = drawParagraph(
         p1,
-        '• 100%-ban újrahasznosított alumínium • Szélállóság akár 120–160 km/h • Rejtett rozsdamentes csavarok • Integrált vízelvezetés az oszlopokban • Somfy IO motorizáció • 10 év garancia a szerkezetre!',
+        '• 100%-ban újrahasznosított alumínium • Rejtett rozsdamentes csavarok • Integrált vízelvezetés az oszlopokban • Somfy IO motorizáció • 10 év garancia a szerkezetre!',
         y,
-        { bold: true, size: 9.2 }
+        { bold: true, size: 9.0 }
       );
 
       // PAGE B: Photo 2 + Pricing Table
       const p2 = addBrandedPage();
       let y2 = TOP_Y;
-      y2 = drawCenteredImage(p2, photo2Img, y2, 300, 145);
       if (photos[1]?.description) {
         y2 = drawParagraph(p2, photos[1].description, y2, {
-          size: 9.2,
+          size: 9.4,
         });
       }
+      const extraRowCount = (opt.customExtraItems || []).filter((ci) => ci.selected).length;
+      const maxPhoto2H = Math.max(85, Math.min(160, 165 - extraRowCount * 16));
+      y2 = drawCenteredImage(p2, photo2Img, y2 - 2, 330, maxPhoto2H);
 
       y2 = drawParagraph(
         p2,

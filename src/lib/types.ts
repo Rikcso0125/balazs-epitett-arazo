@@ -104,6 +104,8 @@ export interface ModelPricingRule {
   selectedLedIds?: string[];
   customLedPresets?: TemplateSelectablePreset[];
   customExtraItems?: TemplateCustomExtraItem[];
+  customPhoto1DescPresets?: string[];
+  customPhoto2DescPresets?: string[];
 }
 
 export interface AdminConfig {

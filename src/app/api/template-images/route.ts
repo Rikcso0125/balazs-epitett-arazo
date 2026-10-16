@@ -187,7 +187,9 @@ export async function POST(req: NextRequest) {
       fs.writeFileSync(path.join(tmpUploadDir, savedName), buffer);
     }
 
-    const url = `/api/template-images/uploaded/${encodeURIComponent(savedName)}`;
+    const url = process.env.VERCEL
+      ? dataUrl
+      : `/api/template-images/uploaded/${encodeURIComponent(savedName)}`;
     return NextResponse.json({
       id: `uploaded/${savedName}`,
       category: 'uploaded',

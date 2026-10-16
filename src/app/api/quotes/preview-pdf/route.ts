@@ -19,9 +19,11 @@ export async function POST(req: NextRequest) {
     }
 
     const t = Date.now();
+    const pdfBase64 = fs.readFileSync(pdfPath).toString('base64');
     return NextResponse.json({
       ok: true,
       url: `/api/quotes/preview-pdf?t=${t}`,
+      pdfBase64,
       timestamp: t,
     });
   } catch (e: any) {

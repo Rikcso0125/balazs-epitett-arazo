@@ -514,7 +514,22 @@ export function TemplateWizardModal({
   const [galleryImages, setGalleryImages] = useState<GalleryImageItem[]>([]);
   const [pickerSlot, setPickerSlot] = useState<1 | 2 | null>(null);
   const [galleryFilter, setGalleryFilter] = useState<string>('all');
-  const [uploadingSlot, setUploadingSlot] = useState<1 | 2 | null>(null);
+  const [uploadingSlot, setUploadingSlot] = useState<1 | 2 | 'gallery' | null>(null);
+
+  const [customPhoto1DescPresets, setCustomPhoto1DescPresets] = useState<string[]>(
+    initialModelToEdit?.customPhoto1DescPresets || []
+  );
+  const [customPhoto2DescPresets, setCustomPhoto2DescPresets] = useState<string[]>(
+    initialModelToEdit?.customPhoto2DescPresets || []
+  );
+  const [newDesc1Input, setNewDesc1Input] = useState<string>('');
+  const [newDesc2Input, setNewDesc2Input] = useState<string>('');
+
+  // Wizard PDF Preview state (manual trigger only)
+  const [wizardPdfUrl, setWizardPdfUrl] = useState<string | null>(null);
+  const [wizardPdfLoading, setWizardPdfLoading] = useState<boolean>(false);
+  const [wizardPdfError, setWizardPdfError] = useState<string | null>(null);
+  const [wizardPdfTime, setWizardPdfTime] = useState<string | null>(null);
 
   // When creating a new template and switching category in Step 1, automatically load that category's default photos unless customized
   useEffect(() => {
@@ -583,27 +598,78 @@ export function TemplateWizardModal({
       .catch(() => {});
   }, [open]);
 
-  const handleUploadPhoto = async (slot: 1 | 2, file: File) => {
+  const compressImageFileToJpegDataUrl = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Fájl olvasási hiba'));
+      reader.onload = () => {
+        const rawUrl = String(reader.result || '');
+        const img = new window.Image();
+        img.onerror = () => resolve(rawUrl);
+        img.onload = () => {
+          try {
+            const maxDim = 1280;
+            let w = img.naturalWidth || img.width || 800;
+            let h = img.naturalHeight || img.height || 600;
+            if (w > maxDim || h > maxDim) {
+              if (w >= h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolve(rawUrl);
+              return;
+            }
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.88));
+          } catch {
+            resolve(rawUrl);
+          }
+        };
+        img.src = rawUrl;
+      };
+      reader.readAsDataURL(file);
+    });
+
+  const handleUploadPhoto = async (slot: 1 | 2 | 'gallery', file: File) => {
     setUploadingSlot(slot);
     try {
-      const dataUrl = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result || ''));
-        reader.onerror = () => reject(new Error('Fájl olvasási hiba'));
-        reader.readAsDataURL(file);
-      });
+      const dataUrl = await compressImageFileToJpegDataUrl(file);
       const res = await fetch('/api/template-images', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filename: file.name, dataUrl }),
       });
       const data = await res.json();
-      if (res.ok && data?.url) {
-        if (slot === 1) setPhoto1Url(data.url);
-        else setPhoto2Url(data.url);
-        setHasCustomizedPhotos(true);
-        setGalleryImages((prev) => [data, ...prev]);
+      const finalUrl = res.ok && data?.url ? data.url : dataUrl;
+      if (slot === 1) setPhoto1Url(finalUrl);
+      else if (slot === 2) setPhoto2Url(finalUrl);
+      setHasCustomizedPhotos(true);
+      const galleryEntry: GalleryImageItem =
+        res.ok && data?.id
+          ? data
+          : {
+              id: `uploaded/${Date.now()}_${file.name}`,
+              category: 'uploaded',
+              categoryLabel: 'Saját feltöltött fotók',
+              filename: file.name,
+              url: finalUrl,
+            };
+      setGalleryImages((prev) => [galleryEntry, ...prev]);
+      if (slot === 1 || slot === 2) {
         setPickerSlot(null);
+      } else {
+        setGalleryFilter('uploaded');
       }
     } finally {
       setUploadingSlot(null);
@@ -669,6 +735,8 @@ export function TemplateWizardModal({
     selectedLedIds,
     customLedPresets,
     customExtraItems,
+    customPhoto1DescPresets,
+    customPhoto2DescPresets,
   };
 
   const livePreview = calculateSingleCustomTemplate(
@@ -682,6 +750,145 @@ export function TemplateWizardModal({
       eurHufRate: config.general.defaultEurHufRate || 400,
     },
     config
+  );
+
+  const handleGenerateWizardPdfPreview = async () => {
+    setWizardPdfLoading(true);
+    setWizardPdfError(null);
+    try {
+      const res = await fetch('/api/quotes/preview-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: 'Minta Ügyfél',
+          greetingName: 'Ügyfél',
+          city: 'Budapest',
+          szallitasiDijHuf: config.general.defaultSzallitasiDij || 40000,
+          eurHufRate: config.general.defaultEurHufRate || 400,
+          termekTipus: effectiveCategoryId,
+          beepitesTipus: testMount,
+          projection: testProj,
+          width: testWidth,
+          height: testHeight,
+          hasLed: Number(ledEur) > 0,
+          hasZip: allowZipSide,
+          hasUvegfal: allowUvegfalSide,
+          hasHeating: giftInfraHeating,
+          hasSensors: giftRainWindSensor,
+          calculatedOptions: [
+            {
+              ...livePreview,
+              enabled: true,
+              pdfPhotos,
+            },
+          ],
+          selectedOptionIndex: 0,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Hiba a PDF előnézet generálásakor.');
+      }
+      if (data?.pdfBase64) {
+        const binStr = window.atob(data.pdfBase64);
+        const bytes = new Uint8Array(binStr.length);
+        for (let i = 0; i < binStr.length; i++) {
+          bytes[i] = binStr.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        setWizardPdfUrl(blobUrl);
+      } else if (data?.url) {
+        setWizardPdfUrl(data.url);
+      }
+      setWizardPdfTime(
+        new Date().toLocaleTimeString('hu-HU', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+      );
+    } catch (err: any) {
+      setWizardPdfError(err?.message || 'Hiba a PDF előnézet generálásakor.');
+    } finally {
+      setWizardPdfLoading(false);
+    }
+  };
+
+  const renderWizardPdfPreviewBox = () => (
+    <div className="rounded-xl border-2 border-[#0a0a0a] bg-white overflow-hidden shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e4e4e7] bg-[#fafafa] px-4 py-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-md bg-[#0a0a0a] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white">
+              VALÓS PDF ELŐNÉZET
+            </span>
+            <span className="text-xs font-extrabold text-[#0a0a0a]">
+              {draftRule.name} ({testProj}×{testWidth}×{testHeight} cm)
+            </span>
+          </div>
+          <p className="mt-0.5 text-[11px] text-[#71717a]">
+            Az algoritmus automatikusan méretezi a 2 fotót, az egyedi szövegeket és a táblázatot, hogy egyetlen oldal se csússzon szét.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {wizardPdfTime && (
+            <span className="text-[11px] font-semibold text-emerald-700">
+              Frissítve: {wizardPdfTime}
+            </span>
+          )}
+          <button
+            type="button"
+            disabled={wizardPdfLoading}
+            onClick={handleGenerateWizardPdfPreview}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0a0a0a] px-4 py-2 text-xs font-extrabold text-white shadow-xs hover:bg-[#27272a] disabled:opacity-50 transition"
+          >
+            <RotateCcw className={`h-3.5 w-3.5 ${wizardPdfLoading ? 'animate-spin' : ''}`} />
+            {wizardPdfLoading
+              ? 'PDF Generálása...'
+              : wizardPdfUrl
+              ? 'PDF Előnézet Kézi Frissítése'
+              : 'PDF Előnézet Generálása Most'}
+          </button>
+          {wizardPdfUrl && (
+            <a
+              href={wizardPdfUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-lg border border-[#e4e4e7] bg-white px-3 py-2 text-xs font-bold text-[#0a0a0a] hover:bg-[#f4f4f5] transition"
+            >
+              Megnyitás külön lapon ↗
+            </a>
+          )}
+        </div>
+      </div>
+
+      {wizardPdfError && (
+        <div className="bg-red-50 px-4 py-2.5 text-xs font-semibold text-red-700 border-b border-red-200">
+          {wizardPdfError}
+        </div>
+      )}
+
+      {wizardPdfUrl ? (
+        <div className="bg-[#52525b] p-2">
+          <iframe
+            src={wizardPdfUrl}
+            title="Sablon PDF Előnézet"
+            className="h-[560px] w-full rounded-lg bg-white border border-[#27272a]"
+          />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-10 px-4 text-center bg-[#fafafa]/60">
+          <p className="text-xs font-bold text-[#0a0a0a]">
+            Kattints a fenti „PDF Előnézet Generálása Most” gombra a kész PDF árajánlat megtekintéséhez!
+          </p>
+          <p className="mt-1 text-[11px] text-[#71717a]">
+            (Kézi frissítésű, így nyugodtan olvashatod és görgetheted a PDF-et, nem fog magától ugrálni gépelés közben.)
+          </p>
+        </div>
+      )}
+    </div>
   );
 
   const canContinueStep1 =
@@ -2401,17 +2608,47 @@ export function TemplateWizardModal({
                   </div>
 
                   <div>
-                    <label className="mb-1 block text-xs font-extrabold text-[#0a0a0a]">
-                      1. Fotó leírása / bemutató szövege a PDF-ben:
-                    </label>
+                    <div className="mb-1 flex flex-wrap items-center justify-between gap-1.5">
+                      <label className="text-xs font-extrabold text-[#0a0a0a]">
+                        1. Fotó leírása / bemutató szövege a PDF-ben:
+                      </label>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPhoto1Desc('');
+                            setHasCustomizedPhotos(true);
+                          }}
+                          className="rounded border border-[#e4e4e7] bg-white px-2 py-0.5 text-[10px] font-bold text-[#0a0a0a] hover:bg-[#f4f4f5] transition"
+                        >
+                          ✏️ Új szöveg írása (Ürítés)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const txt = photo1Desc.trim();
+                            if (!txt) return;
+                            if (!customPhoto1DescPresets.includes(txt)) {
+                              setCustomPhoto1DescPresets([
+                                ...customPhoto1DescPresets,
+                                txt,
+                              ]);
+                            }
+                          }}
+                          className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-emerald-700 transition"
+                        >
+                          + Mentés saját szövegként
+                        </button>
+                      </div>
+                    </div>
                     <textarea
-                      rows={3}
+                      rows={4}
                       value={photo1Desc}
                       onChange={(e) => {
                         setPhoto1Desc(e.target.value);
                         setHasCustomizedPhotos(true);
                       }}
-                      placeholder="Írd ide, mi jelenjen meg az 1. fotó felett/alatt a PDF árajánlatban..."
+                      placeholder="Írd ide szabadon az új bemutató szöveget, ami az 1. fotó felett/alatt jelenjen meg a PDF árajánlatban..."
                       className="glass-input w-full rounded-lg p-2.5 text-xs leading-relaxed"
                     />
                     <div className="mt-1.5 flex flex-wrap gap-1">
@@ -2423,11 +2660,69 @@ export function TemplateWizardModal({
                             setPhoto1Desc(preset);
                             setHasCustomizedPhotos(true);
                           }}
-                          className="rounded border border-[#e4e4e7] bg-[#fafafa] px-2 py-0.5 text-[10px] font-semibold text-[#52525b] hover:border-[#0a0a0a] hover:text-[#0a0a0a] transition"
+                          className={`rounded border px-2 py-0.5 text-[10px] font-semibold transition ${
+                            photo1Desc === preset
+                              ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white'
+                              : 'border-[#e4e4e7] bg-[#fafafa] text-[#52525b] hover:border-[#0a0a0a] hover:text-[#0a0a0a]'
+                          }`}
                         >
                           Mintaszöveg #{idx + 1}
                         </button>
                       ))}
+                      {customPhoto1DescPresets.map((cPreset, cIdx) => (
+                        <div
+                          key={`c1_${cIdx}`}
+                          className="inline-flex items-center rounded border border-emerald-300 bg-emerald-50 text-[10px] font-bold text-emerald-900 overflow-hidden"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPhoto1Desc(cPreset);
+                              setHasCustomizedPhotos(true);
+                            }}
+                            className="px-2 py-0.5 hover:bg-emerald-100 transition truncate max-w-[160px]"
+                            title={cPreset}
+                          >
+                            Saját #{cIdx + 1}: {cPreset.slice(0, 22)}...
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setCustomPhoto1DescPresets(
+                                customPhoto1DescPresets.filter((_, i) => i !== cIdx)
+                              )
+                            }
+                            className="px-1.5 py-0.5 text-emerald-700 hover:bg-red-100 hover:text-red-700 transition"
+                            title="Törlés"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        value={newDesc1Input}
+                        onChange={(e) => setNewDesc1Input(e.target.value)}
+                        placeholder="Új választható szöveg felvétele a listába..."
+                        className="glass-input flex-1 rounded-lg px-2.5 py-1.5 text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const t = newDesc1Input.trim();
+                          if (!t) return;
+                          setCustomPhoto1DescPresets([...customPhoto1DescPresets, t]);
+                          setPhoto1Desc(t);
+                          setHasCustomizedPhotos(true);
+                          setNewDesc1Input('');
+                        }}
+                        className="inline-flex items-center gap-1 rounded-lg bg-[#0a0a0a] px-2.5 py-1.5 text-[11px] font-bold text-white hover:bg-[#27272a] transition shrink-0"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Hozzáadás
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -2493,17 +2788,47 @@ export function TemplateWizardModal({
                   </div>
 
                   <div>
-                    <label className="mb-1 block text-xs font-extrabold text-[#0a0a0a]">
-                      2. Fotó leírása / bemutató szövege a PDF-ben:
-                    </label>
+                    <div className="mb-1 flex flex-wrap items-center justify-between gap-1.5">
+                      <label className="text-xs font-extrabold text-[#0a0a0a]">
+                        2. Fotó leírása / bemutató szövege a PDF-ben:
+                      </label>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPhoto2Desc('');
+                            setHasCustomizedPhotos(true);
+                          }}
+                          className="rounded border border-[#e4e4e7] bg-white px-2 py-0.5 text-[10px] font-bold text-[#0a0a0a] hover:bg-[#f4f4f5] transition"
+                        >
+                          ✏️ Új szöveg írása (Ürítés)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const txt = photo2Desc.trim();
+                            if (!txt) return;
+                            if (!customPhoto2DescPresets.includes(txt)) {
+                              setCustomPhoto2DescPresets([
+                                ...customPhoto2DescPresets,
+                                txt,
+                              ]);
+                            }
+                          }}
+                          className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white hover:bg-emerald-700 transition"
+                        >
+                          + Mentés saját szövegként
+                        </button>
+                      </div>
+                    </div>
                     <textarea
-                      rows={3}
+                      rows={4}
                       value={photo2Desc}
                       onChange={(e) => {
                         setPhoto2Desc(e.target.value);
                         setHasCustomizedPhotos(true);
                       }}
-                      placeholder="Írd ide, mi jelenjen meg a 2. fotó mellett/alatt a PDF árajánlatban..."
+                      placeholder="Írd ide szabadon az új bemutató szöveget, ami a 2. fotó felett/alatt jelenjen meg a PDF árajánlatban..."
                       className="glass-input w-full rounded-lg p-2.5 text-xs leading-relaxed"
                     />
                     <div className="mt-1.5 flex flex-wrap gap-1">
@@ -2515,11 +2840,69 @@ export function TemplateWizardModal({
                             setPhoto2Desc(preset);
                             setHasCustomizedPhotos(true);
                           }}
-                          className="rounded border border-[#e4e4e7] bg-[#fafafa] px-2 py-0.5 text-[10px] font-semibold text-[#52525b] hover:border-[#0a0a0a] hover:text-[#0a0a0a] transition"
+                          className={`rounded border px-2 py-0.5 text-[10px] font-semibold transition ${
+                            photo2Desc === preset
+                              ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white'
+                              : 'border-[#e4e4e7] bg-[#fafafa] text-[#52525b] hover:border-[#0a0a0a] hover:text-[#0a0a0a]'
+                          }`}
                         >
                           Mintaszöveg #{idx + 1}
                         </button>
                       ))}
+                      {customPhoto2DescPresets.map((cPreset, cIdx) => (
+                        <div
+                          key={`c2_${cIdx}`}
+                          className="inline-flex items-center rounded border border-emerald-300 bg-emerald-50 text-[10px] font-bold text-emerald-900 overflow-hidden"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPhoto2Desc(cPreset);
+                              setHasCustomizedPhotos(true);
+                            }}
+                            className="px-2 py-0.5 hover:bg-emerald-100 transition truncate max-w-[160px]"
+                            title={cPreset}
+                          >
+                            Saját #{cIdx + 1}: {cPreset.slice(0, 22)}...
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setCustomPhoto2DescPresets(
+                                customPhoto2DescPresets.filter((_, i) => i !== cIdx)
+                              )
+                            }
+                            className="px-1.5 py-0.5 text-emerald-700 hover:bg-red-100 hover:text-red-700 transition"
+                            title="Törlés"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        value={newDesc2Input}
+                        onChange={(e) => setNewDesc2Input(e.target.value)}
+                        placeholder="Új választható szöveg felvétele a listába..."
+                        className="glass-input flex-1 rounded-lg px-2.5 py-1.5 text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const t = newDesc2Input.trim();
+                          if (!t) return;
+                          setCustomPhoto2DescPresets([...customPhoto2DescPresets, t]);
+                          setPhoto2Desc(t);
+                          setHasCustomizedPhotos(true);
+                          setNewDesc2Input('');
+                        }}
+                        className="inline-flex items-center gap-1 rounded-lg bg-[#0a0a0a] px-2.5 py-1.5 text-[11px] font-bold text-white hover:bg-[#27272a] transition shrink-0"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Hozzáadás
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -2609,6 +2992,9 @@ export function TemplateWizardModal({
                   </div>
                 </div>
               )}
+
+              {/* PDF PREVIEW AT THE BOTTOM OF STEP 7 */}
+              {renderWizardPdfPreviewBox()}
             </div>
           )}
 
@@ -2621,7 +3007,7 @@ export function TemplateWizardModal({
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-                      ÉLŐ SABLON TESZTELŐ
+                      ÉLŐ SABLON TESZTELŐ & PDF ELŐNÉZET
                     </span>
                     <h3 className="text-base font-extrabold text-[#0a0a0a]">
                       {draftRule.name}
@@ -2787,6 +3173,9 @@ export function TemplateWizardModal({
                   </div>
                 </div>
               </div>
+
+              {/* PDF PREVIEW AT THE END OF STEP 8 */}
+              {renderWizardPdfPreviewBox()}
             </div>
           )}
         </div>

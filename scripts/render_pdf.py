@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import re
+import io
 import json
+import base64
 import shutil
+import tempfile
+import urllib.parse
 from datetime import datetime
 import fitz  # PyMuPDF
 from PIL import Image
@@ -220,7 +225,7 @@ def wrap_html(inner_html):
 def resolve_custom_photo_file(url_str, idx, slot, legacy_root, work_img_dir):
     """
     Resolves a photo URL (e.g. '/api/template-images/bioklimatikus/image_01.jpg'
-    or '/api/template-images/uploaded/foo.jpg' or '/uploads/templates/foo.jpg')
+    or '/api/template-images/uploaded/foo.jpg' or 'data:image/jpeg;base64,...')
     to a prepared local filename inside work_img_dir.
     """
     if not url_str or not isinstance(url_str, str):
@@ -228,16 +233,38 @@ def resolve_custom_photo_file(url_str, idx, slot, legacy_root, work_img_dir):
     url_clean = url_str.strip()
     web_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+    # 1. Direct data:image/...;base64,... support
+    if url_clean.startswith("data:image/"):
+        try:
+            b64_part = url_clean.split(",", 1)[1]
+            raw_bytes = base64.b64decode(b64_part)
+            dst_name = f"_opt_{idx}_p{slot}_data_upload.jpg"
+            dst_path = os.path.join(work_img_dir, dst_name)
+            with Image.open(io.BytesIO(raw_bytes)) as im:
+                if im.mode in ("RGBA", "LA", "P"):
+                    bg = Image.new("RGB", im.size, (255, 255, 255))
+                    if im.mode == "P":
+                        im = im.convert("RGBA")
+                    bg.paste(im, mask=im.split()[-1] if im.mode in ("RGBA", "LA") else None)
+                    im = bg
+                elif im.mode != "RGB":
+                    im = im.convert("RGB")
+                im.save(dst_path, format="JPEG", quality=92)
+            return dst_name
+        except Exception:
+            return None
+
     category = None
     fn = None
     if url_clean.startswith("/api/template-images/"):
         rest = url_clean[len("/api/template-images/") :]
         parts = [p for p in rest.split("/") if p]
         if len(parts) >= 2:
-            category, fn = parts[0], parts[1]
+            category = urllib.parse.unquote(parts[0])
+            fn = urllib.parse.unquote(parts[1].split("?")[0])
     elif url_clean.startswith("/uploads/templates/"):
         category = "uploaded"
-        fn = url_clean.split("/")[-1]
+        fn = urllib.parse.unquote(url_clean.split("/")[-1].split("?")[0])
 
     if not category or not fn:
         return None
@@ -248,28 +275,44 @@ def resolve_custom_photo_file(url_str, idx, slot, legacy_root, work_img_dir):
     if category == "bioklimatikus" and fn == "image_02.jpg":
         return "_bio_02.jpg"
 
+    src_candidates = []
     if category == "uploaded":
-        src_path = os.path.join(web_root, "public", "uploads", "templates", fn)
+        src_candidates.append(os.path.join(web_root, "public", "uploads", "templates", fn))
+        src_candidates.append(os.path.join(tempfile.gettempdir(), "opensky-uploads", "templates", fn))
     else:
-        src_path = os.path.join(
-            legacy_root, "_internal", "backend", "templates", category, "images", fn
+        src_candidates.append(os.path.join(web_root, "public", "template-assets", category, "images", fn))
+        src_candidates.append(
+            os.path.join(legacy_root, "_internal", "backend", "templates", category, "images", fn)
         )
 
-    if not os.path.exists(src_path):
+    src_path = None
+    for cand in src_candidates:
+        if os.path.exists(cand):
+            src_path = cand
+            break
+
+    if not src_path:
         return None
 
-    ext = os.path.splitext(fn)[1].lower() or ".jpg"
-    dst_name = f"_opt_{idx}_p{slot}_{category}_{os.path.splitext(fn)[0]}{ext}"
+    safe_base = re.sub(r"[^a-zA-Z0-9_-]", "_", os.path.splitext(fn)[0])[:40]
+    dst_name = f"_opt_{idx}_p{slot}_{category}_{safe_base}.jpg"
     dst_path = os.path.join(work_img_dir, dst_name)
     try:
         with Image.open(src_path) as im:
+            if im.mode in ("RGBA", "LA", "P"):
+                bg = Image.new("RGB", im.size, (255, 255, 255))
+                if im.mode == "P":
+                    im = im.convert("RGBA")
+                bg.paste(im, mask=im.split()[-1] if im.mode in ("RGBA", "LA") else None)
+                im = bg
+            elif im.mode != "RGB":
+                im = im.convert("RGB")
             w, h = im.size
             if category != "uploaded" and h > w * 1.15:
-                # Legacy portrait photo -> crop center horizontal band so it fits cleanly
                 cropped = im.crop((0, int(h * 0.22), w, int(h * 0.74)))
-                cropped.save(dst_path, quality=92)
+                cropped.save(dst_path, format="JPEG", quality=92)
             else:
-                shutil.copy2(src_path, dst_path)
+                im.save(dst_path, format="JPEG", quality=92)
         return dst_name
     except Exception:
         return None
@@ -394,10 +437,10 @@ def build_story_sections(quote, config, legacy_root, work_img_dir, cat_photos):
         first_opt, 1, config, legacy_root, work_img_dir, cat_photos, default_photo_pairs
     )
     p1_img1 = img_html(work_img_dir, f1_file, 345, max_height_pt=175) if f1_file else ""
-    p1_img2 = img_html(work_img_dir, f2_file, 390, max_height_pt=200) if f2_file else ""
+    p1_img2 = img_html(work_img_dir, f2_file, 390, max_height_pt=195) if f2_file else ""
 
     if f1_desc:
-        first_desc_block = f"<p>{first_sub}</p><p style='margin-top:2pt;'>{f1_desc}</p>"
+        first_desc_block = f"<p style='margin-top:2pt;'>{f1_desc}</p>"
     else:
         first_desc_block = f"<p>{first_sub}. Alumínium vázával, 0-120° között elforgatható lamellával, oszlopaiban rejtett esővíz elvezetésével jó választás az időjárás elemeivel szemben. A lamellák mozgatását villanymotor végzi, amelyet távirányítóval vezérelhetünk.</p>"
 
@@ -791,6 +834,48 @@ def build_story_sections(quote, config, legacy_root, work_img_dir, cat_photos):
     return sections
 
 
+def fit_section_to_single_page(sec_html, work_img_dir, where):
+    """
+    Tests whether sec_html fits onto a single A4 page (where rect).
+    If it overflows (e.g. due to long custom description or extra table rows),
+    proportionally scales down image dimensions and slightly tightens spacing
+    until the entire section fits cleanly on 1 page without spilling over.
+    """
+    try:
+        test_story = fitz.Story(html=sec_html, archive=work_img_dir)
+        more, _ = test_story.place(where)
+        if not more:
+            return sec_html
+
+        steps = [
+            (0.88, 10.5, 1.25, "3pt 4.5pt"),
+            (0.78, 10.2, 1.22, "2.5pt 4pt"),
+            (0.68, 9.8, 1.18, "2pt 3.5pt"),
+            (0.58, 9.4, 1.15, "1.8pt 3pt"),
+            (0.48, 9.0, 1.12, "1.5pt 2.5pt"),
+        ]
+        for img_scale, body_fs, line_h, td_pad in steps:
+            def scale_img_tag(m):
+                w = max(60, int(round(int(m.group(1)) * img_scale)))
+                h = max(40, int(round(int(m.group(2)) * img_scale)))
+                return f'width="{w}" height="{h}"'
+
+            candidate = re.sub(
+                r'width="(\d+)"\s+height="(\d+)"', scale_img_tag, sec_html
+            )
+            candidate = candidate.replace("font-size: 10.5pt;", f"font-size: {body_fs}pt;")
+            candidate = candidate.replace("line-height: 1.28;", f"line-height: {line_h};")
+            candidate = candidate.replace("padding: 3pt 4.5pt;", f"padding: {td_pad};")
+
+            st = fitz.Story(html=candidate, archive=work_img_dir)
+            more, _ = st.place(where)
+            if not more:
+                return candidate
+        return candidate
+    except Exception:
+        return sec_html
+
+
 def main():
     if len(sys.argv) < 3:
         print("Usage: render_pdf.py <input_json> <output_pdf>")
@@ -819,7 +904,8 @@ def main():
     where = mediabox + (54, 102, -54, -70)
 
     for sec_html in sections:
-        story = fitz.Story(html=sec_html, archive=work_img_dir)
+        fitted_html = fit_section_to_single_page(sec_html, work_img_dir, where)
+        story = fitz.Story(html=fitted_html, archive=work_img_dir)
         more = True
         page_guard = 0
         while more and page_guard < 15:

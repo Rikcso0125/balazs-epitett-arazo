@@ -192,8 +192,18 @@ export function QuoteConfiguratorView({
         }),
       });
       const data = await res.json();
-      if (data?.ok && data?.url) {
-        setPdfPreviewUrl(data.url);
+      if (data?.ok) {
+        if (data.pdfBase64) {
+          const binStr = window.atob(data.pdfBase64);
+          const bytes = new Uint8Array(binStr.length);
+          for (let i = 0; i < binStr.length; i++) {
+            bytes[i] = binStr.charCodeAt(i);
+          }
+          const blob = new Blob([bytes], { type: 'application/pdf' });
+          setPdfPreviewUrl(URL.createObjectURL(blob));
+        } else if (data.url) {
+          setPdfPreviewUrl(data.url);
+        }
         setPdfNeedsRefresh(false);
       }
     } catch (e) {
