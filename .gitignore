@@ -1,0 +1,29 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# build
+/build
+
+# misc
+.DS_Store
+*.pem
+.vercel
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# temporary pdf preview files
+/data/_live_preview.pdf
+/data/_tmp_*.json
+/data/_pdf_assets_cache/

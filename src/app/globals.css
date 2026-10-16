@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg: #fafafa;
+  --bg-soft: #f3f3f3;
+  --card: #ffffff;
+  --ink: #0a0a0a;
+  --body: #4a4a4a;
+  --muted: #6b6b6b;
+  --subtle: #a3a3a3;
+  --border: #e8e8e8;
+  --border-strong: #d6d6d6;
+  --accent: #0a0a0a;
+  --accent-2: #3d3d3d;
+  --accent-soft: #f0f0f0;
+  --green: #16a34a;
+  --green-soft: #e9f9ef;
+  --amber: #d97706;
+  --amber-soft: #fef6e7;
+  --red: #dc2626;
+  --red-soft: #fdeaea;
+  --blue: #2563eb;
+  --blue-soft: #eff6ff;
+  --r: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-btn: 8px;
+  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.04), 0 1px 3px rgba(10, 10, 10, 0.05);
+  --shadow: 0 6px 20px -8px rgba(10, 10, 10, 0.10), 0 2px 6px -2px rgba(10, 10, 10, 0.05);
+  --shadow-lg: 0 30px 70px -24px rgba(10, 10, 10, 0.22), 0 12px 30px -18px rgba(10, 10, 10, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Tabular numbers for financial & metric precision like HelloTeam ERP */
+.tabular-nums {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* HelloTeam ERP signature left-accent KPI card */
+.ht-kpi-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s;
+}
+
+.ht-kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.ht-kpi-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3.5px;
+  border-radius: 0 4px 4px 0;
+  background: var(--ink);
+}
+
+.ht-kpi-card--amber::before {
+  background: var(--amber);
+}
+
+.ht-kpi-card--green::before {
+  background: var(--green);
+}
+
+.ht-kpi-card--blue::before {
+  background: var(--blue);
+}
+
+.ht-kpi-card--red::before {
+  background: var(--red);
+}
+
+/* HelloTeam ERP Module Top-Bar Card (like "Banki integráció" in video) */
+.ht-module-header {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* HelloTeam ERP Standard Card */
+.ht-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* HelloTeam ERP Action Row ("Beavatkozást igényel" items) */
+.ht-action-row {
+  background: #f6f6f6;
+  border: 1px solid #ededed;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.ht-action-row:hover {
+  background: #efefef;
+}
+
+.ht-action-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3.5px;
+  border-radius: 0 3px 3px 0;
+}
+
+.ht-action-row--blue::before {
+  background: #2563eb;
+}
+
+.ht-action-row--red::before {
+  background: #ef4444;
+}
+
+.ht-action-row--amber::before {
+  background: #d97706;
+}
+
+.ht-action-row--green::before {
+  background: #16a34a;
+}
+
+/* HelloTeam ERP Sidebar Active Item */
+.ht-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #3d3d3d;
+  position: relative;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ht-nav-item:hover {
+  background: #f3f3f3;
+  color: #0a0a0a;
+}
+
+.ht-nav-item--active {
+  background: #e4e4e4;
+  color: #0a0a0a;
+  font-weight: 700;
+}
+
+.ht-nav-item--active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 3.5px;
+  border-radius: 0 3px 3px 0;
+  background: #0a0a0a;
+}
+
+/* Native Dialog Backdrop */
+dialog::backdrop {
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+dialog[open] {
+  animation: htDialogIn 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes htDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Subtle Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
