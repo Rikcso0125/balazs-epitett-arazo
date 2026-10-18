@@ -1,0 +1,11 @@
+PyPDF2
+reportlab
+pandas
+jinja2
+termcolor
+PyMuPDF
+pdfkit
+imgkit
+Pillow
+requests
+tkinterdnd2
