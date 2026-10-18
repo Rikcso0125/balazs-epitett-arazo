@@ -1,104 +1,86 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb } from '@/lib/db';
-import { generateOfficialPdfForQuote } from '@/lib/pdf-generator';
-import { calculateQuoteOptions, roundHuf } from '@/lib/pricing-engine';
-import {
-  BeepitesTipusId,
-  CalculatedModelOption,
-  QuoteRecord,
-  TermekTipusId,
-} from '@/lib/types';
+import { generateAndSaveQuotePdf } from '@/lib/pdf-generator';
+import { QuoteRecord } from '@/lib/types';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET() {
+  const db = getDb();
+  return NextResponse.json({
+    ok: true,
+    quotes: db.quotes,
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const db = getDb();
 
-    const termekTipus = (body.termekTipus || 'bioklimatikus') as TermekTipusId;
-    const beepitesTipus = (body.beepitesTipus || 'Épülethez rögzített') as BeepitesTipusId;
-    const projection = Number(body.projection) || 500;
-    const width = Number(body.width) || 400;
-    const height = Number(body.height) || 250;
-    const eurHufRate = Number(body.eurHufRate) || db.config.general.defaultEurHufRate;
-    const szallitasiDijHuf =
-      body.szallitasiDijHuf !== undefined
-        ? Number(body.szallitasiDijHuf)
-        : db.config.general.defaultSzallitasiDij;
-
-    let calculatedOptions: CalculatedModelOption[] =
-      Array.isArray(body.calculatedOptions) && body.calculatedOptions.length > 0
-        ? body.calculatedOptions
-        : calculateQuoteOptions(
-            { termekTipus, beepitesTipus, projection, width, height, eurHufRate },
-            db.config
-          );
-
-    const enabledOpts = calculatedOptions.filter((o) => o.enabled);
-    const primaryOpt = enabledOpts[0] || calculatedOptions[0];
-    const primaryEur = primaryOpt ? primaryOpt.alapszerkezetOsszesenEur : 0;
-    const primaryHuf = primaryOpt
-      ? primaryOpt.alapszerkezetOsszesenHuf
-      : roundHuf(primaryEur, eurHufRate);
-
     const now = new Date();
-    const id = `quote-${Date.now()}`;
-    const trackingId = `trk-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    const nextNum = db.quotes.length + 1;
-    const customerName = (body.customerName || 'Ügyfél').trim();
-    const greetingName = customerName.split(' ').slice(-1)[0] || customerName;
+    const year = now.getFullYear();
+    const seq = String((db.quotes?.length || 0) + 1).padStart(3, '0');
+    const quoteNumber = body.quoteNumber || `AJ-${year}-${seq}`;
+    const id = body.id || `quote_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+
+    const blocks = Array.isArray(body.blocks) ? body.blocks : [];
+    const firstTemplateBlock = blocks.find((b: any) => b.type === 'template_section');
+    const eurHufRate = Number(body.eurHufRate || db.config.defaultEurHufRate || 400);
+
+    const primaryTotalEur =
+      body.primaryTotalEur !== undefined
+        ? Number(body.primaryTotalEur)
+        : Number(firstTemplateBlock?.customTotalBaseEur || 0);
+
+    const primaryTotalHuf =
+      body.primaryTotalHuf !== undefined
+        ? Number(body.primaryTotalHuf)
+        : Number(
+            firstTemplateBlock?.customTotalBaseHuf ||
+              Math.round((primaryTotalEur * eurHufRate) / 1000) * 1000
+          );
 
     const newQuote: QuoteRecord = {
       id,
-      quoteNumber: `OSP-${now.getFullYear()}-${String(nextNum).padStart(3, '0')}`,
+      quoteNumber,
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
-      status: 'piszkozat',
-      customerName,
-      greetingName,
+      status: body.status || 'piszkozat',
+      customerName: (body.customerName || 'Ügyfél').trim(),
+      greetingName: (body.greetingName || body.customerName || 'Érdeklődő').trim(),
       email: (body.email || '').trim(),
       phone: (body.phone || '').trim(),
       city: (body.city || 'Budapest').trim(),
-      szallitasiDijHuf,
+      inquiryNotes: body.inquiryNotes || '',
+      widthCm: Number(body.widthCm || 600),
+      projectionCm: Number(body.projectionCm || 400),
+      heightCm: Number(body.heightCm || 250),
+      mountType: body.mountType || 'Épülethez rögzített',
       eurHufRate,
-      termekTipus,
-      beepitesTipus,
-      projection,
-      width,
-      height,
-      hasUvegfal: Boolean(body.hasUvegfal),
-      hasZip: Boolean(body.hasZip),
-      hasNoSideWall: Boolean(body.hasNoSideWall),
-      hasLed: body.hasLed !== undefined ? Boolean(body.hasLed) : true,
-      hasSensors: body.hasSensors !== undefined ? Boolean(body.hasSensors) : true,
-      hasHeating: body.hasHeating !== undefined ? Boolean(body.hasHeating) : true,
-      hasSmartHome: Boolean(body.hasSmartHome),
-      calculatedOptions,
-      selectedOptionIndex: 0,
-      primaryEur,
-      primaryHuf,
-      customNotes: body.customNotes || '',
-      isHistoricalPdf: false,
-      isEdited: false,
-      trackingId,
-      sentCount: 0,
-      openCount: 0,
+      deliveryFeeHuf: Number(body.deliveryFeeHuf ?? db.config.defaultDeliveryFeeHuf ?? 40000),
+      selectedCategoryIds: Array.isArray(body.selectedCategoryIds) ? body.selectedCategoryIds : [],
+      selectedTemplateIds: Array.isArray(body.selectedTemplateIds) ? body.selectedTemplateIds : [],
+      blocks,
+      primaryTotalEur,
+      primaryTotalHuf,
+      isEditedAfterGeneration: Boolean(body.isEditedAfterGeneration),
     };
 
-    // Generate authentic multi-page PDF via embedded Python + wkhtmltopdf + PyMuPDF
-    if (body.generatePdf !== false) {
-      const pdfFile = await generateOfficialPdfForQuote(newQuote);
-      if (pdfFile) {
-        newQuote.filename = pdfFile;
-      }
-    }
+    const { filename, bytes } = await generateAndSaveQuotePdf(newQuote);
+    newQuote.filename = filename;
 
-    db.quotes.unshift(newQuote);
+    db.quotes = [newQuote, ...(db.quotes || [])];
     saveDb(db);
 
-    return NextResponse.json({ ok: true, quote: newQuote });
+    return NextResponse.json({
+      ok: true,
+      quote: newQuote,
+      pdfBase64: Buffer.from(bytes).toString('base64'),
+    });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err?.message || 'Hiba az árajánlat létrehozásakor' },
+      { ok: false, error: err?.message || 'Hiba az árajánlat mentésekor' },
       { status: 500 }
     );
   }

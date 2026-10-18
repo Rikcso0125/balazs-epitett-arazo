@@ -1,59 +1,86 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DEFAULT_ADMIN_CONFIG } from '@/lib/constants';
-import { getDb, saveDb, syncConfigToLegacyArkepzok } from '@/lib/db';
-import { calculateQuoteOptions } from '@/lib/pricing-engine';
-import { AdminConfig } from '@/lib/types';
+import { getDb, saveDb } from '@/lib/db';
+import { ProductCategory, QuoteTemplate, SystemConfig } from '@/lib/types';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET() {
+  const db = getDb();
+  return NextResponse.json({
+    ok: true,
+    config: db.config,
+    categories: db.categories,
+    templates: db.templates,
+  });
+}
 
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-    const newConfig = body.config as AdminConfig;
-    const recalculateAll = Boolean(body.recalculateAll);
-
     const db = getDb();
-    db.config = newConfig;
 
-    // Sync to legacy _internal/arkepzok.json
-    syncConfigToLegacyArkepzok(newConfig);
+    if (body.config && typeof body.config === 'object') {
+      db.config = {
+        ...db.config,
+        ...(body.config as Partial<SystemConfig>),
+      };
+    }
 
-    if (recalculateAll) {
-      db.quotes = db.quotes.map((q) => {
-        const opts = calculateQuoteOptions(
-          {
-            termekTipus: q.termekTipus,
-            beepitesTipus: q.beepitesTipus,
-            projection: q.projection,
-            width: q.width,
-            height: q.height,
-            eurHufRate: q.eurHufRate,
-          },
-          newConfig
-        );
-        const firstEnabled = opts.find((o) => o.enabled) || opts[0];
-        return {
-          ...q,
-          calculatedOptions: opts,
-          primaryEur: firstEnabled ? firstEnabled.alapszerkezetOsszesenEur : q.primaryEur,
-          primaryHuf: firstEnabled ? firstEnabled.alapszerkezetOsszesenHuf : q.primaryHuf,
-          updatedAt: new Date().toISOString(),
-        };
-      });
+    if (Array.isArray(body.categories)) {
+      db.categories = body.categories as ProductCategory[];
+    }
+
+    if (Array.isArray(body.templates)) {
+      db.templates = body.templates as QuoteTemplate[];
+    }
+
+    // Single category upsert
+    if (body.upsertCategory) {
+      const cat = body.upsertCategory as ProductCategory;
+      const idx = db.categories.findIndex((c) => c.id === cat.id);
+      if (idx >= 0) {
+        db.categories[idx] = cat;
+      } else {
+        db.categories.push(cat);
+      }
+    }
+
+    // Single category delete
+    if (body.deleteCategoryId) {
+      const delId = String(body.deleteCategoryId);
+      db.categories = db.categories.filter((c) => c.id !== delId);
+      db.templates = db.templates.filter((t) => t.categoryId !== delId);
+    }
+
+    // Single template upsert
+    if (body.upsertTemplate) {
+      const tpl = body.upsertTemplate as QuoteTemplate;
+      const idx = db.templates.findIndex((t) => t.id === tpl.id);
+      if (idx >= 0) {
+        db.templates[idx] = tpl;
+      } else {
+        db.templates.push(tpl);
+      }
+    }
+
+    // Single template delete
+    if (body.deleteTemplateId) {
+      const delId = String(body.deleteTemplateId);
+      db.templates = db.templates.filter((t) => t.id !== delId);
     }
 
     saveDb(db);
-    return NextResponse.json({ ok: true, config: db.config, quotes: db.quotes });
+
+    return NextResponse.json({
+      ok: true,
+      config: db.config,
+      categories: db.categories,
+      templates: db.templates,
+    });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err?.message || 'Hiba a konfiguráció mentésekor' },
+      { ok: false, error: err?.message || 'Hiba a mentés során' },
       { status: 500 }
     );
   }
-}
-
-export async function POST() {
-  const db = getDb();
-  db.config = JSON.parse(JSON.stringify(DEFAULT_ADMIN_CONFIG));
-  syncConfigToLegacyArkepzok(db.config);
-  saveDb(db);
-  return NextResponse.json({ ok: true, config: db.config });
 }

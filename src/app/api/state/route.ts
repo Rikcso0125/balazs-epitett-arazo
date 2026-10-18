@@ -1,9 +1,25 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { createEmptyDatabase, getDb, saveDb } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const db = getDb();
-  return NextResponse.json(db);
+  return NextResponse.json({
+    ok: true,
+    config: db.config,
+    categories: db.categories,
+    templates: db.templates,
+    quotes: db.quotes,
+    mediaLibrary: db.mediaLibrary,
+  });
+}
+
+export async function DELETE() {
+  const empty = createEmptyDatabase();
+  saveDb(empty);
+  return NextResponse.json({
+    ok: true,
+    ...empty,
+  });
 }

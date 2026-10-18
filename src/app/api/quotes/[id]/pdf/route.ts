@@ -1,83 +1,46 @@
-import fs from 'fs';
-import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb, LEGACY_AJANLATOK_DIR, saveDb } from '@/lib/db';
+import { getDb } from '@/lib/db';
 import {
-  generateOfficialPdfForQuote,
-  TMP_PDF_DIR,
+  renderEditableQuotePdfBytes,
+  sanitizeFilenamePart,
 } from '@/lib/pdf-generator';
 
 export const dynamic = 'force-dynamic';
-
-function resolveExistingPdfPath(filename?: string): string | null {
-  if (!filename) return null;
-  const legacyPath = path.join(LEGACY_AJANLATOK_DIR, filename);
-  if (fs.existsSync(legacyPath)) return legacyPath;
-  const tmpPath = path.join(TMP_PDF_DIR, filename);
-  if (fs.existsSync(tmpPath)) return tmpPath;
-  return null;
-}
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await context.params;
-  const download = req.nextUrl.searchParams.get('download') === '1';
-  const refresh = req.nextUrl.searchParams.get('refresh') === '1';
+  try {
+    const { id } = await context.params;
+    const { searchParams } = new URL(req.url);
+    const download = searchParams.get('download') === '1';
 
-  const db = getDb();
-  const quote = db.quotes.find((q) => q.id === id);
-  if (!quote) {
-    return NextResponse.json(
-      { error: 'Árajánlat nem található' },
-      { status: 404 }
-    );
-  }
+    const db = getDb();
+    const quote = db.quotes.find((q) => q.id === id);
 
-  let pdfPath = resolveExistingPdfPath(quote.filename);
-
-  if (refresh || !pdfPath || !fs.existsSync(pdfPath)) {
-    const generatedName = await generateOfficialPdfForQuote(quote);
-    if (generatedName) {
-      if (
-        refresh &&
-        pdfPath &&
-        fs.existsSync(pdfPath) &&
-        quote.filename !== generatedName &&
-        !quote.isHistoricalPdf
-      ) {
-        try {
-          fs.unlinkSync(pdfPath);
-        } catch {
-          // ignore
-        }
-      }
-      quote.filename = generatedName;
-      saveDb(db);
-      pdfPath = resolveExistingPdfPath(generatedName);
+    if (!quote) {
+      return new NextResponse('Árajánlat nem található', { status: 404 });
     }
+
+    const pdfBytes = await renderEditableQuotePdfBytes(quote, db.config);
+    const safeName = sanitizeFilenamePart(quote.customerName || 'Ugyfel');
+    const safeCity = sanitizeFilenamePart(quote.city || 'Budapest');
+    const fileName =
+      quote.filename || `${quote.quoteNumber}_${safeCity}_${safeName}.pdf`;
+
+    return new NextResponse(Buffer.from(pdfBytes), {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `${
+          download ? 'attachment' : 'inline'
+        }; filename="${encodeURIComponent(fileName)}"`,
+        'Cache-Control': 'no-store',
+      },
+    });
+  } catch (err: any) {
+    return new NextResponse(err?.message || 'PDF generálási hiba', {
+      status: 500,
+    });
   }
-
-  if (!pdfPath || !fs.existsSync(pdfPath)) {
-    return NextResponse.json(
-      { error: 'A PDF fájl nem található és nem sikerült generálni.' },
-      { status: 404 }
-    );
-  }
-
-  const fileBuffer = fs.readFileSync(pdfPath);
-  const safeName = encodeURIComponent(
-    quote.filename || `${quote.quoteNumber}_arajanlat.pdf`
-  );
-
-  return new NextResponse(fileBuffer, {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `${
-        download ? 'attachment' : 'inline'
-      }; filename*=UTF-8''${safeName}`,
-    },
-  });
 }

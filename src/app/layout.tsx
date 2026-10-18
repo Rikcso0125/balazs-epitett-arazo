@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'OpenSky Pergola • Árajánlatkezelő, Kalkulátor & Admin Portál',
+  title: 'Egyedi Árazó, Sablon Varázsló & Blokkos PDF Generátor',
   description:
-    'Egyedi méretű pergolák árajánlatadó rendszere, 1-kattintásos email kiküldéssel, megnyitáskövető pixellel, statisztikákkal és No-Code Admin felülettel.',
+    'Pergolák, előtetők, napellenzők, üvegtetők és árnyékolók végigvezetett árazó és utólag is szerkeszthető PDF árajánlat-készítő rendszere.',
 };
 
 export default function RootLayout({
@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="hu" className="dark">
-      <body className="min-h-screen bg-[#090d16] text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+    <html lang="hu">
+      <body className="min-h-screen bg-slate-100 text-slate-900 antialiased">
         {children}
       </body>
     </html>
