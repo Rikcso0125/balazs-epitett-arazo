@@ -11,11 +11,13 @@ import {
   Edit3,
   Eye,
   EyeOff,
+  ImagePlus,
   Plus,
   RotateCcw,
   Ruler,
   Save,
   Trash2,
+  X,
 } from 'lucide-react';
 import { TEMPLATE_STATUS_OPTIONS } from '@/lib/constants';
 import {
@@ -151,31 +153,41 @@ function MiniPhotos({
 }) {
   const [uploading, setUploading] = useState(false);
   return (
-    <div className="flex flex-wrap items-start gap-2">
-      {photos.map((ph, idx) => (
-        <div key={ph.id || idx} className="w-28">
-          <div className="relative w-28 h-20 rounded-md overflow-hidden border border-slate-200 bg-slate-50">
-            <img src={thumbUrl(ph.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
-            <button
-              type="button"
-              onClick={() => onChange(photos.filter((_, i) => i !== idx))}
-              className="absolute top-1 right-1 w-5 h-5 grid place-items-center rounded-full bg-white/90 text-slate-600 hover:text-rose-600 text-xs"
-              title="Törlés"
+    <div className="space-y-2">
+      {photos.length > 0 && (
+        <div className="space-y-2">
+          {photos.map((ph, idx) => (
+            <div
+              key={ph.id || idx}
+              className="flex gap-3 rounded-lg border border-slate-200 bg-white p-2"
             >
-              ×
-            </button>
-          </div>
-          <input
-            value={ph.captionBelow || ''}
-            onChange={(e) =>
-              onChange(photos.map((p, i) => (i === idx ? { ...p, captionBelow: e.target.value } : p)))
-            }
-            placeholder="Felirat"
-            className="mt-1 w-full px-1.5 py-0.5 rounded border border-slate-200 text-xs"
-          />
+              <div className="w-24 h-[4.5rem] sm:w-28 sm:h-20 rounded-md overflow-hidden border border-slate-200 bg-slate-50 shrink-0">
+                <img src={thumbUrl(ph.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
+              </div>
+              <textarea
+                value={ph.captionBelow || ''}
+                onChange={(e) =>
+                  onChange(photos.map((p, i) => (i === idx ? { ...p, captionBelow: e.target.value } : p)))
+                }
+                rows={3}
+                placeholder="Képaláírás (a PDF-ben a kép alatt)"
+                className="min-w-0 flex-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-sm leading-snug resize-y min-h-[4.5rem] sm:min-h-20"
+              />
+              <button
+                type="button"
+                onClick={() => onChange(photos.filter((_, i) => i !== idx))}
+                className="self-start p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                title="Kép törlése"
+                aria-label="Kép törlése"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
-      <label className="w-28 h-20 rounded-md border border-dashed border-slate-300 grid place-items-center text-center text-xs text-slate-500 hover:bg-slate-50 cursor-pointer px-1">
+      )}
+      <label className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-slate-300 text-[13px] text-slate-600 hover:bg-slate-50 cursor-pointer">
+        <ImagePlus className="w-4 h-4" />
         {uploading ? 'Feltöltés…' : addLabel}
         <input
           type="file"
@@ -278,13 +290,13 @@ function PhotoStrip({
           {photos.map((ph, idx) => (
             <div
               key={ph.id || idx}
-              className="flex gap-3 rounded-xl border border-slate-200 bg-white p-2.5"
+              className="flex flex-col sm:flex-row gap-3 rounded-xl border border-slate-200 bg-white p-2.5"
             >
               <a
                 href={ph.imageUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="relative w-36 sm:w-44 aspect-[4/3] shrink-0 rounded-lg overflow-hidden bg-slate-50 border border-slate-200"
+                className="relative w-full sm:w-44 aspect-[16/9] sm:aspect-[4/3] self-start shrink-0 rounded-lg overflow-hidden bg-slate-50 border border-slate-200"
                 title="Megnyitás teljes méretben"
               >
                 <img src={thumbUrl(ph.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
@@ -363,7 +375,7 @@ function PhotoStrip({
                       onChange(photos.map((p, i) => (i === idx ? { ...p, subPhotos: next } : p)))
                     }
                     onUploadImage={onUploadImage}
-                    addLabel="+ Részletkép"
+                    addLabel="Részletkép hozzáadása"
                   />
                 </div>
               </div>
@@ -1356,8 +1368,8 @@ export function CatalogManagerView({
                     {(tpl.materials || [])
                       .filter((m) => m.itemRole !== 'gift' && m.pricingMode !== 'percentage')
                       .map((m) => (
-                        <div key={m.id} className="rounded-xl border border-slate-200 p-2.5">
-                          <div className="text-sm text-slate-950 mb-2">
+                        <div key={m.id} className="rounded-xl border border-slate-200 p-3">
+                          <div className="text-sm text-slate-950 mb-2 break-words">
                             {m.name}
                             <span className="ml-2 text-xs text-slate-500">
                               {m.itemRole === 'optional' ? 'extra' : 'alaptétel'}
@@ -1373,7 +1385,7 @@ export function CatalogManagerView({
                               })
                             }
                             onUploadImage={onUploadImage}
-                            addLabel="+ Kép"
+                            addLabel="Kép hozzáadása"
                           />
                           <div className="mt-2">
                             <ColorOptionsEditor
