@@ -18,6 +18,7 @@
  * Idempotens: a `tpl_legacy_` kezdetű sablonokat lecseréli (az elavultakat törli), minden mást
  * érintetlenül hagy. Kategóriák név szerint (hiányzók létrehozása, menü + kép beállítása).
  */
+import { applyColorCharts } from './apply-color-charts.mjs';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -1227,6 +1228,8 @@ for (const t of built) {
   }
 }
 db.templates = [...kept, ...built];
+// A színkártya-képek helyett valódi színválaszték (kód + mintaszín)
+applyColorCharts({ templates: built });
 
 console.log('Kategóriák:\n  ' + catLog.join('\n  '));
 console.log(`Sablonok: ${built.length} legacy (+${kept.length} meglévő megtartva)`);

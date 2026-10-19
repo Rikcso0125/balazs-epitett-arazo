@@ -58,6 +58,7 @@ import {
   UploadedMediaItem,
 } from '@/lib/types';
 import { btn, PageHeader } from '@/components/ui';
+import { ColorOptionsEditor } from '@/components/ColorOptions';
 
 interface TemplateBuilderViewProps {
   config: SystemConfig;
@@ -2468,6 +2469,24 @@ export function TemplateBuilderView({
                           </div>
                         </div>
 
+                        {/* Színválaszték (pl. alapszínek, RAL színek) – a PDF-ben színmintaként */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                          <div className="text-sm font-semibold text-slate-950">Színek</div>
+                          <p className="text-xs text-slate-500">
+                            Kód és mintaszín – a PDF-ben színmintaként jelenik meg, ha a tétel az ajánlatban van.
+                          </p>
+                          <ColorOptionsEditor
+                            colors={currentMaterial.colorOptions || []}
+                            onChange={(next) =>
+                              updateMaterial(activeMaterialIdx, { colorOptions: next })
+                            }
+                            title={currentMaterial.colorTitle}
+                            onTitleChange={(t) =>
+                              updateMaterial(activeMaterialIdx, { colorTitle: t })
+                            }
+                          />
+                        </div>
+
                         {/* Product-Specific Photos & Captions below Photo */}
                         <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                           <div className="flex items-center justify-between flex-wrap gap-2">
@@ -2528,7 +2547,7 @@ export function TemplateBuilderView({
                                 <img
                                   src={ph.imageUrl}
                                   alt=""
-                                  className="w-28 h-24 object-cover rounded-lg border border-slate-200 shrink-0"
+                                  className="w-40 h-28 object-contain bg-white rounded-lg border border-slate-200 shrink-0"
                                 />
                               )}
                               <div className="flex-1 space-y-2">

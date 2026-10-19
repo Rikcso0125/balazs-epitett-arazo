@@ -139,6 +139,17 @@ export interface TemplateMaterialItem {
   maxModules?: number; // csak legfeljebb ennyi modulnál
   // Nem számít bele a százalékos tételek (pl. szerelés %) alapjába (pl. motor, távirányító)
   excludeFromPercentBase?: boolean;
+  // Színválaszték (pl. alapszínek vagy választható RAL színek), a PDF-ben színmintaként
+  colorOptions?: ColorOption[];
+  colorTitle?: string;
+}
+
+/** Egy szín: kód (pl. RAL 7016), opcionális név / felület, mintaszín */
+export interface ColorOption {
+  id: string;
+  code: string;
+  name?: string;
+  hex: string;
 }
 
 export type SizeAxis = 'width' | 'projection' | 'height';
@@ -391,6 +402,17 @@ export interface QuoteRecord {
   firstOpenedAt?: string;
   lastOpenedAt?: string;
   acceptedAt?: string;
+}
+
+/**
+ * Korábbi ajánlatokból ismert ügyfél (a névmezőben választható)
+ */
+export interface KnownCustomer {
+  name: string;
+  greetingName: string;
+  city: string;
+  email: string;
+  phone: string;
 }
 
 /**

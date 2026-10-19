@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
+  Pencil,
   ArrowDown,
   ArrowUp,
   BookOpen,
@@ -26,6 +27,7 @@ import {
   PhotoCaptionBlock,
 } from '@/lib/types';
 import { btn, PageHeader } from '@/components/ui';
+import { ColorOptionsEditor } from '@/components/ColorOptions';
 
 interface CatalogManagerViewProps {
   menus: ProductMenu[];
@@ -371,6 +373,67 @@ function PhotoStrip({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Név szövegként; a ceruzára kattintva szerkeszthető (Enter / kattintás máshova: kész, Esc: vissza).
+ */
+function EditableName({
+  value,
+  onChange,
+  onSelect,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onSelect: () => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [original, setOriginal] = useState(value);
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={(e) => e.currentTarget.select()}
+        onBlur={() => {
+          if (!value.trim()) onChange(original);
+          setEditing(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+          if (e.key === 'Escape') {
+            onChange(original);
+            setEditing(false);
+          }
+        }}
+        className="flex-1 min-w-0 px-2 py-1 rounded-lg border border-slate-400 bg-white text-sm font-semibold"
+      />
+    );
+  }
+  return (
+    <div className="flex-1 min-w-0 flex items-center gap-1 group">
+      <button
+        type="button"
+        onClick={onSelect}
+        className="flex-1 min-w-0 text-left px-1 py-1 text-sm font-semibold text-slate-950 leading-snug break-words"
+      >
+        {value}
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setOriginal(value);
+          setEditing(true);
+          onSelect();
+        }}
+        className="p-1 rounded-md text-slate-400 hover:text-slate-950 hover:bg-slate-100 opacity-60 group-hover:opacity-100"
+        title="Átnevezés"
+      >
+        <Pencil className="w-3.5 h-3.5" />
+      </button>
     </div>
   );
 }
@@ -806,7 +869,7 @@ export function CatalogManagerView({
       {viewMode === 'tree' && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* MENUS */}
-        <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
           <div className="text-[13px] font-medium text-slate-600">
             Menü ({sortedMenus.length})
           </div>
@@ -856,12 +919,10 @@ export function CatalogManagerView({
                         <ArrowDown className="w-3 h-3" />
                       </button>
                     </div>
-                    <input
-                      type="text"
+                    <EditableName
                       value={menu.name}
-                      onFocus={() => setSelectedMenuId(menu.id)}
-                      onChange={(e) => updateMenu(menu.id, { name: e.target.value })}
-                      className="flex-1 min-w-0 px-2 py-1.5 rounded-lg border border-transparent hover:border-slate-200 focus:border-slate-300 bg-transparent text-sm font-bold"
+                      onSelect={() => setSelectedMenuId(menu.id)}
+                      onChange={(v) => updateMenu(menu.id, { name: v })}
                     />
                     <button
                       type="button"
@@ -985,17 +1046,10 @@ export function CatalogManagerView({
                             <ArrowDown className="w-3 h-3" />
                           </button>
                         </div>
-                        <input
-                          type="text"
+                        <EditableName
                           value={cat.name}
-                          onFocus={() => setSelectedCategoryId(cat.id)}
-                          onChange={(e) =>
-                            updateCategory(cat.id, {
-                              name: e.target.value,
-                              shortName: e.target.value,
-                            })
-                          }
-                          className="flex-1 min-w-0 px-2 py-1.5 rounded-lg border border-transparent hover:border-slate-200 focus:border-slate-300 bg-transparent text-sm font-bold"
+                          onSelect={() => setSelectedCategoryId(cat.id)}
+                          onChange={(v) => updateCategory(cat.id, { name: v, shortName: v })}
                         />
                         <button
                           type="button"
@@ -1080,7 +1134,7 @@ export function CatalogManagerView({
         </div>
 
         {/* TEMPLATES */}
-        <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
+        <div className="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="text-[13px] font-medium text-slate-600">
               Sablon ({categoryTemplates.length})
@@ -1291,7 +1345,7 @@ export function CatalogManagerView({
                   {/* Extrák / tételek képei: a PDF-ben csak akkor, ha a tétel az ajánlatban van */}
                   <div className="space-y-3">
                     <div>
-                      <div className="text-[13px] font-medium text-slate-700">Képek az extrákhoz</div>
+                      <div className="text-[13px] font-medium text-slate-700">Képek és színek a tételekhez</div>
                       <p className="text-xs text-slate-500">
                         A PDF-ben csak akkor jelennek meg, ha az adott tétel bekerül az ajánlatba.
                       </p>
@@ -1318,6 +1372,29 @@ export function CatalogManagerView({
                             onUploadImage={onUploadImage}
                             addLabel="+ Kép"
                           />
+                          <div className="mt-2">
+                            <ColorOptionsEditor
+                              colors={m.colorOptions || []}
+                              onChange={(next) =>
+                                updateTemplate(tpl.id, {
+                                  materials: tpl.materials.map((x) =>
+                                    x.id === m.id ? { ...x, colorOptions: next } : x
+                                  ),
+                                })
+                              }
+                              title={m.colorOptions?.length ? m.colorTitle : undefined}
+                              onTitleChange={
+                                m.colorOptions?.length
+                                  ? (t) =>
+                                      updateTemplate(tpl.id, {
+                                        materials: tpl.materials.map((x) =>
+                                          x.id === m.id ? { ...x, colorTitle: t } : x
+                                        ),
+                                      })
+                                  : undefined
+                              }
+                            />
+                          </div>
                         </div>
                       ))}
                   </div>

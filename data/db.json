@@ -1260,56 +1260,7 @@
           "fixedSurcharge": 500,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_04.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek (25 alapszín)",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_2",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_3",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_06.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_4",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_07.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_5",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_08.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_wall_6",
-              "imageUrl": "/uploads/legacy/_cache/_ral_25.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -1476,7 +1427,160 @@
           ],
           "matrixRowSnap": "up",
           "matrixColSnap": "nearest",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_sb400_ral_wall_0",
+              "code": "RAL 9016",
+              "name": "matt",
+              "hex": "#f9f9f7"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_1",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f4f2eb"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_2",
+              "code": "RAL 9001",
+              "name": "matt",
+              "hex": "#ece7dc"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_3",
+              "code": "RAL 1013",
+              "name": "matt",
+              "hex": "#e5dfcf"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_4",
+              "code": "RAL 1015",
+              "name": "matt",
+              "hex": "#e7dac1"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_5",
+              "code": "VSR 240",
+              "name": "szatén",
+              "hex": "#d8c7ad"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_6",
+              "code": "RAL 7035",
+              "name": "matt",
+              "hex": "#cccecd"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_7",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#aeafb1"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_8",
+              "code": "RAL 9007",
+              "name": "matt",
+              "hex": "#8f8f91"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_9",
+              "code": "RAL 7037",
+              "name": "matt",
+              "hex": "#8a8b8e"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_10",
+              "code": "RAL 7001",
+              "name": "matt",
+              "hex": "#98a1ac"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_11",
+              "code": "RAL 7012",
+              "name": "matt",
+              "hex": "#6e757a"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_12",
+              "code": "DB 703",
+              "name": "matt",
+              "hex": "#6c6a70"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_13",
+              "code": "RAL 7015",
+              "name": "matt",
+              "hex": "#646772"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_14",
+              "code": "RAL 7024",
+              "name": "matt",
+              "hex": "#5b5d68"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_15",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#464e5a"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_16",
+              "code": "RAL 7043",
+              "name": "matt",
+              "hex": "#434e58"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_17",
+              "code": "RAL 7021",
+              "name": "matt",
+              "hex": "#444851"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_18",
+              "code": "FSM 71319",
+              "name": "matt",
+              "hex": "#404042"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_19",
+              "code": "RAL 7022",
+              "name": "matt",
+              "hex": "#323630"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_20",
+              "code": "RAL 8014",
+              "name": "matt",
+              "hex": "#643d25"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_21",
+              "code": "RAL 8003",
+              "name": "matt",
+              "hex": "#7c3f18"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_22",
+              "code": "RAL 8016",
+              "name": "matt",
+              "hex": "#672b21"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_23",
+              "code": "RAL 7039",
+              "name": "matt",
+              "hex": "#60625b"
+            },
+            {
+              "id": "col_mat_sb400_ral_wall_24",
+              "code": "VSR 780",
+              "name": "matt",
+              "hex": "#4a4538"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_sb400_ral_free",
@@ -1499,56 +1603,7 @@
           "fixedSurcharge": 500,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_sb400_ral_free_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_04.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek (25 alapszín)",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_free_2",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_free_3",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_06.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_free_4",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_07.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_free_5",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_08.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_sb400_ral_free_6",
-              "imageUrl": "/uploads/legacy/_cache/_ral_25.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -1715,7 +1770,160 @@
           ],
           "matrixRowSnap": "up",
           "matrixColSnap": "nearest",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_sb400_ral_free_0",
+              "code": "RAL 9016",
+              "name": "matt",
+              "hex": "#f9f9f7"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_1",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f4f2eb"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_2",
+              "code": "RAL 9001",
+              "name": "matt",
+              "hex": "#ece7dc"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_3",
+              "code": "RAL 1013",
+              "name": "matt",
+              "hex": "#e5dfcf"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_4",
+              "code": "RAL 1015",
+              "name": "matt",
+              "hex": "#e7dac1"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_5",
+              "code": "VSR 240",
+              "name": "szatén",
+              "hex": "#d8c7ad"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_6",
+              "code": "RAL 7035",
+              "name": "matt",
+              "hex": "#cccecd"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_7",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#aeafb1"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_8",
+              "code": "RAL 9007",
+              "name": "matt",
+              "hex": "#8f8f91"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_9",
+              "code": "RAL 7037",
+              "name": "matt",
+              "hex": "#8a8b8e"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_10",
+              "code": "RAL 7001",
+              "name": "matt",
+              "hex": "#98a1ac"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_11",
+              "code": "RAL 7012",
+              "name": "matt",
+              "hex": "#6e757a"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_12",
+              "code": "DB 703",
+              "name": "matt",
+              "hex": "#6c6a70"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_13",
+              "code": "RAL 7015",
+              "name": "matt",
+              "hex": "#646772"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_14",
+              "code": "RAL 7024",
+              "name": "matt",
+              "hex": "#5b5d68"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_15",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#464e5a"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_16",
+              "code": "RAL 7043",
+              "name": "matt",
+              "hex": "#434e58"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_17",
+              "code": "RAL 7021",
+              "name": "matt",
+              "hex": "#444851"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_18",
+              "code": "FSM 71319",
+              "name": "matt",
+              "hex": "#404042"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_19",
+              "code": "RAL 7022",
+              "name": "matt",
+              "hex": "#323630"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_20",
+              "code": "RAL 8014",
+              "name": "matt",
+              "hex": "#643d25"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_21",
+              "code": "RAL 8003",
+              "name": "matt",
+              "hex": "#7c3f18"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_22",
+              "code": "RAL 8016",
+              "name": "matt",
+              "hex": "#672b21"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_23",
+              "code": "RAL 7039",
+              "name": "matt",
+              "hex": "#60625b"
+            },
+            {
+              "id": "col_mat_sb400_ral_free_24",
+              "code": "VSR 780",
+              "name": "matt",
+              "hex": "#4a4538"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_sb400_smarthome",
@@ -3697,28 +3905,44 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_seesky_ral_wall_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_11.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_seesky_ral_wall_2",
-              "imageUrl": "/uploads/legacy/_cache/_ral_5.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "mountTypes": [
             "Épülethez rögzített"
           ],
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_seesky_ral_wall_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_seesky_ral_wall_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_seesky_ral_wall_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_seesky_ral_wall_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_seesky_ral_wall_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_seesky_ral_free",
@@ -3754,28 +3978,44 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_seesky_ral_free_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_11.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_seesky_ral_free_2",
-              "imageUrl": "/uploads/legacy/_cache/_ral_5.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "mountTypes": [
             "Szabadon álló"
           ],
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_seesky_ral_free_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_seesky_ral_free_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_seesky_ral_free_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_seesky_ral_free_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_seesky_ral_free_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_seesky_smarthome",
@@ -6321,24 +6561,7 @@
           "fixedSurcharge": 175,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_kedry_ral_wall_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_16.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_kedry_ral_wall_2",
-              "imageUrl": "/uploads/legacy/_cache/_ral_5.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -6639,7 +6862,40 @@
           ],
           "matrixRowSnap": "up",
           "matrixColSnap": "nearest",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_kedry_ral_wall_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_kedry_ral_wall_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_kedry_ral_wall_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_kedry_ral_wall_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_kedry_ral_wall_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_kedry_ral_free",
@@ -6662,24 +6918,7 @@
           "fixedSurcharge": 175,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_kedry_ral_free_1",
-              "imageUrl": "/uploads/legacy/bioklimatikus/image_16.png",
-              "titleAbove": "",
-              "captionBelow": "Választható színek",
-              "widthPct": 75,
-              "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_kedry_ral_free_2",
-              "imageUrl": "/uploads/legacy/_cache/_ral_5.png",
-              "titleAbove": "",
-              "captionBelow": "",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -6980,7 +7219,40 @@
           ],
           "matrixRowSnap": "up",
           "matrixColSnap": "nearest",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_kedry_ral_free_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_kedry_ral_free_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_kedry_ral_free_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_kedry_ral_free_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_kedry_ral_free_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_kedry_smarthome",
@@ -7801,16 +8073,7 @@
           "fixedSurcharge": 2100,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_pvziip_base_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas/image_04.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -7918,7 +8181,40 @@
               }
             }
           },
-          "splitByModule": true
+          "splitByModule": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_pvziip_base_0",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f2f0eb"
+            },
+            {
+              "id": "col_mat_pvziip_base_1",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#a9abad"
+            },
+            {
+              "id": "col_mat_pvziip_base_2",
+              "code": "RAL 9005",
+              "name": "matt",
+              "hex": "#23232b"
+            },
+            {
+              "id": "col_mat_pvziip_base_3",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#454b57"
+            },
+            {
+              "id": "col_mat_pvziip_base_4",
+              "code": "FSM 71319",
+              "name": "struktúrált",
+              "hex": "#454545"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_pvziip_remote",
@@ -8112,16 +8408,7 @@
           "fixedSurcharge": 2345,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_hydra_base_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas/image_08.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -8321,7 +8608,40 @@
               }
             }
           },
-          "maxModules": 1
+          "maxModules": 1,
+          "colorOptions": [
+            {
+              "id": "col_mat_hydra_base_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_hydra_base_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_hydra_base_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_hydra_base_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_hydra_base_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_hydra_base_2m",
@@ -8344,16 +8664,7 @@
           "fixedSurcharge": 2870,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_hydra_base_2m_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas/image_08.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -8553,7 +8864,40 @@
               }
             }
           },
-          "minModules": 2
+          "minModules": 2,
+          "colorOptions": [
+            {
+              "id": "col_mat_hydra_base_2m_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_hydra_base_2m_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_hydra_base_2m_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_hydra_base_2m_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_hydra_base_2m_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_hydra_motor",
@@ -8817,14 +9161,6 @@
               "captionBelow": "Műszaki rajz",
               "widthPct": 75,
               "align": "center"
-            },
-            {
-              "id": "iphoto_legacy_a100_base_2",
-              "imageUrl": "/uploads/legacy/elhuzhato_ponyvas/image_04.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
             }
           ],
           "matrixTable": {
@@ -9058,7 +9394,40 @@
                 "1300": 22389.5641
               }
             }
-          }
+          },
+          "colorOptions": [
+            {
+              "id": "col_mat_a100_base_0",
+              "code": "Corten",
+              "name": "rozsdabarna, durva",
+              "hex": "#713d16"
+            },
+            {
+              "id": "col_mat_a100_base_1",
+              "code": "RAL 7016 Iron",
+              "name": "antracit, matt",
+              "hex": "#373e41"
+            },
+            {
+              "id": "col_mat_a100_base_2",
+              "code": "Carbon",
+              "name": "fekete, durva",
+              "hex": "#0b0b0e"
+            },
+            {
+              "id": "col_mat_a100_base_3",
+              "code": "RAL 9010",
+              "name": "fehér, matt",
+              "hex": "#f7f6f2"
+            },
+            {
+              "id": "col_mat_a100_base_4",
+              "code": "RAL 9010",
+              "name": "fehér, fényes",
+              "hex": "#ffffff"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_a100_motor",
@@ -15580,16 +15949,7 @@
           "fixedSurcharge": 125,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_veranda_tens_base_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas_tetore/image_04.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -15801,7 +16161,40 @@
               }
             }
           },
-          "splitByModule": true
+          "splitByModule": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_veranda_tens_base_0",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f2f0eb"
+            },
+            {
+              "id": "col_mat_veranda_tens_base_1",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#a9abad"
+            },
+            {
+              "id": "col_mat_veranda_tens_base_2",
+              "code": "RAL 9005",
+              "name": "matt",
+              "hex": "#23232b"
+            },
+            {
+              "id": "col_mat_veranda_tens_base_3",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#454b57"
+            },
+            {
+              "id": "col_mat_veranda_tens_base_4",
+              "code": "FSM 71319",
+              "name": "struktúrált",
+              "hex": "#454545"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_veranda_tens_motor",
@@ -16010,16 +16403,7 @@
           "fixedSurcharge": 1125,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_veranda_vzip_base_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas_tetore/image_07.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -16128,7 +16512,40 @@
             }
           },
           "splitByModule": true,
-          "maxModules": 1
+          "maxModules": 1,
+          "colorOptions": [
+            {
+              "id": "col_mat_veranda_vzip_base_0",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f2f0eb"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_1",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#a9abad"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_2",
+              "code": "RAL 9005",
+              "name": "matt",
+              "hex": "#23232b"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_3",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#454b57"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_4",
+              "code": "FSM 71319",
+              "name": "struktúrált",
+              "hex": "#454545"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_veranda_vzip_base_multi",
@@ -16151,16 +16568,7 @@
           "fixedSurcharge": 1625,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
-            {
-              "id": "iphoto_legacy_veranda_vzip_base_multi_1",
-              "imageUrl": "/uploads/legacy/feszitett_vasznas_tetore/image_07.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -16269,7 +16677,40 @@
             }
           },
           "splitByModule": true,
-          "minModules": 2
+          "minModules": 2,
+          "colorOptions": [
+            {
+              "id": "col_mat_veranda_vzip_base_multi_0",
+              "code": "RAL 9010",
+              "name": "matt",
+              "hex": "#f2f0eb"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_multi_1",
+              "code": "RAL 9006",
+              "name": "matt",
+              "hex": "#a9abad"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_multi_2",
+              "code": "RAL 9005",
+              "name": "matt",
+              "hex": "#23232b"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_multi_3",
+              "code": "RAL 7016",
+              "name": "matt",
+              "hex": "#454b57"
+            },
+            {
+              "id": "col_mat_veranda_vzip_base_multi_4",
+              "code": "FSM 71319",
+              "name": "struktúrált",
+              "hex": "#454545"
+            }
+          ],
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_veranda_vzip_remote",
@@ -16488,18 +16929,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 1,
+          "maxModules": 1,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_polifix_base_2lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_polifix_base_2lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_base_2lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 1,
-          "maxModules": 1
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_polifix_base_3lab",
@@ -16539,18 +16986,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 2,
+          "maxModules": 2,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_polifix_base_3lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_polifix_base_3lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_base_3lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 2,
-          "maxModules": 2
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_polifix_base_4lab",
@@ -16590,18 +17043,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 3,
+          "maxModules": 3,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_polifix_base_4lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_polifix_base_4lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_base_4lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 3,
-          "maxModules": 3
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_polifix_install",
@@ -21056,19 +21515,25 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_polifix_ral_2lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek – egyedi RAL szín felár ellenében",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "minModules": 1,
           "maxModules": 1,
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_polifix_ral_2lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_ral_2lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_polifix_ral_3lab",
@@ -21108,19 +21573,25 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_polifix_ral_3lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek – egyedi RAL szín felár ellenében",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "minModules": 2,
           "maxModules": 2,
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_polifix_ral_3lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_ral_3lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_polifix_ral_4lab",
@@ -21160,19 +21631,25 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "photos": [
-            {
-              "id": "iphoto_legacy_polifix_ral_4lab_1",
-              "imageUrl": "/uploads/legacy/polikarbonatos/image_05.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek – egyedi RAL szín felár ellenében",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ],
+          "photos": [],
           "minModules": 3,
           "maxModules": 3,
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "colorOptions": [
+            {
+              "id": "col_mat_polifix_ral_4lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_polifix_ral_4lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
+            }
+          ],
+          "colorTitle": "Választható színek"
         },
         {
           "id": "mat_polifix_zip_a",
@@ -23209,18 +23686,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 1,
+          "maxModules": 1,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_glassfix_base_2lab_1",
-              "imageUrl": "/uploads/legacy/uvegtetos/image_09.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_glassfix_base_2lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_glassfix_base_2lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 1,
-          "maxModules": 1
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_glassfix_base_3lab",
@@ -23256,18 +23739,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 2,
+          "maxModules": 2,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_glassfix_base_3lab_1",
-              "imageUrl": "/uploads/legacy/uvegtetos/image_09.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_glassfix_base_3lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_glassfix_base_3lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 2,
-          "maxModules": 2
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_glassfix_base_4lab",
@@ -23303,18 +23792,24 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
-          "photos": [
+          "photos": [],
+          "minModules": 3,
+          "maxModules": 3,
+          "colorOptions": [
             {
-              "id": "iphoto_legacy_glassfix_base_4lab_1",
-              "imageUrl": "/uploads/legacy/uvegtetos/image_09.png",
-              "titleAbove": "",
-              "captionBelow": "Alapszínek",
-              "widthPct": 75,
-              "align": "center"
+              "id": "col_mat_glassfix_base_4lab_0",
+              "code": "RAL 7016",
+              "name": "antracit",
+              "hex": "#233039"
+            },
+            {
+              "id": "col_mat_glassfix_base_4lab_1",
+              "code": "RAL 9016",
+              "name": "fehér",
+              "hex": "#fdfdf8"
             }
           ],
-          "minModules": 3,
-          "maxModules": 3
+          "colorTitle": "Alapszínek"
         },
         {
           "id": "mat_glassfix_gift_infra",

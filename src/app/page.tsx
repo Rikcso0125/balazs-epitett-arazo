@@ -31,6 +31,7 @@ import {
   QuoteRecord,
   QuoteStatus,
   QuoteTemplate,
+  KnownCustomer,
   SystemConfig,
   TrackingEvent,
   UploadedMediaItem,
@@ -319,6 +320,25 @@ export default function CustomPricerAppPage() {
     await fetchState(true);
     showToast('Státusz frissítve', `Új státusz: ${status}`);
   };
+
+  // Ismert ügyfelek a korábbi ajánlatokból (a legfrissebb adatokkal), névválasztóhoz
+  const knownCustomers: KnownCustomer[] = (() => {
+    const byName = new Map<string, KnownCustomer>();
+    [...quotes]
+      .sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''))
+      .forEach((q) => {
+        const name = (q.customerName || '').trim();
+        if (!name || byName.has(name.toLowerCase())) return;
+        byName.set(name.toLowerCase(), {
+          name,
+          greetingName: q.greetingName || name,
+          city: q.city || '',
+          email: q.email || '',
+          phone: q.phone || '',
+        });
+      });
+    return Array.from(byName.values()).sort((a, b) => a.name.localeCompare(b.name, 'hu'));
+  })();
 
   const openPdfEditor = () => {
     if (!activeDraftOrSavedQuote) {
@@ -609,6 +629,7 @@ export default function CustomPricerAppPage() {
 
             {activeModule === 'guided_wizard' && (
               <GuidedQuoteWizardView
+                knownCustomers={knownCustomers}
                 config={config}
                 menus={menus}
                 categories={categories}
@@ -626,6 +647,7 @@ export default function CustomPricerAppPage() {
             {activeModule === 'pdf_editor' && activeDraftOrSavedQuote && (
               <PdfBlockEditorView
                 key={activeDraftOrSavedQuote.id || 'draft_editor'}
+                knownCustomers={knownCustomers}
                 config={config}
                 categories={categories}
                 templates={templates}

@@ -7,6 +7,7 @@ import { formatDotNumber, replaceTemplateVariables } from './constants';
 import { getDb, SAVED_PDFS_DIR } from './db';
 import { computeBlockTotals } from './pricing-engine';
 import {
+  ColorOption,
   PhotoCaptionBlock,
   QuoteDocumentBlock,
   QuoteRecord,
@@ -75,8 +76,16 @@ async function embedImageFromSource(
     }
   }
 
-  // 2. Local file in public/uploads or tmp
-  const localPath = resolveLocalFileFromUrl(trimmed);
+  // 2. Local file in public/uploads or tmp – ha van kisebb, PDF-re optimalizált másolata
+  // (public/uploads/_pdf/<útvonal>.jpg, lásd scripts/optimize-pdf-images.py), azt használjuk
+  const originalPath = resolveLocalFileFromUrl(trimmed);
+  const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+  const optimizedPath =
+    originalPath && originalPath.startsWith(uploadsDir)
+      ? path.join(uploadsDir, '_pdf', `${path.relative(uploadsDir, originalPath)}.jpg`)
+      : null;
+  const localPath =
+    optimizedPath && fs.existsSync(optimizedPath) ? optimizedPath : originalPath;
   if (localPath && fs.existsSync(localPath)) {
     try {
       const bytes = fs.readFileSync(localPath);
@@ -171,8 +180,9 @@ export async function renderEditableQuotePdfBytes(
   pdfDoc.registerFontkit(fontkit);
 
   const fontDir = path.join(process.cwd(), 'public', 'template-assets', 'fonts');
-  const fontRegular = await pdfDoc.embedFont(fs.readFileSync(path.join(fontDir, 'arial.ttf')));
-  const fontBold = await pdfDoc.embedFont(fs.readFileSync(path.join(fontDir, 'arialbd.ttf')));
+  // Csak a használt karakterek kerülnek a PDF-be (a teljes Arial ~1,5 MB lenne)
+  const fontRegular = await pdfDoc.embedFont(fs.readFileSync(path.join(fontDir, 'arial.ttf')), { subset: true });
+  const fontBold = await pdfDoc.embedFont(fs.readFileSync(path.join(fontDir, 'arialbd.ttf')), { subset: true });
 
   const bgImg = await embedImageFromSource(pdfDoc, config.pdfPageBackgroundUrl);
   const logoImg = await embedImageFromSource(pdfDoc, config.pdfLogoUrl);
@@ -352,6 +362,53 @@ export async function renderEditableQuotePdfBytes(
       drawTextParagraph(captionBelow, { size: 9, color: C.muted });
     }
     current.y -= 14;
+  };
+
+  // Színminták: kitöltött négyzet + kód + felület, 7 egy sorban
+  const hexToRgb = (hex: string) => {
+    const m = /^#?([0-9a-f]{6})$/i.exec((hex || '').trim());
+    const n = m ? parseInt(m[1], 16) : 0xcccccc;
+    return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+  };
+  const drawColorSwatches = (title: string, colors: ColorOption[]) => {
+    if (!colors.length) return;
+    const COLS = 7;
+    const GAP = 8;
+    const cellW = (CONTENT_W - GAP * (COLS - 1)) / COLS;
+    const SW = 26;
+    ensureSpace(70);
+    drawTextParagraph(title, { bold: true, size: 9, color: C.ink, lineHeight: 1.3 });
+    current.y -= 6;
+    for (let i = 0; i < colors.length; i += COLS) {
+      const cells = colors.slice(i, i + COLS).map((c) => ({
+        c,
+        codeLines: wrapTextLines(c.code, fontBold, 7.5, cellW).slice(0, 2),
+        nameLines: c.name ? wrapTextLines(c.name, fontRegular, 7, cellW).slice(0, 2) : [],
+      }));
+      const rowH = SW + 6 + Math.max(...cells.map((x) => x.codeLines.length * 9 + x.nameLines.length * 8.5));
+      ensureSpace(rowH + 8);
+      const top = current.y;
+      cells.forEach(({ c, codeLines, nameLines }, idx) => {
+        const x = MARGIN_X + idx * (cellW + GAP);
+        drawRoundedRect(current.page, x, top, SW, SW, 4, hexToRgb(c.hex));
+        // Világos színeknél is látszó keret
+        current.page.drawSvgPath(
+          `M 4 0 H ${SW - 4} Q ${SW} 0 ${SW} 4 V ${SW - 4} Q ${SW} ${SW} ${SW - 4} ${SW} H 4 Q 0 ${SW} 0 ${SW - 4} V 4 Q 0 0 4 0 Z`,
+          { x, y: top, borderColor: C.line, borderWidth: 0.8 }
+        );
+        let y = top - SW - 9;
+        for (const cl of codeLines) {
+          current.page.drawText(cl, { x, y, size: 7.5, font: fontBold, color: C.ink });
+          y -= 9;
+        }
+        for (const nl of nameLines) {
+          current.page.drawText(nl, { x, y, size: 7, font: fontRegular, color: C.muted });
+          y -= 8.5;
+        }
+      });
+      current.y = top - rowH - 8;
+    }
+    current.y -= 4;
   };
 
   // Részletképek kis sorokban (4 egy sorban), rövid felirattal
@@ -703,6 +760,14 @@ export async function renderEditableQuotePdfBytes(
       await drawPhotoGrid(rowPhotos);
       const rowSubs = rowPhotos.flatMap((p) => (p.subPhotos || []).filter((x) => x.imageUrl));
       if (rowSubs.length) await drawSubPhotoRow(rowSubs);
+    }
+
+    // Színválaszték a bekerült tételeknél (alapszínek, választható RAL színek)
+    for (const row of activeRows) {
+      const colors = row.algorithm?.colorOptions || [];
+      if (colors.length) {
+        drawColorSwatches(row.algorithm?.colorTitle || row.name, colors);
+      }
     }
 
     if (block.sectionClosingText) {

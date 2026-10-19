@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowLeft,
@@ -56,9 +56,11 @@ import {
   SystemConfig,
   TemplateMaterialItem,
   UploadedMediaItem,
+  KnownCustomer,
 } from '@/lib/types';
 
 interface PdfBlockEditorViewProps {
+  knownCustomers: KnownCustomer[];
   config: SystemConfig;
   categories: ProductCategory[];
   templates: QuoteTemplate[];
@@ -75,6 +77,7 @@ interface PdfBlockEditorViewProps {
 }
 
 export function PdfBlockEditorView({
+  knownCustomers,
   config,
   templates,
   mediaLibrary,
@@ -165,6 +168,7 @@ export function PdfBlockEditorView({
   );
 
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const previewRequestRef = useRef(0);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [needsPreviewRefresh, setNeedsPreviewRefresh] = useState(false);
   const [savingPdf, setSavingPdf] = useState(false);
@@ -360,9 +364,10 @@ export function PdfBlockEditorView({
   const refreshLivePdfPreview = useCallback(async () => {
     setPreviewLoading(true);
     try {
+      const requestId = ++previewRequestRef.current;
       const res = await fetch('/api/quotes/preview-pdf', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/pdf' },
         body: JSON.stringify({
           quoteNumber: initialQuote.quoteNumber || 'ELŐNÉZET',
           customerName,
@@ -379,16 +384,14 @@ export function PdfBlockEditorView({
           blocks,
         }),
       });
-      const data = await res.json();
-      if (data?.ok && data.pdfBase64) {
-        const binStr = window.atob(data.pdfBase64);
-        const bytes = new Uint8Array(binStr.length);
-        for (let i = 0; i < binStr.length; i++) {
-          bytes[i] = binStr.charCodeAt(i);
-        }
-        const blob = new Blob([bytes], { type: 'application/pdf' });
+      // Csak a legutolsó kérés eredményét mutatjuk (gyors gépelésnél a régebbiek elavultak)
+      if (res.ok && requestId === previewRequestRef.current) {
+        const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        setPdfPreviewUrl(url);
+        setPdfPreviewUrl((prev) => {
+          if (prev) URL.revokeObjectURL(prev);
+          return url;
+        });
         setNeedsPreviewRefresh(false);
       }
     } catch (e) {
@@ -574,14 +577,30 @@ export function PdfBlockEditorView({
             <input
               type="text"
               value={customerName}
-              onChange={(e) =>
-                handleUpdateCustomerGreetingInBlocks(
-                  e.target.value,
-                  e.target.value
-                )
-              }
+              list="editor-known-customers"
+              autoComplete="off"
+              onChange={(e) => {
+                const val = e.target.value;
+                // Korábbi ügyfél kiválasztása: megszólítás, település, elérhetőség is átjön
+                const known = knownCustomers.find(
+                  (c) => c.name.toLowerCase() === val.trim().toLowerCase()
+                );
+                handleUpdateCustomerGreetingInBlocks(val, known ? known.greetingName : val);
+                if (known) {
+                  if (known.city) setCity(known.city);
+                  if (known.email) setEmail(known.email);
+                  if (known.phone) setPhone(known.phone);
+                }
+              }}
               className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold"
             />
+            <datalist id="editor-known-customers">
+              {knownCustomers.map((c) => (
+                <option key={c.name} value={c.name}>
+                  {[c.city, c.email || c.phone].filter(Boolean).join(' · ')}
+                </option>
+              ))}
+            </datalist>
           </div>
           <div>
             <label className={labelCls}>

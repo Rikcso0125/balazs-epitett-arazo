@@ -1,6 +1,7 @@
 import {
   DimensionSource,
   EmailSettings,
+  ColorOption,
   EmailTemplate,
   ExtraPreset,
   MountType,
@@ -253,6 +254,71 @@ export function extraPresetToMaterial(preset: ExtraPreset): Partial<TemplateMate
     unitPrice: price,
   };
 }
+
+// Gyártói színpaletták (a régi színkártyák alapján), a sablonépítőben egy kattintással felvehetők
+export const COLOR_PALETTES: { id: string; name: string; colors: ColorOption[] }[] = [
+  {
+    id: 'ral25',
+    name: 'RAL 25 szín (SOLARE)',
+    colors: [
+    { id: 'ral25_0', code: 'RAL 9016', name: 'matt', hex: '#f9f9f7' },
+    { id: 'ral25_1', code: 'RAL 9010', name: 'matt', hex: '#f4f2eb' },
+    { id: 'ral25_2', code: 'RAL 9001', name: 'matt', hex: '#ece7dc' },
+    { id: 'ral25_3', code: 'RAL 1013', name: 'matt', hex: '#e5dfcf' },
+    { id: 'ral25_4', code: 'RAL 1015', name: 'matt', hex: '#e7dac1' },
+    { id: 'ral25_5', code: 'VSR 240', name: 'szatén', hex: '#d8c7ad' },
+    { id: 'ral25_6', code: 'RAL 7035', name: 'matt', hex: '#cccecd' },
+    { id: 'ral25_7', code: 'RAL 9006', name: 'matt', hex: '#aeafb1' },
+    { id: 'ral25_8', code: 'RAL 9007', name: 'matt', hex: '#8f8f91' },
+    { id: 'ral25_9', code: 'RAL 7037', name: 'matt', hex: '#8a8b8e' },
+    { id: 'ral25_10', code: 'RAL 7001', name: 'matt', hex: '#98a1ac' },
+    { id: 'ral25_11', code: 'RAL 7012', name: 'matt', hex: '#6e757a' },
+    { id: 'ral25_12', code: 'DB 703', name: 'matt', hex: '#6c6a70' },
+    { id: 'ral25_13', code: 'RAL 7015', name: 'matt', hex: '#646772' },
+    { id: 'ral25_14', code: 'RAL 7024', name: 'matt', hex: '#5b5d68' },
+    { id: 'ral25_15', code: 'RAL 7016', name: 'matt', hex: '#464e5a' },
+    { id: 'ral25_16', code: 'RAL 7043', name: 'matt', hex: '#434e58' },
+    { id: 'ral25_17', code: 'RAL 7021', name: 'matt', hex: '#444851' },
+    { id: 'ral25_18', code: 'FSM 71319', name: 'matt', hex: '#404042' },
+    { id: 'ral25_19', code: 'RAL 7022', name: 'matt', hex: '#323630' },
+    { id: 'ral25_20', code: 'RAL 8014', name: 'matt', hex: '#643d25' },
+    { id: 'ral25_21', code: 'RAL 8003', name: 'matt', hex: '#7c3f18' },
+    { id: 'ral25_22', code: 'RAL 8016', name: 'matt', hex: '#672b21' },
+    { id: 'ral25_23', code: 'RAL 7039', name: 'matt', hex: '#60625b' },
+    { id: 'ral25_24', code: 'VSR 780', name: 'matt', hex: '#4a4538' },
+    ],
+  },
+  {
+    id: 'gibus',
+    name: 'Alapszínek (Gibus / KE)',
+    colors: [
+    { id: 'gibus_0', code: 'Corten', name: 'rozsdabarna, durva', hex: '#713d16' },
+    { id: 'gibus_1', code: 'RAL 7016 Iron', name: 'antracit, matt', hex: '#373e41' },
+    { id: 'gibus_2', code: 'Carbon', name: 'fekete, durva', hex: '#0b0b0e' },
+    { id: 'gibus_3', code: 'RAL 9010', name: 'fehér, matt', hex: '#f7f6f2' },
+    { id: 'gibus_4', code: 'RAL 9010', name: 'fehér, fényes', hex: '#ffffff' },
+    ],
+  },
+  {
+    id: 'selt',
+    name: 'Alapszínek (Selt)',
+    colors: [
+    { id: 'selt_0', code: 'RAL 9010', name: 'matt', hex: '#f2f0eb' },
+    { id: 'selt_1', code: 'RAL 9006', name: 'matt', hex: '#a9abad' },
+    { id: 'selt_2', code: 'RAL 9005', name: 'matt', hex: '#23232b' },
+    { id: 'selt_3', code: 'RAL 7016', name: 'matt', hex: '#454b57' },
+    { id: 'selt_4', code: 'FSM 71319', name: 'struktúrált', hex: '#454545' },
+    ],
+  },
+  {
+    id: 'glass',
+    name: 'Alapszínek (Polifix / Glassfix)',
+    colors: [
+    { id: 'glass_0', code: 'RAL 7016', name: 'antracit', hex: '#233039' },
+    { id: 'glass_1', code: 'RAL 9016', name: 'fehér', hex: '#fdfdf8' },
+    ],
+  },
+];
 
 export const TEMPLATE_STATUS_OPTIONS: {
   id: TemplateStatus;

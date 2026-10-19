@@ -26,8 +26,10 @@ import {
   QuoteTemplate,
   QuoteTableRow,
   SystemConfig,
+  KnownCustomer,
 } from '@/lib/types';
 import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
+import { ColorDots } from '@/components/ColorOptions';
 import {
   btn,
   card,
@@ -38,6 +40,7 @@ import {
 } from '@/components/ui';
 
 interface GuidedQuoteWizardViewProps {
+  knownCustomers: KnownCustomer[];
   config: SystemConfig;
   menus: ProductMenu[];
   categories: ProductCategory[];
@@ -70,6 +73,7 @@ const byOrder = <T extends { order?: number }>(a: T, b: T) =>
  * Ügyfél → Menü + Kategória → Sablon → Méret (cm) + okos szűrő → Extrák + árkalkuláció
  */
 export function GuidedQuoteWizardView({
+  knownCustomers,
   config,
   menus,
   categories,
@@ -205,6 +209,16 @@ export function GuidedQuoteWizardView({
 
   const handleCustomerNameChange = (val: string) => {
     setCustomerName(val);
+    // Korábbi ügyfél kiválasztásakor az elérhetőségei is kitöltődnek
+    const known = knownCustomers.find((c) => c.name.toLowerCase() === val.trim().toLowerCase());
+    if (known) {
+      setGreetingName(known.greetingName);
+      setGreetingManuallyEdited(false);
+      if (known.city) setCity(known.city);
+      if (known.email) setEmail(known.email);
+      if (known.phone) setPhone(known.phone);
+      return;
+    }
     if (!greetingManuallyEdited) setGreetingName(val);
   };
 
@@ -537,9 +551,18 @@ export function GuidedQuoteWizardView({
                   type="text"
                   value={customerName}
                   onChange={(e) => handleCustomerNameChange(e.target.value)}
-                  placeholder="Kovács János"
+                  placeholder={knownCustomers.length ? 'Új név, vagy válassz korábbi ügyfelet' : 'Kovács János'}
+                  list="known-customers"
+                  autoComplete="off"
                   className={inputCls}
                 />
+                <datalist id="known-customers">
+                  {knownCustomers.map((c) => (
+                    <option key={c.name} value={c.name}>
+                      {[c.city, c.email || c.phone].filter(Boolean).join(' · ')}
+                    </option>
+                  ))}
+                </datalist>
               </div>
               <div>
                 <label className={labelCls}>Megszólítás a PDF-ben</label>
@@ -948,6 +971,7 @@ export function GuidedQuoteWizardView({
                       <span className={checked ? 'text-slate-950' : 'text-slate-500'}>
                         {r.name}
                       </span>
+                      <ColorDots colors={r.algorithm?.colorOptions || []} />
                       {(() => {
                         const mat = tpl.materials.find((m) => m.id === r.materialId);
                         if (!mat?.perSide || !checked) return null;
