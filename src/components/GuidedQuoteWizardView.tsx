@@ -449,7 +449,7 @@ export function GuidedQuoteWizardView({
                 </div>
                 {subtitle && (
                   <div
-                    className={`text-xs truncate ${
+                    className={`text-xs break-words ${
                       isOut
                         ? 'text-rose-700'
                         : withFit && fit.status === 'ok'
