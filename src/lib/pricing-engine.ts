@@ -346,7 +346,7 @@ export function checkTemplateFit(
  * Egy szekció végösszege: bekapcsolt alaptételek + árkorrekciók, vagy a kézi végösszeg.
  */
 export function computeBlockTotals(
-  block: Pick<QuoteDocumentBlock, 'rows' | 'adjustments' | 'manualTotalEur'>,
+  block: Pick<QuoteDocumentBlock, 'rows' | 'adjustments' | 'manualTotalEur' | 'manualTotalHuf'>,
   eurHufRate: number
 ): {
   rowsTotalEur: number;
@@ -367,11 +367,20 @@ export function computeBlockTotals(
   const hiddenAdjustmentsEur = adjustments
     .filter((a) => !a.visibleToCustomer)
     .reduce((sum, a) => sum + (Number(a.amountEur) || 0), 0);
-  const hasManualTotal =
-    block.manualTotalEur !== null &&
-    block.manualTotalEur !== undefined &&
-    !Number.isNaN(Number(block.manualTotalEur));
-  const totalEur = hasManualTotal
+  const isSet = (v: number | null | undefined) =>
+    v !== null && v !== undefined && !Number.isNaN(Number(v));
+  // Forintban megadott kézi végösszeg: a Ft pontosan ennyi, az EUR ebből számolódik
+  if (isSet(block.manualTotalHuf)) {
+    const totalHuf = Math.round(Number(block.manualTotalHuf));
+    return {
+      rowsTotalEur,
+      adjustmentsEur,
+      hiddenAdjustmentsEur,
+      totalEur: Math.round(totalHuf / rate),
+      totalHuf,
+    };
+  }
+  const totalEur = isSet(block.manualTotalEur)
     ? Math.round(Number(block.manualTotalEur))
     : rowsTotalEur + adjustmentsEur;
   return {
@@ -396,6 +405,7 @@ export function computeBlockBreakdown(
   manualRowsEur: number;
   adjustmentsEur: number;
   totalEur: number;
+  totalHuf: number;
 } {
   let catalogEur = 0;
   let profitEur = 0;
@@ -421,6 +431,7 @@ export function computeBlockBreakdown(
     manualRowsEur,
     adjustmentsEur: totals.adjustmentsEur,
     totalEur: totals.totalEur,
+    totalHuf: totals.totalHuf,
   };
 }
 

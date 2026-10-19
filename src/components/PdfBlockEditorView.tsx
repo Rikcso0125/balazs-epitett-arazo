@@ -1891,44 +1891,93 @@ export function PdfBlockEditorView({
                         breakdown={computeBlockBreakdown(blk, eurHufRate)}
                         eurHufRate={eurHufRate}
                         manualTotal={
-                          blk.manualTotalEur !== null && blk.manualTotalEur !== undefined
+                          (blk.manualTotalEur ?? null) !== null || (blk.manualTotalHuf ?? null) !== null
                         }
                       />
-                      <div className="flex items-center justify-end gap-2 text-xs text-slate-500">
+                      <div className="flex items-center justify-end gap-2 text-[13px] text-slate-600">
                         Végösszeg kézzel
-                        <input
-                          type="number"
-                          value={blk.manualTotalEur ?? ''}
-                          onChange={(e) =>
-                            updateBlock(blk.id, (b) =>
-                              recalculateBlockTotals(
+                        {(() => {
+                          const cur = blk.manualTotalCurrency || 'EUR';
+                          const value = cur === 'HUF' ? blk.manualTotalHuf : blk.manualTotalEur;
+                          const hasManual =
+                            (blk.manualTotalEur ?? null) !== null || (blk.manualTotalHuf ?? null) !== null;
+                          // Pénznem váltáskor a már beírt összeget átszámoljuk
+                          const switchTo = (next: 'EUR' | 'HUF') =>
+                            updateBlock(blk.id, (b) => {
+                              const curVal = cur === 'HUF' ? b.manualTotalHuf : b.manualTotalEur;
+                              const converted =
+                                curVal === null || curVal === undefined
+                                  ? null
+                                  : next === 'HUF'
+                                  ? roundHuf(Number(curVal), eurHufRate)
+                                  : Math.round(Number(curVal) / Math.max(1, eurHufRate));
+                              return recalculateBlockTotals(
                                 {
                                   ...b,
-                                  manualTotalEur:
-                                    e.target.value === '' ? null : Number(e.target.value),
+                                  manualTotalCurrency: next,
+                                  manualTotalEur: next === 'EUR' ? converted : null,
+                                  manualTotalHuf: next === 'HUF' ? converted : null,
                                 },
                                 eurHufRate
-                              )
-                            )
-                          }
-                          placeholder="auto"
-                          className="w-28 px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-[13px] text-right tabular-nums"
-                        />
-                        EUR
-                        {blk.manualTotalEur !== null && blk.manualTotalEur !== undefined && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              updateBlock(blk.id, (b) =>
-                                recalculateBlockTotals({ ...b, manualTotalEur: null }, eurHufRate)
-                              )
-                            }
-                            title="Vissza az automatikus végösszegre"
-                            className="p-1 rounded-lg text-slate-500 hover:bg-slate-200"
-                          >
-                            <RotateCcw className="w-3.5 h-3.5" />
-                          </button>
-                        )}
+                              );
+                            });
+                          return (
+                            <>
+                              <input
+                                type="number"
+                                value={value ?? ''}
+                                onChange={(e) =>
+                                  updateBlock(blk.id, (b) => {
+                                    const v = e.target.value === '' ? null : Number(e.target.value);
+                                    return recalculateBlockTotals(
+                                      {
+                                        ...b,
+                                        manualTotalEur: cur === 'EUR' ? v : null,
+                                        manualTotalHuf: cur === 'HUF' ? v : null,
+                                      },
+                                      eurHufRate
+                                    );
+                                  })
+                                }
+                                placeholder="automatikus"
+                                className="w-32 px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-[13px] text-right tabular-nums"
+                              />
+                              <div className="inline-flex p-0.5 rounded-lg bg-slate-200/70">
+                                {(['EUR', 'HUF'] as const).map((c) => (
+                                  <button
+                                    key={c}
+                                    type="button"
+                                    onClick={() => c !== cur && switchTo(c)}
+                                    className={`px-2 py-0.5 rounded-md text-xs ${
+                                      c === cur
+                                        ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                                        : 'text-slate-600 hover:text-slate-950'
+                                    }`}
+                                  >
+                                    {c === 'HUF' ? 'Ft' : 'EUR'}
+                                  </button>
+                                ))}
+                              </div>
+                              {hasManual && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateBlock(blk.id, (b) =>
+                                      recalculateBlockTotals(
+                                        { ...b, manualTotalEur: null, manualTotalHuf: null },
+                                        eurHufRate
+                                      )
+                                    )
+                                  }
+                                  title="Vissza az automatikus végösszegre"
+                                  className="p-1 rounded-lg text-slate-500 hover:bg-slate-200"
+                                >
+                                  <RotateCcw className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                   </div>

@@ -234,14 +234,14 @@ export async function renderEditableQuotePdfBytes(
         // Saját logó (a cégnevet tartalmazza): csak a logó, alatta a tevékenységek
         drawLogo(page, MARGIN_X, top + 2, 24);
         if (config.companySubtitle) {
-          page.drawText(config.companySubtitle.slice(0, 70), { x: MARGIN_X, y: top - 33, size: 8, font: fontRegular, color: C.muted });
+          page.drawText(config.companySubtitle, { x: MARGIN_X, y: top - 33, size: 8, font: fontRegular, color: C.muted });
         }
       } else {
         const logoW = drawLogo(page, MARGIN_X, top, 30);
         const tx = MARGIN_X + logoW + 10;
         page.drawText(companyName, { x: tx, y: top - 13, size: 12.5, font: fontBold, color: C.ink });
         if (config.companySubtitle) {
-          page.drawText(config.companySubtitle.slice(0, 70), { x: tx, y: top - 26, size: 8, font: fontRegular, color: C.muted });
+          page.drawText(config.companySubtitle, { x: tx, y: top - 26, size: 8, font: fontRegular, color: C.muted });
         }
       }
       if (config.companyEmail) drawRight(page, config.companyEmail, top - 11, 8.5, fontRegular, C.muted);
@@ -454,25 +454,34 @@ export async function renderEditableQuotePdfBytes(
     current.y -= 28;
 
     const m2 = ((Number(varCtx.widthCm) / 100) * (Number(varCtx.projectionCm) / 100)).toFixed(1).replace('.', ',');
-    const facts: [string, string, string][] = [
-      ['Ügyfél', varCtx.customerName, [quote.city, quote.phone, quote.email].filter(Boolean).join(' · ')],
-      ['Méret', `${varCtx.widthCm} × ${varCtx.projectionCm} × ${varCtx.heightCm} cm`, `${m2} m²`],
-      ['Beépítés', varCtx.mountType, ''],
+    // Minden adat teljes hosszában, sortöréssel (nincs „…” rövidítés)
+    const facts: [string, string, string[]][] = [
+      ['Ügyfél', varCtx.customerName, [quote.city, quote.phone, quote.email].filter(Boolean) as string[]],
+      ['Méret', `${varCtx.widthCm} × ${varCtx.projectionCm} × ${varCtx.heightCm} cm`, [`${m2} m²`]],
+      ['Beépítés', varCtx.mountType, []],
     ];
     const colW = CONTENT_W / 3;
-    facts.forEach(([label, main, sub], i) => {
+    const factsTop = current.y;
+    let factsBottom = current.y;
+    facts.forEach(([label, main, subs], i) => {
       const x = MARGIN_X + colW * i;
       const maxW = colW - 14;
-      const fit = (t: string, f: PDFFont, sz: number) => {
-        let out = t;
-        while (out.length > 1 && textW(out, f, sz) > maxW) out = out.slice(0, -2) + '…';
-        return out;
-      };
-      current.page.drawText(label, { x, y: current.y, size: 8, font: fontRegular, color: C.faint });
-      current.page.drawText(fit(main, fontBold, 10.5), { x, y: current.y - 15, size: 10.5, font: fontBold, color: C.ink });
-      if (sub) current.page.drawText(fit(sub, fontRegular, 8.5), { x, y: current.y - 28, size: 8.5, font: fontRegular, color: C.muted });
+      let y = factsTop;
+      current.page.drawText(label, { x, y, size: 8, font: fontRegular, color: C.faint });
+      y -= 15;
+      for (const line of wrapTextLines(main, fontBold, 10.5, maxW)) {
+        current.page.drawText(line, { x, y, size: 10.5, font: fontBold, color: C.ink });
+        y -= 13;
+      }
+      for (const sub of subs) {
+        for (const line of wrapTextLines(sub, fontRegular, 8.5, maxW)) {
+          current.page.drawText(line, { x, y, size: 8.5, font: fontRegular, color: C.muted });
+          y -= 11;
+        }
+      }
+      factsBottom = Math.min(factsBottom, y);
     });
-    current.y -= 44;
+    current.y = factsBottom - 6;
     hLine(current.page, current.y);
     current.y -= 26;
   }
@@ -570,9 +579,12 @@ export async function renderEditableQuotePdfBytes(
       }) => {
         const nameLines = wrapTextLines(row.name, fontBold, 9.8, NAME_W);
         const descLines = row.description ? wrapTextLines(row.description, fontRegular, 8.5, NAME_W) : [];
+        // Mennyiség és megjegyzés teljes hosszában, tördelve
+        const qtyLines = row.qty ? wrapTextLines(row.qty, fontRegular, 9.5, RIGHT_X - QTY_X - 90) : [];
+        const noteLines = row.note ? wrapTextLines(row.note, fontRegular, 8, 120) : [];
         const leftH = nameLines.length * 13 + descLines.length * 11.5;
-        const rightH = (row.list ? 11 : 0) + 13 + (row.note ? 11 : 0);
-        const rowH = Math.max(leftH, rightH) + 18;
+        const rightH = (row.list ? 11 : 0) + 13 + noteLines.length * 10;
+        const rowH = Math.max(leftH, rightH, qtyLines.length * 12) + 18;
         if (current.y - rowH < BOTTOM_Y) {
           current = createNewPage();
           drawTableHeader();
@@ -589,7 +601,9 @@ export async function renderEditableQuotePdfBytes(
           current.page.drawText(dl, { x: MARGIN_X, y: ly, size: 8.5, font: fontRegular, color: C.muted });
           ly -= 2.5;
         }
-        current.page.drawText(row.qty.slice(0, 24), { x: QTY_X, y: top - 19, size: 9.5, font: fontRegular, color: C.muted });
+        qtyLines.forEach((ql, qi) =>
+          current.page.drawText(ql, { x: QTY_X, y: top - 19 - qi * 12, size: 9.5, font: fontRegular, color: C.muted })
+        );
         let ry = top - 19;
         if (row.list) {
           const lw = textW(row.list, fontRegular, 8);
@@ -598,7 +612,7 @@ export async function renderEditableQuotePdfBytes(
           ry = top - 29;
         }
         drawRight(current.page, row.price, ry, 10.5, fontBold, C.ink);
-        if (row.note) drawRight(current.page, row.note.slice(0, 30), ry - 12, 8, fontRegular, C.muted);
+        noteLines.forEach((nl, ni) => drawRight(current.page, nl, ry - 12 - ni * 10, 8, fontRegular, C.muted));
         current.y = top - rowH;
         hLine(current.page, current.y);
       };
@@ -714,7 +728,7 @@ export async function renderEditableQuotePdfBytes(
 
   // Lábléc: cégnév + elérhetőség, oldalszám
   if (!bgImg) {
-    const footer = [companyName, contactLine].filter(Boolean).join('  ·  ').slice(0, 110);
+    const footer = [companyName, contactLine].filter(Boolean).join('  ·  ');
     pages.forEach((p, i) => {
       hLine(p, 46);
       p.drawText(footer, { x: MARGIN_X, y: 32, size: 7.8, font: fontRegular, color: C.faint });

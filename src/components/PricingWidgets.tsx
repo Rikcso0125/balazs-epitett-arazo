@@ -95,6 +95,7 @@ export function PriceSummaryLine({
     manualRowsEur: number;
     adjustmentsEur: number;
     totalEur: number;
+    totalHuf?: number;
   };
   eurHufRate: number;
   manualTotal?: boolean;
@@ -120,7 +121,7 @@ export function PriceSummaryLine({
         </span>
         <span className="text-slate-500 tabular-nums">
           {' '}
-          · {formatDotNumber(roundHuf(breakdown.totalEur, eurHufRate))} Ft
+          · {formatDotNumber(breakdown.totalHuf ?? roundHuf(breakdown.totalEur, eurHufRate))} Ft
         </span>
       </span>
     </div>

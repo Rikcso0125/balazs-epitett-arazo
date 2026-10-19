@@ -343,7 +343,9 @@ export interface QuoteDocumentBlock {
   customTotalBaseHuf?: number;
   sectionClosingText?: string;
   adjustments?: PriceAdjustment[];
-  manualTotalEur?: number | null; // Végösszeg kézi felülírása
+  manualTotalEur?: number | null; // Végösszeg kézi felülírása (EUR)
+  manualTotalHuf?: number | null; // …vagy forintban (ekkor az EUR ebből számolódik)
+  manualTotalCurrency?: 'EUR' | 'HUF';
   isManualSection?: boolean;      // Egyedi / több modulos, kézzel árazott szekció
 }
 
