@@ -551,7 +551,7 @@ export function GuidedQuoteWizardView({
                   type="text"
                   value={customerName}
                   onChange={(e) => handleCustomerNameChange(e.target.value)}
-                  placeholder={knownCustomers.length ? 'Új név, vagy válassz korábbi ügyfelet' : 'Kovács János'}
+                  placeholder={knownCustomers.length ? 'Név, vagy korábbi ügyfél' : 'Kovács János'}
                   list="known-customers"
                   autoComplete="off"
                   className={inputCls}

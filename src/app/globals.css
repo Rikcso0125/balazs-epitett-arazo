@@ -432,3 +432,22 @@ textarea:focus {
 .topbar .crumb {
   font-size: 14px;
 }
+
+/* ---- mobil: iOS Safari a 16px-nél kisebb betűs mezőkbe belenagyít – telefonon 16px ---- */
+@media (max-width: 900px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='file']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .topbar {
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+  }
+  .topbar .crumb {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

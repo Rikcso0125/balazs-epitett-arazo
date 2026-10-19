@@ -79,6 +79,7 @@ export default function CustomPricerAppPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   // null = még ellenőrizzük, false = bejelentkező képernyő
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [authUser, setAuthUser] = useState('');
   const [liveRate, setLiveRate] = useState<{
     exact: number;
     source: string;
@@ -116,7 +117,10 @@ export default function CustomPricerAppPage() {
   useEffect(() => {
     fetch('/api/auth')
       .then((r) => r.json())
-      .then((d) => setAuthenticated(Boolean(d?.authenticated)))
+      .then((d) => {
+        setAuthenticated(Boolean(d?.authenticated));
+        setAuthUser(d?.user || '');
+      })
       .catch(() => setAuthenticated(false));
   }, []);
 
@@ -427,7 +431,10 @@ export default function CustomPricerAppPage() {
     return (
       <LoginView
         companyName={companyName}
-        onLoggedIn={() => setAuthenticated(true)}
+        onLoggedIn={(user) => {
+          setAuthUser(user);
+          setAuthenticated(true);
+        }}
       />
     );
   }
@@ -540,12 +547,13 @@ export default function CustomPricerAppPage() {
             <Menu />
           </button>
           <div className="crumb">
-            {companyName} / <b>{activeNavItem?.label || ''}</b>
+            <span className="hidden sm:inline">{companyName} / </span>
+            <b>{activeNavItem?.label || ''}</b>
           </div>
           <div className="tb-right">
             {liveRate && (
               <span
-                className="text-[13px] text-slate-500 tabular-nums mr-1"
+                className="hidden sm:inline text-[13px] text-slate-500 tabular-nums mr-1"
                 title={[liveRate.source, liveRate.rateDate].filter(Boolean).join(' · ')}
               >
                 EUR{' '}
@@ -561,10 +569,16 @@ export default function CustomPricerAppPage() {
                 className="mc-badge warn"
                 title="A haszon és szerelés képlete még nem végleges – kattints a beállításhoz"
               >
-                Árképlet ideiglenes
+                <span className="hidden sm:inline">Árképlet ideiglenes</span>
+                <span className="sm:hidden">Árképlet</span>
               </button>
             )}
-            <div className="avatar">OS</div>
+            {/* Bejelentkezett felhasználó monogramja – mobilon rejtve, hogy a fejléc elférjen */}
+            <div className="hidden sm:block">
+              <div className="avatar" title={authUser ? `Bejelentkezve: ${authUser}` : undefined}>
+                {(authUser || companyName).charAt(0).toUpperCase()}
+              </div>
+            </div>
           </div>
         </header>
 

@@ -8,7 +8,7 @@ export function LoginView({
   onLoggedIn,
 }: {
   companyName: string;
-  onLoggedIn: () => void;
+  onLoggedIn: (user: string) => void;
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +26,7 @@ export function LoginView({
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
-      if (data?.ok) onLoggedIn();
+      if (data?.ok) onLoggedIn(data.user || username);
       else setError(data?.error || 'Hibás felhasználónév vagy jelszó.');
     } catch {
       setError('A szerver nem érhető el.');
