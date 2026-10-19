@@ -8,10 +8,12 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     config: db.config,
+    menus: db.menus,
     categories: db.categories,
     templates: db.templates,
     quotes: db.quotes,
     mediaLibrary: db.mediaLibrary,
+    trackingEvents: db.trackingEvents.slice(0, 100),
   });
 }
 

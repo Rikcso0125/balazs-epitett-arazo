@@ -65,6 +65,10 @@ export async function PUT(
       primaryTotalEur,
       primaryTotalHuf,
       isEditedAfterGeneration: true,
+      acceptedAt:
+        body.status === 'elfogadva' && current.status !== 'elfogadva'
+          ? new Date().toISOString()
+          : current.acceptedAt,
     };
 
     const { filename, bytes } = await generateAndSaveQuotePdf(updated);

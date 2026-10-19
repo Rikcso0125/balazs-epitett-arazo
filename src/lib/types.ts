@@ -73,6 +73,8 @@ export interface PhotoCaptionBlock {
   captionBelow: string;
   widthPct?: number; // 30..100, alapértelmezett ~75%
   align?: 'left' | 'center' | 'right';
+  // Részletképek a nagy kép alatt (pl. motor, LED, profil közelről)
+  subPhotos?: PhotoCaptionBlock[];
 }
 
 /**
@@ -116,6 +118,112 @@ export interface TemplateMaterialItem {
   defaultNote: string;        // Megjegyzés oszlop a PDF táblázatban (pl. "-20%", "Ajándék", "Opció")
   // Termékhez közvetlenül felcsatolt fotók + fotó alatti szövegdobozok
   photos: PhotoCaptionBlock[];
+  // Oldalanként árazott extra (pl. üveg, árnyékoló): az árazóban 1–4 oldal választható,
+  // a darabszám = oldalak száma
+  perSide?: boolean;
+  // Csak ezeknél a beépítési módoknál szerepel (pl. falra szerelt / szabadon álló mérettábla)
+  mountTypes?: MountType[];
+  // --- A korábbi (Python) árazó szabályai ---
+  // Mérettábla tengelyei (alap: sor = kinyúlás, oszlop = szélesség; ZIP-nél pl. magasság)
+  matrixRowAxis?: SizeAxis;
+  matrixColAxis?: SizeAxis;
+  // Kerekítés a táblázat méreteihez: 'up' = következő nagyobb (alap), 'nearest' = legközelebbi
+  matrixRowSnap?: 'up' | 'nearest';
+  matrixColSnap?: 'up' | 'nearest';
+  // Nettó méret: a bruttó méretből levonandó profilok stb. (cm, általában negatív)
+  dimOffsets?: { widthCm?: number; projectionCm?: number; heightCm?: number };
+  // Modulos szerkezet (a sablon moduleSplit beállítása szerint):
+  splitByModule?: boolean; // modulonként árazva, az ár × modulszám
+  perModule?: boolean; // darabszám × modulszám (pl. motor modulonként)
+  minModules?: number; // csak legalább ennyi modulnál (pl. 2 modulos felár)
+  maxModules?: number; // csak legfeljebb ennyi modulnál
+  // Nem számít bele a százalékos tételek (pl. szerelés %) alapjába (pl. motor, távirányító)
+  excludeFromPercentBase?: boolean;
+}
+
+export type SizeAxis = 'width' | 'projection' | 'height';
+
+/**
+ * Automatikus modulokra bontás: modulszám = felfelé kerekítve (méret ÷ egy modul max. mérete)
+ */
+export interface ModuleSplitRule {
+  axis: 'width' | 'projection';
+  maxCm: number;
+  maxModules?: number;
+}
+
+/**
+ * Menürendszer – a legfelső szint (pl. Pergola, Karos napellenző, Utólagos ledezés,
+ * Fényárnyékoló, Kocsibeálló). A sorrend és a tartalom bármikor átírható.
+ */
+export interface ProductMenu {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  order: number;
+}
+
+/**
+ * Sablon állapota a sablonkezelőben:
+ * - active: normál, mindig látszik az árazóban
+ * - inactive: nem jelenik meg az árazóban
+ * - seasonal: időszakos termék (látszik, jelölve)
+ * - test: tesztsablon (csak külön bekapcsolva látszik)
+ */
+export type TemplateStatus = 'active' | 'inactive' | 'seasonal' | 'test';
+
+/**
+ * Egy modul gyártható méretkorlátai (cm). 0 vagy üres = nincs korlát.
+ * Ebből dolgozik az okos szűrő.
+ */
+export interface TemplateSizeLimits {
+  minWidthCm?: number;
+  maxWidthCm?: number;
+  minProjectionCm?: number;
+  maxProjectionCm?: number;
+  minHeightCm?: number;
+  maxHeightCm?: number;
+}
+
+/**
+ * Hivatkozás a gyártói katalógusra / ár PDF-re (a ~200 oldalas katalógusból hol van a termék).
+ */
+export interface CatalogReference {
+  pdfFile?: string;       // pl. "Bioklimatikus_arlista_2026.pdf"
+  pages?: string;         // pl. "47-49"
+  productAlias?: string;  // gyártói / fantázianév, ha eltér a mi elnevezésünktől
+  note?: string;
+}
+
+/**
+ * Haszon (X) és szerelés (X, Y) képlet:
+ * - markup_percent: katalógusár × (1 + X%)
+ * - margin_percent: a végösszeg X%-a a haszon → katalógusár / (1 − X%)
+ * - fixed: fix X EUR haszon sablononként (az alaptételekre arányosan elosztva)
+ * Szerelés: assemblyFixedEur (X) + assemblyPerM2Eur (Y) × tetőfelület m²
+ */
+export type ProfitMode = 'markup_percent' | 'margin_percent' | 'fixed';
+
+export interface PricingFormulaConfig {
+  profitMode: ProfitMode;
+  profitValue: number;
+  assemblyFixedEur: number;
+  assemblyPerM2Eur: number;
+  assemblyLabel: string;
+  confirmedByOwner: boolean; // Balázs írásban megadta-e a végleges képletet
+}
+
+/**
+ * Árkorrekció indoklással (pl. "+300 EUR szükséges átalakítás miatt").
+ * Ha nem látható a vevő számára, a PDF-ben az első alaptétel árába olvad bele.
+ */
+export interface PriceAdjustment {
+  id: string;
+  label: string;
+  amountEur: number;
+  reason: string;
+  visibleToCustomer: boolean;
 }
 
 /**
@@ -130,6 +238,8 @@ export interface ProductCategory {
   categoryType: 'main_structure' | 'accessory'; // Fő szerkezet vagy kiegészítő
   allowMultipleTemplates: boolean; // Több sablon is kiválasztható-e egyszerre
   order: number;
+  menuId?: string;            // Melyik menüponthoz tartozik
+  imageUrl?: string;          // Kép a végigvezetett árazó termékválasztójában
 }
 
 /**
@@ -142,6 +252,13 @@ export interface QuoteTemplate {
   name: string;               // pl. "Prémium Kazettás Napellenző", "Bioklimatikus Pergola Sablon A"
   subtitle: string;           // Rövid alcím / műszaki kiemelés
   enabled: boolean;
+  status?: TemplateStatus;
+  order?: number;
+  sizeLimits?: TemplateSizeLimits;
+  catalogRef?: CatalogReference;
+  moduleSplit?: ModuleSplitRule;
+  // Ha meg van adva, felülírja a globális haszon / szerelés képletet ennél a sablonnál
+  pricingOverride?: Partial<PricingFormulaConfig>;
   // Sablon szövegdobozok (automatikus {{ugyfel_nev}}, {{meret}} stb. helyettesítéssel)
   introText: string;          // Sablon bevezető szövegdoboz
   closingText: string;        // Sablon záró / összegzés alatti szövegdoboz
@@ -183,7 +300,12 @@ export interface QuoteTableRow {
   included: boolean;          // Benne van-e a PDF-ben
   note: string;               // Szerkeszthető megjegyzés (pl. "-20%", "Ajándék", "Opció")
   photos: PhotoCaptionBlock[]; // Termékhez csatolt fotók + fotó alatti szövegdobozok
-  algorithm?: TemplateMaterialItem; // A tétel mögötti kötelező árazási algoritmus
+  algorithm?: TemplateMaterialItem; // A tétel mögötti árazási algoritmus
+  costEur?: number;           // Katalógus (beszerzési) ár haszon nélkül – belső adat, nem kerül a PDF-be
+  priceOverridden?: boolean;  // Kézzel átírt ár – újraszámoláskor megmarad
+  quantityOverridden?: boolean;
+  systemRole?: 'assembly';    // Képletből generált sor (szerelés)
+  outOfRange?: boolean;       // A méret kívül esik a mérettáblán
 }
 
 /**
@@ -220,6 +342,9 @@ export interface QuoteDocumentBlock {
   customTotalBaseEur?: number;
   customTotalBaseHuf?: number;
   sectionClosingText?: string;
+  adjustments?: PriceAdjustment[];
+  manualTotalEur?: number | null; // Végösszeg kézi felülírása
+  isManualSection?: boolean;      // Egyedi / több modulos, kézzel árazott szekció
 }
 
 /**
@@ -255,11 +380,79 @@ export interface QuoteRecord {
   primaryTotalEur: number;
   primaryTotalHuf: number;
   isEditedAfterGeneration: boolean;
+  // Kiküldés és megnyitás-követés
+  trackingId?: string;
+  sentToEmail?: string;
+  sentAt?: string;
+  sentCount?: number;
+  openCount?: number;
+  firstOpenedAt?: string;
+  lastOpenedAt?: string;
+  acceptedAt?: string;
+}
+
+/**
+ * Egy e-mailben kiküldött ajánlat megnyitása (követő pixel)
+ */
+export interface TrackingEvent {
+  id: string;
+  quoteId: string;
+  customerName: string;
+  email: string;
+  openedAt: string;
+  ipAddress: string;
+  userAgent: string;
+}
+
+/**
+ * Egy e-mail sablon (tárgy + szöveg). suggestFor: mely ajánlat-státusznál ajánlja fel elsőként.
+ */
+export interface EmailTemplate {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+  suggestFor?: QuoteStatus[];
+}
+
+export interface EmailSettings {
+  senderName: string;
+  senderEmail: string;
+  smtpHost: string;
+  smtpPort: number;
+  smtpUser: string;
+  smtpPass: string;
+  templates: EmailTemplate[];
+  defaultTemplateId: string;
+  enableTrackingPixel: boolean;
+  publicBaseUrl: string; // a pixel csak nyilvánosan elérhető címről működik
 }
 
 /**
  * Rendszer és PDF megjelenési beállítások
  */
+/**
+ * Ajánlat sorszám formátuma:
+ * - year_seq: OSP-2026-001 (évente újrainduló)
+ * - yearmonth_seq: OSP-202610-001 (havonta újrainduló)
+ * - seq: OSP-0001 (folyamatos)
+ */
+export type QuoteNumberFormat = 'year_seq' | 'yearmonth_seq' | 'seq';
+
+/**
+ * Gyors extra a sablonépítőben (LED, fűtőszál, motor…). Bővíthető a Beállításokban.
+ * price: alapár (fix ár, vagy EUR/m², EUR/fm); 1 = még nincs megadva.
+ */
+export interface ExtraPreset {
+  id: string;
+  name: string;
+  pricingMode: 'fixed' | 'per_m2' | 'per_lm';
+  dimensionSource?: DimensionSource;
+  unitLabel: string;
+  price: number;
+  perSide?: boolean;
+}
+
 export interface SystemConfig {
   companyName: string;
   companySubtitle: string;
@@ -278,12 +471,20 @@ export interface SystemConfig {
   pdfPageBackgroundUrl?: string;      // Saját A4-es fejléc/lábléc háttérkép URL
   pdfLogoUrl?: string;                // Saját logó URL
   pdfSignatureCardUrl?: string;       // Saját névjegy / aláírás kép URL a PDF végére
+  pricingFormula: PricingFormulaConfig;
+  emailSettings: EmailSettings;
+  quoteNumberPrefix: string;
+  quoteNumberFormat: QuoteNumberFormat;
+  quoteNumberDigits: number;
+  extraPresets: ExtraPreset[];
 }
 
 export interface DatabaseSchema {
   config: SystemConfig;
+  menus: ProductMenu[];
   categories: ProductCategory[];
   templates: QuoteTemplate[];
   quotes: QuoteRecord[];
   mediaLibrary: UploadedMediaItem[];
+  trackingEvents: TrackingEvent[];
 }

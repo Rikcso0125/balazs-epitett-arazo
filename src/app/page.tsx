@@ -4,14 +4,22 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   CheckCircle2,
   Edit3,
-  FileText,
   FolderKanban,
   Layers,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   Settings,
   Sparkles,
   Wand2,
 } from 'lucide-react';
 import { BrandingSettingsView } from '@/components/BrandingSettingsView';
+import { CatalogManagerView } from '@/components/CatalogManagerView';
+import { DashboardView } from '@/components/DashboardView';
+import { LoginView } from '@/components/LoginView';
+import { SendEmailModal } from '@/components/SendEmailModal';
 import { GuidedQuoteWizardView } from '@/components/GuidedQuoteWizardView';
 import { PdfBlockEditorView } from '@/components/PdfBlockEditorView';
 import { SavedQuotesListView } from '@/components/SavedQuotesListView';
@@ -19,14 +27,18 @@ import { TemplateBuilderView } from '@/components/TemplateBuilderView';
 import { DEFAULT_SYSTEM_CONFIG } from '@/lib/constants';
 import {
   ProductCategory,
+  ProductMenu,
   QuoteRecord,
   QuoteStatus,
   QuoteTemplate,
   SystemConfig,
+  TrackingEvent,
   UploadedMediaItem,
 } from '@/lib/types';
 
 type ActiveModule =
+  | 'dashboard'
+  | 'catalog_manager'
   | 'template_builder'
   | 'guided_wizard'
   | 'pdf_editor'
@@ -41,13 +53,21 @@ interface ToastNotice {
 
 export default function CustomPricerAppPage() {
   const [activeModule, setActiveModule] =
-    useState<ActiveModule>('template_builder');
+    useState<ActiveModule>('dashboard');
 
   const [config, setConfig] = useState<SystemConfig>(DEFAULT_SYSTEM_CONFIG);
+  const [menus, setMenus] = useState<ProductMenu[]>([]);
   const [categories, setCategories] = useState<ProductCategory[]>([]);
+  // Sablonkezelőből szerkesztésre megnyitott sablon
+  const [templateToEditId, setTemplateToEditId] = useState<string | null>(
+    null
+  );
   const [templates, setTemplates] = useState<QuoteTemplate[]>([]);
   const [quotes, setQuotes] = useState<QuoteRecord[]>([]);
   const [mediaLibrary, setMediaLibrary] = useState<UploadedMediaItem[]>([]);
+  const [trackingEvents, setTrackingEvents] = useState<TrackingEvent[]>([]);
+  // A kiküldő ablakban lévő ajánlat
+  const [quoteToSend, setQuoteToSend] = useState<QuoteRecord | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Current quote being edited inside PdfBlockEditorView (either fresh from wizard or reopened saved quote)
@@ -55,6 +75,15 @@ export default function CustomPricerAppPage() {
     useState<Partial<QuoteRecord> | null>(null);
 
   const [toasts, setToasts] = useState<ToastNotice[]>([]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  // null = még ellenőrizzük, false = bejelentkező képernyő
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [liveRate, setLiveRate] = useState<{
+    exact: number;
+    source: string;
+    rateDate: string | null;
+  } | null>(null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const showToast = useCallback((title: string, message: string) => {
     const id = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
@@ -70,10 +99,12 @@ export default function CustomPricerAppPage() {
       const res = await fetch('/api/state', { cache: 'no-store' });
       const data = await res.json();
       if (data.config) setConfig(data.config);
+      if (Array.isArray(data.menus)) setMenus(data.menus);
       if (Array.isArray(data.categories)) setCategories(data.categories);
       if (Array.isArray(data.templates)) setTemplates(data.templates);
       if (Array.isArray(data.quotes)) setQuotes(data.quotes);
       if (Array.isArray(data.mediaLibrary)) setMediaLibrary(data.mediaLibrary);
+      if (Array.isArray(data.trackingEvents)) setTrackingEvents(data.trackingEvents);
     } catch (e) {
       console.error('Failed to load state:', e);
     } finally {
@@ -82,8 +113,25 @@ export default function CustomPricerAppPage() {
   }, []);
 
   useEffect(() => {
+    fetch('/api/auth')
+      .then((r) => r.json())
+      .then((d) => setAuthenticated(Boolean(d?.authenticated)))
+      .catch(() => setAuthenticated(false));
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch('/api/auth', { method: 'DELETE' });
+    setAuthenticated(false);
+  };
+
+  useEffect(() => {
+    if (!authenticated) return;
     fetchState();
-  }, [fetchState]);
+    fetch('/api/exchange-rate')
+      .then((r) => r.json())
+      .then((d) => d?.exact && setLiveRate(d))
+      .catch(() => undefined);
+  }, [fetchState, authenticated]);
 
   // Image Upload helper
   const handleUploadImage = async (file: File): Promise<string | null> => {
@@ -169,6 +217,29 @@ export default function CustomPricerAppPage() {
     }
   };
 
+  // Menürendszer + kategóriák + sablonok sorrendjének/állapotának mentése egyben
+  const handleSaveCatalogStructure = async (payload: {
+    menus: ProductMenu[];
+    categories: ProductCategory[];
+    templates: QuoteTemplate[];
+  }) => {
+    const res = await fetch('/api/config', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data?.ok) {
+      setMenus(data.menus || []);
+      setCategories(data.categories || []);
+      setTemplates(data.templates || []);
+      showToast(
+        'Menürendszer elmentve',
+        'A menük, kategóriák és sablonok sorrendje és állapota frissült.'
+      );
+    }
+  };
+
   // Save System Config
   const handleSaveSystemConfig = async (nextConfig: SystemConfig) => {
     const res = await fetch('/api/config', {
@@ -249,147 +320,278 @@ export default function CustomPricerAppPage() {
     showToast('Státusz frissítve', `Új státusz: ${status}`);
   };
 
+  const openPdfEditor = () => {
+    if (!activeDraftOrSavedQuote) {
+      setActiveDraftOrSavedQuote({
+        customerName: 'Minta Ügyfél',
+        greetingName: 'Minta Ügyfél',
+        city: 'Budapest',
+        widthCm: 600,
+        projectionCm: 400,
+        heightCm: 250,
+        mountType: 'Épülethez rögzített',
+        eurHufRate: config.defaultEurHufRate || 400,
+        deliveryFeeHuf: config.defaultDeliveryFeeHuf ?? 40000,
+        blocks: [
+          {
+            id: `blk_intro_${Date.now()}`,
+            type: 'text_box',
+            title: 'Kedves Minta Ügyfél!',
+            content:
+              'Örömmel fogadtuk megkeresését! Kérésének megfelelően küldjük személyre szabott árajánlatunkat.',
+            textStyle: 'greeting',
+          },
+        ],
+      });
+    }
+    setActiveModule('pdf_editor');
+  };
+
+  const navGroups: {
+    label: string;
+    items: {
+      id: ActiveModule;
+      label: string;
+      icon: React.ComponentType<{ className?: string }>;
+      count?: number;
+      onClick?: () => void;
+    }[];
+  }[] = [
+    {
+      label: 'Árazás',
+      items: [
+        { id: 'dashboard', label: 'Áttekintés', icon: LayoutDashboard },
+        { id: 'guided_wizard', label: 'Új ajánlat', icon: Wand2 },
+        ...(activeDraftOrSavedQuote
+          ? [
+              {
+                id: 'pdf_editor' as const,
+                label: 'Nyitott ajánlat',
+                icon: Edit3,
+                onClick: openPdfEditor,
+              },
+            ]
+          : []),
+        {
+          id: 'saved_quotes',
+          label: 'Ajánlatok',
+          icon: FolderKanban,
+          count: quotes.length,
+        },
+      ],
+    },
+    {
+      label: 'Beállítás',
+      items: [
+        { id: 'catalog_manager', label: 'Termékek', icon: Layers },
+        { id: 'settings', label: 'Beállítások', icon: Settings },
+      ],
+    },
+  ];
+
+  const activeNavItem = navGroups
+    .flatMap((g) => g.items)
+    .find((i) => i.id === activeModule);
+
+  const companyName = config.companyName || 'OpenSky Pergola Kft.';
+
+  if (authenticated === null) {
+    return (
+      <div className="min-h-[100dvh] grid place-items-center">
+        <div className="spin" />
+      </div>
+    );
+  }
+
+  if (!authenticated) {
+    return (
+      <LoginView
+        companyName={companyName}
+        onLoggedIn={() => setAuthenticated(true)}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col">
+    <div className="app">
       {/* Toast Notifications */}
-      <div className="fixed bottom-5 right-5 z-50 space-y-2 max-w-sm w-full pointer-events-none">
+      <div className="toasts">
         {toasts.map((t) => (
-          <div
-            key={t.id}
-            className="pointer-events-auto bg-slate-900 text-white p-4 rounded-2xl shadow-xl border border-slate-700 flex items-start gap-3"
-          >
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+          <div key={t.id} className="toast">
+            <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
             <div>
-              <div className="text-xs font-bold">{t.title}</div>
-              <div className="text-xs text-slate-300 mt-0.5">{t.message}</div>
+              <div className="font-semibold">{t.title}</div>
+              <div className="text-xs text-white/70 mt-0.5">{t.message}</div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Top Navigation Header */}
-      <header className="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-lg shadow">
-              Á
-            </div>
-            <div>
-              <div className="text-sm font-extrabold tracking-tight">
-                {config.companyName || 'Egyedi Pergola & Árnyékoló Árazó'}
-              </div>
-              <div className="text-[11px] text-slate-400">
-                Sablon Varázsló • Végigvezetett Árazó • Utólag is Szerkeszthető
-                PDF Építő
-              </div>
-            </div>
+      {quoteToSend && (
+        <SendEmailModal
+          quote={quoteToSend}
+          config={config}
+          onClose={() => setQuoteToSend(null)}
+          onSent={async (updated, actuallySent) => {
+            setQuoteToSend(null);
+            await fetchState(true);
+            if (activeDraftOrSavedQuote?.id === updated.id) {
+              setActiveDraftOrSavedQuote(updated);
+            }
+            showToast(
+              actuallySent ? 'Ajánlat elküldve' : 'Kiküldöttnek jelölve',
+              `${updated.quoteNumber} · ${updated.sentToEmail}`
+            );
+          }}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${
+          mobileSidebarOpen ? 'show' : ''
+        }`}
+      >
+        <div className="sb-brand">
+          <div className="sb-logo">{companyName.charAt(0)}</div>
+          <div className="tx">
+            <div className="nm">{companyName}</div>
+            <div className="sub">Árazó rendszer</div>
           </div>
-
-          <nav className="flex flex-wrap items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setActiveModule('template_builder')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                activeModule === 'template_builder'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              1. Sablon & Termék Varázsló ({templates.length})
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveModule('guided_wizard')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                activeModule === 'guided_wizard'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <Wand2 className="w-4 h-4" />
-              2. Végigvezetett Árazó (Mit kér az ügyfél?)
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (!activeDraftOrSavedQuote) {
-                  setActiveDraftOrSavedQuote({
-                    customerName: 'Minta Ügyfél',
-                    greetingName: 'Minta Ügyfél',
-                    city: 'Budapest',
-                    widthCm: 600,
-                    projectionCm: 400,
-                    heightCm: 250,
-                    mountType: 'Épülethez rögzített',
-                    eurHufRate: config.defaultEurHufRate || 400,
-                    deliveryFeeHuf: config.defaultDeliveryFeeHuf ?? 40000,
-                    blocks: [
-                      {
-                        id: `blk_intro_${Date.now()}`,
-                        type: 'text_box',
-                        title: 'Kedves Minta Ügyfél!',
-                        content:
-                          'Örömmel fogadtuk megkeresését! Kérésének megfelelően küldjük személyre szabott árajánlatunkat.',
-                        textStyle: 'greeting',
-                      },
-                    ],
-                  });
-                }
-                setActiveModule('pdf_editor');
-              }}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                activeModule === 'pdf_editor'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <Edit3 className="w-4 h-4" />
-              3. Blokkos PDF Szerkesztő
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveModule('saved_quotes')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                activeModule === 'saved_quotes'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <FolderKanban className="w-4 h-4" />
-              Elmentett PDF-ek ({quotes.length})
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveModule('settings')}
-              className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition ${
-                activeModule === 'settings'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <Settings className="w-4 h-4" />
-              Beállítások
-            </button>
-          </nav>
         </div>
-      </header>
+        <nav className="nav">
+          {navGroups.map((group) => (
+            <div key={group.label} className="nav-group">
+              <div className="nav-label">{group.label}</div>
+              <ul>
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.id}>
+                      <button
+                        type="button"
+                        title={item.label}
+                        onClick={() => {
+                          if (item.onClick) item.onClick();
+                          else setActiveModule(item.id);
+                          setMobileSidebarOpen(false);
+                        }}
+                        className={`nav-link ${
+                          activeModule === item.id ? 'active' : ''
+                        }`}
+                      >
+                        <Icon />
+                        <span>{item.label}</span>
+                        {item.count !== undefined && !sidebarCollapsed && (
+                          <span className="count">{item.count}</span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+        <div className="sb-foot">
+          <button type="button" onClick={handleLogout} title="Kijelentkezés">
+            <LogOut />
+            <span className="tx">Kijelentkezés</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSidebarCollapsed((v) => !v)}
+            title="Oldalsáv összecsukása"
+          >
+            {sidebarCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+            <span className="tx">Oldalsáv</span>
+          </button>
+        </div>
+      </aside>
 
-      {/* Main Content Area */}
-      <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1">
+      <div className="main">
+        <header className="topbar">
+          <button
+            type="button"
+            className="tb-burger"
+            onClick={() => setMobileSidebarOpen((v) => !v)}
+            aria-label="Menü"
+          >
+            <Menu />
+          </button>
+          <div className="crumb">
+            {companyName} / <b>{activeNavItem?.label || ''}</b>
+          </div>
+          <div className="tb-right">
+            {liveRate && (
+              <span
+                className="text-[13px] text-slate-500 tabular-nums mr-1"
+                title={[liveRate.source, liveRate.rateDate].filter(Boolean).join(' · ')}
+              >
+                EUR{' '}
+                <span className="text-slate-950 font-medium">
+                  {liveRate.exact.toFixed(2).replace('.', ',')} Ft
+                </span>
+              </span>
+            )}
+            {!config.pricingFormula?.confirmedByOwner && (
+              <button
+                type="button"
+                onClick={() => setActiveModule('settings')}
+                className="mc-badge warn"
+                title="A haszon és szerelés képlete még nem végleges – kattints a beállításhoz"
+              >
+                Árképlet ideiglenes
+              </button>
+            )}
+            <div className="avatar">OS</div>
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="content">
+          <div className="max-w-7xl mx-auto">
         {loading ? (
-          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-sm text-slate-500">
-            Rendszer betöltése...
+          <div className="py-16 grid place-items-center">
+            <div className="spin" />
           </div>
         ) : (
           <>
+            {activeModule === 'dashboard' && (
+              <DashboardView
+                quotes={quotes}
+                trackingEvents={trackingEvents}
+                onOpenQuote={(q) => {
+                  setActiveDraftOrSavedQuote(q);
+                  setActiveModule('pdf_editor');
+                }}
+                onSendQuote={(q) => setQuoteToSend(q)}
+                onNewQuote={() => setActiveModule('guided_wizard')}
+              />
+            )}
+
+            {activeModule === 'catalog_manager' && (
+              <CatalogManagerView
+                menus={menus}
+                categories={categories}
+                templates={templates}
+                onSave={handleSaveCatalogStructure}
+                onEditTemplate={(tplId) => {
+                  setTemplateToEditId(tplId);
+                  setActiveModule('template_builder');
+                }}
+                onUploadImage={handleUploadImage}
+                onNewTemplate={(categoryId) => {
+                  setTemplateToEditId(`new:${categoryId}`);
+                  setActiveModule('template_builder');
+                }}
+              />
+            )}
+
             {activeModule === 'template_builder' && (
               <TemplateBuilderView
                 config={config}
+                menus={menus}
                 categories={categories}
                 templates={templates}
                 mediaLibrary={mediaLibrary}
@@ -399,16 +601,20 @@ export default function CustomPricerAppPage() {
                 onDeleteTemplate={handleDeleteTemplate}
                 onUploadImage={handleUploadImage}
                 onStartGuidedPricing={() => setActiveModule('guided_wizard')}
+                openTemplateId={templateToEditId}
+                onOpenTemplateHandled={() => setTemplateToEditId(null)}
+                onWizardClosed={() => setActiveModule('catalog_manager')}
               />
             )}
 
             {activeModule === 'guided_wizard' && (
               <GuidedQuoteWizardView
                 config={config}
+                menus={menus}
                 categories={categories}
                 templates={templates}
                 onOpenTemplateBuilder={() =>
-                  setActiveModule('template_builder')
+                  setActiveModule('catalog_manager')
                 }
                 onFinishWizardToEditor={(draftQuote) => {
                   setActiveDraftOrSavedQuote(draftQuote);
@@ -428,6 +634,7 @@ export default function CustomPricerAppPage() {
                 onUploadImage={handleUploadImage}
                 onSaveQuoteAndGeneratePdf={handleSaveQuoteAndGeneratePdf}
                 onBackToWizard={() => setActiveModule('guided_wizard')}
+                onSendQuote={(saved) => setQuoteToSend(saved)}
               />
             )}
 
@@ -442,6 +649,7 @@ export default function CustomPricerAppPage() {
                 onDeleteQuote={handleDeleteQuote}
                 onUpdateStatus={handleUpdateQuoteStatus}
                 onStartNewQuote={() => setActiveModule('guided_wizard')}
+                onSendQuote={(q) => setQuoteToSend(q)}
               />
             )}
 
@@ -454,7 +662,9 @@ export default function CustomPricerAppPage() {
             )}
           </>
         )}
-      </main>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

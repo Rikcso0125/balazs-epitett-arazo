@@ -1,21 +1,37 @@
 import {
   DimensionSource,
+  EmailSettings,
+  EmailTemplate,
+  ExtraPreset,
   MountType,
+  QuoteNumberFormat,
+  PricingFormulaConfig,
+  ProductMenu,
   ProductPricingMode,
+  ProfitMode,
   QuoteStatus,
   SystemConfig,
+  TemplateMaterialItem,
+  TemplateStatus,
 } from './types';
 
-export const MOUNT_TYPES: { id: MountType; label: string; description: string }[] = [
+export const MOUNT_TYPES: {
+  id: MountType;
+  label: string;
+  description: string;
+  imageUrl?: string;
+}[] = [
   {
     id: 'Épülethez rögzített',
     label: 'Épülethez rögzített',
     description: 'Homlokzathoz / falhoz csatlakozó kivitel',
+    imageUrl: '/uploads/legacy/beepites/epulethez_rogzitett.png',
   },
   {
     id: 'Szabadon álló',
     label: 'Szabadon álló',
     description: 'Önálló lábakon álló szerkezet',
+    imageUrl: '/uploads/legacy/beepites/szabadon_allo.png',
   },
   {
     id: 'Meglévő szerkezetre',
@@ -107,23 +123,23 @@ export const STATUS_CONFIG: Record<
   { label: string; badgeClass: string }
 > = {
   piszkozat: {
-    label: 'Piszkozat / Szerkeszthető',
+    label: 'Piszkozat',
     badgeClass: 'bg-slate-100 text-slate-700 border-slate-300',
   },
   kikuldve: {
-    label: 'Kiküldve ügyfélnek',
+    label: 'Kiküldve',
     badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
   },
   megnyitva: {
-    label: 'Ügyfél megnyitotta',
+    label: 'Megnyitva',
     badgeClass: 'bg-amber-50 text-amber-700 border-amber-200',
   },
   elfogadva: {
-    label: 'Elfogadva / Megrendelve',
-    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    label: 'Elfogadva',
+    badgeClass: 'bg-green-50 text-green-700 border-green-200',
   },
   elutasitva: {
-    label: 'Elutasítva / Lejárt',
+    label: 'Elutasítva',
     badgeClass: 'bg-rose-50 text-rose-700 border-rose-200',
   },
 };
@@ -173,28 +189,196 @@ export const QUICK_CATEGORY_SUGGESTIONS = [
   },
 ];
 
+// Beszúrható változók: name = rövid név a gombon, label = magyarázat (súgó)
 export const TEMPLATE_VARIABLES_HELP = [
-  { token: '{{ugyfel_nev}}', label: 'Ügyfél teljes neve (pl. Kovács János)' },
-  { token: '{{megszolitas}}', label: 'Megszólítás (pl. Kovács János / János)' },
-  { token: '{{telepules}}', label: 'Település (pl. Budapest)' },
-  { token: '{{meret}}', label: 'Méret cm-ben (pl. 600x400x250 cm)' },
-  { token: '{{meret_m}}', label: 'Méret méterben (pl. 6 x 4 m)' },
-  { token: '{{szelesseg}}', label: 'Szélesség cm-ben (pl. 600)' },
-  { token: '{{kinyulas}}', label: 'Kinyúlás cm-ben (pl. 400)' },
-  { token: '{{magassag}}', label: 'Magasság cm-ben (pl. 250)' },
-  { token: '{{m2}}', label: 'Alapterület m²-ben (pl. 24.0 m²)' },
-  { token: '{{beepites}}', label: 'Beépítés módja (pl. Épülethez rögzített)' },
-  { token: '{{arfolyam}}', label: 'EUR/HUF árfolyam (pl. 400)' },
-  { token: '{{szallitas}}', label: 'Szállítási díj Ft-ban (pl. 40.000 Ft)' },
-  { token: '{{datum}}', label: 'Mai dátum (pl. 2026. 10. 18.)' },
+  { token: '{{ugyfel_nev}}', name: 'Ügyfél neve', label: 'Ügyfél teljes neve (pl. Kovács János)' },
+  { token: '{{megszolitas}}', name: 'Megszólítás', label: 'Megszólítás (pl. Kovács János / János)' },
+  { token: '{{telepules}}', name: 'Település', label: 'Település (pl. Budapest)' },
+  { token: '{{meret}}', name: 'Méret (cm)', label: 'Méret cm-ben (pl. 600x400x250 cm)' },
+  { token: '{{meret_m}}', name: 'Méret (m)', label: 'Méret méterben (pl. 6 x 4 m)' },
+  { token: '{{szelesseg}}', name: 'Szélesség', label: 'Szélesség cm-ben (pl. 600)' },
+  { token: '{{kinyulas}}', name: 'Kinyúlás', label: 'Kinyúlás cm-ben (pl. 400)' },
+  { token: '{{magassag}}', name: 'Magasság', label: 'Magasság cm-ben (pl. 250)' },
+  { token: '{{m2}}', name: 'Alapterület', label: 'Alapterület m²-ben (pl. 24.0 m²)' },
+  { token: '{{beepites}}', name: 'Beépítés', label: 'Beépítés módja (pl. Épülethez rögzített)' },
+  { token: '{{arfolyam}}', name: 'Árfolyam', label: 'EUR/HUF árfolyam (pl. 400)' },
+  { token: '{{szallitas}}', name: 'Szállítási díj', label: 'Szállítási díj Ft-ban (pl. 40.000 Ft)' },
+  { token: '{{datum}}', name: 'Mai dátum', label: 'Mai dátum (pl. 2026. 10. 18.)' },
+  { token: '{{hatarido}}', name: 'Határidő', label: 'Megrendelési határidő: a hónap utolsó napja, 10 napon belül a következő hónapé (pl. Október 31)' },
 ];
 
+// E-mailben ezek is használhatók
+export const EMAIL_VARIABLES_HELP = [
+  ...TEMPLATE_VARIABLES_HELP,
+  { token: '{{sorszam}}', name: 'Sorszám', label: 'Ajánlat sorszáma (pl. OSP-2026-001)' },
+  { token: '{{osszeg_eur}}', name: 'Összeg (EUR)', label: 'Ajánlat összege EUR-ban' },
+  { token: '{{osszeg_huf}}', name: 'Összeg (Ft)', label: 'Ajánlat összege forintban' },
+  { token: '{{ceg}}', name: 'Cégnév', label: 'Cégnév (Beállítások)' },
+  { token: '{{telefon}}', name: 'Telefon', label: 'Cég telefonszáma' },
+  { token: '{{weboldal}}', name: 'Weboldal', label: 'Cég weboldala' },
+  { token: '{{email}}', name: 'Cég e-mail', label: 'Cég e-mail címe' },
+];
+
+// A 2026.10.18-i megbeszélésen elhangzott termékkör (a sorrend a sablonkezelőben átírható)
+export const DEFAULT_MENUS: ProductMenu[] = [
+  { id: 'menu_pergola', name: 'Pergola', description: 'Bioklimatikus és egyéb pergolák', enabled: true, order: 1 },
+  { id: 'menu_napellenzo', name: 'Karos napellenző', description: 'Kazettás, kazetta nélküli és kézi tekerős modellek', enabled: true, order: 2 },
+  { id: 'menu_ledezes', name: 'Utólagos ledezés', description: 'Sima és körbefutó LED világítás meglévő szerkezetre', enabled: true, order: 3 },
+  { id: 'menu_arnyekolo', name: 'Fényárnyékoló', description: 'ZIP, oldalsó és egyéb árnyékolók', enabled: true, order: 4 },
+  { id: 'menu_kocsibeallo', name: 'Kocsibeálló', description: 'Kocsibeálló szerkezetek', enabled: true, order: 5 },
+];
+
+// A megbeszélésen elhangzott extrák (a Beállításokban szerkeszthetők, bővíthetők; 1 = még nincs ár)
+export const DEFAULT_EXTRA_PRESETS: ExtraPreset[] = [
+  { id: 'ex_led', name: 'LED világítás (sima)', pricingMode: 'fixed', unitLabel: 'szett', price: 1 },
+  { id: 'ex_led_kor', name: 'LED világítás (körbefutó)', pricingMode: 'per_lm', dimensionSource: 'perimeter_lm', unitLabel: 'fm', price: 1 },
+  { id: 'ex_futes', name: 'Fűtőszál', pricingMode: 'fixed', unitLabel: 'db', price: 1 },
+  { id: 'ex_vaz', name: 'Erősített váz', pricingMode: 'fixed', unitLabel: 'db', price: 1 },
+  { id: 'ex_lamella', name: 'Lamellák', pricingMode: 'per_m2', dimensionSource: 'roof', unitLabel: 'm²', price: 1 },
+  { id: 'ex_uveg', name: 'Üvegfal', pricingMode: 'fixed', unitLabel: 'oldal', price: 1, perSide: true },
+  { id: 'ex_ip', name: 'IP védettség', pricingMode: 'fixed', unitLabel: 'db', price: 1 },
+  { id: 'ex_motor', name: 'Motor', pricingMode: 'fixed', unitLabel: 'db', price: 1 },
+];
+
+/** Gyors extra → sablon tétel mezői (opcionális, alapból nincs bepipálva) */
+export function extraPresetToMaterial(preset: ExtraPreset): Partial<TemplateMaterialItem> {
+  const price = Math.max(1, Number(preset.price) || 1);
+  return {
+    name: preset.name,
+    pricingMode: preset.pricingMode,
+    dimensionSource: preset.dimensionSource || (preset.pricingMode === 'per_lm' ? 'width_lm' : 'roof'),
+    unitLabel: preset.unitLabel,
+    perSide: Boolean(preset.perSide),
+    basePrice: price,
+    unitPrice: price,
+  };
+}
+
+export const TEMPLATE_STATUS_OPTIONS: {
+  id: TemplateStatus;
+  label: string;
+  badgeClass: string;
+}[] = [
+  { id: 'active', label: 'Aktív', badgeClass: 'bg-green-50 text-green-700 border-green-200' },
+  { id: 'seasonal', label: 'Időszakos', badgeClass: 'bg-amber-50 text-amber-700 border-amber-200' },
+  { id: 'test', label: 'Teszt', badgeClass: 'bg-violet-50 text-violet-700 border-violet-200' },
+  { id: 'inactive', label: 'Inaktív', badgeClass: 'bg-slate-100 text-slate-500 border-slate-300' },
+];
+
+export const PROFIT_MODE_OPTIONS: { id: ProfitMode; label: string; description: string }[] = [
+  {
+    id: 'markup_percent',
+    label: 'Százalékos felár a katalógusárra',
+    description: 'Eladási ár = katalógusár × (1 + X%)',
+  },
+  {
+    id: 'margin_percent',
+    label: 'A végösszeg X%-a a haszon',
+    description: 'Eladási ár = katalógusár ÷ (1 − X%)',
+  },
+  {
+    id: 'fixed',
+    label: 'Fix összeg (EUR)',
+    description: 'Sablononként X EUR, az alaptételekre arányosan elosztva',
+  },
+];
+
+// A végleges képletet Balázs írásban adja meg – addig 0 haszonnal és 0 szereléssel számol
+export const DEFAULT_PRICING_FORMULA: PricingFormulaConfig = {
+  profitMode: 'markup_percent',
+  profitValue: 0,
+  assemblyFixedEur: 0,
+  assemblyPerM2Eur: 0,
+  assemblyLabel: 'Helyszíni összeszerelés',
+  confirmedByOwner: false,
+};
+
+// Minta e-mail sablonok (a Beállításokban szerkeszthetők, bővíthetők)
+export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
+  {
+    id: 'tpl_ajanlat',
+    name: 'Árajánlat küldése',
+    subject: 'Árajánlat – {{sorszam}} – {{ceg}}',
+    body:
+      'Kedves {{megszolitas}}!\n\nKöszönjük megkeresését! Mellékelten küldjük a(z) {{meret_m}} ({{meret}}) méretű szerkezetre vonatkozó, személyre szabott árajánlatunkat.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani.\n\nAmennyiben ajánlatunk elnyerte tetszését, kérjük, jelezzen vissza, és egyeztetjük a helyszíni felmérés időpontját. Bármilyen kérdés esetén keressen minket bizalommal!\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: ['piszkozat'],
+  },
+  {
+    id: 'tpl_emlekezteto',
+    name: 'Emlékeztető',
+    subject: 'Emlékeztető: árajánlatunk ({{sorszam}})',
+    body:
+      'Kedves {{megszolitas}}!\n\nNéhány napja elküldtük Önnek a(z) {{meret_m}} méretű szerkezetre vonatkozó árajánlatunkat ({{sorszam}}). Érdeklődnék, sikerült-e átnéznie?\n\nHa bármilyen kérdése van, vagy módosítana a méreten, kivitelen vagy az extrákon, szívesen átdolgozzuk az ajánlatot. A biztonság kedvéért újra mellékeljük a PDF-et.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: ['kikuldve', 'megnyitva'],
+  },
+  {
+    id: 'tpl_hatarido',
+    name: 'Határidős kedvezmény',
+    subject: 'Kedvezmény {{hatarido}}-ig – árajánlat {{sorszam}}',
+    body:
+      'Kedves {{megszolitas}}!\n\nSzeretnénk jelezni, hogy a mellékelt árajánlatban ({{sorszam}}) szereplő alapszerkezetre {{hatarido}}-ig leadott megrendelés esetén kedvezményt tudunk biztosítani.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa). Ha szeretné, egyeztessünk egy helyszíni felmérést, ahol minden részletet pontosítunk.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: [],
+  },
+  {
+    id: 'tpl_felmeres',
+    name: 'Helyszíni felmérés egyeztetése',
+    subject: 'Helyszíni felmérés egyeztetése – {{sorszam}}',
+    body:
+      'Kedves {{megszolitas}}!\n\nKöszönjük visszajelzését! A pontos méretek és a beépítési körülmények egyeztetéséhez helyszíni felmérésre van szükség ({{telepules}}).\n\nKérjük, írjon néhány Önnek megfelelő időpontot a következő két hétből, és visszaigazoljuk. A felmérés után véglegesítjük az ajánlatot.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: [],
+  },
+  {
+    id: 'tpl_modositott',
+    name: 'Módosított ajánlat',
+    subject: 'Módosított árajánlat – {{sorszam}}',
+    body:
+      'Kedves {{megszolitas}}!\n\nAz egyeztetésünk alapján átdolgoztuk az árajánlatot, a módosított változatot mellékelten küldjük ({{meret_m}}, {{beepites}}).\n\nAz új összeg: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa minden rendben, kérjük, jelezzen vissza, és egyeztetjük a következő lépéseket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: [],
+  },
+  {
+    id: 'tpl_koszonjuk',
+    name: 'Köszönjük a megrendelést',
+    subject: 'Köszönjük megrendelését! – {{sorszam}}',
+    body:
+      'Kedves {{megszolitas}}!\n\nKöszönjük megrendelését és bizalmát! A következő lépések:\n\n1. Elküldjük a szerződést és az előlegszámlát (a végösszeg 60%-a).\n2. Az előleg beérkezése után indul a gyártás, az átfutási idő 30–60 nap.\n3. A szerelés időpontját a gyártás végén egyeztetjük Önnel.\n\nA rendelés alapja a mellékelt ajánlat ({{sorszam}}). Kérdés esetén bármikor elérhet minket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+    suggestFor: ['elfogadva'],
+  },
+];
+
+export const DEFAULT_EMAIL_SETTINGS: EmailSettings = {
+  senderName: 'OpenSky Pergola Kft.',
+  senderEmail: 'info@openskypergola.hu',
+  smtpHost: '',
+  smtpPort: 587,
+  smtpUser: '',
+  smtpPass: '',
+  templates: DEFAULT_EMAIL_TEMPLATES.map((t) => ({ ...t })),
+  defaultTemplateId: 'tpl_ajanlat',
+  enableTrackingPixel: true,
+  publicBaseUrl: '',
+};
+
+/**
+ * Az ajánlat státuszához illő sablon (pl. elfogadott ajánlatnál a köszönő levél), különben az alapértelmezett.
+ */
+export function suggestEmailTemplate(
+  settings: EmailSettings,
+  status: QuoteStatus | undefined
+): EmailTemplate | undefined {
+  const list = settings.templates || [];
+  return (
+    (status && list.find((t) => t.suggestFor?.includes(status))) ||
+    list.find((t) => t.id === settings.defaultTemplateId) ||
+    list[0]
+  );
+}
+
 export const DEFAULT_SYSTEM_CONFIG: SystemConfig = {
-  companyName: 'Egyedi Pergola & Árnyékolástechnika',
-  companySubtitle: 'Pergolák • Előtetők • Napellenzők • Üvegtetők • Árnyékolók',
-  companyEmail: '',
-  companyPhone: '',
-  companyWebsite: '',
+  companyName: 'OpenSky Pergola Kft.',
+  companySubtitle: 'Pergolák • Napellenzők • Árnyékolók • LED • Kocsibeállók',
+  companyEmail: 'info@openskypergola.hu',
+  companyPhone: '+36 70 676 0145',
+  companyWebsite: 'openskypergola.hu',
   defaultEurHufRate: 400,
   defaultDeliveryFeeHuf: 40000,
   defaultListPriceMultiplier: 1.25,
@@ -202,12 +386,71 @@ export const DEFAULT_SYSTEM_CONFIG: SystemConfig = {
   defaultGreetingTemplate: 'Kedves {{megszolitas}}!',
   defaultIntroTemplate:
     'Örömmel fogadtuk megkeresését! Kérésének megfelelően küldjük személyre szabott árajánlatunkat az Ön által megadott ({{meret_m}} / {{meret}}, {{beepites}}) paraméterek alapján.',
+  // A korábbi (Python) rendszer ajánlataiból átvett feltételek
   defaultClosingInfoTemplate:
-    'Információk és feltételek:\n• Az árajánlat érvényessége: 30 nap\n• Helyszín / Szállítás ({{telepules}}): {{szallitas}} (+Áfa)\n• Árfolyam: {{arfolyam}} Ft/EUR\n• Amennyiben ajánlatunk elnyerte tetszését, kérjük jelezzen vissza helyszíni felmérés és pontosítás céljából.',
+    'Ha {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani!\n\n' +
+    '• Az ajánlat érvényes 30 napig\n' +
+    '• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: {{arfolyam}} Ft/EUR)\n' +
+    '• Szállítási költség ide: {{telepules}}: + {{szallitas}} (+Áfa)\n' +
+    '• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n' +
+    '• Átfutási idő a visszaigazolástól számítva: 30–60 nap\n' +
+    '• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n' +
+    '• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\n' +
+    'Amennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\n' +
+    'Megjegyzés: az extra anyagmozgatás, villamos tervezés és elektromos kiállások, kiegészítő lakatos szerkezetek, beton alap, burkolási munkák és fogadó szerkezetek költségei a vevőt terhelik. Vállalási díjaink normál szerelési körülmények esetén, szabad és folyamatos munkaterület biztosítása mellett érvényesek.',
   pdfPageBackgroundUrl: '',
-  pdfLogoUrl: '',
-  pdfSignatureCardUrl: '',
+  pdfLogoUrl: '/uploads/legacy/opensky_logo.png',
+  pdfSignatureCardUrl: '/uploads/legacy/_cache/_balazs_card.jpg',
+  pricingFormula: { ...DEFAULT_PRICING_FORMULA },
+  emailSettings: { ...DEFAULT_EMAIL_SETTINGS },
+  quoteNumberPrefix: 'OSP',
+  quoteNumberFormat: 'year_seq',
+  quoteNumberDigits: 3,
+  extraPresets: DEFAULT_EXTRA_PRESETS.map((p) => ({ ...p })),
 };
+
+export const QUOTE_NUMBER_FORMAT_OPTIONS: { id: QuoteNumberFormat; label: string }[] = [
+  { id: 'year_seq', label: 'Év + sorszám (évente újraindul)' },
+  { id: 'yearmonth_seq', label: 'Év-hónap + sorszám (havonta újraindul)' },
+  { id: 'seq', label: 'Folyamatos sorszám' },
+];
+
+/** Az időszak része a sorszámnak (év, év+hónap vagy semmi) */
+function quoteNumberPeriod(format: QuoteNumberFormat, date: Date): string {
+  if (format === 'year_seq') return String(date.getFullYear());
+  if (format === 'yearmonth_seq')
+    return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}`;
+  return '';
+}
+
+export function formatQuoteNumber(
+  config: Pick<SystemConfig, 'quoteNumberPrefix' | 'quoteNumberFormat' | 'quoteNumberDigits'>,
+  seq: number,
+  date: Date = new Date()
+): string {
+  const prefix = (config.quoteNumberPrefix || '').trim();
+  const period = quoteNumberPeriod(config.quoteNumberFormat || 'year_seq', date);
+  const digits = Math.min(8, Math.max(1, Number(config.quoteNumberDigits) || 3));
+  return [prefix, period, String(seq).padStart(digits, '0')].filter(Boolean).join('-');
+}
+
+/**
+ * Következő szabad sorszám: az azonos előtagú és időszakú sorszámok közül a legnagyobb + 1.
+ */
+export function nextQuoteNumber(
+  config: Pick<SystemConfig, 'quoteNumberPrefix' | 'quoteNumberFormat' | 'quoteNumberDigits'>,
+  existingNumbers: string[],
+  date: Date = new Date()
+): string {
+  const base = formatQuoteNumber(config, 0, date).replace(/-?0+$/, '');
+  const escaped = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`^${escaped}${base ? '-' : ''}(\\d+)$`);
+  const maxSeq = existingNumbers.reduce((max, n) => {
+    const m = String(n || '').match(re);
+    return m ? Math.max(max, Number(m[1])) : max;
+  }, 0);
+  return formatQuoteNumber(config, maxSeq + 1, date);
+}
 
 export interface VariableReplacementContext {
   customerName?: string;
@@ -224,6 +467,23 @@ export interface VariableReplacementContext {
 export function formatDotNumber(val: number | undefined | null): string {
   const n = Math.round(Number(val || 0));
   return n.toLocaleString('de-DE');
+}
+
+const HU_MONTHS = [
+  'Január', 'Február', 'Március', 'Április', 'Május', 'Június',
+  'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December',
+];
+
+/**
+ * Megrendelési határidő a kedvezményhez (a korábbi rendszerrel azonosan): az aktuális hónap
+ * utolsó napja, de ha abból már kevesebb mint 10 nap van hátra, a következő hónap utolsó napja.
+ */
+export function getOrderDeadline(today: Date = new Date()): string {
+  const lastOfMonth = (y: number, m: number) => new Date(y, m + 1, 0);
+  const current = lastOfMonth(today.getFullYear(), today.getMonth());
+  const daysLeft = Math.floor((current.getTime() - new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()) / 86400000);
+  const target = daysLeft < 10 ? lastOfMonth(today.getFullYear(), today.getMonth() + 1) : current;
+  return `${HU_MONTHS[target.getMonth()]} ${target.getDate()}`;
 }
 
 export function replaceTemplateVariables(
@@ -259,5 +519,6 @@ export function replaceTemplateVariables(
     .replace(/\{\{\s*beepites\s*\}\}/gi, mount)
     .replace(/\{\{\s*arfolyam\s*\}\}/gi, String(rate))
     .replace(/\{\{\s*szallitas\s*\}\}/gi, delivery)
-    .replace(/\{\{\s*datum\s*\}\}/gi, today);
+    .replace(/\{\{\s*datum\s*\}\}/gi, today)
+    .replace(/\{\{\s*hatarido\s*\}\}/gi, getOrderDeadline());
 }

@@ -1,9 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Save, Trash2, Upload } from 'lucide-react';
-import { TEMPLATE_VARIABLES_HELP } from '@/lib/constants';
-import { SystemConfig } from '@/lib/types';
+import React, { useRef, useState } from 'react';
+import { Copy, Plus, Save, Trash2, Upload } from 'lucide-react';
+import { btn, insertAtCursor, labelCls, PageHeader, VariableChips } from '@/components/ui';
+import {
+  DEFAULT_EMAIL_TEMPLATES,
+  EMAIL_VARIABLES_HELP,
+  formatQuoteNumber,
+  STATUS_CONFIG,
+  PROFIT_MODE_OPTIONS,
+  QUOTE_NUMBER_FORMAT_OPTIONS,
+  TEMPLATE_VARIABLES_HELP,
+} from '@/lib/constants';
+import {
+  EmailSettings,
+  EmailTemplate,
+  ExtraPreset,
+  PricingFormulaConfig,
+  ProfitMode,
+  QuoteNumberFormat,
+  QuoteStatus,
+  SystemConfig,
+} from '@/lib/types';
+
+
 
 interface BrandingSettingsViewProps {
   config: SystemConfig;
@@ -20,6 +40,122 @@ export function BrandingSettingsView({
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  const updatePreset = (idx: number, patch: Partial<ExtraPreset>) =>
+    setForm((prev) => ({
+      ...prev,
+      extraPresets: prev.extraPresets.map((p, i) => (i === idx ? { ...p, ...patch } : p)),
+    }));
+
+  // Változó beszúrása a legutóbb kijelölt szövegmezőbe, a kurzor helyére
+  type FieldKey = 'greeting' | 'intro' | 'closing' | 'subject' | 'body';
+  const focusRef = useRef<{ key: FieldKey; el: HTMLInputElement | HTMLTextAreaElement } | null>(null);
+  const track = (key: FieldKey) => ({
+    onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      focusRef.current = { key, el: e.currentTarget };
+    },
+  });
+  const fieldValue = (key: FieldKey): string =>
+    key === 'greeting'
+      ? form.defaultGreetingTemplate
+      : key === 'intro'
+      ? form.defaultIntroTemplate
+      : key === 'closing'
+      ? form.defaultClosingInfoTemplate
+      : key === 'subject'
+      ? activeTemplate?.subject || ''
+      : activeTemplate?.body || '';
+  const setFieldValue = (key: FieldKey, value: string) => {
+    if (key === 'greeting') setForm((f) => ({ ...f, defaultGreetingTemplate: value }));
+    else if (key === 'intro') setForm((f) => ({ ...f, defaultIntroTemplate: value }));
+    else if (key === 'closing') setForm((f) => ({ ...f, defaultClosingInfoTemplate: value }));
+    else if (key === 'subject') updateTemplate({ subject: value });
+    else updateTemplate({ body: value });
+  };
+  const insertVar = (token: string, allowed: FieldKey[], fallback: FieldKey) => {
+    const target = focusRef.current && allowed.includes(focusRef.current.key) ? focusRef.current : null;
+    const key = target?.key || fallback;
+    const el = target?.el || null;
+    const { value, caret } = insertAtCursor(el, fieldValue(key), token);
+    setFieldValue(key, value);
+    if (el) {
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(caret, caret);
+      });
+    }
+  };
+
+  // E-mail sablonok szerkesztése
+  const [activeTemplateId, setActiveTemplateId] = useState<string>(
+    config.emailSettings.defaultTemplateId
+  );
+  const activeTemplate =
+    form.emailSettings.templates.find((t) => t.id === activeTemplateId) ||
+    form.emailSettings.templates[0];
+  const setTemplates = (templates: EmailTemplate[]) => setEmail({ templates });
+  const updateTemplate = (patch: Partial<EmailTemplate>) =>
+    activeTemplate &&
+    setTemplates(
+      form.emailSettings.templates.map((t) =>
+        t.id === activeTemplate.id ? { ...t, ...patch } : t
+      )
+    );
+  const addTemplate = () => {
+    const id = `tpl_${Date.now()}`;
+    setTemplates([
+      ...form.emailSettings.templates,
+      {
+        id,
+        name: 'Új sablon',
+        subject: 'Árajánlat – {{sorszam}}',
+        body: 'Kedves {{megszolitas}}!\n\n\n\nÜdvözlettel:\n{{ceg}}',
+        suggestFor: [],
+      },
+    ]);
+    setActiveTemplateId(id);
+  };
+  const duplicateTemplate = () => {
+    if (!activeTemplate) return;
+    const id = `tpl_${Date.now()}`;
+    setTemplates([
+      ...form.emailSettings.templates,
+      { ...activeTemplate, id, name: `${activeTemplate.name} (másolat)`, suggestFor: [] },
+    ]);
+    setActiveTemplateId(id);
+  };
+  const deleteTemplate = () => {
+    if (!activeTemplate || form.emailSettings.templates.length <= 1) return;
+    if (!window.confirm(`Törlöd a(z) „${activeTemplate.name}” sablont?`)) return;
+    const rest = form.emailSettings.templates.filter((t) => t.id !== activeTemplate.id);
+    setEmail({
+      templates: rest,
+      defaultTemplateId:
+        form.emailSettings.defaultTemplateId === activeTemplate.id
+          ? rest[0].id
+          : form.emailSettings.defaultTemplateId,
+    });
+    setActiveTemplateId(rest[0].id);
+  };
+  const restoreSampleTemplates = () => {
+    // A minta sablonok visszakerülnek, a saját sablonok megmaradnak
+    const own = form.emailSettings.templates.filter(
+      (t) => !DEFAULT_EMAIL_TEMPLATES.some((d) => d.id === t.id)
+    );
+    setTemplates([...DEFAULT_EMAIL_TEMPLATES.map((t) => ({ ...t })), ...own]);
+  };
+
+  const setEmail = (patch: Partial<EmailSettings>) =>
+    setForm((prev) => ({
+      ...prev,
+      emailSettings: { ...prev.emailSettings, ...patch },
+    }));
+
+  const setFormula = (patch: Partial<PricingFormulaConfig>) =>
+    setForm((prev) => ({
+      ...prev,
+      pricingFormula: { ...prev.pricingFormula, ...patch },
+    }));
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -32,32 +168,445 @@ export function BrandingSettingsView({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">
-              Cégadatok, PDF Fejléc/Lábléc és Alapértelmezett Szövegek
-            </h1>
-            <p className="text-xs text-slate-600 mt-0.5">
-              Itt töltheted fel a saját PDF fejléc/lábléc háttérképedet,
-              logódat, névjegyedet, és itt állíthatod be az automatikus
-              üdvözlő szövegeket.
-            </p>
-          </div>
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-sm"
-          >
+      <PageHeader
+        title="Beállítások"
+        actions={
+          <button type="submit" disabled={saving} className={btn.primary}>
             <Save className="w-4 h-4" />
-            {saving ? 'Mentés...' : 'Beállítások Mentése'}
+            {saving ? 'Mentés…' : 'Mentés'}
+          </button>
+        }
+      />
+
+      {/* Pricing formula: profit (X) + assembly (X, Y) */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <div className="">
+          <h2 className="text-base font-semibold text-slate-950">Árképlet</h2>
+          <p className="text-[13px] text-slate-600 mt-0.5">
+            Eladási ár = katalógusár + haszon (X) + szerelés (X + Y × m²).
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          {PROFIT_MODE_OPTIONS.map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => setFormula({ profitMode: opt.id as ProfitMode })}
+              className={`p-3 rounded-xl border text-left transition ${
+                form.pricingFormula.profitMode === opt.id
+                  ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500/20'
+                  : 'border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              <div className="text-xs font-bold text-slate-900">{opt.label}</div>
+              <div className="text-xs text-slate-500 mt-0.5">
+                {opt.description}
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div>
+            <label className={labelCls}>
+              Haszon X (
+              {form.pricingFormula.profitMode === 'fixed' ? 'EUR' : '%'})
+            </label>
+            <input
+              type="number"
+              min={0}
+              value={form.pricingFormula.profitValue}
+              onChange={(e) =>
+                setFormula({ profitValue: Math.max(0, Number(e.target.value) || 0) })
+              }
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>
+              Szerelés X (EUR, fix)
+            </label>
+            <input
+              type="number"
+              min={0}
+              value={form.pricingFormula.assemblyFixedEur}
+              onChange={(e) =>
+                setFormula({
+                  assemblyFixedEur: Math.max(0, Number(e.target.value) || 0),
+                })
+              }
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>
+              Szerelés Y (EUR / m²)
+            </label>
+            <input
+              type="number"
+              min={0}
+              value={form.pricingFormula.assemblyPerM2Eur}
+              onChange={(e) =>
+                setFormula({
+                  assemblyPerM2Eur: Math.max(0, Number(e.target.value) || 0),
+                })
+              }
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>
+              Szerelés sor neve a PDF-ben
+            </label>
+            <input
+              type="text"
+              value={form.pricingFormula.assemblyLabel}
+              onChange={(e) => setFormula({ assemblyLabel: e.target.value })}
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm"
+            />
+          </div>
+        </div>
+
+        <label className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={form.pricingFormula.confirmedByOwner}
+            onChange={(e) => setFormula({ confirmedByOwner: e.target.checked })}
+            className="rounded text-emerald-600"
+          />
+          A képlet végleges
+        </label>
+      </div>
+      {/* Gyors extrák: a sablonépítőben egy kattintással felvehető tételek */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 className="text-base font-semibold text-slate-950">Gyors extrák</h2>
+          <p className="text-[13px] text-slate-600 mt-0.5">
+            A sablonépítőben egy kattintással felvehető opcionális tételek. A sablonba
+            felvett tétel ára utána ott külön is átírható.
+          </p>
+        </div>
+        <div className="space-y-2">
+          {form.extraPresets.map((p, idx) => (
+            <div key={p.id} className="flex flex-wrap items-center gap-2">
+              <input
+                value={p.name}
+                onChange={(e) => updatePreset(idx, { name: e.target.value })}
+                placeholder="Megnevezés"
+                className="flex-1 min-w-[180px] px-3 py-1.5 rounded-lg border border-slate-300 text-sm"
+              />
+              <select
+                value={p.pricingMode}
+                onChange={(e) =>
+                  updatePreset(idx, {
+                    pricingMode: e.target.value as ExtraPreset['pricingMode'],
+                    unitLabel:
+                      e.target.value === 'per_m2' ? 'm²' : e.target.value === 'per_lm' ? 'fm' : p.unitLabel,
+                  })
+                }
+                className="px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+              >
+                <option value="fixed">Fix ár</option>
+                <option value="per_m2">EUR / m²</option>
+                <option value="per_lm">EUR / fm</option>
+              </select>
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  min={0}
+                  value={p.price > 1 ? p.price : ''}
+                  onChange={(e) => updatePreset(idx, { price: Math.max(1, Number(e.target.value) || 1) })}
+                  placeholder="ár"
+                  className="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm text-right tabular-nums"
+                />
+                <span className="text-xs text-slate-500">EUR</span>
+              </div>
+              <label className="inline-flex items-center gap-1.5 text-[13px] text-slate-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={Boolean(p.perSide)}
+                  onChange={(e) => updatePreset(idx, { perSide: e.target.checked })}
+                />
+                oldalanként
+              </label>
+              <button
+                type="button"
+                onClick={() =>
+                  setForm({ ...form, extraPresets: form.extraPresets.filter((_, i) => i !== idx) })
+                }
+                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                title="Törlés"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() =>
+              setForm({
+                ...form,
+                extraPresets: [
+                  ...form.extraPresets,
+                  { id: `ex_${Date.now()}`, name: '', pricingMode: 'fixed', unitLabel: 'db', price: 1 },
+                ],
+              })
+            }
+            className={btn.ghost}
+          >
+            <Plus className="w-4 h-4" />
+            Új extra
           </button>
         </div>
+      </div>
+
+      {/* Ajánlat sorszám: előtag, formátum, számjegyek */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 className="text-base font-semibold text-slate-950">Ajánlat sorszám</h2>
+          <p className="text-[13px] text-slate-600 mt-0.5">
+            Az új ajánlatok sorszáma. A már kiállított ajánlatok megtartják a sajátjukat.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-start">
+          <div>
+            <label className={labelCls}>Előtag</label>
+            <input
+              value={form.quoteNumberPrefix}
+              onChange={(e) =>
+                setForm({ ...form, quoteNumberPrefix: e.target.value.replace(/\s+/g, '') })
+              }
+              placeholder="OSP"
+              maxLength={12}
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-semibold"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className={labelCls}>Formátum</label>
+            <select
+              value={form.quoteNumberFormat}
+              onChange={(e) =>
+                setForm({ ...form, quoteNumberFormat: e.target.value as QuoteNumberFormat })
+              }
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+            >
+              {QUOTE_NUMBER_FORMAT_OPTIONS.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={labelCls}>Számjegyek</label>
+            <select
+              value={form.quoteNumberDigits}
+              onChange={(e) => setForm({ ...form, quoteNumberDigits: Number(e.target.value) })}
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+            >
+              {[2, 3, 4, 5].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="text-[13px] text-slate-600">
+          Minta:{' '}
+          <span className="font-semibold text-slate-950 tabular-nums">
+            {formatQuoteNumber(form, 1)}
+          </span>
+          , {formatQuoteNumber(form, 2)}, …
+        </div>
+      </div>
+
+      {/* E-mail küldés: SMTP + sablonok + megnyitás-követés */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 className="text-base font-semibold text-slate-950">E-mail küldés</h2>
+          <p className="text-[13px] text-slate-600 mt-0.5">
+            Az ajánlat PDF mellékletként megy ki. Gmail esetén alkalmazásjelszó kell
+            (smtp.gmail.com, 465).
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {(
+            [
+              ['senderName', 'Feladó neve', 'text'],
+              ['senderEmail', 'Feladó e-mail', 'email'],
+              ['smtpHost', 'SMTP szerver', 'text'],
+              ['smtpPort', 'SMTP port', 'number'],
+              ['smtpUser', 'SMTP felhasználó', 'text'],
+              ['smtpPass', 'SMTP jelszó', 'password'],
+            ] as [keyof EmailSettings, string, string][]
+          ).map(([key, label, type]) => (
+            <div key={key}>
+              <label className={labelCls}>{label}</label>
+              <input
+                type={type}
+                value={String(form.emailSettings[key] ?? '')}
+                onChange={(e) =>
+                  setEmail({
+                    [key]: type === 'number' ? Number(e.target.value) || 0 : e.target.value,
+                  } as Partial<EmailSettings>)
+                }
+                autoComplete={type === 'password' ? 'new-password' : 'off'}
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+              />
+            </div>
+          ))}
+        </div>
+        {/* Sablonok: választható lista + szerkesztő */}
+        <div className="pt-2 space-y-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[13px] font-medium text-slate-700 mr-1">Sablonok</span>
+            {form.emailSettings.templates.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setActiveTemplateId(t.id)}
+                className={`px-2.5 py-1 rounded-full border text-[13px] transition ${
+                  t.id === activeTemplate?.id
+                    ? 'bg-slate-900 border-slate-900 text-white'
+                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                {t.name || 'Névtelen'}
+                {t.id === form.emailSettings.defaultTemplateId ? ' ★' : ''}
+              </button>
+            ))}
+            <button type="button" onClick={addTemplate} className={btn.ghost}>
+              <Plus className="w-4 h-4" />
+              Új sablon
+            </button>
+          </div>
+
+          {activeTemplate && (
+            <div className="rounded-xl border border-slate-200 p-4 space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className={labelCls}>Sablon neve</label>
+                  <input
+                    value={activeTemplate.name}
+                    onChange={(e) => updateTemplate({ name: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className={labelCls}>Ennél a státusznál ajánlja fel</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {(Object.keys(STATUS_CONFIG) as QuoteStatus[]).map((st) => {
+                      const on = activeTemplate.suggestFor?.includes(st);
+                      return (
+                        <button
+                          key={st}
+                          type="button"
+                          onClick={() =>
+                            updateTemplate({
+                              suggestFor: on
+                                ? (activeTemplate.suggestFor || []).filter((x) => x !== st)
+                                : [...(activeTemplate.suggestFor || []), st],
+                            })
+                          }
+                          className={`px-2 py-0.5 rounded-full border text-xs ${
+                            on
+                              ? 'bg-slate-900 border-slate-900 text-white'
+                              : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          {STATUS_CONFIG[st].label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>Tárgy</label>
+                <input
+                  {...track('subject')}
+                  value={activeTemplate.subject}
+                  onChange={(e) => updateTemplate({ subject: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Üzenet</label>
+                <textarea
+                  rows={10}
+                  {...track('body')}
+                  value={activeTemplate.body}
+                  onChange={(e) => updateTemplate({ body: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+                />
+                <div className="mt-2">
+                  <VariableChips
+                    variables={EMAIL_VARIABLES_HELP}
+                    onInsert={(t) => insertVar(t, ['subject', 'body'], 'body')}
+                    hint="Kattints a tárgyba vagy az üzenetbe, majd a beszúrandó adatra."
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={activeTemplate.id === form.emailSettings.defaultTemplateId}
+                  onClick={() => setEmail({ defaultTemplateId: activeTemplate.id })}
+                  className={btn.ghost}
+                >
+                  ★ Alapértelmezett
+                </button>
+                <button type="button" onClick={duplicateTemplate} className={btn.ghost}>
+                  <Copy className="w-4 h-4" />
+                  Másolat
+                </button>
+                <button
+                  type="button"
+                  disabled={form.emailSettings.templates.length <= 1}
+                  onClick={deleteTemplate}
+                  className={`${btn.ghost} hover:text-rose-600`}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Törlés
+                </button>
+                <button type="button" onClick={restoreSampleTemplates} className={`${btn.ghost} ml-auto`}>
+                  Minta sablonok visszaállítása
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+          <label className="inline-flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.emailSettings.enableTrackingPixel}
+              onChange={(e) => setEmail({ enableTrackingPixel: e.target.checked })}
+            />
+            Megnyitás követése (láthatatlan képpont a levélben)
+          </label>
+          <div>
+            <label className={labelCls}>Az alkalmazás nyilvános címe (a követéshez)</label>
+            <input
+              value={form.emailSettings.publicBaseUrl}
+              onChange={(e) => setEmail({ publicBaseUrl: e.target.value })}
+              placeholder="https://arazo.openskypergola.hu"
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-5">
+        <h2 className="text-base font-semibold text-slate-950">Cégadatok és PDF</h2>
 
         {/* Company Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Cégnév / Fejléc cím a PDF-ben
             </label>
             <input
@@ -70,7 +619,7 @@ export function BrandingSettingsView({
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Fejléc Alcím / Tevékenységek
             </label>
             <input
@@ -83,7 +632,7 @@ export function BrandingSettingsView({
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               E-mail cím (láblécben)
             </label>
             <input
@@ -96,7 +645,7 @@ export function BrandingSettingsView({
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Telefonszám (láblécben)
             </label>
             <input
@@ -113,7 +662,7 @@ export function BrandingSettingsView({
         {/* Default Rates */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Alapértelmezett EUR/HUF árfolyam
             </label>
             <input
@@ -129,7 +678,7 @@ export function BrandingSettingsView({
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Alapértelmezett Szállítási díj (Ft)
             </label>
             <input
@@ -145,7 +694,7 @@ export function BrandingSettingsView({
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+            <label className={labelCls}>
               Kedvezmény címke a táblázatban
             </label>
             <input
@@ -166,7 +715,7 @@ export function BrandingSettingsView({
             <div className="text-xs font-bold text-slate-900">
               Saját A4 Fejléc/Lábléc Háttérkép
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs text-slate-500">
               Ha feltöltesz egy egész oldalas A4-es háttérképet, minden PDF oldalra
               az kerül. Ha üres, modern fejlécet rajzol a rendszer.
             </p>
@@ -214,7 +763,7 @@ export function BrandingSettingsView({
             <div className="text-xs font-bold text-slate-900">
               Céges Logó a Fejlécbe
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs text-slate-500">
               Megjelenik a PDF felső fejlécében a cégnév mellett.
             </p>
             {form.pdfLogoUrl && (
@@ -259,7 +808,7 @@ export function BrandingSettingsView({
             <div className="text-xs font-bold text-slate-900">
               Névjegykártya / Aláírás kép a PDF végére
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs text-slate-500">
               Az árajánlat utolsó oldalának alján jelenik meg.
             </p>
             {form.pdfSignatureCardUrl && (
@@ -303,26 +852,22 @@ export function BrandingSettingsView({
 
         {/* Default Text Automation Templates */}
         <div className="space-y-4 pt-3 border-t border-slate-100">
-          <div className="text-xs font-bold text-slate-700">
-            Alapértelmezett Automatikus Szövegsablonok (Név- és méret-helyettesítéssel):
+          <div>
+            <div className="text-sm font-semibold text-slate-950">PDF szövegek</div>
+            <p className="text-[13px] text-slate-600 mt-0.5">
+              A beszúrt adatok (pl. megszólítás, méret) ajánlatonként automatikusan kitöltődnek.
+            </p>
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {TEMPLATE_VARIABLES_HELP.map((v) => (
-              <span
-                key={v.token}
-                className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-mono"
-              >
-                {v.token}
-              </span>
-            ))}
-          </div>
+          <VariableChips
+            variables={TEMPLATE_VARIABLES_HELP}
+            onInsert={(t) => insertVar(t, ['greeting', 'intro', 'closing'], 'intro')}
+          />
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Alapértelmezett Megszólítás
-            </label>
+            <label className={labelCls}>Megszólítás</label>
             <input
               type="text"
+              {...track('greeting')}
               value={form.defaultGreetingTemplate}
               onChange={(e) =>
                 setForm({ ...form, defaultGreetingTemplate: e.target.value })
@@ -332,11 +877,10 @@ export function BrandingSettingsView({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Alapértelmezett Bevezető Szövegdoboz (a PDF elején)
-            </label>
+            <label className={labelCls}>Bevezető szöveg (a PDF elején)</label>
             <textarea
               rows={3}
+              {...track('intro')}
               value={form.defaultIntroTemplate}
               onChange={(e) =>
                 setForm({ ...form, defaultIntroTemplate: e.target.value })
@@ -346,11 +890,10 @@ export function BrandingSettingsView({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
-              Alapértelmezett Záró Információs Szövegdoboz (a PDF végén)
-            </label>
+            <label className={labelCls}>Záró szöveg és feltételek (a PDF végén)</label>
             <textarea
-              rows={4}
+              rows={12}
+              {...track('closing')}
               value={form.defaultClosingInfoTemplate}
               onChange={(e) =>
                 setForm({ ...form, defaultClosingInfoTemplate: e.target.value })
@@ -360,6 +903,7 @@ export function BrandingSettingsView({
           </div>
         </div>
       </div>
+
     </form>
   );
 }
