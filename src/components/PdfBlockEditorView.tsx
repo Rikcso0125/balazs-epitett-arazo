@@ -1,5 +1,6 @@
 'use client';
 
+import { thumbUrl } from '@/lib/thumb';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
@@ -757,11 +758,11 @@ export function PdfBlockEditorView({
           Oldaltörés
         </button>
         {templates.length > 0 && (
-          <div className="flex items-center gap-1.5 ml-auto">
+          <div className="flex items-center gap-1.5 w-full sm:w-auto sm:ml-auto min-w-0">
             <select
               value={templateToInsertId}
               onChange={(e) => setTemplateToInsertId(e.target.value)}
-              className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-[13px]"
+              className="min-w-0 flex-1 sm:flex-none sm:max-w-[18rem] px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-[13px]"
             >
               {templates.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -899,7 +900,9 @@ export function PdfBlockEditorView({
                   <div className="w-full md:w-52 shrink-0 space-y-2">
                     {blk.photo.imageUrl ? (
                       <img
-                        src={blk.photo.imageUrl}
+                        src={thumbUrl(blk.photo.imageUrl)}
+                        loading="lazy"
+                        decoding="async"
                         alt=""
                         className="w-full h-36 object-cover rounded-xl border border-slate-200"
                       />
@@ -1089,7 +1092,9 @@ export function PdfBlockEditorView({
                         <div className="w-full sm:w-36 shrink-0 space-y-1.5">
                           {ph.imageUrl && (
                             <img
-                              src={ph.imageUrl}
+                              src={thumbUrl(ph.imageUrl)}
+                              loading="lazy"
+                              decoding="async"
                               alt=""
                               className="w-full h-24 object-cover rounded-lg border border-slate-200"
                             />
@@ -1833,7 +1838,9 @@ export function PdfBlockEditorView({
                                     className="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-200 flex items-start gap-3"
                                   >
                                     <img
-                                      src={rp.imageUrl}
+                                      src={thumbUrl(rp.imageUrl)}
+                                      loading="lazy"
+                                      decoding="async"
                                       alt=""
                                       className="w-20 h-16 object-cover rounded-lg border border-slate-200 shrink-0"
                                     />

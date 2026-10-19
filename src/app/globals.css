@@ -310,7 +310,9 @@ textarea:focus {
 }
 .content {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1.5rem 1.75rem 4rem;
 }
 
@@ -450,4 +452,11 @@ textarea:focus {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+/* Soha ne legyen vízszintes görgetés az oldalon */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
 }

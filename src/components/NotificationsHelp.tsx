@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronRight, CircleHelp } from 'lucide-react';
+import { Bell, ChevronRight } from 'lucide-react';
 
 export interface NoticeItem {
   id: string;
@@ -12,7 +12,7 @@ export interface NoticeItem {
 }
 
 /**
- * Súgó ikon a fejlécben: egérrel fölé víve (asztali gép) vagy koppintva (mobil)
+ * Értesítés (csengő) ikon a fejlécben: egérrel fölé víve (asztali gép) vagy koppintva (mobil)
  * megmutatja a teendőket és értesítéseket. A pötty a teendők számát jelzi.
  */
 export function NotificationsHelp({
@@ -63,10 +63,10 @@ export function NotificationsHelp({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="relative w-9 h-9 grid place-items-center rounded-lg text-slate-600 hover:text-slate-950 hover:bg-slate-100"
-        aria-label="Súgó és értesítések"
+        aria-label="Értesítések"
         aria-expanded={open}
       >
-        <CircleHelp className="w-5 h-5" />
+        <Bell className="w-5 h-5" />
         {warnCount > 0 && (
           <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 rounded-full bg-amber-500 text-white text-[10px] font-semibold grid place-items-center leading-none">
             {warnCount}

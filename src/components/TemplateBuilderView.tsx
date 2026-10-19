@@ -1,5 +1,6 @@
 'use client';
 
+import { thumbUrl } from '@/lib/thumb';
 import React, { useEffect, useState } from 'react';
 import {
   ArrowLeft,
@@ -657,7 +658,9 @@ export function TemplateBuilderView({
                       {coverPhoto ? (
                         <div className="h-44 bg-slate-100 relative overflow-hidden border-b border-slate-100">
                           <img
-                            src={coverPhoto}
+                            src={thumbUrl(coverPhoto)}
+                            loading="lazy"
+                            decoding="async"
                             alt={tpl.name}
                             className="w-full h-full object-cover"
                           />
@@ -2545,7 +2548,9 @@ export function TemplateBuilderView({
                             >
                               {ph.imageUrl && (
                                 <img
-                                  src={ph.imageUrl}
+                                  src={thumbUrl(ph.imageUrl)}
+                                  loading="lazy"
+                                  decoding="async"
                                   alt=""
                                   className="w-40 h-28 object-contain bg-white rounded-lg border border-slate-200 shrink-0"
                                 />
@@ -2693,7 +2698,9 @@ export function TemplateBuilderView({
                             className="group relative w-20 h-16 rounded-lg overflow-hidden border border-slate-200 hover:border-emerald-500 shrink-0"
                           >
                             <img
-                              src={m.url}
+                              src={thumbUrl(m.url)}
+                              loading="lazy"
+                              decoding="async"
                               alt={m.originalName}
                               className="w-full h-full object-cover"
                             />
@@ -2717,7 +2724,9 @@ export function TemplateBuilderView({
                         >
                           <div className="w-full md:w-56 shrink-0">
                             <img
-                              src={ph.imageUrl}
+                              src={thumbUrl(ph.imageUrl)}
+                              loading="lazy"
+                              decoding="async"
                               alt=""
                               className="w-full h-36 object-cover rounded-xl border border-slate-200"
                             />

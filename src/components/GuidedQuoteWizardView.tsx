@@ -1,5 +1,6 @@
 'use client';
 
+import { thumbUrl } from '@/lib/thumb';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
@@ -419,7 +420,9 @@ export function GuidedQuoteWizardView({
               />
               {tpl.photos?.[0]?.imageUrl && (
                 <img
-                  src={tpl.photos[0].imageUrl}
+                  src={thumbUrl(tpl.photos[0].imageUrl)}
+                  loading="lazy"
+                  decoding="async"
                   alt=""
                   className={`w-16 h-12 rounded-lg object-cover border border-slate-200 shrink-0 ${
                     isOut ? 'opacity-50' : ''
@@ -674,7 +677,7 @@ export function GuidedQuoteWizardView({
                   >
                     <div className="aspect-[4/3] bg-slate-50 grid place-items-center overflow-hidden">
                       {cat.imageUrl ? (
-                        <img src={cat.imageUrl} alt="" className="w-full h-full object-contain" />
+                        <img src={thumbUrl(cat.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-contain" />
                       ) : (
                         <span className="text-3xl font-semibold text-slate-300">
                           {cat.name.charAt(0)}
@@ -790,7 +793,7 @@ export function GuidedQuoteWizardView({
                     }`}
                   >
                     {mt.imageUrl && (
-                      <img src={mt.imageUrl} alt="" className="h-16 w-full object-contain mb-1" />
+                      <img src={thumbUrl(mt.imageUrl)} loading="lazy" decoding="async" alt="" className="h-16 w-full object-contain mb-1" />
                     )}
                     <div className="text-[13px] font-medium text-slate-950">{mt.label}</div>
                     {!mt.imageUrl && (
@@ -955,7 +958,7 @@ export function GuidedQuoteWizardView({
                   return (
                     <label
                       key={r.id}
-                      className={`flex items-center gap-2.5 py-1.5 text-sm ${
+                      className={`flex flex-wrap items-center gap-x-2.5 gap-y-1 py-1.5 text-sm ${
                         isSystem ? '' : 'cursor-pointer'
                       }`}
                     >
@@ -968,7 +971,7 @@ export function GuidedQuoteWizardView({
                         }
                         className="rounded"
                       />
-                      <span className={checked ? 'text-slate-950' : 'text-slate-500'}>
+                      <span className={`min-w-0 break-words ${checked ? 'text-slate-950' : 'text-slate-500'}`}>
                         {r.name}
                       </span>
                       <ColorDots colors={r.algorithm?.colorOptions || []} />

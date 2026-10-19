@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import {
   CheckCircle2,
   Edit3,
@@ -15,16 +16,9 @@ import {
   Sparkles,
   Wand2,
 } from 'lucide-react';
-import { BrandingSettingsView } from '@/components/BrandingSettingsView';
-import { CatalogManagerView } from '@/components/CatalogManagerView';
 import { DashboardView } from '@/components/DashboardView';
 import { LoginView } from '@/components/LoginView';
 import { NoticeItem, NotificationsHelp } from '@/components/NotificationsHelp';
-import { SendEmailModal } from '@/components/SendEmailModal';
-import { GuidedQuoteWizardView } from '@/components/GuidedQuoteWizardView';
-import { PdfBlockEditorView } from '@/components/PdfBlockEditorView';
-import { SavedQuotesListView } from '@/components/SavedQuotesListView';
-import { TemplateBuilderView } from '@/components/TemplateBuilderView';
 import { DEFAULT_SYSTEM_CONFIG } from '@/lib/constants';
 import {
   ProductCategory,
@@ -37,6 +31,16 @@ import {
   TrackingEvent,
   UploadedMediaItem,
 } from '@/lib/types';
+
+// A nagy nézetek külön csomagban, csak megnyitáskor töltődnek be
+const viewLoading = () => <div className="py-16 text-center text-sm text-slate-500">Betöltés…</div>;
+const BrandingSettingsView = dynamic(() => import('@/components/BrandingSettingsView').then((m) => m.BrandingSettingsView), { loading: viewLoading });
+const CatalogManagerView = dynamic(() => import('@/components/CatalogManagerView').then((m) => m.CatalogManagerView), { loading: viewLoading });
+const GuidedQuoteWizardView = dynamic(() => import('@/components/GuidedQuoteWizardView').then((m) => m.GuidedQuoteWizardView), { loading: viewLoading });
+const PdfBlockEditorView = dynamic(() => import('@/components/PdfBlockEditorView').then((m) => m.PdfBlockEditorView), { loading: viewLoading });
+const SavedQuotesListView = dynamic(() => import('@/components/SavedQuotesListView').then((m) => m.SavedQuotesListView), { loading: viewLoading });
+const TemplateBuilderView = dynamic(() => import('@/components/TemplateBuilderView').then((m) => m.TemplateBuilderView), { loading: viewLoading });
+const SendEmailModal = dynamic(() => import('@/components/SendEmailModal').then((m) => m.SendEmailModal), { loading: () => null });
 
 type ActiveModule =
   | 'dashboard'

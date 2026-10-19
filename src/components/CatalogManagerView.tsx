@@ -1,5 +1,6 @@
 'use client';
 
+import { thumbUrl } from '@/lib/thumb';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
@@ -154,7 +155,7 @@ function MiniPhotos({
       {photos.map((ph, idx) => (
         <div key={ph.id || idx} className="w-28">
           <div className="relative w-28 h-20 rounded-md overflow-hidden border border-slate-200 bg-slate-50">
-            <img src={ph.imageUrl} alt="" className="w-full h-full object-cover" />
+            <img src={thumbUrl(ph.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
             <button
               type="button"
               onClick={() => onChange(photos.filter((_, i) => i !== idx))}
@@ -286,7 +287,7 @@ function PhotoStrip({
                 className="relative w-36 sm:w-44 aspect-[4/3] shrink-0 rounded-lg overflow-hidden bg-slate-50 border border-slate-200"
                 title="Megnyitás teljes méretben"
               >
-                <img src={ph.imageUrl} alt="" className="w-full h-full object-cover" />
+                <img src={thumbUrl(ph.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
                 {idx === 0 && (
                   <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-slate-900 text-white text-[11px] font-semibold">
                     Főkép
@@ -443,7 +444,7 @@ function Thumb({ tpl }: { tpl: QuoteTemplate }) {
   return (
     <div className="w-14 h-10 rounded-md border border-slate-200 bg-slate-50 overflow-hidden shrink-0 grid place-items-center">
       {url ? (
-        <img src={url} alt="" className="w-full h-full object-cover" />
+        <img src={thumbUrl(url)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
       ) : (
         <span className="text-[10px] text-slate-400">nincs</span>
       )}
@@ -1064,7 +1065,7 @@ export function CatalogManagerView({
                         <div className="pl-6 flex items-center gap-2">
                           <div className="w-14 h-10 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden grid place-items-center shrink-0">
                             {cat.imageUrl ? (
-                              <img src={cat.imageUrl} alt="" className="w-full h-full object-contain" />
+                              <img src={thumbUrl(cat.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-contain" />
                             ) : (
                               <span className="text-xs text-slate-400">kép</span>
                             )}
@@ -1189,7 +1190,7 @@ export function CatalogManagerView({
                         : 'border-slate-200'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <div className="flex flex-col">
                         <button
                           type="button"
@@ -1230,8 +1231,8 @@ export function CatalogManagerView({
                       </div>
 
                       <Thumb tpl={tpl} />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-bold text-slate-900 leading-snug">
+                      <div className="flex-1 basis-40 min-w-0">
+                        <div className="text-sm font-bold text-slate-900 leading-snug break-words">
                           {tpl.name}
                         </div>
                         <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
@@ -1254,6 +1255,7 @@ export function CatalogManagerView({
                         <MissingNote missing={getMissing(tpl)} />
                       </div>
 
+                      <div className="flex items-center gap-2 ml-auto shrink-0">
                       <select
                         value={status}
                         onChange={(e) =>
@@ -1298,6 +1300,7 @@ export function CatalogManagerView({
                       >
                         <Edit3 className="w-4 h-4" />
                       </button>
+                      </div>
                     </div>
 
                   </div>
