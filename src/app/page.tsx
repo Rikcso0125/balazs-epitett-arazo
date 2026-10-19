@@ -19,6 +19,7 @@ import { BrandingSettingsView } from '@/components/BrandingSettingsView';
 import { CatalogManagerView } from '@/components/CatalogManagerView';
 import { DashboardView } from '@/components/DashboardView';
 import { LoginView } from '@/components/LoginView';
+import { NoticeItem, NotificationsHelp } from '@/components/NotificationsHelp';
 import { SendEmailModal } from '@/components/SendEmailModal';
 import { GuidedQuoteWizardView } from '@/components/GuidedQuoteWizardView';
 import { PdfBlockEditorView } from '@/components/PdfBlockEditorView';
@@ -344,6 +345,81 @@ export default function CustomPricerAppPage() {
     return Array.from(byName.values()).sort((a, b) => a.name.localeCompare(b.name, 'hu'));
   })();
 
+  // Teendők és értesítések a súgó ikon alatt
+  const notices: NoticeItem[] = (() => {
+    const list: NoticeItem[] = [];
+    if (!config.pricingFormula?.confirmedByOwner) {
+      list.push({
+        id: 'formula',
+        tone: 'warn',
+        title: 'Az árképlet még ideiglenes',
+        detail: 'A haszon (X) és a szerelés képlete még nincs véglegesítve.',
+        onClick: () => setActiveModule('settings'),
+      });
+    }
+    const live = templates.filter((t) => t.status !== 'inactive' && t.status !== 'test');
+    const noCatalog = live.filter((t) => !(t.catalogRef?.pdfFile || t.catalogRef?.pages)).length;
+    const noSize = live.filter((t) => !Object.values(t.sizeLimits || {}).some((v) => Number(v) > 0)).length;
+    if (noCatalog || noSize) {
+      list.push({
+        id: 'catalog',
+        tone: 'warn',
+        title: 'Hiányos termékadatok',
+        detail: [
+          noSize ? `${noSize} terméknél nincs méretkorlát` : '',
+          noCatalog ? `${noCatalog} terméknél nincs katalógus hivatkozás` : '',
+        ]
+          .filter(Boolean)
+          .join(', '),
+        onClick: () => setActiveModule('catalog_manager'),
+      });
+    }
+    const es = config.emailSettings;
+    if (!(es?.smtpHost && es?.smtpUser && es?.smtpPass)) {
+      list.push({
+        id: 'smtp',
+        tone: 'warn',
+        title: 'Az e-mail küldés nincs beállítva',
+        detail: 'SMTP adatok nélkül az ajánlat csak kiküldöttnek jelölhető.',
+        onClick: () => setActiveModule('settings'),
+      });
+    }
+    const drafts = quotes.filter((q) => q.status === 'piszkozat').length;
+    if (drafts) {
+      list.push({
+        id: 'drafts',
+        tone: 'info',
+        title: `${drafts} ajánlat még nincs kiküldve`,
+        onClick: () => setActiveModule('dashboard'),
+      });
+    }
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    trackingEvents
+      .filter((ev) => new Date(ev.openedAt).getTime() > weekAgo)
+      .slice(0, 3)
+      .forEach((ev) => {
+        const q = quotes.find((x) => x.id === ev.quoteId);
+        list.push({
+          id: `open_${ev.id}`,
+          tone: 'info',
+          title: `${ev.customerName} megnyitotta az ajánlatot`,
+          detail: `${q?.quoteNumber || ''} · ${new Date(ev.openedAt).toLocaleString('hu-HU', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}`,
+          onClick: q
+            ? () => {
+                setActiveDraftOrSavedQuote(q);
+                setActiveModule('pdf_editor');
+              }
+            : undefined,
+        });
+      });
+    return list;
+  })();
+
   const openPdfEditor = () => {
     if (!activeDraftOrSavedQuote) {
       setActiveDraftOrSavedQuote({
@@ -562,23 +638,15 @@ export default function CustomPricerAppPage() {
                 </span>
               </span>
             )}
-            {!config.pricingFormula?.confirmedByOwner && (
-              <button
-                type="button"
-                onClick={() => setActiveModule('settings')}
-                className="mc-badge warn"
-                title="A haszon és szerelés képlete még nem végleges – kattints a beállításhoz"
-              >
-                <span className="hidden sm:inline">Árképlet ideiglenes</span>
-                <span className="sm:hidden">Árképlet</span>
-              </button>
-            )}
-            {/* Bejelentkezett felhasználó monogramja – mobilon rejtve, hogy a fejléc elférjen */}
-            <div className="hidden sm:block">
-              <div className="avatar" title={authUser ? `Bejelentkezve: ${authUser}` : undefined}>
-                {(authUser || companyName).charAt(0).toUpperCase()}
-              </div>
-            </div>
+            <NotificationsHelp
+              items={notices}
+              footer={[
+                authUser ? `Bejelentkezve: ${authUser}` : '',
+                liveRate ? `MNB: ${liveRate.exact.toFixed(2).replace('.', ',')} Ft/EUR` : '',
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            />
           </div>
         </header>
 

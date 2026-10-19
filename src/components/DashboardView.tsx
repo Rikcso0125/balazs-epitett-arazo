@@ -111,7 +111,7 @@ export function DashboardView({
       onClick={() => onOpenQuote(q)}
     >
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium text-slate-950 truncate">
+        <div className="text-sm font-medium text-slate-950 break-words">
           {q.customerName} <span className="text-slate-400 font-normal">· {q.quoteNumber}</span>
         </div>
         <div className="text-xs text-slate-500">{sub}</div>
@@ -209,11 +209,11 @@ export function DashboardView({
                     onClick={() => q && onOpenQuote(q)}
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-slate-950 truncate">
+                      <div className="text-sm font-medium text-slate-950 break-words">
                         {ev.customerName}
                         {q && <span className="text-slate-400 font-normal"> · {q.quoteNumber}</span>}
                       </div>
-                      <div className="text-xs text-slate-500 truncate">{ev.email}</div>
+                      <div className="text-xs text-slate-500 break-all">{ev.email}</div>
                     </div>
                     <div className="text-xs text-slate-500 whitespace-nowrap">
                       {new Date(ev.openedAt).toLocaleString('hu-HU', {
