@@ -148,6 +148,41 @@
         "unitLabel": "db",
         "price": 1
       }
+    ],
+    "extraGroups": [
+      {
+        "id": "grp_light",
+        "name": "Világítás",
+        "description": "LED-szalagok, spotok, RGB",
+        "imageUrl": "/uploads/catalog-2026/led/photo-2.jpg"
+      },
+      {
+        "id": "grp_shade",
+        "name": "Oldalzárás és árnyékolás",
+        "description": "ZIP árnyékolók, üvegfalak, tetőárnyékolók"
+      },
+      {
+        "id": "grp_heat",
+        "name": "Fűtés",
+        "description": "Infra hősugárzók",
+        "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg"
+      },
+      {
+        "id": "grp_control",
+        "name": "Érzékelők és vezérlés",
+        "description": "Eső-, szél-, napfényérzékelő, okosotthon",
+        "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg"
+      },
+      {
+        "id": "grp_colour",
+        "name": "Szín",
+        "description": "Egyedi RAL és gyári színek",
+        "imageUrl": "/uploads/catalog-2026/colours-ke/colours-1.jpg"
+      },
+      {
+        "id": "grp_other",
+        "name": "Egyéb"
+      }
     ]
   },
   "menus": [
@@ -448,7 +483,11 @@
       "status": "test",
       "order": 1,
       "sizeLimits": {},
-      "catalogRef": {}
+      "catalogRef": {},
+      "moduleSplits": [],
+      "mountTypes": [],
+      "alsoInCategoryIds": [],
+      "sizeRules": []
     },
     {
       "id": "tpl_legacy_sb400",
@@ -5774,7 +5813,9 @@
           "maxCm": 470,
           "maxModules": 2
         }
-      ]
+      ],
+      "alsoInCategoryIds": [],
+      "sizeRules": []
     },
     {
       "id": "tpl_legacy_kedry_skylife",
@@ -10130,7 +10171,8 @@
           "maxModules": 2
         }
       ],
-      "sizeRules": []
+      "sizeRules": [],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_pergola_v_ziip",
@@ -11736,7 +11778,8 @@
           "maxModules": 2
         }
       ],
-      "sizeRules": []
+      "sizeRules": [],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_hydra",
@@ -15984,7 +16027,8 @@
           "ifWidthOverCm": 500,
           "maxProjectionCm": 550
         }
-      ]
+      ],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_keplan",
@@ -18432,7 +18476,8 @@
           "maxWidthCm": 550,
           "maxProjectionCm": 600
         }
-      ]
+      ],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_isola_2a",
@@ -29481,7 +29526,8 @@
           "maxProjectionCm": 400,
           "maxHeightCm": 250
         }
-      ]
+      ],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_glassfix",
@@ -34095,7 +34141,8 @@
           "maxProjectionCm": 400,
           "maxHeightCm": 250
         }
-      ]
+      ],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_uvegfal_spanyol",
@@ -34310,7 +34357,11 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "moduleSplits": [],
+      "mountTypes": [],
+      "alsoInCategoryIds": [],
+      "sizeRules": []
     },
     {
       "id": "tpl_legacy_uvegfal_lengyel",
@@ -34501,7 +34552,11 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "moduleSplits": [],
+      "mountTypes": [],
+      "alsoInCategoryIds": [],
+      "sizeRules": []
     },
     {
       "id": "tpl_legacy_refleksol_zip",
@@ -35863,7 +35918,8 @@
           "maxModules": 2
         }
       ],
-      "sizeRules": []
+      "sizeRules": [],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_legacy_vertica_zip",
@@ -36290,7 +36346,11 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-19T08:35:15.381Z"
+      "updatedAt": "2026-10-19T08:35:15.381Z",
+      "moduleSplits": [],
+      "mountTypes": [],
+      "alsoInCategoryIds": [],
+      "sizeRules": []
     },
     {
       "id": "tpl_kedry_neos",
@@ -36399,6 +36459,19 @@
               450
             ],
             "values": {
+              "600": {
+                "200": 13325,
+                "225": 13860,
+                "250": 14575,
+                "275": 15387,
+                "300": 16102,
+                "325": 16637,
+                "350": 17353,
+                "375": 17888,
+                "400": 18622,
+                "425": 19157,
+                "450": 20053
+              },
               "210.8": {
                 "200": 7688,
                 "225": 7873,
@@ -36697,19 +36770,6 @@
                 "400": 18231,
                 "425": 18827,
                 "450": 19706
-              },
-              "600": {
-                "200": 13325,
-                "225": 13860,
-                "250": 14575,
-                "275": 15387,
-                "300": 16102,
-                "325": 16637,
-                "350": 17353,
-                "375": 17888,
-                "400": 18622,
-                "425": 19157,
-                "450": 20053
               }
             }
           },
@@ -36819,6 +36879,19 @@
               450
             ],
             "values": {
+              "1200": {
+                "200": 24246,
+                "225": 25317,
+                "250": 26748,
+                "275": 28370,
+                "300": 29801,
+                "325": 30872,
+                "350": 32303,
+                "375": 33374,
+                "400": 34841,
+                "425": 35912,
+                "450": 37704
+              },
               "415.2": {
                 "200": 13355,
                 "225": 13725,
@@ -37117,19 +37190,6 @@
                 "400": 34059,
                 "425": 35251,
                 "450": 37010
-              },
-              "1200": {
-                "200": 24246,
-                "225": 25317,
-                "250": 26748,
-                "275": 28370,
-                "300": 29801,
-                "325": 30872,
-                "350": 32303,
-                "375": 33374,
-                "400": 34841,
-                "425": 35912,
-                "450": 37704
               }
             }
           },
@@ -37239,6 +37299,19 @@
               450
             ],
             "values": {
+              "600": {
+                "200": 14152,
+                "225": 14687,
+                "250": 15402,
+                "275": 16214,
+                "300": 16929,
+                "325": 17464,
+                "350": 18180,
+                "375": 18715,
+                "400": 19449,
+                "425": 19984,
+                "450": 20880
+              },
               "210.8": {
                 "200": 8515,
                 "225": 8700,
@@ -37537,19 +37610,6 @@
                 "400": 19058,
                 "425": 19654,
                 "450": 20533
-              },
-              "600": {
-                "200": 14152,
-                "225": 14687,
-                "250": 15402,
-                "275": 16214,
-                "300": 16929,
-                "325": 17464,
-                "350": 18180,
-                "375": 18715,
-                "400": 19449,
-                "425": 19984,
-                "450": 20880
               }
             }
           },
@@ -37659,6 +37719,19 @@
               450
             ],
             "values": {
+              "1200": {
+                "200": 26148,
+                "225": 27219,
+                "250": 28650,
+                "275": 30272,
+                "300": 31703,
+                "325": 32774,
+                "350": 34205,
+                "375": 35276,
+                "400": 36743,
+                "425": 37814,
+                "450": 39606
+              },
               "415.2": {
                 "200": 15257,
                 "225": 15627,
@@ -37957,19 +38030,6 @@
                 "400": 35961,
                 "425": 37153,
                 "450": 38912
-              },
-              "1200": {
-                "200": 26148,
-                "225": 27219,
-                "250": 28650,
-                "275": 30272,
-                "300": 31703,
-                "325": 32774,
-                "350": 34205,
-                "375": 35276,
-                "400": 36743,
-                "425": 37814,
-                "450": 39606
               }
             }
           },
@@ -38073,6 +38133,19 @@
               900
             ],
             "values": {
+              "500": {
+                "400": 23659,
+                "450": 24472,
+                "500": 25700,
+                "550": 27064,
+                "600": 28292,
+                "650": 29105,
+                "700": 30333,
+                "750": 31141,
+                "800": 32404,
+                "850": 33287,
+                "900": 34879
+              },
               "210.8": {
                 "400": 15311,
                 "450": 15627,
@@ -38293,19 +38366,6 @@
                 "800": 31816,
                 "850": 32658,
                 "900": 34216
-              },
-              "500": {
-                "400": 23659,
-                "450": 24472,
-                "500": 25700,
-                "550": 27064,
-                "600": 28292,
-                "650": 29105,
-                "700": 30333,
-                "750": 31141,
-                "800": 32404,
-                "850": 33287,
-                "900": 34879
               }
             }
           },
@@ -38415,6 +38475,19 @@
               450
             ],
             "values": {
+              "600": {
+                "200": 12247,
+                "225": 12782,
+                "250": 13498,
+                "275": 14309,
+                "300": 15025,
+                "325": 15560,
+                "350": 16276,
+                "375": 16811,
+                "400": 17545,
+                "425": 18080,
+                "450": 18976
+              },
               "210.8": {
                 "200": 6610,
                 "225": 6796,
@@ -38713,19 +38786,6 @@
                 "400": 17153,
                 "425": 17750,
                 "450": 18629
-              },
-              "600": {
-                "200": 12247,
-                "225": 12782,
-                "250": 13498,
-                "275": 14309,
-                "300": 15025,
-                "325": 15560,
-                "350": 16276,
-                "375": 16811,
-                "400": 17545,
-                "425": 18080,
-                "450": 18976
               }
             }
           },
@@ -40058,7 +40118,8 @@
         "pdfFile": "LISTINO BIOCLIMATICA 10_EN.pdf",
         "pages": "97. o. (1L A (mounted to wall on SP side)); 101. o. (2P - placed against wall on SP side); 97. o. (1L); 101. o. (2P); 99. o. (2L); 105. o. (1T)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_isola_3",
@@ -44160,7 +44221,8 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "35. o. (1L); 37. o. (2L); 39. o. (2 P); 45. o. (4)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_xtesa",
@@ -45976,7 +46038,8 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "12. o. (1 MODULE); 13. o. (2 MODULES - 3 COLUMNS)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_madeira",
@@ -46002,7 +46065,7 @@
           "m2Tiers": [],
           "percentageRate": 0,
           "minPrice": 1,
-          "multiplier": 1.0,
+          "multiplier": 1,
           "extraDiscountPct": 0,
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
@@ -46643,7 +46706,8 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (MADEIRA)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_corsica",
@@ -46669,7 +46733,7 @@
           "m2Tiers": [],
           "percentageRate": 0,
           "minPrice": 1,
-          "multiplier": 1.0,
+          "multiplier": 1,
           "extraDiscountPct": 0,
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
@@ -47316,7 +47380,8 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (CORSICA CASSETTE)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_jamaica",
@@ -47342,7 +47407,7 @@
           "m2Tiers": [],
           "percentageRate": 0,
           "minPrice": 1,
-          "multiplier": 1.0,
+          "multiplier": 1,
           "extraDiscountPct": 0,
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
@@ -47966,7 +48031,8 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (JAMAICA*)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_australia",
@@ -47992,7 +48058,7 @@
           "m2Tiers": [],
           "percentageRate": 0,
           "minPrice": 1,
-          "multiplier": 1.0,
+          "multiplier": 1,
           "extraDiscountPct": 0,
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
@@ -48618,7 +48684,8 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (AUSTRALIA)"
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_thermo_glass",
@@ -48697,7 +48764,9 @@
       "catalogRef": {
         "note": "Nincs ár a kapott anyagokban - add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "moduleSplits": [],
+      "alsoInCategoryIds": []
     },
     {
       "id": "tpl_guillotine_vertica",
@@ -48776,7 +48845,9 @@
       "catalogRef": {
         "note": "Nincs ár a kapott anyagokban - add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T20:55:09.835376Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
+      "moduleSplits": [],
+      "alsoInCategoryIds": []
     }
   ],
   "quotes": [

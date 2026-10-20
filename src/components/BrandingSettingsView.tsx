@@ -32,12 +32,22 @@ interface BrandingSettingsViewProps {
   onUploadImage: (file: File) => Promise<string | null>;
 }
 
+type SettingsTab = 'pricing' | 'extras' | 'offer' | 'email' | 'company';
+const SETTINGS_TABS: [SettingsTab, string, string][] = [
+  ['pricing', 'Árképzés', 'Haszon és szerelés képlete'],
+  ['extras', 'Extrák', 'Gyűjtemények, gyors extrák'],
+  ['offer', 'Ajánlat', 'Sorszám, PDF szövegek'],
+  ['email', 'E-mail', 'Küldés, sablonok, követés'],
+  ['company', 'Cég és arculat', 'Cégadatok, logó, háttér'],
+];
+
 export function BrandingSettingsView({
   config,
   onSaveConfig,
   onUploadImage,
 }: BrandingSettingsViewProps) {
   const [form, setForm] = useState<SystemConfig>({ ...config });
+  const [tab, setTab] = useState<SettingsTab>('pricing');
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -167,10 +177,66 @@ export function BrandingSettingsView({
     }
   };
 
+  // PDF alapszövegek (az Ajánlat fülön, a sorszám alatt)
+  const offerTextsCard = (
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          <div>
+            <div className="text-sm font-semibold text-slate-950">PDF szövegek</div>
+            <p className="text-[13px] text-slate-600 mt-0.5">
+              A beszúrt adatok (pl. megszólítás, méret) ajánlatonként automatikusan kitöltődnek.
+            </p>
+          </div>
+          <VariableChips
+            variables={TEMPLATE_VARIABLES_HELP}
+            onInsert={(t) => insertVar(t, ['greeting', 'intro', 'closing'], 'intro')}
+          />
+
+          <div>
+            <label className={labelCls}>Megszólítás</label>
+            <input
+              type="text"
+              {...track('greeting')}
+              value={form.defaultGreetingTemplate}
+              onChange={(e) =>
+                setForm({ ...form, defaultGreetingTemplate: e.target.value })
+              }
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-semibold"
+            />
+          </div>
+
+          <div>
+            <label className={labelCls}>Bevezető szöveg (a PDF elején)</label>
+            <textarea
+              rows={3}
+              {...track('intro')}
+              value={form.defaultIntroTemplate}
+              onChange={(e) =>
+                setForm({ ...form, defaultIntroTemplate: e.target.value })
+              }
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+            />
+          </div>
+
+          <div>
+            <label className={labelCls}>Záró szöveg és feltételek (a PDF végén)</label>
+            <textarea
+              rows={12}
+              {...track('closing')}
+              value={form.defaultClosingInfoTemplate}
+              onChange={(e) =>
+                setForm({ ...form, defaultClosingInfoTemplate: e.target.value })
+              }
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+            />
+          </div>
+        </div>
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
+    <form onSubmit={handleSubmit} className="space-y-5 max-w-5xl">
       <PageHeader
         title="Beállítások"
+        subtitle="Válassz egy témát; a módosítások a Mentés gombbal kerülnek érvénybe."
         actions={
           <button type="submit" disabled={saving} className={btn.primary}>
             <Save className="w-4 h-4" />
@@ -179,6 +245,35 @@ export function BrandingSettingsView({
         }
       />
 
+      <div className="grid grid-cols-1 lg:grid-cols-[13rem_minmax(0,1fr)] gap-5 items-start">
+        {/* Témák: telefonon egy görgethető sor, nagy kijelzőn bal oldali menü */}
+        <nav
+          aria-label="Beállítások témái"
+          className="flex lg:flex-col gap-1 overflow-x-auto whitespace-nowrap p-1 rounded-xl bg-slate-100 border border-slate-200 lg:bg-white lg:p-2 lg:rounded-2xl lg:sticky lg:top-4"
+        >
+          {SETTINGS_TABS.map(([id, label, hint]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setTab(id)}
+              aria-current={tab === id ? 'page' : undefined}
+              className={`shrink-0 text-left px-3 py-2 rounded-lg transition ${
+                tab === id
+                  ? 'bg-white lg:bg-slate-900 lg:text-white text-slate-950 font-semibold shadow-sm lg:shadow-none'
+                  : 'text-slate-600 hover:text-slate-950 lg:hover:bg-slate-100'
+              }`}
+            >
+              <span className="block text-sm">{label}</span>
+              <span className={`hidden lg:block text-xs font-normal ${tab === id ? 'text-white/70' : 'text-slate-500'}`}>
+                {hint}
+              </span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="min-w-0 space-y-5">
+
+      {tab === 'pricing' && (<>
       {/* Pricing formula: profit (X) + assembly (X, Y) */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
         <div className="">
@@ -279,6 +374,8 @@ export function BrandingSettingsView({
           A képlet végleges
         </label>
       </div>
+      </>)}
+      {tab === 'extras' && (<>
       {/* Extrák gyűjteményei az árazóban: név, leírás, kép, sorrend */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
         <div>
@@ -470,6 +567,8 @@ export function BrandingSettingsView({
         </div>
       </div>
 
+      </>)}
+      {tab === 'offer' && (<>
       {/* Ajánlat sorszám: előtag, formátum, számjegyek */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
         <div>
@@ -531,6 +630,9 @@ export function BrandingSettingsView({
         </div>
       </div>
 
+      {offerTextsCard}
+      </>)}
+      {tab === 'email' && (<>
       {/* E-mail küldés: SMTP + sablonok + megnyitás-követés */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
         <div>
@@ -709,8 +811,10 @@ export function BrandingSettingsView({
         </div>
       </div>
 
+      </>)}
+      {tab === 'company' && (
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-base font-semibold text-slate-950">Cégadatok és PDF</h2>
+        <h2 className="text-base font-semibold text-slate-950">Cég és arculat</h2>
 
         {/* Company Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -959,60 +1063,10 @@ export function BrandingSettingsView({
           </div>
         </div>
 
-        {/* Default Text Automation Templates */}
-        <div className="space-y-4 pt-3 border-t border-slate-100">
-          <div>
-            <div className="text-sm font-semibold text-slate-950">PDF szövegek</div>
-            <p className="text-[13px] text-slate-600 mt-0.5">
-              A beszúrt adatok (pl. megszólítás, méret) ajánlatonként automatikusan kitöltődnek.
-            </p>
-          </div>
-          <VariableChips
-            variables={TEMPLATE_VARIABLES_HELP}
-            onInsert={(t) => insertVar(t, ['greeting', 'intro', 'closing'], 'intro')}
-          />
-
-          <div>
-            <label className={labelCls}>Megszólítás</label>
-            <input
-              type="text"
-              {...track('greeting')}
-              value={form.defaultGreetingTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultGreetingTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-semibold"
-            />
-          </div>
-
-          <div>
-            <label className={labelCls}>Bevezető szöveg (a PDF elején)</label>
-            <textarea
-              rows={3}
-              {...track('intro')}
-              value={form.defaultIntroTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultIntroTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
-            />
-          </div>
-
-          <div>
-            <label className={labelCls}>Záró szöveg és feltételek (a PDF végén)</label>
-            <textarea
-              rows={12}
-              {...track('closing')}
-              value={form.defaultClosingInfoTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultClosingInfoTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
-            />
-          </div>
+      </div>
+      )}
         </div>
       </div>
-
     </form>
   );
 }
