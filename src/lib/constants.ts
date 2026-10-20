@@ -215,12 +215,25 @@ export const TEMPLATE_VARIABLES_HELP = [
   { token: '{{hatarido}}', name: 'Határidő', label: 'Megrendelési határidő: a hónap utolsó napja, 10 napon belül a következő hónapé (pl. Október 31)' },
 ];
 
+// Mintaadatok a szövegsablonok előnézetéhez (Beállítások)
+export const SAMPLE_VARIABLE_CONTEXT = {
+  customerName: 'Kovács János',
+  greetingName: 'Kovács János',
+  city: 'Szentendre',
+  widthCm: 600,
+  projectionCm: 400,
+  heightCm: 250,
+  mountType: 'Épülethez rögzített',
+  eurHufRate: 400,
+  deliveryFeeHuf: 40000,
+};
+
 // E-mailben ezek is használhatók
 export const EMAIL_VARIABLES_HELP = [
   ...TEMPLATE_VARIABLES_HELP,
   { token: '{{sorszam}}', name: 'Sorszám', label: 'Ajánlat sorszáma (pl. OSP-2026-001)' },
-  { token: '{{osszeg_eur}}', name: 'Összeg (EUR)', label: 'Ajánlat összege EUR-ban' },
-  { token: '{{osszeg_huf}}', name: 'Összeg (Ft)', label: 'Ajánlat összege forintban' },
+  { token: '{{osszeg_eur}}', name: 'Összeg (EUR)', label: 'Ajánlat összege EUR-ban, csak a szám (utána írd: EUR)' },
+  { token: '{{osszeg_huf}}', name: 'Összeg (Ft)', label: 'Ajánlat összege forintban, csak a szám (utána írd: Ft)' },
   { token: '{{ceg}}', name: 'Cégnév', label: 'Cégnév (Beállítások)' },
   { token: '{{telefon}}', name: 'Telefon', label: 'Cég telefonszáma' },
   { token: '{{weboldal}}', name: 'Weboldal', label: 'Cég weboldala' },

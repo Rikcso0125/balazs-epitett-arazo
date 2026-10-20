@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, Copy, ImagePlus, Plus, Save, Trash2, Upload } from 'lucide-react';
-import { btn, insertAtCursor, labelCls, PageHeader, VariableChips } from '@/components/ui';
+import { btn, insertAtCursor, labelCls, PageHeader, TemplatePreview, VariableChips } from '@/components/ui';
 import {
   DEFAULT_EMAIL_TEMPLATES,
   EMAIL_VARIABLES_HELP,
@@ -10,6 +10,8 @@ import {
   STATUS_CONFIG,
   PROFIT_MODE_OPTIONS,
   QUOTE_NUMBER_FORMAT_OPTIONS,
+  replaceTemplateVariables,
+  SAMPLE_VARIABLE_CONTEXT,
   TEMPLATE_VARIABLES_HELP,
 } from '@/lib/constants';
 import {
@@ -178,58 +180,103 @@ export function BrandingSettingsView({
   };
 
   // PDF alapszövegek (az Ajánlat fülön, a sorszám alatt)
+  // PDF alapszövegek (az Ajánlat fülön, a sorszám alatt)
+  const fillSample = (token: string) => replaceTemplateVariables(token, SAMPLE_VARIABLE_CONTEXT);
+  // E-mailben ezek is kitöltődnek (mintaértékkel)
+  const fillEmailSample = (token: string) => {
+    const key = token.replace(/[{}\s]/g, '').toLowerCase();
+    const extra: Record<string, string> = {
+      sorszam: formatQuoteNumber(form, 1),
+      osszeg_eur: '12.400',
+      osszeg_huf: '4.960.000',
+      ceg: form.companyName,
+      telefon: form.companyPhone,
+      weboldal: form.companyWebsite,
+      email: form.companyEmail,
+    };
+    return extra[key] ?? fillSample(token);
+  };
   const offerTextsCard = (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-          <div>
-            <div className="text-sm font-semibold text-slate-950">PDF szövegek</div>
-            <p className="text-[13px] text-slate-600 mt-0.5">
-              A beszúrt adatok (pl. megszólítás, méret) ajánlatonként automatikusan kitöltődnek.
-            </p>
-          </div>
-          <VariableChips
-            variables={TEMPLATE_VARIABLES_HELP}
-            onInsert={(t) => insertVar(t, ['greeting', 'intro', 'closing'], 'intro')}
-          />
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-5">
+      <div>
+        <div className="text-base font-semibold text-slate-950">PDF szövegek</div>
+        <p className="text-[13px] text-slate-600 mt-0.5">
+          Ezek az alapszövegek kerülnek minden új ajánlatba; ajánlatonként a szerkesztőben még átírhatók.
+        </p>
+      </div>
 
-          <div>
-            <label className={labelCls}>Megszólítás</label>
-            <input
-              type="text"
-              {...track('greeting')}
-              value={form.defaultGreetingTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultGreetingTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-semibold"
-            />
-          </div>
-
-          <div>
-            <label className={labelCls}>Bevezető szöveg (a PDF elején)</label>
-            <textarea
-              rows={3}
-              {...track('intro')}
-              value={form.defaultIntroTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultIntroTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
-            />
-          </div>
-
-          <div>
-            <label className={labelCls}>Záró szöveg és feltételek (a PDF végén)</label>
-            <textarea
-              rows={12}
-              {...track('closing')}
-              value={form.defaultClosingInfoTemplate}
-              onChange={(e) =>
-                setForm({ ...form, defaultClosingInfoTemplate: e.target.value })
-              }
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
-            />
-          </div>
+      <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2">
+        <div className="text-sm font-semibold text-slate-950">Hogyan készül a szöveg?</div>
+        <ol className="space-y-1.5 text-[13px] text-slate-700">
+          <li className="flex gap-2">
+            <span className="w-5 h-5 rounded-full bg-slate-900 text-white grid place-items-center text-xs shrink-0">1</span>
+            Írd meg a szöveget úgy, ahogy egy ügyfélnek írnád.
+          </li>
+          <li className="flex gap-2">
+            <span className="w-5 h-5 rounded-full bg-slate-900 text-white grid place-items-center text-xs shrink-0">2</span>
+            Ahol ügyfelenként más adat kell (név, méret, település), kattints oda, és válaszd ki az adatot a
+            listából. Egy jelölő kerül be, pl. <code className="px-1 rounded bg-white border border-slate-200">{'{{megszolitas}}'}</code>.
+          </li>
+          <li className="flex gap-2">
+            <span className="w-5 h-5 rounded-full bg-slate-900 text-white grid place-items-center text-xs shrink-0">3</span>
+            Az ajánlatban a jelölő helyére a valódi adat kerül. A mezők alatt látod, hogyan fog kinézni.
+          </li>
+        </ol>
+        <div className="text-[13px] text-slate-600">
+          Példa: <code className="px-1 rounded bg-white border border-slate-200">{'Kedves {{megszolitas}}!'}</code>
+          {' '}→ <span className="font-medium text-slate-950">Kedves {fillSample('{{megszolitas}}')}!</span>
         </div>
+      </div>
+
+      <div className="sticky top-0 z-10 -mx-6 px-6 py-2 bg-white/95 backdrop-blur border-b border-slate-100">
+        <VariableChips
+          variables={TEMPLATE_VARIABLES_HELP}
+          sample={fillSample}
+          onInsert={(t) => insertVar(t, ['greeting', 'intro', 'closing'], 'intro')}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className={labelCls}>Megszólítás</label>
+        <p className="text-xs text-slate-500 -mt-1">Az ajánlat első sora, félkövérrel.</p>
+        <input
+          type="text"
+          {...track('greeting')}
+          value={form.defaultGreetingTemplate}
+          onChange={(e) => setForm({ ...form, defaultGreetingTemplate: e.target.value })}
+          className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-semibold"
+        />
+        <TemplatePreview text={form.defaultGreetingTemplate} fill={fillSample} className="font-semibold" />
+      </div>
+
+      <div className="space-y-2">
+        <label className={labelCls}>Bevezető szöveg</label>
+        <p className="text-xs text-slate-500 -mt-1">A megszólítás alatt, a termékek előtt.</p>
+        <textarea
+          rows={3}
+          {...track('intro')}
+          value={form.defaultIntroTemplate}
+          onChange={(e) => setForm({ ...form, defaultIntroTemplate: e.target.value })}
+          className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+        />
+        <TemplatePreview text={form.defaultIntroTemplate} fill={fillSample} />
+      </div>
+
+      <div className="space-y-2">
+        <label className={labelCls}>Záró szöveg és feltételek</label>
+        <p className="text-xs text-slate-500 -mt-1">
+          A PDF végén, a termékek és az összesítő után. Új sor: Enter; felsorolás: kezdd a sort „• ” jellel.
+        </p>
+        <textarea
+          rows={12}
+          {...track('closing')}
+          value={form.defaultClosingInfoTemplate}
+          onChange={(e) => setForm({ ...form, defaultClosingInfoTemplate: e.target.value })}
+          className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"
+        />
+        <TemplatePreview text={form.defaultClosingInfoTemplate} fill={fillSample} />
+      </div>
+    </div>
   );
 
   return (
@@ -671,24 +718,23 @@ export function BrandingSettingsView({
         </div>
         {/* Sablonok: választható lista + szerkesztő */}
         <div className="pt-2 space-y-3">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[13px] font-medium text-slate-700 mr-1">Sablonok</span>
-            {form.emailSettings.templates.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setActiveTemplateId(t.id)}
-                className={`px-2.5 py-1 rounded-full border text-[13px] transition ${
-                  t.id === activeTemplate?.id
-                    ? 'bg-slate-900 border-slate-900 text-white'
-                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
-                }`}
+          <div className="flex flex-wrap items-end gap-2">
+            <label className="block min-w-0 flex-1 basis-56">
+              <span className={labelCls}>E-mail sablon</span>
+              <select
+                value={activeTemplate?.id || ''}
+                onChange={(e) => setActiveTemplateId(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm"
               >
-                {t.name || 'Névtelen'}
-                {t.id === form.emailSettings.defaultTemplateId ? ' ★' : ''}
-              </button>
-            ))}
-            <button type="button" onClick={addTemplate} className={btn.ghost}>
+                {form.emailSettings.templates.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name || 'Névtelen'}
+                    {t.id === form.emailSettings.defaultTemplateId ? ' (alapértelmezett)' : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button type="button" onClick={addTemplate} className={btn.secondary}>
               <Plus className="w-4 h-4" />
               Új sablon
             </button>
@@ -755,10 +801,16 @@ export function BrandingSettingsView({
                 <div className="mt-2">
                   <VariableChips
                     variables={EMAIL_VARIABLES_HELP}
+                    sample={fillEmailSample}
                     onInsert={(t) => insertVar(t, ['subject', 'body'], 'body')}
-                    hint="Kattints a tárgyba vagy az üzenetbe, majd a beszúrandó adatra."
+                    hint="Kattints a tárgyba vagy az üzenetbe oda, ahová az adat kell, majd válaszd ki a listából."
                   />
                 </div>
+                <TemplatePreview
+                  className="mt-2"
+                  text={`Tárgy: ${activeTemplate.subject}\n\n${activeTemplate.body}`}
+                  fill={fillEmailSample}
+                />
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <button

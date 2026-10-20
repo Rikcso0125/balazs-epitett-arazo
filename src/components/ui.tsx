@@ -116,30 +116,72 @@ export const labelCls = 'block text-[13px] font-medium text-slate-700 mb-1.5';
 export function VariableChips({
   variables,
   onInsert,
-  hint = 'Kattints egy mezőbe, majd a beszúrandó adatra.',
+  sample,
+  hint = 'Kattints a szövegben oda, ahová az adatot szeretnéd, majd válaszd ki a listából.',
 }: {
   variables: { token: string; name: string; label: string }[];
   onInsert: (token: string) => void;
+  sample?: (token: string) => string;
   hint?: string;
 }) {
+  // Legördülő lista: az adat neve és egy példa arra, mi kerül a helyére
   return (
-    <div className="space-y-1.5">
-      <div className="flex flex-wrap gap-1.5">
-        {variables.map((v) => (
-          <button
-            key={v.token}
-            type="button"
-            title={`${v.label} - ${v.token}`}
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => onInsert(v.token)}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-[13px] text-slate-700"
-          >
-            <span className="text-slate-400">+</span>
-            {v.name}
-          </button>
-        ))}
-      </div>
+    <div className="space-y-1">
+      <select
+        value=""
+        onChange={(e) => {
+          if (e.target.value) onInsert(e.target.value);
+        }}
+        className="w-full sm:w-auto max-w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm"
+        aria-label="Adat beszúrása"
+      >
+        <option value="">+ Adat beszúrása a szövegbe…</option>
+        {variables.map((v) => {
+          const ex = sample ? sample(v.token) : '';
+          return (
+            <option key={v.token} value={v.token}>
+              {v.name}
+              {ex && ex !== v.token ? `  →  ${ex}` : ''}
+            </option>
+          );
+        })}
+      </select>
       {hint && <p className="text-xs text-slate-500">{hint}</p>}
+    </div>
+  );
+}
+
+/**
+ * Szöveg előnézete mintaadatokkal: a {{...}} jelölők helyére a kitöltött érték kerül (kiemelve),
+ * az ismeretlen jelölők pirosan látszanak.
+ */
+export function TemplatePreview({
+  text,
+  fill,
+  className = '',
+}: {
+  text: string;
+  fill: (token: string) => string;
+  className?: string;
+}) {
+  const parts = (text || '').split(/(\{\{\s*[\w]+\s*\}\})/g);
+  return (
+    <div className={`rounded-xl bg-slate-50 border border-dashed border-slate-300 px-3.5 py-2.5 text-[13px] text-slate-700 whitespace-pre-wrap break-words ${className}`}>
+      <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400 mb-1">Így jelenik meg (mintaadatokkal)</div>
+      {parts.map((part, i) => {
+        if (!/^\{\{/.test(part)) return <React.Fragment key={i}>{part}</React.Fragment>;
+        const value = fill(part);
+        const unknown = value === part;
+        return (
+          <mark
+            key={i}
+            className={`rounded px-0.5 ${unknown ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-slate-950'}`}
+            title={unknown ? 'Ismeretlen adat: ellenőrizd a jelölőt' : part}
+          >
+            {unknown ? `${part} (ismeretlen)` : value}
+          </mark>
+        );
+      })}
     </div>
   );
 }
