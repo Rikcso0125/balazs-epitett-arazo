@@ -33,7 +33,7 @@ import {
 } from '@/lib/types';
 import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
 import { ColorDots } from '@/components/ColorOptions';
-import { EXTRA_GROUP_ORDER, presentExtra } from '@/lib/extra-groups';
+import { presentExtra, sortGroupNames } from '@/lib/extra-groups';
 import {
   btn,
   card,
@@ -1039,7 +1039,7 @@ export function GuidedQuoteWizardView({
                 const renderRow = (r: QuoteTableRow) => {
                   const isSystem = Boolean(r.systemRole);
                   const checked = isOn(r);
-                  const pres = r.itemRole === 'optional' ? presentExtra(matOf(r) || { name: r.name }) : null;
+                  const pres = r.itemRole === 'optional' ? presentExtra(matOf(r) || { name: r.name }, config.extraGroups) : null;
                   return (
                     <label
                       key={r.id}
@@ -1056,6 +1056,14 @@ export function GuidedQuoteWizardView({
                         }
                         className="rounded"
                       />
+                      {pres && thumbOf(r) && (
+                        <img
+                          src={thumbUrl(thumbOf(r))}
+                          alt=""
+                          loading="lazy"
+                          className="w-10 h-10 rounded-md object-cover border border-slate-200 shrink-0"
+                        />
+                      )}
                       <span
                         className={`min-w-0 flex-1 basis-40 break-words ${
                           checked ? 'text-slate-950' : 'text-slate-600'
@@ -1102,7 +1110,7 @@ export function GuidedQuoteWizardView({
                           </button>
                         )}
                         {rows.map((r) => {
-                          const pres = presentExtra(matOf(r) || { name: r.name });
+                          const pres = presentExtra(matOf(r) || { name: r.name }, config.extraGroups);
                           const on = isOn(r);
                           return (
                             <button
@@ -1112,6 +1120,9 @@ export function GuidedQuoteWizardView({
                               className={chip(on)}
                               aria-pressed={on}
                             >
+                              {thumbOf(r) && (
+                                <img src={thumbUrl(thumbOf(r))} alt="" loading="lazy" className="w-6 h-6 rounded object-cover" />
+                              )}
                               {pres.choiceLabel}
                               <span className={`tabular-nums text-xs ${on ? 'text-white/80' : 'text-slate-500'}`}>
                                 +{formatDotNumber(r.discountPriceEur)} EUR
@@ -1127,16 +1138,15 @@ export function GuidedQuoteWizardView({
                 };
 
                 // Extrák gyűjteményekbe rendezve (Világítás, Oldalzárás …), összecsukható szakaszokkal
-                const groupNames = Array.from(
-                  new Set(extraRows.map((r) => presentExtra(matOf(r) || { name: r.name }).group))
-                ).sort((a, b) => {
-                  const ia = EXTRA_GROUP_ORDER.indexOf(a);
-                  const ib = EXTRA_GROUP_ORDER.indexOf(b);
-                  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-                });
+                const groupNames = sortGroupNames(
+                  Array.from(new Set(extraRows.map((r) => presentExtra(matOf(r) || { name: r.name }, config.extraGroups).group))),
+                  config.extraGroups
+                );
+                const groupConfig = (g: string) => (config.extraGroups || []).find((x) => x.name === g);
+                const thumbOf = (r: QuoteTableRow) => matOf(r)?.photos?.find((ph) => ph.imageUrl)?.imageUrl;
                 const renderGroups = () =>
                   groupNames.map((g) => {
-                    const rows = extraRows.filter((r) => presentExtra(matOf(r) || { name: r.name }).group === g);
+                    const rows = extraRows.filter((r) => presentExtra(matOf(r) || { name: r.name }, config.extraGroups).group === g);
                     const onRows = rows.filter(isOn);
                     const sum = onRows.reduce((acc, r) => acc + (r.discountPriceEur || 0), 0);
                     const key = `${tpl.id}|${g}`;
@@ -1145,12 +1155,12 @@ export function GuidedQuoteWizardView({
                     const seen = new Set<string>();
                     const parts: React.ReactNode[] = [];
                     for (const r of rows) {
-                      const pres = presentExtra(matOf(r) || { name: r.name });
+                      const pres = presentExtra(matOf(r) || { name: r.name }, config.extraGroups);
                       if (pres.choiceGroup) {
                         if (seen.has(pres.choiceGroup)) continue;
                         seen.add(pres.choiceGroup);
                         const members = rows.filter(
-                          (x) => presentExtra(matOf(x) || { name: x.name }).choiceGroup === pres.choiceGroup
+                          (x) => presentExtra(matOf(x) || { name: x.name }, config.extraGroups).choiceGroup === pres.choiceGroup
                         );
                         parts.push(renderChoice(pres.choiceGroup, pres.detail, members, pres.choiceMulti));
                       } else {
@@ -1166,8 +1176,16 @@ export function GuidedQuoteWizardView({
                           aria-expanded={open}
                         >
                           <ChevronRight
-                            className={`w-4 h-4 text-slate-400 transition-transform ${open ? 'rotate-90' : ''}`}
+                            className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${open ? 'rotate-90' : ''}`}
                           />
+                          {groupConfig(g)?.imageUrl && (
+                            <img
+                              src={thumbUrl(groupConfig(g)?.imageUrl)}
+                              alt=""
+                              loading="lazy"
+                              className="w-9 h-9 rounded-md object-cover border border-slate-200 shrink-0"
+                            />
+                          )}
                           <span className="min-w-0 flex-1 flex flex-wrap items-baseline gap-x-2">
                             <span className="text-sm font-medium text-slate-950">{g}</span>
                             <span className="text-xs text-slate-500 whitespace-nowrap">
@@ -1180,7 +1198,14 @@ export function GuidedQuoteWizardView({
                             </span>
                           )}
                         </button>
-                        {open && <div className="pl-1 sm:pl-6 pb-2">{parts}</div>}
+                        {open && (
+                          <div className="pl-1 sm:pl-6 pb-2">
+                            {groupConfig(g)?.description && (
+                              <div className="text-xs text-slate-500 -mt-1 mb-1">{groupConfig(g)?.description}</div>
+                            )}
+                            {parts}
+                          </div>
+                        )}
                       </div>
                     );
                   });

@@ -1974,7 +1974,7 @@ export function TemplateBuilderView({
                               Nem számít a szerelés % alapjába
                             </label>
                             {currentMaterial.itemRole === 'optional' && (() => {
-                              const auto = presentExtra({ ...currentMaterial, group: undefined, choiceGroup: undefined });
+                              const auto = presentExtra({ ...currentMaterial, group: undefined, choiceGroup: undefined }, config.extraGroups);
                               return (
                                 <div className="pt-2 border-t border-slate-200 space-y-2">
                                   <div className="text-[13px] font-medium text-slate-700">
@@ -1991,7 +1991,7 @@ export function TemplateBuilderView({
                                         className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
                                       />
                                       <datalist id="extra-group-options">
-                                        {EXTRA_GROUP_ORDER.map((g) => (
+                                        {Array.from(new Set([...(config.extraGroups || []).map((g) => g.name), ...EXTRA_GROUP_ORDER])).map((g) => (
                                           <option key={g} value={g} />
                                         ))}
                                       </datalist>

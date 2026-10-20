@@ -15,6 +15,8 @@ import {
   Layers,
   Maximize2,
   PackagePlus,
+  ChevronRight,
+  GripVertical,
   Plus,
   RefreshCw,
   RotateCcw,
@@ -188,6 +190,89 @@ export function PdfBlockEditorView({
     setNeedsPreviewRefresh(true);
   };
 
+  // Húzd és ejtsd: a fogantyú lenyomásakor válik húzhatóvá a blokk (a mezők így szerkeszthetők maradnak)
+  const [dragHandleId, setDragHandleId] = useState<string | null>(null);
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const [dropAt, setDropAt] = useState<number | null>(null);
+  const [collapsedBlocks, setCollapsedBlocks] = useState<Record<string, boolean>>({});
+  const [insertMenuAt, setInsertMenuAt] = useState<number | null>(null);
+
+  const blockLabel = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box'
+      ? 'Szöveg'
+      : blk.type === 'photo_box'
+      ? 'Fotó'
+      : blk.type === 'template_section'
+      ? blk.isManualSection
+        ? 'Termék (kézi ár)'
+        : 'Termék'
+      : 'Oldaltörés';
+  const blockSummary = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box'
+      ? blk.title || (blk.content || '').slice(0, 80)
+      : blk.type === 'photo_box'
+      ? blk.photo?.titleAbove || blk.photo?.captionBelow || ''
+      : blk.type === 'template_section'
+      ? blk.sectionTitle || ''
+      : '';
+
+  // „+” sáv két blokk között: ide szúrja be az új szakaszt
+  const renderInsertBar = (at: number) => {
+    const open = insertMenuAt === at;
+    const item = 'px-3 py-1.5 rounded-lg text-[13px] text-slate-700 hover:bg-slate-100 text-left';
+    const run = (fn: () => void) => {
+      fn();
+      setInsertMenuAt(null);
+    };
+    return (
+      <div className="relative flex items-center justify-center h-4 group" key={`ins_${at}`}>
+        <div className={`absolute inset-x-0 top-1/2 border-t ${open ? 'border-slate-400' : 'border-transparent group-hover:border-slate-200'}`} />
+        <button
+          type="button"
+          onClick={() => setInsertMenuAt(open ? null : at)}
+          className={`relative z-[1] w-6 h-6 grid place-items-center rounded-full border bg-white text-slate-500 hover:text-slate-950 hover:border-slate-400 ${
+            open ? 'border-slate-400 text-slate-950' : 'border-slate-200 opacity-60 group-hover:opacity-100'
+          }`}
+          title="Új szakasz beszúrása ide"
+          aria-label="Új szakasz beszúrása ide"
+          aria-expanded={open}
+        >
+          <Plus className="w-3.5 h-3.5" />
+        </button>
+        {open && (
+          <div className="absolute top-full mt-1 z-20 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg p-1.5 flex flex-col">
+            <button type="button" className={item} onClick={() => run(() => handleAddStandaloneTextBox(at - 1))}>
+              Szöveg
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddStandalonePhotoBox(at - 1))}>
+              Fotó
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddCustomBlankTemplateSection(at))}>
+              Üres termékszekció
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddPageBreak(at))}>
+              Oldaltörés
+            </button>
+            {templates.length > 0 && (
+              <div className="border-t border-slate-100 mt-1 pt-1">
+                <div className="px-3 py-1 text-xs text-slate-500">Termék sablonból</div>
+                <div className="max-h-56 overflow-y-auto flex flex-col">
+                  {templates
+                    .filter((t) => t.status !== 'inactive')
+                    .map((t) => (
+                      <button key={t.id} type="button" className={item} onClick={() => run(() => handleInsertSavedTemplateBlock(at, t.id))}>
+                        {t.name}
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const moveBlock = (idx: number, direction: -1 | 1) => {
     setBlocks((prev) => {
       const target = idx + direction;
@@ -196,6 +281,29 @@ export function PdfBlockEditorView({
       const temp = copy[idx];
       copy[idx] = copy[target];
       copy[target] = temp;
+      return copy;
+    });
+    setNeedsPreviewRefresh(true);
+  };
+
+  // Új blokk beszúrása a megadott helyre (index nélkül a végére)
+  const insertBlockAt = (block: QuoteDocumentBlock, at?: number) => {
+    setBlocks((prev) => {
+      if (at === undefined || at >= prev.length) return [...prev, block];
+      const copy = [...prev];
+      copy.splice(Math.max(0, at), 0, block);
+      return copy;
+    });
+    setNeedsPreviewRefresh(true);
+  };
+
+  // Húzással áthelyezés: a blokk a `to` pozíció elé kerül
+  const moveBlockTo = (from: number, to: number) => {
+    setBlocks((prev) => {
+      if (from === to || from + 1 === to) return prev;
+      const copy = [...prev];
+      const [item] = copy.splice(from, 1);
+      copy.splice(to > from ? to - 1 : to, 0, item);
       return copy;
     });
     setNeedsPreviewRefresh(true);
@@ -237,13 +345,7 @@ export function PdfBlockEditorView({
       textStyle: 'normal',
       align: 'left',
     };
-    setBlocks((prev) => {
-      if (afterIndex === undefined) return [...prev, newBlock];
-      const copy = [...prev];
-      copy.splice(afterIndex + 1, 0, newBlock);
-      return copy;
-    });
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, afterIndex === undefined ? undefined : afterIndex + 1);
   };
 
   // Add standalone photo + caption box block
@@ -260,18 +362,12 @@ export function PdfBlockEditorView({
         align: 'center',
       },
     };
-    setBlocks((prev) => {
-      if (afterIndex === undefined) return [...prev, newBlock];
-      const copy = [...prev];
-      copy.splice(afterIndex + 1, 0, newBlock);
-      return copy;
-    });
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, afterIndex === undefined ? undefined : afterIndex + 1);
   };
 
   // Insert existing saved template as a new block
-  const handleInsertSavedTemplateBlock = () => {
-    const tpl = templates.find((t) => t.id === templateToInsertId);
+  const handleInsertSavedTemplateBlock = (at?: number, templateId = templateToInsertId) => {
+    const tpl = templates.find((t) => t.id === templateId);
     if (!tpl) return;
     const sectionCount =
       blocks.filter((b) => b.type === 'template_section').length + 1;
@@ -291,12 +387,11 @@ export function PdfBlockEditorView({
       },
       config
     );
-    setBlocks((prev) => [...prev, newBlock]);
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, at);
   };
 
   // Insert a brand-new blank custom template/product section directly in the editor
-  const handleAddCustomBlankTemplateSection = () => {
+  const handleAddCustomBlankTemplateSection = (at?: number) => {
     const sectionCount =
       blocks.filter((b) => b.type === 'template_section').length + 1;
     const defaultAlg = createDefaultMaterialAlgorithm({
@@ -346,20 +441,12 @@ export function PdfBlockEditorView({
       calcCtx,
       templates
     );
-    setBlocks((prev) => [...prev, calculatedBlock]);
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(calculatedBlock, at);
   };
 
   // Add page break
-  const handleAddPageBreak = () => {
-    setBlocks((prev) => [
-      ...prev,
-      {
-        id: `blk_brk_${Date.now()}`,
-        type: 'page_break',
-      },
-    ]);
-    setNeedsPreviewRefresh(true);
+  const handleAddPageBreak = (at?: number) => {
+    insertBlockAt({ id: `blk_brk_${Date.now()}`, type: 'page_break' }, at);
   };
 
   const refreshLivePdfPreview = useCallback(async () => {
@@ -749,11 +836,11 @@ export function PdfBlockEditorView({
           <ImageIcon className="w-4 h-4" />
           Fotó
         </button>
-        <button type="button" onClick={handleAddCustomBlankTemplateSection} className={btn.ghost}>
+        <button type="button" onClick={() => handleAddCustomBlankTemplateSection()} className={btn.ghost}>
           <PackagePlus className="w-4 h-4" />
           Üres termékszekció
         </button>
-        <button type="button" onClick={handleAddPageBreak} className={btn.ghost}>
+        <button type="button" onClick={() => handleAddPageBreak()} className={btn.ghost}>
           <Scissors className="w-4 h-4" />
           Oldaltörés
         </button>
@@ -770,7 +857,7 @@ export function PdfBlockEditorView({
                 </option>
               ))}
             </select>
-            <button type="button" onClick={handleInsertSavedTemplateBlock} className={btn.secondary}>
+            <button type="button" onClick={() => handleInsertSavedTemplateBlock()} className={btn.secondary}>
               <Plus className="w-4 h-4" />
               Sablon
             </button>
@@ -782,26 +869,89 @@ export function PdfBlockEditorView({
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: Editable Document Blocks */}
         <div className="xl:col-span-7 space-y-4">
+          {blocks.length > 1 && (
+            <div className="flex justify-end gap-3 text-[13px] text-slate-500 -mb-2">
+              <button
+                type="button"
+                className="hover:text-slate-950"
+                onClick={() => setCollapsedBlocks(Object.fromEntries(blocks.map((b) => [b.id, true])))}
+              >
+                Összecsuk mind
+              </button>
+              <button type="button" className="hover:text-slate-950" onClick={() => setCollapsedBlocks({})}>
+                Kinyit mind
+              </button>
+            </div>
+          )}
           {blocks.map((blk, bIdx) => (
+            <React.Fragment key={blk.id}>
+            {renderInsertBar(bIdx)}
             <div
-              key={blk.id}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden"
+              draggable={dragHandleId === blk.id}
+              onDragStart={(e) => {
+                setDragFrom(bIdx);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', blk.id);
+              }}
+              onDragOver={(e) => {
+                if (dragFrom === null) return;
+                e.preventDefault();
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                setDropAt(e.clientY < rect.top + rect.height / 2 ? bIdx : bIdx + 1);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (dragFrom !== null && dropAt !== null) moveBlockTo(dragFrom, dropAt);
+                setDragFrom(null);
+                setDropAt(null);
+                setDragHandleId(null);
+              }}
+              onDragEnd={() => {
+                setDragFrom(null);
+                setDropAt(null);
+                setDragHandleId(null);
+              }}
+              className={`relative bg-white rounded-2xl border overflow-hidden transition ${
+                dragFrom === bIdx ? 'opacity-40 border-slate-300' : 'border-slate-200'
+              }`}
             >
+              {dragFrom !== null && dropAt === bIdx && (
+                <div className="absolute inset-x-0 top-0 h-1 bg-slate-900 z-10" />
+              )}
+              {dragFrom !== null && dropAt === bIdx + 1 && bIdx === blocks.length - 1 && (
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-slate-900 z-10" />
+              )}
               {/* Block Top Bar */}
-              <div className="px-4 py-2 border-b border-slate-200 flex items-center justify-between gap-2">
-                <span className="text-[13px] font-medium text-slate-600">
-                  {blk.type === 'text_box'
-                    ? 'Szöveg'
-                    : blk.type === 'photo_box'
-                    ? 'Fotó'
-                    : blk.type === 'template_section'
-                    ? blk.isManualSection
-                      ? 'Termék (kézi ár)'
-                      : 'Termék'
-                    : 'Oldaltörés'}
-                </span>
+              <div className="px-2 sm:px-3 py-2 border-b border-slate-200 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onMouseDown={() => setDragHandleId(blk.id)}
+                  onMouseUp={() => setDragHandleId(null)}
+                  onTouchStart={() => setDragHandleId(blk.id)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 cursor-grab active:cursor-grabbing"
+                  title="Húzd az áthelyezéshez"
+                  aria-label="Áthelyezés húzással"
+                >
+                  <GripVertical className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCollapsedBlocks((prev) => ({ ...prev, [blk.id]: !prev[blk.id] }))}
+                  className="min-w-0 flex-1 flex items-center gap-2 text-left"
+                  aria-expanded={!collapsedBlocks[blk.id]}
+                >
+                  <ChevronRight
+                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${
+                      collapsedBlocks[blk.id] ? '' : 'rotate-90'
+                    }`}
+                  />
+                  <span className="text-[13px] font-medium text-slate-600 shrink-0">{blockLabel(blk)}</span>
+                  {collapsedBlocks[blk.id] && blockSummary(blk) && (
+                    <span className="min-w-0 truncate text-[13px] text-slate-950">{blockSummary(blk)}</span>
+                  )}
+                </button>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => moveBlock(bIdx, -1)}
@@ -831,6 +981,7 @@ export function PdfBlockEditorView({
                 </div>
               </div>
 
+              {!collapsedBlocks[blk.id] && (<>
               {/* BLOCK TYPE 1: STANDALONE TEXT BOX */}
               {blk.type === 'text_box' && (
                 <div className="p-4 space-y-3">
@@ -2035,8 +2186,11 @@ export function PdfBlockEditorView({
                   --- Itt új A4-es oldal kezdődik a PDF-ben ---
                 </div>
               )}
+              </>)}
             </div>
+            </React.Fragment>
           ))}
+          {renderInsertBar(blocks.length)}
         </div>
 
         {/* RIGHT COLUMN: Sticky Live A4 PDF Preview */}

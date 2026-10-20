@@ -3,6 +3,7 @@ import {
   EmailSettings,
   ColorOption,
   EmailTemplate,
+  ExtraGroupConfig,
   ExtraPreset,
   MountType,
   QuoteNumberFormat,
@@ -444,6 +445,16 @@ export function suggestEmailTemplate(
   );
 }
 
+// Az extrák alap gyűjteményei (a Beállításokban átnevezhető, bővíthető, képpel ellátható)
+export const DEFAULT_EXTRA_GROUPS: ExtraGroupConfig[] = [
+  { id: 'grp_light', name: 'Világítás', description: 'LED-szalagok, spotok, RGB', imageUrl: '/uploads/catalog-2026/led/photo-2.jpg' },
+  { id: 'grp_shade', name: 'Oldalzárás és árnyékolás', description: 'ZIP árnyékolók, üvegfalak, tetőárnyékolók' },
+  { id: 'grp_heat', name: 'Fűtés', description: 'Infra hősugárzók', imageUrl: '/uploads/catalog-2026/heaters/photo-1.jpg' },
+  { id: 'grp_control', name: 'Érzékelők és vezérlés', description: 'Eső-, szél-, napfényérzékelő, okosotthon', imageUrl: '/uploads/catalog-2026/automation/photo-5.jpg' },
+  { id: 'grp_colour', name: 'Szín', description: 'Egyedi RAL és gyári színek', imageUrl: '/uploads/catalog-2026/colours-ke/colours-1.jpg' },
+  { id: 'grp_other', name: 'Egyéb' },
+];
+
 export const DEFAULT_SYSTEM_CONFIG: SystemConfig = {
   companyName: 'OpenSky Pergola Kft.',
   companySubtitle: 'Pergolák • Napellenzők • Árnyékolók • LED • Kocsibeállók',
@@ -478,6 +489,7 @@ export const DEFAULT_SYSTEM_CONFIG: SystemConfig = {
   quoteNumberFormat: 'year_seq',
   quoteNumberDigits: 3,
   extraPresets: DEFAULT_EXTRA_PRESETS.map((p) => ({ ...p })),
+  extraGroups: DEFAULT_EXTRA_GROUPS.map((g) => ({ ...g })),
 };
 
 export const QUOTE_NUMBER_FORMAT_OPTIONS: { id: QuoteNumberFormat; label: string }[] = [

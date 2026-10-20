@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Copy, Plus, Save, Trash2, Upload } from 'lucide-react';
+import { ArrowDown, ArrowUp, Copy, ImagePlus, Plus, Save, Trash2, Upload } from 'lucide-react';
 import { btn, insertAtCursor, labelCls, PageHeader, VariableChips } from '@/components/ui';
 import {
   DEFAULT_EMAIL_TEMPLATES,
@@ -21,6 +21,7 @@ import {
   QuoteNumberFormat,
   QuoteStatus,
   SystemConfig,
+  ExtraGroupConfig,
 } from '@/lib/types';
 
 
@@ -278,6 +279,114 @@ export function BrandingSettingsView({
           A képlet végleges
         </label>
       </div>
+      {/* Extrák gyűjteményei az árazóban: név, leírás, kép, sorrend */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 className="text-base font-semibold text-slate-950">Extrák gyűjteményei</h2>
+          <p className="text-[13px] text-slate-600 mt-0.5">
+            Az árazóban az extrák ezekbe a csoportokba rendezve, ebben a sorrendben jelennek meg. A
+            tételeknél a sablonszerkesztőben választható gyűjtemény; ha nincs megadva, a név alapján
+            kerül a megfelelő csoportba (átnevezés után is).
+          </p>
+        </div>
+        <div className="space-y-2">
+          {(form.extraGroups || []).map((g, idx, all) => {
+            const update = (patch: Partial<ExtraGroupConfig>) =>
+              setForm((prev) => ({
+                ...prev,
+                extraGroups: (prev.extraGroups || []).map((x, i) => (i === idx ? { ...x, ...patch } : x)),
+              }));
+            const move = (dir: -1 | 1) =>
+              setForm((prev) => {
+                const list = [...(prev.extraGroups || [])];
+                const to = idx + dir;
+                if (to < 0 || to >= list.length) return prev;
+                [list[idx], list[to]] = [list[to], list[idx]];
+                return { ...prev, extraGroups: list };
+              });
+            return (
+              <div key={g.id} className="flex flex-wrap sm:flex-nowrap items-center gap-2 rounded-xl border border-slate-200 p-2">
+                <label
+                  className="relative w-14 h-14 rounded-lg border border-dashed border-slate-300 bg-slate-50 grid place-items-center overflow-hidden cursor-pointer shrink-0"
+                  title="Kép feltöltése"
+                >
+                  {g.imageUrl ? (
+                    <img src={g.imageUrl} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <ImagePlus className="w-5 h-5 text-slate-400" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      e.target.value = '';
+                      if (!f) return;
+                      const url = await onUploadImage(f);
+                      if (url) update({ imageUrl: url });
+                    }}
+                  />
+                </label>
+                <div className="min-w-0 flex-1 basis-56 space-y-1">
+                  <input
+                    value={g.name}
+                    onChange={(e) => update({ name: e.target.value })}
+                    placeholder="Gyűjtemény neve (pl. Világítás)"
+                    className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-sm font-medium"
+                  />
+                  <input
+                    value={g.description || ''}
+                    onChange={(e) => update({ description: e.target.value })}
+                    placeholder="Rövid leírás (opcionális)"
+                    className="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[13px] text-slate-600"
+                  />
+                </div>
+                <div className="flex items-center gap-0.5 ml-auto">
+                  {g.imageUrl && (
+                    <button type="button" onClick={() => update({ imageUrl: undefined })} className="px-2 py-1 text-xs text-slate-500 hover:text-slate-950">
+                      Kép törlése
+                    </button>
+                  )}
+                  <button type="button" disabled={idx === 0} onClick={() => move(-1)} className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30" title="Fel">
+                    <ArrowUp className="w-4 h-4" />
+                  </button>
+                  <button type="button" disabled={idx === all.length - 1} onClick={() => move(1)} className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30" title="Le">
+                    <ArrowDown className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setForm((prev) => ({ ...prev, extraGroups: (prev.extraGroups || []).filter((_, i) => i !== idx) }))
+                    }
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                    title="Gyűjtemény törlése"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={() =>
+            setForm((prev) => ({
+              ...prev,
+              extraGroups: [
+                ...(prev.extraGroups || []),
+                { id: `grp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`, name: 'Új gyűjtemény' },
+              ],
+            }))
+          }
+          className={btn.secondary}
+        >
+          <Plus className="w-4 h-4" />
+          Új gyűjtemény
+        </button>
+      </div>
+
       {/* Gyors extrák: a sablonépítőben egy kattintással felvehető tételek */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
         <div>

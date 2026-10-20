@@ -1,4 +1,4 @@
-import { TemplateMaterialItem } from './types';
+import { ExtraGroupConfig, TemplateMaterialItem } from './types';
 
 /** Az extrák gyűjteményei az árazóban, ebben a sorrendben */
 export const EXTRA_GROUP_ORDER = [
@@ -24,14 +24,20 @@ const SIDE_PATTERNS: [RegExp, string][] = [
   [/\s+a kinyúlás oldalára/i, 'Kinyúlás oldala'],
 ];
 
-function guessGroup(name: string): string {
+// Automatikus besorolás az alap gyűjtemények azonosítójára (átnevezés után is követi)
+const GUESS: [RegExp, string, string][] = [
+  [/led|világítás|spot/, 'grp_light', 'Világítás'],
+  [/zip|árnyékoló|üvegfal|veranda|háromszög|oldalfal|ponyva/, 'grp_shade', 'Oldalzárás és árnyékolás'],
+  [/infra|fűtés|hősugárzó/, 'grp_heat', 'Fűtés'],
+  [/érzékelő|okosotthon|vezérl|távirányító|tahoma/, 'grp_control', 'Érzékelők és vezérlés'],
+  [/ral|szín/, 'grp_colour', 'Szín'],
+];
+
+function guessGroup(name: string, groups?: ExtraGroupConfig[]): string {
   const n = name.toLowerCase();
-  if (/led|világítás|spot/.test(n)) return 'Világítás';
-  if (/zip|árnyékoló|üvegfal|veranda|háromszög|oldalfal|ponyva/.test(n)) return 'Oldalzárás és árnyékolás';
-  if (/infra|fűtés|hősugárzó/.test(n)) return 'Fűtés';
-  if (/érzékelő|okosotthon|vezérl|távirányító|tahoma/.test(n)) return 'Érzékelők és vezérlés';
-  if (/ral|szín/.test(n)) return 'Szín';
-  return 'Egyéb';
+  const hit = GUESS.find(([re]) => re.test(n));
+  const [id, fallback] = hit ? [hit[1], hit[2]] : ['grp_other', 'Egyéb'];
+  return groups?.find((g) => g.id === id)?.name || fallback;
 }
 
 function splitTitle(name: string): { title: string; detail?: string } {
@@ -40,8 +46,11 @@ function splitTitle(name: string): { title: string; detail?: string } {
 }
 
 /** Hogyan jelenjen meg egy extra: gyűjtemény, opciócsoport és címke (megadott vagy a névből) */
-export function presentExtra(m: Pick<TemplateMaterialItem, 'name' | 'group' | 'choiceGroup' | 'choiceLabel' | 'choiceMulti'>): ExtraPresentation {
-  const group = m.group?.trim() || guessGroup(m.name);
+export function presentExtra(
+  m: Pick<TemplateMaterialItem, 'name' | 'group' | 'choiceGroup' | 'choiceLabel' | 'choiceMulti'>,
+  groups?: ExtraGroupConfig[]
+): ExtraPresentation {
+  const group = m.group?.trim() || guessGroup(m.name, groups);
   if (m.choiceGroup?.trim()) {
     const { title, detail } = splitTitle(m.name);
     return {
@@ -61,4 +70,14 @@ export function presentExtra(m: Pick<TemplateMaterialItem, 'name' | 'group' | 'c
     }
   }
   return { group, choiceMulti: false, ...splitTitle(m.name) };
+}
+
+/** A gyűjtemények sorrendje: a Beállításokban megadott, utána az alapértelmezettek, végül a többi */
+export function sortGroupNames(names: string[], configured?: ExtraGroupConfig[]): string[] {
+  const order = [...(configured || []).map((g) => g.name), ...EXTRA_GROUP_ORDER];
+  const rank = (n: string) => {
+    const i = order.indexOf(n);
+    return i === -1 ? 999 : i;
+  };
+  return [...names].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b, 'hu'));
 }

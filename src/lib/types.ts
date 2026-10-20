@@ -172,6 +172,14 @@ export type SizeAxis = 'width' | 'projection' | 'height';
 /**
  * Automatikus modulokra bontás: modulszám = felfelé kerekítve (méret ÷ egy modul max. mérete)
  */
+/** Extrák gyűjteménye az árazóban (pl. Világítás), saját képpel és leírással */
+export interface ExtraGroupConfig {
+  id: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+}
+
 /** Feltételes méretkorlát: ha a feltételek teljesülnek, ezek a maximumok érvényesek */
 export interface ConditionalSizeRule {
   id: string;
@@ -539,6 +547,8 @@ export interface SystemConfig {
   quoteNumberFormat: QuoteNumberFormat;
   quoteNumberDigits: number;
   extraPresets: ExtraPreset[];
+  // Az árazóban az extrák gyűjteményei (sorrend, név, kép) – teljesen szerkeszthető
+  extraGroups?: ExtraGroupConfig[];
 }
 
 export interface DatabaseSchema {
