@@ -62,6 +62,7 @@ import {
 } from '@/lib/types';
 import { btn, PageHeader } from '@/components/ui';
 import { ColorOptionsEditor } from '@/components/ColorOptions';
+import { EXTRA_GROUP_ORDER, presentExtra } from '@/lib/extra-groups';
 
 interface TemplateBuilderViewProps {
   config: SystemConfig;
@@ -1972,6 +1973,61 @@ export function TemplateBuilderView({
                               />
                               Nem számít a szerelés % alapjába
                             </label>
+                            {currentMaterial.itemRole === 'optional' && (() => {
+                              const auto = presentExtra({ ...currentMaterial, group: undefined, choiceGroup: undefined });
+                              return (
+                                <div className="pt-2 border-t border-slate-200 space-y-2">
+                                  <div className="text-[13px] font-medium text-slate-700">
+                                    Megjelenés az árazóban
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">Gyűjtemény</span>
+                                      <input
+                                        list="extra-group-options"
+                                        value={currentMaterial.group || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { group: e.target.value || undefined })}
+                                        placeholder={`automatikus: ${auto.group}`}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                      <datalist id="extra-group-options">
+                                        {EXTRA_GROUP_ORDER.map((g) => (
+                                          <option key={g} value={g} />
+                                        ))}
+                                      </datalist>
+                                    </label>
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">
+                                        Opciócsoport (azonos nevűek egy sorban)
+                                      </span>
+                                      <input
+                                        value={currentMaterial.choiceGroup || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceGroup: e.target.value || undefined })}
+                                        placeholder={auto.choiceGroup ? `automatikus: ${auto.choiceGroup}` : 'pl. LED a keresztgerendákban'}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                    </label>
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">Rövid címke a gombon</span>
+                                      <input
+                                        value={currentMaterial.choiceLabel || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceLabel: e.target.value || undefined })}
+                                        placeholder={auto.choiceLabel ? `automatikus: ${auto.choiceLabel}` : 'pl. 3 db'}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                    </label>
+                                    <label className="flex items-center gap-2 text-sm cursor-pointer sm:pt-5">
+                                      <input
+                                        type="checkbox"
+                                        checked={Boolean(currentMaterial.choiceMulti)}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceMulti: e.target.checked })}
+                                      />
+                                      Több is választható a csoportból
+                                    </label>
+                                  </div>
+                                </div>
+                              );
+                            })()}
                           </div>
                         </details>
 

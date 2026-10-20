@@ -3494,53 +3494,10 @@
           "defaultNote": "Opció",
           "id": "x_sb400_led_beam",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér)",
-          "excludeFromPercentBase": true
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 800,
-          "unitPrice": 800,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_sb400_led_spot",
-          "name": "LED spot világítás a lamellákban (szabályozható fényerejű), 9 db",
-          "excludeFromPercentBase": true
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 800,
-          "unitPrice": 800,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_sb400_led_blade",
-          "name": "LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "Meleg fehér"
         },
         {
           "description": "",
@@ -3563,7 +3520,62 @@
           "defaultNote": "Opció",
           "id": "x_sb400_led_rgb",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "RGB"
+        },
+        {
+          "description": "",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 800,
+          "unitPrice": 800,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "id": "x_sb400_led_spot",
+          "name": "LED spot világítás a lamellákban (szabályozható fényerejű), 9 db",
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "Világítás a lamellákban (szabályozható fényerejű)",
+          "choiceLabel": "LED spot, 9 db"
+        },
+        {
+          "description": "",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 800,
+          "unitPrice": 800,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "id": "x_sb400_led_blade",
+          "name": "LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db",
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "Világítás a lamellákban (szabályozható fényerejű)",
+          "choiceLabel": "LED-szalag, 3 db"
         },
         {
           "description": "",
@@ -3587,6 +3599,7 @@
           "id": "x_sb400_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_sb400_infra",
@@ -3619,7 +3632,11 @@
           "defaultNote": "Opció",
           "id": "x_sb400_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -3643,6 +3660,10 @@
           "id": "x_sb400_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_sb400_wind",
@@ -3675,7 +3696,11 @@
           "defaultNote": "Opció",
           "id": "x_sb400_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -3698,11 +3723,12 @@
           "defaultNote": "Opció",
           "id": "x_sb400_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -5526,30 +5552,10 @@
           "defaultNote": "Opció",
           "id": "x_seesky_led_beam",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér)",
-          "excludeFromPercentBase": true
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 800,
-          "unitPrice": 800,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_seesky_led_blade",
-          "name": "LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "Meleg fehér"
         },
         {
           "description": "",
@@ -5572,7 +5578,34 @@
           "defaultNote": "Opció",
           "id": "x_seesky_led_rgb",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "RGB"
+        },
+        {
+          "description": "",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 800,
+          "unitPrice": 800,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "id": "x_seesky_led_blade",
+          "name": "LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db",
+          "excludeFromPercentBase": true,
+          "group": "Világítás"
         },
         {
           "description": "",
@@ -5596,6 +5629,7 @@
           "id": "x_seesky_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_seesky_infra",
@@ -5628,7 +5662,11 @@
           "defaultNote": "Opció",
           "id": "x_seesky_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -5652,6 +5690,10 @@
           "id": "x_seesky_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_seesky_wind",
@@ -5684,7 +5726,11 @@
           "defaultNote": "Opció",
           "id": "x_seesky_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -5707,11 +5753,12 @@
           "defaultNote": "Opció",
           "id": "x_seesky_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -9937,6 +9984,7 @@
           "id": "x_kedry_skylife_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_kedry_skylife_infra",
@@ -9969,7 +10017,11 @@
           "defaultNote": "Opció",
           "id": "x_kedry_skylife_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -9993,6 +10045,10 @@
           "id": "x_kedry_skylife_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_kedry_skylife_wind",
@@ -10025,7 +10081,11 @@
           "defaultNote": "Opció",
           "id": "x_kedry_skylife_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -10048,11 +10108,12 @@
           "defaultNote": "Opció",
           "id": "x_kedry_skylife_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -11535,6 +11596,7 @@
           "id": "x_pvziip_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_pvziip_infra",
@@ -11567,7 +11629,11 @@
           "defaultNote": "Opció",
           "id": "x_pvziip_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -11591,6 +11657,10 @@
           "id": "x_pvziip_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_pvziip_wind",
@@ -11623,7 +11693,11 @@
           "defaultNote": "Opció",
           "id": "x_pvziip_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -11646,11 +11720,12 @@
           "defaultNote": "Opció",
           "id": "x_pvziip_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [
         "Épülethez rögzített"
       ],
@@ -13664,6 +13739,7 @@
           "id": "x_hydra_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_hydra_infra",
@@ -13696,7 +13772,11 @@
           "defaultNote": "Opció",
           "id": "x_hydra_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -13720,6 +13800,10 @@
           "id": "x_hydra_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_hydra_wind",
@@ -13752,7 +13836,11 @@
           "defaultNote": "Opció",
           "id": "x_hydra_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -13775,11 +13863,12 @@
           "defaultNote": "Opció",
           "id": "x_hydra_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -15636,6 +15725,9 @@
           "id": "x_a100_led_cross2",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "1–2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_led_cross2",
@@ -15669,6 +15761,9 @@
           "id": "x_a100_led_cross3",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 3 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "3 db",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_led_cross3",
@@ -15702,6 +15797,9 @@
           "id": "x_a100_led_cross4",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 4 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "4 db",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_led_cross4",
@@ -15735,6 +15833,7 @@
           "id": "x_a100_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_infra",
@@ -15767,7 +15866,11 @@
           "defaultNote": "Opció",
           "id": "x_a100_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -15791,6 +15894,10 @@
           "id": "x_a100_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_wind",
@@ -15823,7 +15930,11 @@
           "defaultNote": "Opció",
           "id": "x_a100_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -15846,11 +15957,12 @@
           "defaultNote": "Opció",
           "id": "x_a100_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [
         "Épülethez rögzített"
       ],
@@ -18062,6 +18174,9 @@
           "id": "x_keplan_led_cross2",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "1–2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_led_cross2",
@@ -18095,6 +18210,9 @@
           "id": "x_keplan_led_cross3",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 3 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "3 db",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_led_cross3",
@@ -18128,6 +18246,9 @@
           "id": "x_keplan_led_cross4",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 4 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "4 db",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_led_cross4",
@@ -18161,6 +18282,7 @@
           "id": "x_keplan_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_infra",
@@ -18193,7 +18315,11 @@
           "defaultNote": "Opció",
           "id": "x_keplan_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -18217,6 +18343,10 @@
           "id": "x_keplan_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_wind",
@@ -18249,7 +18379,11 @@
           "defaultNote": "Opció",
           "id": "x_keplan_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -18272,11 +18406,12 @@
           "defaultNote": "Opció",
           "id": "x_keplan_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -20911,6 +21046,9 @@
           "id": "x_isola_led_cross2",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "1–2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_led_cross2",
@@ -20944,6 +21082,9 @@
           "id": "x_isola_led_cross3",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 3 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "3 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_led_cross3",
@@ -20977,6 +21118,9 @@
           "id": "x_isola_led_cross4",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 4 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "4 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_led_cross4",
@@ -21009,7 +21153,10 @@
           "defaultNote": "Opció",
           "id": "x_isola_led_beam27",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 27,5 m²-ig",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "27,5 m²-ig"
         },
         {
           "description": "",
@@ -21032,7 +21179,10 @@
           "defaultNote": "Opció",
           "id": "x_isola_led_beam55",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 55 m²-ig",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "55 m²-ig"
         },
         {
           "description": "",
@@ -21056,6 +21206,7 @@
           "id": "x_isola_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_infra",
@@ -21088,7 +21239,11 @@
           "defaultNote": "Opció",
           "id": "x_isola_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -21112,6 +21267,10 @@
           "id": "x_isola_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_wind",
@@ -21144,7 +21303,11 @@
           "defaultNote": "Opció",
           "id": "x_isola_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -21167,11 +21330,12 @@
           "defaultNote": "Opció",
           "id": "x_isola_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -21950,6 +22114,7 @@
           "id": "x_veranda_tens_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_veranda_tens_infra",
@@ -21982,7 +22147,11 @@
           "defaultNote": "Opció",
           "id": "x_veranda_tens_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -22006,6 +22175,10 @@
           "id": "x_veranda_tens_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_veranda_tens_wind",
@@ -22038,7 +22211,11 @@
           "defaultNote": "Opció",
           "id": "x_veranda_tens_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -22061,11 +22238,12 @@
           "defaultNote": "Opció",
           "id": "x_veranda_tens_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "alsoInCategoryIds": [
         "cat_legacy_feszitett"
       ],
@@ -22800,6 +22978,7 @@
           "id": "x_veranda_vzip_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_veranda_vzip_infra",
@@ -22832,7 +23011,11 @@
           "defaultNote": "Opció",
           "id": "x_veranda_vzip_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -22856,6 +23039,10 @@
           "id": "x_veranda_vzip_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_veranda_vzip_wind",
@@ -22888,7 +23075,11 @@
           "defaultNote": "Opció",
           "id": "x_veranda_vzip_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -22911,11 +23102,12 @@
           "defaultNote": "Opció",
           "id": "x_veranda_vzip_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "alsoInCategoryIds": [
         "cat_legacy_feszitett"
       ],
@@ -29254,6 +29446,7 @@
           "id": "x_polifix_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_polifix_infra",
@@ -29267,7 +29460,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "moduleSplits": [
         {
           "axis": "width",
@@ -33867,6 +34060,7 @@
           "id": "x_glassfix_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_glassfix_infra",
@@ -33880,7 +34074,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "moduleSplits": [
         {
           "axis": "width",
@@ -34116,7 +34310,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_legacy_uvegfal_lengyel",
@@ -34307,7 +34501,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_legacy_refleksol_zip",
@@ -35595,7 +35789,11 @@
           "defaultNote": "Opció",
           "id": "x_zip_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -35618,7 +35816,8 @@
           "defaultNote": "Opció",
           "id": "x_zip_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         },
         {
           "description": "",
@@ -35655,7 +35854,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:45:47.939462Z",
+      "updatedAt": "2026-10-20T19:58:03.481023Z",
       "mountTypes": [],
       "moduleSplits": [
         {
@@ -39682,6 +39881,7 @@
           "id": "x_neos_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_neos_infra",
@@ -39714,7 +39914,11 @@
           "defaultNote": "Opció",
           "id": "x_neos_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -39738,6 +39942,10 @@
           "id": "x_neos_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_neos_wind",
@@ -39770,7 +39978,11 @@
           "defaultNote": "Opció",
           "id": "x_neos_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -39793,10 +40005,11 @@
           "defaultNote": "Opció",
           "id": "x_neos_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792391983811_seed",
       "name": "KEDRY NEOS bioklimatikus pergola",
       "order": 3,
@@ -39845,7 +40058,7 @@
         "pdfFile": "LISTINO BIOCLIMATICA 10_EN.pdf",
         "pages": "97. o. (1L A (mounted to wall on SP side)); 101. o. (2P – placed against wall on SP side); 97. o. (1L); 101. o. (2P); 99. o. (2L); 105. o. (1T)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_isola_3",
@@ -43602,6 +43815,9 @@
           "id": "x_isola3_led_cross2",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "1–2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_led_cross2",
@@ -43635,6 +43851,9 @@
           "id": "x_isola3_led_cross3",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 3 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "3 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_led_cross3",
@@ -43668,6 +43887,9 @@
           "id": "x_isola3_led_cross4",
           "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 4 db)",
           "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
+          "choiceLabel": "4 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_led_cross4",
@@ -43700,7 +43922,10 @@
           "defaultNote": "Opció",
           "id": "x_isola3_led_beam27",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 27,5 m²-ig",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "27,5 m²-ig"
         },
         {
           "description": "",
@@ -43723,7 +43948,10 @@
           "defaultNote": "Opció",
           "id": "x_isola3_led_beam55",
           "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 55 m²-ig",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Világítás",
+          "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
+          "choiceLabel": "55 m²-ig"
         },
         {
           "description": "",
@@ -43770,6 +43998,7 @@
           "id": "x_isola3_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_infra",
@@ -43802,7 +44031,11 @@
           "defaultNote": "Opció",
           "id": "x_isola3_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -43826,6 +44059,10 @@
           "id": "x_isola3_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_wind",
@@ -43858,7 +44095,11 @@
           "defaultNote": "Opció",
           "id": "x_isola3_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -43881,10 +44122,11 @@
           "defaultNote": "Opció",
           "id": "x_isola3_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_legacy_elhuzhato",
       "name": "ISOLA 3 elhúzható PVC ponyvás pergola",
       "order": 5,
@@ -43918,7 +44160,7 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "35. o. (1L); 37. o. (2L); 39. o. (2 P); 45. o. (4)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_xtesa",
@@ -45568,6 +45810,7 @@
           "id": "x_xtesa_infra",
           "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
           "excludeFromPercentBase": true,
+          "group": "Fűtés",
           "photos": [
             {
               "id": "ph_cat2026_x_xtesa_infra",
@@ -45600,7 +45843,11 @@
           "defaultNote": "Opció",
           "id": "x_xtesa_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -45624,6 +45871,10 @@
           "id": "x_xtesa_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_xtesa_wind",
@@ -45656,7 +45907,11 @@
           "defaultNote": "Opció",
           "id": "x_xtesa_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -45679,10 +45934,11 @@
           "defaultNote": "Opció",
           "id": "x_xtesa_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_legacy_feszitett",
       "name": "XTESA elhúzható feszített ponyvás pergola",
       "order": 3,
@@ -45720,7 +45976,7 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "12. o. (1 MODULE); 13. o. (2 MODULES - 3 COLUMNS)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_madeira",
@@ -46265,7 +46521,11 @@
           "defaultNote": "Opció",
           "id": "x_madeira_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -46289,6 +46549,10 @@
           "id": "x_madeira_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_madeira_wind",
@@ -46321,7 +46585,11 @@
           "defaultNote": "Opció",
           "id": "x_madeira_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -46344,10 +46612,11 @@
           "defaultNote": "Opció",
           "id": "x_madeira_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792391983812_seed",
       "name": "MADEIRA kazettás karos napellenző",
       "order": 1,
@@ -46374,7 +46643,7 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (MADEIRA)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_corsica",
@@ -46925,7 +47194,11 @@
           "defaultNote": "Opció",
           "id": "x_corsica_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -46949,6 +47222,10 @@
           "id": "x_corsica_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_corsica_wind",
@@ -46981,7 +47258,11 @@
           "defaultNote": "Opció",
           "id": "x_corsica_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -47004,10 +47285,11 @@
           "defaultNote": "Opció",
           "id": "x_corsica_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792391983812_seed",
       "name": "CORSICA kazettás karos napellenző",
       "order": 2,
@@ -47034,7 +47316,7 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (CORSICA CASSETTE)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_jamaica",
@@ -47562,7 +47844,11 @@
           "defaultNote": "Opció",
           "id": "x_jamaica_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -47586,6 +47872,10 @@
           "id": "x_jamaica_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_jamaica_wind",
@@ -47618,7 +47908,11 @@
           "defaultNote": "Opció",
           "id": "x_jamaica_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -47641,10 +47935,11 @@
           "defaultNote": "Opció",
           "id": "x_jamaica_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792391983813_seed",
       "name": "JAMAICA kazetta nélküli karos napellenző",
       "order": 1,
@@ -47671,7 +47966,7 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (JAMAICA*)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_australia",
@@ -48201,7 +48496,11 @@
           "defaultNote": "Opció",
           "id": "x_australia_rain",
           "name": "Esőérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Eső"
         },
         {
           "description": "",
@@ -48225,6 +48524,10 @@
           "id": "x_australia_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Szél",
           "photos": [
             {
               "id": "ph_cat2026_x_australia_wind",
@@ -48257,7 +48560,11 @@
           "defaultNote": "Opció",
           "id": "x_australia_sun",
           "name": "Napfényérzékelő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés",
+          "choiceGroup": "Érzékelők",
+          "choiceMulti": true,
+          "choiceLabel": "Napfény"
         },
         {
           "description": "Somfy TaHoma vagy BleBox applikációval",
@@ -48280,10 +48587,11 @@
           "defaultNote": "Opció",
           "id": "x_australia_smart",
           "name": "Okosotthon vezérlő",
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "group": "Érzékelők és vezérlés"
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792391983813_seed",
       "name": "AUSTRALIA kazetta nélküli karos napellenző",
       "order": 2,
@@ -48310,7 +48618,7 @@
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (AUSTRALIA)"
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_thermo_glass",
@@ -48377,7 +48685,7 @@
           ]
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792346155886_2odc",
       "name": "THERMO GLASS hőszigetelt, eltolható üvegfal",
       "order": 3,
@@ -48389,7 +48697,7 @@
       "catalogRef": {
         "note": "Nincs ár a kapott anyagokban – add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     },
     {
       "id": "tpl_guillotine_vertica",
@@ -48456,7 +48764,7 @@
           ]
         }
       ],
-      "createdAt": "2026-10-20T19:45:47.939462Z",
+      "createdAt": "2026-10-20T19:56:17.422540Z",
       "categoryId": "cat_1792346155886_2odc",
       "name": "GUILLOTINE Vertica motoros üvegfal",
       "order": 3,
@@ -48468,7 +48776,7 @@
       "catalogRef": {
         "note": "Nincs ár a kapott anyagokban – add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T19:45:47.939462Z"
+      "updatedAt": "2026-10-20T19:58:03.481023Z"
     }
   ],
   "quotes": [
@@ -50892,595 +51200,595 @@
       "filename": "photo-1.jpg",
       "originalName": "kedry-skylife/photo-1.jpg – KEDRY SKYLIFE szabadon álló, 1 modulos (termék látványterv)",
       "url": "/uploads/catalog-2026/kedry-skylife/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "kedry-skylife/drawing-1.jpg – 1L – szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "kedry-skylife/drawing-2.jpg – 1L A – egymodulos, L oldalon falhoz rögzítve",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "kedry-skylife/drawing-3.jpg – 2L – szabadon álló, 2 modul L oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-4",
       "filename": "drawing-4.jpg",
       "originalName": "kedry-skylife/drawing-4.jpg – 2P – szabadon álló, 2 modul SP oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-5",
       "filename": "drawing-5.jpg",
       "originalName": "kedry-skylife/drawing-5.jpg – 3L – szabadon álló, 3 modulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-6",
       "filename": "drawing-6.jpg",
       "originalName": "kedry-skylife/drawing-6.jpg – 4L – szabadon álló, 4 modul egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-6.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "kedry-neos/photo-1.jpg – KEDRY NEOS kertben, nyitott lamellákkal",
       "url": "/uploads/catalog-2026/kedry-neos/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "kedry-neos/photo-2.jpg – KEDRY NEOS 1L szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/kedry-neos/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "kedry-neos/drawing-1.jpg – 1L – szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "kedry-neos/drawing-2.jpg – 1L A – falhoz rögzítve az SP oldalon",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "kedry-neos/drawing-3.jpg – 1T – tetőtéri (loft) kiosztás",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-4",
       "filename": "drawing-4.jpg",
       "originalName": "kedry-neos/drawing-4.jpg – 2L – 2 modul L oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-5",
       "filename": "drawing-5.jpg",
       "originalName": "kedry-neos/drawing-5.jpg – 2P – 2 modul SP oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-6",
       "filename": "drawing-6.jpg",
       "originalName": "kedry-neos/drawing-6.jpg – 2SC – 2 modul köztes oszlop nélkül",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-6.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "solare-400/photo-1.jpg – Aluprof SB lamellás pergola LED-világítással (látványterv)",
       "url": "/uploads/catalog-2026/solare-400/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "solare-400/drawing-1.jpg – SB 400 lamella-, oszlop- és gerendakeresztmetszetek",
       "url": "/uploads/catalog-2026/solare-400/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "solare-400/drawing-2.jpg – SB 400 falhoz rögzítés: fali konzol és gerendacsatlakozó",
       "url": "/uploads/catalog-2026/solare-400/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_pergola-v-ziiip_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "pergola-v-ziiip/drawing-1.jpg – Pergola V ZIIIP gerenda-, vezetősín-, oszlop- és kazetta-keresztmetszet",
       "url": "/uploads/catalog-2026/pergola-v-ziiip/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "isola-3/photo-1.jpg – ISOLA 3 Classic házhoz építve, oldalsó árnyékolóval",
       "url": "/uploads/catalog-2026/isola-3/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "isola-3/photo-2.jpg – ISOLA 3 szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/isola-3/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "isola-3/photo-3.jpg – ISOLA 3 sarokrészlet: rejtett vízelvezetés az oszlopban",
       "url": "/uploads/catalog-2026/isola-3/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "isola-3/drawing-1.jpg – ISOLA 3 felépítése és rögzítési változatai",
       "url": "/uploads/catalog-2026/isola-3/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "isola-3/drawing-2.jpg – 1L – szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "isola-3/drawing-3.jpg – 1L A – egymodulos, falhoz rögzítve",
       "url": "/uploads/catalog-2026/isola-3/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-4",
       "filename": "drawing-4.jpg",
       "originalName": "isola-3/drawing-4.jpg – 2L – szabadon álló, 2 modulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-5",
       "filename": "drawing-5.jpg",
       "originalName": "isola-3/drawing-5.jpg – 3L – szabadon álló, 3 modulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "isola-2/photo-1.jpg – ISOLA 2, 4 oszlopos szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "isola-2/photo-2.jpg – ISOLA 2A falhoz rögzített változat (látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "isola-2/photo-3.jpg – ISOLA 2T változat (látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "isola-2/drawing-1.jpg – 4 oszlopos kiosztás, méretekkel",
       "url": "/uploads/catalog-2026/isola-2/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "isola-2/drawing-2.jpg – 4 oszlop – ponyvatartók a fallal párhuzamosan",
       "url": "/uploads/catalog-2026/isola-2/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "isola-2/drawing-3.jpg – 2 oszlop – ponyvatartók a falra merőlegesen",
       "url": "/uploads/catalog-2026/isola-2/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "keplan/photo-1.jpg – KEPLAN falhoz rögzített ponyvás pergola (látványterv)",
       "url": "/uploads/catalog-2026/keplan/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "keplan/photo-2.jpg – KEPLAN A változat (látványterv)",
       "url": "/uploads/catalog-2026/keplan/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "keplan/drawing-1.jpg – 2 vezetősínes kiosztás, oldalnézet",
       "url": "/uploads/catalog-2026/keplan/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "a100-lux/photo-1.jpg – A100 LUX falhoz rögzített ponyvás pergola (látványterv)",
       "url": "/uploads/catalog-2026/a100-lux/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "a100-lux/drawing-1.jpg – 2 vezetősínes kiosztás, oldalnézet",
       "url": "/uploads/catalog-2026/a100-lux/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "a100-lux/drawing-2.jpg – 3 vezetősínes kiosztás",
       "url": "/uploads/catalog-2026/a100-lux/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "a100-lux/drawing-3.jpg – 4 vezetősínes kiosztás",
       "url": "/uploads/catalog-2026/a100-lux/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "xtesa/photo-1.jpg – XTESA ponyvás pergola (termék látványterv)",
       "url": "/uploads/catalog-2026/xtesa/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "xtesa/drawing-1.jpg – 1 modulos kiosztás, oldal- és elölnézet",
       "url": "/uploads/catalog-2026/xtesa/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "xtesa/drawing-2.jpg – 2 modul – 3 oszlop",
       "url": "/uploads/catalog-2026/xtesa/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "xtesa/drawing-3.jpg – 2 modul – 2 oszlop",
       "url": "/uploads/catalog-2026/xtesa/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "hydra/photo-1.jpg – HYDRA ponyvás pergola (termék látványterv)",
       "url": "/uploads/catalog-2026/hydra/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "hydra/photo-2.jpg – HYDRA T változat (látványterv)",
       "url": "/uploads/catalog-2026/hydra/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "hydra/drawing-1.jpg – 1 modulos kiosztás, méretekkel",
       "url": "/uploads/catalog-2026/hydra/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "hydra/drawing-2.jpg – 2 modul – 3 oszlop",
       "url": "/uploads/catalog-2026/hydra/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "led/photo-1.jpg – Napellenző LED-világítással (Aluprof)",
       "url": "/uploads/catalog-2026/led/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "led/photo-2.jpg – LED szalag készlet Gennius ponyvás pergolához (2 vezetősín)",
       "url": "/uploads/catalog-2026/led/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "led/photo-3.jpg – LED szalag készlet – Gennius Vega",
       "url": "/uploads/catalog-2026/led/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-4",
       "filename": "photo-4.jpg",
       "originalName": "led/photo-4.jpg – LED szalag Kedry Plus pergolához",
       "url": "/uploads/catalog-2026/led/photo-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "led/drawing-1.jpg – Kedry Skylife / Prime / Neos – LED a csatornában",
       "url": "/uploads/catalog-2026/led/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "led/drawing-2.jpg – LED profil keresztmetszet",
       "url": "/uploads/catalog-2026/led/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "led/drawing-3.jpg – Külső LED profil keresztmetszet",
       "url": "/uploads/catalog-2026/led/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-4",
       "filename": "drawing-4.jpg",
       "originalName": "led/drawing-4.jpg – LED vezetősín profil (Hydra)",
       "url": "/uploads/catalog-2026/led/drawing-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "heaters/photo-1.jpg – HELIOSA Wide Angle 2000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "heaters/photo-2.jpg – HELIOSA 77 Radio 2000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "heaters/photo-3.jpg – HELIOSA 88 Radio 3000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-4",
       "filename": "photo-4.jpg",
       "originalName": "heaters/photo-4.jpg – HELIOSA Black Evo Radio 2500 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "automation/photo-1.jpg – Somfy motoros doboz ponyvás pergolához",
       "url": "/uploads/catalog-2026/automation/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "automation/photo-2.jpg – Somfy Nina többcsatornás érintőképernyős távirányító",
       "url": "/uploads/catalog-2026/automation/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "automation/photo-3.jpg – Somfy Ysia Patio IO 16 csatornás kijelzős távirányító",
       "url": "/uploads/catalog-2026/automation/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-4",
       "filename": "photo-4.jpg",
       "originalName": "automation/photo-4.jpg – Somfy Situo 1 Pure II egycsatornás távirányító",
       "url": "/uploads/catalog-2026/automation/photo-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-5",
       "filename": "photo-5.jpg",
       "originalName": "automation/photo-5.jpg – Somfy Eolis Wirefree IO szélérzékelő",
       "url": "/uploads/catalog-2026/automation/photo-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-6",
       "filename": "photo-6.jpg",
       "originalName": "automation/photo-6.jpg – Aluprof pergola lamellamozgató motor",
       "url": "/uploads/catalog-2026/automation/photo-6.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-7",
       "filename": "photo-7.jpg",
       "originalName": "automation/photo-7.jpg – Somfy fali kapcsoló",
       "url": "/uploads/catalog-2026/automation/photo-7.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-8",
       "filename": "photo-8.jpg",
       "originalName": "automation/photo-8.jpg – Csőmotor napellenzőhöz (Aluprof)",
       "url": "/uploads/catalog-2026/automation/photo-8.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-ke_colours-1",
       "filename": "colours-1.jpg",
       "originalName": "colours-ke/colours-1.jpg – KE szerkezeti színek (Bioclimatica árlista)",
       "url": "/uploads/catalog-2026/colours-ke/colours-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-ke_colours-2",
       "filename": "colours-2.jpg",
       "originalName": "colours-ke/colours-2.jpg – KE szerkezeti színek (Gennius árlista)",
       "url": "/uploads/catalog-2026/colours-ke/colours-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-1",
       "filename": "colours-1.jpg",
       "originalName": "colours-aluprof/colours-1.jpg – Aluprof pergola színek (RAL)",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-2",
       "filename": "colours-2.jpg",
       "originalName": "colours-aluprof/colours-2.jpg – Aluprof színkártya 1. oldal",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-3",
       "filename": "colours-3.jpg",
       "originalName": "colours-aluprof/colours-3.jpg – Aluprof színkártya 2. oldal (fahatású)",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-4",
       "filename": "colours-4.jpg",
       "originalName": "colours-aluprof/colours-4.jpg – Aluprof árnyékoló (screen) színek",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-5",
       "filename": "colours-5.jpg",
       "originalName": "colours-aluprof/colours-5.jpg – Aluprof napellenző színkártya",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-1",
       "filename": "photo-1.jpg",
       "originalName": "accessories/photo-1.jpg – Technikai oszlop lamellás pergolában, nappali bútorral",
       "url": "/uploads/catalog-2026/accessories/photo-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-2",
       "filename": "photo-2.jpg",
       "originalName": "accessories/photo-2.jpg – MORE FTA-e elektromos padlófűtés üvegfalas pergolában",
       "url": "/uploads/catalog-2026/accessories/photo-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-3",
       "filename": "photo-3.jpg",
       "originalName": "accessories/photo-3.jpg – MORE VMC páramentesítő rendszer pergolában",
       "url": "/uploads/catalog-2026/accessories/photo-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-4",
       "filename": "photo-4.jpg",
       "originalName": "accessories/photo-4.jpg – MORE VMC egység az oszlopon",
       "url": "/uploads/catalog-2026/accessories/photo-4.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-5",
       "filename": "photo-5.jpg",
       "originalName": "accessories/photo-5.jpg – Konnektor az oszlop szervizhálózatában",
       "url": "/uploads/catalog-2026/accessories/photo-5.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-6",
       "filename": "photo-6.jpg",
       "originalName": "accessories/photo-6.jpg – Fali csatlakozó profil (bemutató)",
       "url": "/uploads/catalog-2026/accessories/photo-6.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-7",
       "filename": "photo-7.jpg",
       "originalName": "accessories/photo-7.jpg – Aluprof VertoLine dekorelemek pergolán",
       "url": "/uploads/catalog-2026/accessories/photo-7.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-1",
       "filename": "drawing-1.jpg",
       "originalName": "accessories/drawing-1.jpg – Technikai oszlop rajza",
       "url": "/uploads/catalog-2026/accessories/drawing-1.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-2",
       "filename": "drawing-2.jpg",
       "originalName": "accessories/drawing-2.jpg – Univerzális fali konzol (Aluprof SB pergola)",
       "url": "/uploads/catalog-2026/accessories/drawing-2.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-3",
       "filename": "drawing-3.jpg",
       "originalName": "accessories/drawing-3.jpg – Napellenző szövet varrási és illesztési részletei",
       "url": "/uploads/catalog-2026/accessories/drawing-3.jpg",
-      "uploadedAt": "2026-10-20T19:45:47.939462Z"
+      "uploadedAt": "2026-10-20T19:56:17.422540Z"
     }
   ],
   "trackingEvents": []

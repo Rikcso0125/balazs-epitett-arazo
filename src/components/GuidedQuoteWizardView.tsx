@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  ChevronRight,
   Plus,
   RefreshCw,
   Trash2,
@@ -32,6 +33,7 @@ import {
 } from '@/lib/types';
 import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
 import { ColorDots } from '@/components/ColorOptions';
+import { EXTRA_GROUP_ORDER, presentExtra } from '@/lib/extra-groups';
 import {
   btn,
   card,
@@ -225,6 +227,23 @@ export function GuidedQuoteWizardView({
     (tpl.materials || [])
       .filter((m) => m.defaultSelected !== false)
       .map((m) => m.id);
+
+  // Extrák gyűjteményei: melyik van kinyitva (sablon|gyűjtemény)
+  const [openExtraGroups, setOpenExtraGroups] = useState<Record<string, boolean>>({});
+
+  // Opciócsoport: egyet választós (rádió) vagy többet (pl. oldalak)
+  const pickChoice = (tpl: QuoteTemplate, memberIds: string[], id: string | null, multi: boolean) => {
+    const current = getSelectedMaterialsForTemplate(tpl);
+    let next: string[];
+    if (multi && id) {
+      next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
+    } else {
+      const wasOn = id ? current.includes(id) : false;
+      next = current.filter((x) => !memberIds.includes(x));
+      if (id && !wasOn) next.push(id);
+    }
+    setSelectedMaterialsByTemplate((prev) => ({ ...prev, [tpl.id]: next }));
+  };
 
   const toggleMaterialForTemplate = (tpl: QuoteTemplate, matId: string) => {
     const current = getSelectedMaterialsForTemplate(tpl);
@@ -985,9 +1004,42 @@ export function GuidedQuoteWizardView({
                 const baseRows = calc.rows.filter((r) => !isExtra(r));
                 const extraRows = calc.rows.filter(isExtra);
 
+                const matOf = (r: QuoteTableRow) => tpl.materials.find((m) => m.id === r.materialId);
+                const isOn = (r: QuoteTableRow) =>
+                  Boolean(r.systemRole) || activeMatIds.includes(r.materialId || '');
+                const priceText = (r: QuoteTableRow) =>
+                  r.itemRole === 'gift'
+                    ? 'ajándék'
+                    : `${r.itemRole === 'optional' ? '+' : ''}${formatDotNumber(r.discountPriceEur)} EUR`;
+
+                const sidesSelect = (r: QuoteTableRow) => {
+                  const mat = matOf(r);
+                  if (!mat?.perSide || !isOn(r)) return null;
+                  return (
+                    <select
+                      value={getSides(tpl.id, mat.id)}
+                      onChange={(e) =>
+                        setSidesByTemplate((prev) => ({
+                          ...prev,
+                          [tpl.id]: { ...(prev[tpl.id] || {}), [mat.id]: Number(e.target.value) },
+                        }))
+                      }
+                      className="px-2 py-1 rounded-lg border border-slate-300 bg-white text-sm"
+                      title="Hány oldalra kéri"
+                    >
+                      {[1, 2, 3, 4].map((n) => (
+                        <option key={n} value={n}>
+                          {n === 4 ? 'mind a 4 oldal' : `${n} oldal`}
+                        </option>
+                      ))}
+                    </select>
+                  );
+                };
+
                 const renderRow = (r: QuoteTableRow) => {
                   const isSystem = Boolean(r.systemRole);
-                  const checked = isSystem || activeMatIds.includes(r.materialId || '');
+                  const checked = isOn(r);
+                  const pres = r.itemRole === 'optional' ? presentExtra(matOf(r) || { name: r.name }) : null;
                   return (
                     <label
                       key={r.id}
@@ -1006,38 +1058,16 @@ export function GuidedQuoteWizardView({
                       />
                       <span
                         className={`min-w-0 flex-1 basis-40 break-words ${
-                          checked ? 'text-slate-950' : 'text-slate-500'
+                          checked ? 'text-slate-950' : 'text-slate-600'
                         }`}
                       >
-                        {r.name}
+                        {pres ? pres.title : r.name}
+                        {pres?.detail && (
+                          <span className="block text-xs text-slate-500">{pres.detail}</span>
+                        )}
                       </span>
                       <ColorDots colors={r.algorithm?.colorOptions || []} />
-                      {(() => {
-                        const mat = tpl.materials.find((m) => m.id === r.materialId);
-                        if (!mat?.perSide || !checked) return null;
-                        return (
-                          <select
-                            value={getSides(tpl.id, mat.id)}
-                            onChange={(e) =>
-                              setSidesByTemplate((prev) => ({
-                                ...prev,
-                                [tpl.id]: {
-                                  ...(prev[tpl.id] || {}),
-                                  [mat.id]: Number(e.target.value),
-                                },
-                              }))
-                            }
-                            className="px-2 py-1 rounded-lg border border-slate-300 bg-white text-sm"
-                            title="Hány oldalra kéri"
-                          >
-                            {[1, 2, 3, 4].map((n) => (
-                              <option key={n} value={n}>
-                                {n === 4 ? 'mind a 4 oldal' : `${n} oldal`}
-                              </option>
-                            ))}
-                          </select>
-                        );
-                      })()}
+                      {sidesSelect(r)}
                       {r.outOfRange && (
                         <AlertTriangle
                           className="w-3.5 h-3.5 text-rose-600"
@@ -1045,15 +1075,115 @@ export function GuidedQuoteWizardView({
                         />
                       )}
                       <span className="ml-auto pl-3 tabular-nums text-slate-700 whitespace-nowrap">
-                        {r.itemRole === 'gift'
-                          ? 'ajándék'
-                          : `${r.itemRole === 'optional' ? '+' : ''}${formatDotNumber(
-                              r.discountPriceEur
-                            )} EUR`}
+                        {priceText(r)}
                       </span>
                     </label>
                   );
                 };
+
+                // Opciócsoport: cím + választható címkék (pl. „Szélesség oldala”, „3 db”)
+                const renderChoice = (title: string, detail: string | undefined, rows: QuoteTableRow[], multi: boolean) => {
+                  const ids = rows.map((r) => r.materialId || '');
+                  const anyOn = rows.some(isOn);
+                  const chip = (active: boolean) =>
+                    `inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[13px] transition ${
+                      active
+                        ? 'border-slate-900 bg-slate-900 text-white'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
+                    }`;
+                  return (
+                    <div key={`choice_${title}`} className="py-1.5">
+                      <div className="text-sm text-slate-950">{title}</div>
+                      {detail && <div className="text-xs text-slate-500">{detail}</div>}
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                        {!multi && (
+                          <button type="button" onClick={() => pickChoice(tpl, ids, null, false)} className={chip(!anyOn)}>
+                            Nincs
+                          </button>
+                        )}
+                        {rows.map((r) => {
+                          const pres = presentExtra(matOf(r) || { name: r.name });
+                          const on = isOn(r);
+                          return (
+                            <button
+                              key={r.id}
+                              type="button"
+                              onClick={() => pickChoice(tpl, ids, r.materialId || null, multi)}
+                              className={chip(on)}
+                              aria-pressed={on}
+                            >
+                              {pres.choiceLabel}
+                              <span className={`tabular-nums text-xs ${on ? 'text-white/80' : 'text-slate-500'}`}>
+                                +{formatDotNumber(r.discountPriceEur)} EUR
+                              </span>
+                              {r.outOfRange && <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />}
+                            </button>
+                          );
+                        })}
+                        {rows.map((r) => sidesSelect(r))}
+                      </div>
+                    </div>
+                  );
+                };
+
+                // Extrák gyűjteményekbe rendezve (Világítás, Oldalzárás …), összecsukható szakaszokkal
+                const groupNames = Array.from(
+                  new Set(extraRows.map((r) => presentExtra(matOf(r) || { name: r.name }).group))
+                ).sort((a, b) => {
+                  const ia = EXTRA_GROUP_ORDER.indexOf(a);
+                  const ib = EXTRA_GROUP_ORDER.indexOf(b);
+                  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+                });
+                const renderGroups = () =>
+                  groupNames.map((g) => {
+                    const rows = extraRows.filter((r) => presentExtra(matOf(r) || { name: r.name }).group === g);
+                    const onRows = rows.filter(isOn);
+                    const sum = onRows.reduce((acc, r) => acc + (r.discountPriceEur || 0), 0);
+                    const key = `${tpl.id}|${g}`;
+                    const open = openExtraGroups[key] ?? false;
+                    // sorrend megtartásával: opciócsoportok egyszer, a többi tétel külön sorban
+                    const seen = new Set<string>();
+                    const parts: React.ReactNode[] = [];
+                    for (const r of rows) {
+                      const pres = presentExtra(matOf(r) || { name: r.name });
+                      if (pres.choiceGroup) {
+                        if (seen.has(pres.choiceGroup)) continue;
+                        seen.add(pres.choiceGroup);
+                        const members = rows.filter(
+                          (x) => presentExtra(matOf(x) || { name: x.name }).choiceGroup === pres.choiceGroup
+                        );
+                        parts.push(renderChoice(pres.choiceGroup, pres.detail, members, pres.choiceMulti));
+                      } else {
+                        parts.push(renderRow(r));
+                      }
+                    }
+                    return (
+                      <div key={key} className="border-t border-slate-100 first:border-t-0">
+                        <button
+                          type="button"
+                          onClick={() => setOpenExtraGroups((prev) => ({ ...prev, [key]: !open }))}
+                          className="w-full flex items-center gap-2 py-2.5 text-left"
+                          aria-expanded={open}
+                        >
+                          <ChevronRight
+                            className={`w-4 h-4 text-slate-400 transition-transform ${open ? 'rotate-90' : ''}`}
+                          />
+                          <span className="min-w-0 flex-1 flex flex-wrap items-baseline gap-x-2">
+                            <span className="text-sm font-medium text-slate-950">{g}</span>
+                            <span className="text-xs text-slate-500 whitespace-nowrap">
+                              {onRows.length > 0 ? `${onRows.length} kiválasztva` : `${rows.length} lehetőség`}
+                            </span>
+                          </span>
+                          {sum > 0 && (
+                            <span className="text-sm tabular-nums text-slate-950 whitespace-nowrap">
+                              +{formatDotNumber(sum)} EUR
+                            </span>
+                          )}
+                        </button>
+                        {open && <div className="pl-1 sm:pl-6 pb-2">{parts}</div>}
+                      </div>
+                    );
+                  });
 
                 return (
                   <div key={tpl.id} className="border border-slate-200 rounded-xl">
@@ -1075,10 +1205,9 @@ export function GuidedQuoteWizardView({
                     <div className="px-4 py-2">
                       {baseRows.map(renderRow)}
                       {extraRows.length > 0 && (
-                        <>
-                          <div className="text-xs text-slate-500 mt-3 mb-0.5">Extrák</div>
-                          {extraRows.map(renderRow)}
-                        </>
+                        <div className="mt-3 rounded-lg border border-slate-200 px-3">
+                          {renderGroups()}
+                        </div>
                       )}
                       <div className="mt-3">
                         <AdjustmentsEditor

@@ -142,6 +142,13 @@ export interface TemplateMaterialItem {
   perModule?: boolean; // darabszám × modulszám (pl. motor modulonként)
   minModules?: number; // csak legalább ennyi modulnál (pl. 2 modulos felár)
   maxModules?: number; // csak legfeljebb ennyi modulnál
+  // Megjelenítés az árazóban: gyűjtemény (pl. „Világítás”), azon belül opciócsoport (pl. „LED a
+  // keresztgerendákban”), amelynek tagjai rövid címkével választhatók (pl. „3 db”). Ha nincs megadva,
+  // a név alapján automatikusan csoportosít.
+  group?: string;
+  choiceGroup?: string;
+  choiceLabel?: string;
+  choiceMulti?: boolean; // true: több is választható (pl. oldalak), false: legfeljebb egy
   // Csak pontosan ennyi modulnál a szélesség / kinyúlás mentén (pl. a gyártó 2 L táblázata)
   modulesWidth?: number;
   modulesProjection?: number;

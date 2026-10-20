@@ -190,14 +190,14 @@ def ral_extra(prefix):
 def common_extras(prefix, sensors=True, infra=True, smart=True, sun=True):
     out = []
     if infra:
-        out.append(fixed_extra(f'x_{prefix}_infra', 'Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)', 200))
+        out.append(fixed_extra(f'x_{prefix}_infra', 'Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)', 200, group='Fűtés'))
     if sensors:
-        out.append(fixed_extra(f'x_{prefix}_rain', 'Esőérzékelő', 250))
-        out.append(fixed_extra(f'x_{prefix}_wind', 'Szélérzékelő', 200))
+        out.append(fixed_extra(f'x_{prefix}_rain', 'Esőérzékelő', 250, group='Érzékelők és vezérlés', choiceGroup='Érzékelők', choiceMulti=True, choiceLabel='Eső'))
+        out.append(fixed_extra(f'x_{prefix}_wind', 'Szélérzékelő', 200, group='Érzékelők és vezérlés', choiceGroup='Érzékelők', choiceMulti=True, choiceLabel='Szél'))
     if sun:
-        out.append(fixed_extra(f'x_{prefix}_sun', 'Napfényérzékelő', 200))
+        out.append(fixed_extra(f'x_{prefix}_sun', 'Napfényérzékelő', 200, group='Érzékelők és vezérlés', choiceGroup='Érzékelők', choiceMulti=True, choiceLabel='Napfény'))
     if smart:
-        out.append(fixed_extra(f'x_{prefix}_smart', 'Okosotthon vezérlő', 300, 'Somfy TaHoma vagy BleBox applikációval'))
+        out.append(fixed_extra(f'x_{prefix}_smart', 'Okosotthon vezérlő', 300, 'Somfy TaHoma vagy BleBox applikációval', group='Érzékelők és vezérlés'))
     return out
 
 
@@ -205,18 +205,23 @@ LED_BEAM = 'LED világítás a gerendák belső felén (szabályozható, COB LED
 LED_CROSS = 'LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér'
 
 
+CROSS = {'group': 'Világítás', 'choiceGroup': 'LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)'}
+BEAM = {'group': 'Világítás', 'choiceGroup': 'LED a gerendák belső felén (szabályozható, COB LED-szalag)'}
+BLADE = {'group': 'Világítás', 'choiceGroup': 'Világítás a lamellákban (szabályozható fényerejű)'}
+
+
 def cat2_led(prefix):
     return [
-        fixed_extra(f'x_{prefix}_led_cross2', f'{LED_CROSS}, 1–2 db)', 800),
-        fixed_extra(f'x_{prefix}_led_cross3', f'{LED_CROSS}, 3 db)', 1200),
-        fixed_extra(f'x_{prefix}_led_cross4', f'{LED_CROSS}, 4 db)', 1500),
+        fixed_extra(f'x_{prefix}_led_cross2', f'{LED_CROSS}, 1–2 db)', 800, **CROSS, choiceLabel='1–2 db'),
+        fixed_extra(f'x_{prefix}_led_cross3', f'{LED_CROSS}, 3 db)', 1200, **CROSS, choiceLabel='3 db'),
+        fixed_extra(f'x_{prefix}_led_cross4', f'{LED_CROSS}, 4 db)', 1500, **CROSS, choiceLabel='4 db'),
     ]
 
 
 def isola_beam_led(prefix):
     return [
-        fixed_extra(f'x_{prefix}_led_beam27', f'{LED_BEAM} – 27,5 m²-ig', 900),
-        fixed_extra(f'x_{prefix}_led_beam55', f'{LED_BEAM} – 55 m²-ig', 1700),
+        fixed_extra(f'x_{prefix}_led_beam27', f'{LED_BEAM} – 27,5 m²-ig', 900, **BEAM, choiceLabel='27,5 m²-ig'),
+        fixed_extra(f'x_{prefix}_led_beam55', f'{LED_BEAM} – 55 m²-ig', 1700, **BEAM, choiceLabel='55 m²-ig'),
     ]
 
 
@@ -351,10 +356,10 @@ put(tid, [
     matrix_item('mat_sb400_free', old['mat_sb400_free']['name'], table('sb400_freestanding', swap=True), F, 0.66, 2500, old['mat_sb400_free']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
     matrix_item('mat_sb400_nolegs', 'SOLARE 400 – elforgatható lamellákkal, lábak nélkül (falak közé / meglévő szerkezetre)', table('sb400r', swap=True), N, 0.66, 2500, old['mat_sb400_wall']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
 ], [
-    fixed_extra('x_sb400_led_beam', LED_BEAM, 700),
-    fixed_extra('x_sb400_led_spot', 'LED spot világítás a lamellákban (szabályozható fényerejű), 9 db', 800),
-    fixed_extra('x_sb400_led_blade', 'LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db', 800),
-    fixed_extra('x_sb400_led_rgb', 'LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)', 800),
+    fixed_extra('x_sb400_led_beam', LED_BEAM, 700, **BEAM, choiceLabel='Meleg fehér'),
+    fixed_extra('x_sb400_led_rgb', 'LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)', 800, **BEAM, choiceLabel='RGB'),
+    fixed_extra('x_sb400_led_spot', 'LED spot világítás a lamellákban (szabályozható fényerejű), 9 db', 800, **BLADE, choiceLabel='LED spot, 9 db'),
+    fixed_extra('x_sb400_led_blade', 'LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db', 800, **BLADE, choiceLabel='LED-szalag, 3 db'),
     *common_extras('sb400'),
 ])
 tpls[tid]['catalogRef']['note'] = AL_NOTE + ' Több modulnál modulonkénti ár × modulszám (a gyártónak nincs külön 2 modulos táblája).'
@@ -366,9 +371,9 @@ template(tid, categoryId=C1, status='inactive', mountTypes=[W, F],
          sizeLimits={**tpls[tid].get('sizeLimits', {}), 'maxWidthCm': 1290, 'maxProjectionCm': 940, 'maxHeightCm': 300})
 drop(tid, ['mat_seesky_led', 'mat_seesky_rgb', 'mat_seesky_lamella_led', 'mat_seesky_smarthome', 'mat_seesky_ral_wall', 'mat_seesky_ral_free'])
 put(tid, [], [
-    fixed_extra('x_seesky_led_beam', LED_BEAM, 800),
-    fixed_extra('x_seesky_led_blade', 'LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db', 800),
-    fixed_extra('x_seesky_led_rgb', 'LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)', 800),
+    fixed_extra('x_seesky_led_beam', LED_BEAM, 800, **BEAM, choiceLabel='Meleg fehér'),
+    fixed_extra('x_seesky_led_rgb', 'LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)', 800, **BEAM, choiceLabel='RGB'),
+    fixed_extra('x_seesky_led_blade', 'LED-szalag világítás a lamellákban (szabályozható fényerejű, akár RGB), 3 db', 800, group='Világítás'),
     *common_extras('seesky'),
 ])
 
