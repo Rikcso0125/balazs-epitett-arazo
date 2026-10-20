@@ -187,7 +187,7 @@ const optionFixed = (id, name, price, extra = {}) =>
 
 const smartHome = (p) =>
   optionFixed(`mat_${p}_smarthome`, 'Okosotthon vezérlő', 250, {
-    description: 'Conexxon, Tahoma – Somfy vagy BLEBOX applikációval',
+    description: 'Conexxon, Tahoma - Somfy vagy BLEBOX applikációval',
   });
 
 const installPct = (p, tiers, extra = {}) =>
@@ -253,8 +253,8 @@ function zipOption({ p, side, suffix = '', kind = 'refleksol', inst, offset = 0,
   return mat({
     id: `mat_${p}_zip_${side.toLowerCase()}${suffix}`,
     name: isVert
-      ? `Gerendába integrált oldalsó ZIP árnyékoló ${sideLabel} – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)`
-      : `Oldalsó ZIP árnyékoló ${sideLabel} – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)`,
+      ? `Gerendába integrált oldalsó ZIP árnyékoló ${sideLabel} - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)`
+      : `Oldalsó ZIP árnyékoló ${sideLabel} - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)`,
     description: `Nettó méret: ${side === 'A' ? 'szélesség' : 'kinyúlás'}${offset ? ` − ${offset} cm` : ''} × magasság${
       heightOffset ? ` − ${heightOffset} cm` : ''
     }. Az ár tartalmazza a ${inst}% szerelést, programozást.`,
@@ -359,7 +359,7 @@ const NO_PROFIT_OVERRIDE = {
 };
 
 const CLOSING_STD =
-  'Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.';
+  'Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.';
 
 // ---------------------------------------------------------------------------
 // Kategóriák (név szerint; a kép a végigvezetett árazó termékválasztójához)
@@ -375,7 +375,7 @@ const CATEGORY_DEFS = [
   { key: 'uvegfal', id: 'cat_legacy_uvegfal', name: 'Üvegfal', menuId: 'menu_arnyekolo', order: 2, description: 'Keret nélküli, elcsúsztatható 10 mm edzett üvegfalak', imageUrl: TYPE_IMG('uvegfalas') },
   { key: 'tetore', id: 'cat_legacy_tetore', name: 'Feszített vászon tetőre', menuId: 'menu_arnyekolo', order: 3, description: 'Meglévő szerkezetre / üvegtetőre szerelhető elhúzható vászon', imageUrl: TYPE_IMG('feszitett_vasznas_tetore') },
 ];
-// Meglévő (sablon nélküli) kategóriák képe – csak az imageUrl-t állítjuk
+// Meglévő (sablon nélküli) kategóriák képe - csak az imageUrl-t állítjuk
 const CATEGORY_IMAGES_ONLY = {
   'Kazettás': TYPE_IMG('karos_napellenzos'),
   'Kazetta nélküli': TYPE_IMG('karos_napellenzos'),
@@ -403,7 +403,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   const wall = tableToMatrix(TABLES.SB400.wall_mounted);
   const free = tableToMatrix(TABLES.SB400.free_standing);
   const desc =
-    'Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).';
+    'Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).';
   // LED spot (legacy LedSpotVilagitas): a pergola kerekített méretei szerint 4/6/9/8/12 db
   const spot = matrixFromFn(wall.rows, wall.cols, (b, a) => {
     const narrow = b <= 274;
@@ -415,20 +415,20 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_sb400',
     cat: 'bio',
     name: 'SOLARE 400 bioklimatikus pergola',
-    subtitle: 'Forgatható lamellás tető, Somfy IO motorral – 150 kg/m² hóterhelés',
+    subtitle: 'Forgatható lamellás tető, Somfy IO motorral - 150 kg/m² hóterhelés',
     sizeLimits: { minWidthCm: 340, maxWidthCm: 700, minProjectionCm: 150, maxProjectionCm: 400 },
     catalogRef: { productAlias: 'Selt SB400 / Solare 400', note: `legacy: templates/bioklimatikus/datasheet.py SB400 + editor.py item1; ár = gyári × ${m} + 2500 (arkepzok.json ARKEPZO_SB400); szerelés 11% (< 8500) / 10% az alapszerkezetre` },
     introText:
-      'A SOLARE 400 ({{meret}}, {{beepites}}) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20–30 nap.' + BIO_INTRO_SUFFIX,
+      'A SOLARE 400 ({{meret}}, {{beepites}}) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20-30 nap.' + BIO_INTRO_SUFFIX,
     closingText: BIO_CLOSING + CLOSING_STD,
     photos: photos('tpl_legacy_sb400', [
-      ['bioklimatikus', 'image_01.jpg', 'Alumínium vázával, 0–120° között elforgatható lamellával, oszlopaiban rejtett esővíz-elvezetéssel jó választás az időjárás elemeivel szemben.'],
+      ['bioklimatikus', 'image_01.jpg', 'Alumínium vázával, 0-120° között elforgatható lamellával, oszlopaiban rejtett esővíz-elvezetéssel jó választás az időjárás elemeivel szemben.'],
       ['bioklimatikus', 'image_02.jpg', 'A lamellák állása szabályozza a bejutó fényt. A motor a pergola tetején látható, opcionálisan a gerendákban elrejtve is kérhető.'],
       ['bioklimatikus', 'image_03.jpg'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_wall`, name: 'SOLARE 400 – elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: wall, ...BIO_SNAP, multiplier: m, fixedSurcharge: 2500, mountTypes: [WALL] }),
-      mat({ id: `mat_${p}_free`, name: 'SOLARE 400 – elforgatható lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: free, ...BIO_SNAP, multiplier: m, fixedSurcharge: 2500, mountTypes: [FREE] }),
+      mat({ id: `mat_${p}_wall`, name: 'SOLARE 400 - elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: wall, ...BIO_SNAP, multiplier: m, fixedSurcharge: 2500, mountTypes: [WALL] }),
+      mat({ id: `mat_${p}_free`, name: 'SOLARE 400 - elforgatható lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: free, ...BIO_SNAP, multiplier: m, fixedSurcharge: 2500, mountTypes: [FREE] }),
       remote(p, 125, { excludeFromPercentBase: true }),
       gift(`mat_${p}_gift_infra`, 'Infrafűtés 1 db', 400),
       gift(`mat_${p}_gift_sensor`, 'Eső- és szélérzékelő', 200),
@@ -449,32 +449,32 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   const wallTiers = [{ maxM2: 13, pricePerM2: 761 }, { maxM2: 16, pricePerM2: 659 }, { maxM2: 999, pricePerM2: 610 }];
   const freeTiers = [{ maxM2: 13, pricePerM2: 800 }, { maxM2: 16, pricePerM2: 695 }, { maxM2: 999, pricePerM2: 631 }];
   const desc =
-    'Hőszigetelt, 0–135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.';
+    'Hőszigetelt, 0-135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.';
   const m = ARK.ARKEPZO_SESKY_BIO;
   addTemplate({
     id: 'tpl_legacy_seesky_bio',
     cat: 'bio',
     name: 'SEESKY BIO bioklimatikus pergola',
-    subtitle: 'Hőszigetelt lamellák, rejtett motor – 200 kg/m² hóterhelés',
+    subtitle: 'Hőszigetelt lamellák, rejtett motor - 200 kg/m² hóterhelés',
     sizeLimits: { minWidthCm: 140, maxWidthCm: 640, minProjectionCm: 150, maxProjectionCm: 470 },
     catalogRef: { productAlias: 'SeeSky Bio', note: 'legacy: templates/bioklimatikus/datasheet.py SeeSkyBio (m² sávok, szélesség 20 cm-es gyári lépcsőkben) + editor.py item2; ARKEPZO_SESKY_BIO = 1' },
     introText:
-      'A SEESKY BIO ({{meret}}, {{beepites}}) magas minőségű, hőszigetelt lamellás pergola rejtett motorral és rejtett csavarokkal; zárt lamellák esetén teljesen vízzáró. Gyártási idő 30–40 nap.' + BIO_INTRO_SUFFIX,
+      'A SEESKY BIO ({{meret}}, {{beepites}}) magas minőségű, hőszigetelt lamellás pergola rejtett motorral és rejtett csavarokkal; zárt lamellák esetén teljesen vízzáró. Gyártási idő 30-40 nap.' + BIO_INTRO_SUFFIX,
     closingText: BIO_CLOSING + CLOSING_STD,
     photos: photos('tpl_legacy_seesky_bio', [
       ['bioklimatikus', 'image_09.png', 'Prémium hőszigetelt lamellás pergola. A lamellák mozgatását villanymotor végzi, távirányítóval vagy okostelefonnal vezérelve. Motor rejtve a gerendákban.'],
       ['bioklimatikus', 'image_10.png', 'A lamellák állása szabályozza a bejutó fényt és a természetes légáramlást.'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_wall`, name: 'SEESKY BIO – elforgatható, szigetelt lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'tiered_m2', m2Tiers: wallTiers, multiplier: m, unitLabel: 'm²', mountTypes: [WALL] }),
-      mat({ id: `mat_${p}_free`, name: 'SEESKY BIO – elforgatható, szigetelt lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'tiered_m2', m2Tiers: freeTiers, multiplier: m, unitLabel: 'm²', mountTypes: [FREE] }),
+      mat({ id: `mat_${p}_wall`, name: 'SEESKY BIO - elforgatható, szigetelt lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'tiered_m2', m2Tiers: wallTiers, multiplier: m, unitLabel: 'm²', mountTypes: [WALL] }),
+      mat({ id: `mat_${p}_free`, name: 'SEESKY BIO - elforgatható, szigetelt lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'tiered_m2', m2Tiers: freeTiers, multiplier: m, unitLabel: 'm²', mountTypes: [FREE] }),
       remote(p, 120, { excludeFromPercentBase: true }),
       gift(`mat_${p}_gift_sensor`, 'Eső- és szélérzékelő', 500),
       gift(`mat_${p}_gift_infra`, 'Infrafűtés 1 db', 200),
       installPct(p, pctTiers([8499, 11], [BIG, 10]), { description: 'Alapszerkezet 11%-a (8500 EUR-tól 10%)' }),
       optionFixed(`mat_${p}_led`, 'LED világítás a 4 felső gerendába, belülről (szabályozható fényerejű, meleg fehér LED-szalag)', 700, { listPriceMultiplier: 1200 / 700 }),
       optionFixed(`mat_${p}_rgb`, 'Színes (RGB) LED-szalag világítás a gerendák belső oldalain', 300),
-      optionFixed(`mat_${p}_lamella_led`, 'LED-szalag világítás a lamellák belső felén – 3 db', 800),
+      optionFixed(`mat_${p}_lamella_led`, 'LED-szalag világítás a lamellák belső felén - 3 db', 800),
       mat({ id: `mat_${p}_ral_wall`, name: 'Katalógusból választható RAL szín (+5% felár)', itemRole: 'optional', defaultSelected: false, pricingMode: 'tiered_m2', m2Tiers: wallTiers, multiplier: m * 0.05, unitLabel: 'm²', mountTypes: [WALL] }),
       mat({ id: `mat_${p}_ral_free`, name: 'Katalógusból választható RAL szín (+5% felár)', itemRole: 'optional', defaultSelected: false, pricingMode: 'tiered_m2', m2Tiers: freeTiers, multiplier: m * 0.05, unitLabel: 'm²', mountTypes: [FREE] }),
       smartHome(p),
@@ -490,16 +490,16 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   const wall = tableToMatrix(TABLES.KedrySkylife.wall_mounted);
   const free = tableToMatrix(TABLES.KedrySkylife.free_standing);
   const desc =
-    'Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.';
+    'Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.';
   addTemplate({
     id: 'tpl_legacy_kedry_skylife',
     cat: 'bio',
     name: 'KEDRY SKYLIFE bioklimatikus pergola',
-    subtitle: 'Forgatva elhúzható lamellás tető, olasz prémium – 250 kg/m² hóterhelés',
+    subtitle: 'Forgatva elhúzható lamellás tető, olasz prémium - 250 kg/m² hóterhelés',
     sizeLimits: { minWidthCm: 211, maxWidthCm: 611, minProjectionCm: 200, maxProjectionCm: 450 },
     catalogRef: { productAlias: 'KE Kedry Skylife 1L', note: `legacy: templates/bioklimatikus/datasheet.py KedrySkylife + editor.py item3; ár = gyári × ${m} × 0,9 + 3500; szerelés 10% (< 8500) / 8% az alapszerkezetre` },
     introText:
-      'A KEDRY SKYLIFE ({{meret}}, {{beepites}}) lamellái elhúzás közben elforognak – minőségben a legmagasabb szint: rejtett motorok, csavarok és fali konzolok, hatalmas hóterhelési index. Olasz prémium termék, gyártási idő 30–40 nap.' + BIO_INTRO_SUFFIX,
+      'A KEDRY SKYLIFE ({{meret}}, {{beepites}}) lamellái elhúzás közben elforognak - minőségben a legmagasabb szint: rejtett motorok, csavarok és fali konzolok, hatalmas hóterhelési index. Olasz prémium termék, gyártási idő 30-40 nap.' + BIO_INTRO_SUFFIX,
     closingText: BIO_CLOSING + CLOSING_STD + ' (SKYLIFE termékre +2 év garancia kérhető.)',
     photos: photos('tpl_legacy_kedry_skylife', [
       ['bioklimatikus', 'image_13.png', 'Olasz csúcskategóriás bioklimatikus pergola: a lamellák egyetlen mozdulattal elforgathatók és el is húzhatók.'],
@@ -507,9 +507,9 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
       ['bioklimatikus', 'image_15.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_wall`, name: 'KEDRY SKYLIFE 1L – forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: wall, ...BIO_SNAP, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 3500, mountTypes: [WALL] }),
-      mat({ id: `mat_${p}_free`, name: 'KEDRY SKYLIFE 1L – forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: free, ...BIO_SNAP, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 3500, mountTypes: [FREE] }),
-      fixedItem(`mat_${p}_motor`, 'Motor – automatizált, Somfy IO – 1 db', 523, { listPriceMultiplier: 627 / 523, excludeFromPercentBase: true }),
+      mat({ id: `mat_${p}_wall`, name: 'KEDRY SKYLIFE 1L - forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: wall, ...BIO_SNAP, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 3500, mountTypes: [WALL] }),
+      mat({ id: `mat_${p}_free`, name: 'KEDRY SKYLIFE 1L - forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal', description: desc, pricingMode: 'matrix_cm', matrixTable: free, ...BIO_SNAP, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 3500, mountTypes: [FREE] }),
+      fixedItem(`mat_${p}_motor`, 'Motor - automatizált, Somfy IO - 1 db', 523, { listPriceMultiplier: 627 / 523, excludeFromPercentBase: true }),
       remote(p, 120, { excludeFromPercentBase: true }),
       gift(`mat_${p}_gift_sensor`, 'Eső- és szélérzékelő', 500),
       gift(`mat_${p}_gift_infra`, 'Infrafűtés 1 db', 200),
@@ -525,7 +525,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
 }
 
 // === 2. FESZÍTETT VÁSZNAS =====================================================
-// 2.1 PERGOLA V ZIIP — legacy: modulszám = ceil(kinyúlás / 600), modulonként int(kinyúlás / n), ár × n
+// 2.1 PERGOLA V ZIIP - legacy: modulszám = ceil(kinyúlás / 600), modulonként int(kinyúlás / n), ár × n
 {
   const p = 'pvziip';
   const m = ARK.ARKEPZO_PERGOLA_V_ZIIP;
@@ -533,20 +533,20 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_pergola_v_ziip',
     cat: 'feszitett',
     name: 'PERGOLA V ZIIP feszített vásznas pergola',
-    subtitle: 'Elhúzható, ZIP-megvezetésű feszített vászon – árnyékolásra; 600 cm kinyúlásonként új modul',
+    subtitle: 'Elhúzható, ZIP-megvezetésű feszített vászon - árnyékolásra; 600 cm kinyúlásonként új modul',
     sizeLimits: { minWidthCm: 200, maxWidthCm: 500, minProjectionCm: 200, maxProjectionCm: 1800 },
     moduleSplit: { axis: 'projection', maxCm: 600 },
     catalogRef: { productAlias: 'Selt Pergola V-ZIIP', note: `legacy: templates/feszitett_vasznas/datasheet.py PergolaVZIIP + editor.py item1; ár = (gyári × modulszám) × ${m} + 2100; motor az árban; szerelés 13/12/10%` },
     introText:
-      'A PERGOLA V ZIIP ({{meret}}) elhúzható, feszített vásznas pergola: a ponyva mindkét oldalára hegesztett zipzár az oldalsó profilokban vezeti a vásznat, így az mindig feszes, ráncmentes marad. Elsősorban árnyékolásra ajánljuk; szélállóság EN 13561 3. osztály (50–70 km/h).',
+      'A PERGOLA V ZIIP ({{meret}}) elhúzható, feszített vásznas pergola: a ponyva mindkét oldalára hegesztett zipzár az oldalsó profilokban vezeti a vásznat, így az mindig feszes, ráncmentes marad. Elsősorban árnyékolásra ajánljuk; szélállóság EN 13561 3. osztály (50-70 km/h).',
     closingText: 'Hóesésben nem használható. ' + CLOSING_STD,
     photos: photos('tpl_legacy_pergola_v_ziip', [
-      ['feszitett_vasznas', 'image_01.png', 'ZIP-rendszerű oldalsó megvezetés – a ponyva mindig feszes és ráncmentes marad.'],
+      ['feszitett_vasznas', 'image_01.png', 'ZIP-rendszerű oldalsó megvezetés - a ponyva mindig feszes és ráncmentes marad.'],
       ['feszitett_vasznas', 'image_02.png'],
       ['feszitett_vasznas', 'image_03.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_base`, name: 'Pergola V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet (modulonként elöl 2 láb)', description: 'Az ár tartalmazza a motort (Somfy IO, modulonként 1 db).', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.PergolaVZIIP), splitByModule: true, multiplier: m, fixedSurcharge: 2100 }),
+      mat({ id: `mat_${p}_base`, name: 'Pergola V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet (modulonként elöl 2 láb)', description: 'Az ár tartalmazza a motort (Somfy IO, modulonként 1 db).', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.PergolaVZIIP), splitByModule: true, multiplier: m, fixedSurcharge: 2100 }),
       remote(p, 120),
       gift(`mat_${p}_gift_sensor`, 'Szélérzékelő', 500),
       installPct(p, TIERS_13_12_10, { description: 'Részösszeg 13% (< 5000 EUR) / 12% (< 7500 EUR) / 10%' }),
@@ -555,7 +555,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   });
 }
 
-// 2.2 HYDRA (1–2 modul; a gyári tábla 650 cm szélességtől a 2 modulos árakat tartalmazza)
+// 2.2 HYDRA (1-2 modul; a gyári tábla 650 cm szélességtől a 2 modulos árakat tartalmazza)
 {
   const p = 'hydra';
   const m = ARK.ARKEPZO_HYDRA;
@@ -565,12 +565,12 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_hydra',
     cat: 'feszitett',
     name: 'HYDRA feszített vásznas pergola',
-    subtitle: 'Olasz elhúzható feszített vászon víztaszító szövettel – 1 modul 600 cm-ig, felette 2 modul',
+    subtitle: 'Olasz elhúzható feszített vászon víztaszító szövettel - 1 modul 600 cm-ig, felette 2 modul',
     sizeLimits: { minWidthCm: 200, maxWidthCm: 1200, minProjectionCm: 200, maxProjectionCm: 500 },
     moduleSplit: { axis: 'width', maxCm: 600, maxModules: 2 },
     catalogRef: { productAlias: 'KE Hydra', note: `legacy: templates/feszitett_vasznas/datasheet.py Hydra + editor.py item2; ár = gyári × ${m} × 0,9 + 2345 (+525 két modulnál), motor 600/modul; szerelés 13/12/10%` },
     introText:
-      'A HYDRA ({{meret}}) olasz, elhúzható feszített vásznas pergola: a kazettába zárt, zipzáras oldalvezetésű ponyva mindig feszes marad, víztaszító szövettel kisebb esőben is használható. Szélállóság EN 13561 3. osztály (50–70 km/h).',
+      'A HYDRA ({{meret}}) olasz, elhúzható feszített vásznas pergola: a kazettába zárt, zipzáras oldalvezetésű ponyva mindig feszes marad, víztaszító szövettel kisebb esőben is használható. Szélállóság EN 13561 3. osztály (50-70 km/h).',
     closingText: 'Hóesésben nem használható. ' + CLOSING_STD,
     photos: photos('tpl_legacy_hydra', [
       ['feszitett_vasznas', 'image_05.png', 'Olasz elhúzható feszített vásznas pergola víztaszító szövettel, távirányítóról kezelhetően.'],
@@ -578,9 +578,9 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
       ['feszitett_vasznas', 'image_07.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_base`, name: 'HYDRA – elhúzható, feszített ponyvával, Acrilico szövet, elöl 2 lábbal (1 modul)', ...common, fixedSurcharge: 2345, maxModules: 1 }),
-      mat({ id: `mat_${p}_base_2m`, name: 'HYDRA – elhúzható, feszített ponyvával, Acrilico szövet, elöl 3 lábbal (2 modul)', ...common, fixedSurcharge: 2345 + 525, minModules: 2 }),
-      fixedItem(`mat_${p}_motor`, 'Motor – automatizált, Somfy IO (modulonként 1 db)', 600, { perModule: true }),
+      mat({ id: `mat_${p}_base`, name: 'HYDRA - elhúzható, feszített ponyvával, Acrilico szövet, elöl 2 lábbal (1 modul)', ...common, fixedSurcharge: 2345, maxModules: 1 }),
+      mat({ id: `mat_${p}_base_2m`, name: 'HYDRA - elhúzható, feszített ponyvával, Acrilico szövet, elöl 3 lábbal (2 modul)', ...common, fixedSurcharge: 2345 + 525, minModules: 2 }),
+      fixedItem(`mat_${p}_motor`, 'Motor - automatizált, Somfy IO (modulonként 1 db)', 600, { perModule: true }),
       remote(p, 125),
       gift(`mat_${p}_gift_sensor`, 'Szélérzékelő', 300),
       installPct(p, TIERS_13_12_10, { description: 'Részösszeg 13% (< 5000 EUR) / 12% (< 7500 EUR) / 10%' }),
@@ -591,9 +591,9 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
 }
 
 // === 3. ELHÚZHATÓ PONYVÁS =====================================================
-// 3.1 GENIUS A100 LUX (1–3 modul: ≤500 cm 1, ≤900 cm 2, ≤1300 cm 3 modul)
+// 3.1 GENIUS A100 LUX (1-3 modul: ≤500 cm 1, ≤900 cm 2, ≤1300 cm 3 modul)
 // A modulhatárok (500/900/1300) nem ceil(szélesség / X) alakúak, ezért a modulfüggő tételek
-// szélesség-küszöbös mérettáblák; a 2–3 modulos felár (+1400 / +2400 EUR) a tábla celláiban van
+// szélesség-küszöbös mérettáblák; a 2-3 modulos felár (+1400 / +2400 EUR) a tábla celláiban van
 // (÷ 0,585, hogy az árképző után pontosan a felárat adja).
 {
   const p = 'a100';
@@ -606,7 +606,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   const cols = [...t1.cols, ...t23.cols];
   const matrix = matrixFromFn(t1.rows, cols, (b, a) => {
     if (a <= 500) return t1.matrix[b][a] + e1.matrix[b][a];
-    const bb = Math.min(b, Math.max(...t23.rows)); // 2–3 modulnál a kinyúlás max. 500 (legacy: a legnagyobb sor)
+    const bb = Math.min(b, Math.max(...t23.rows)); // 2-3 modulnál a kinyúlás max. 500 (legacy: a legnagyobb sor)
     const extra = a <= 900 ? 1400 : 2400;
     return t23.matrix[bb][a] + e23.matrix[bb][a] + extra / eff;
   });
@@ -621,7 +621,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_a100_lux',
     cat: 'ponyvas',
     name: 'GENIUS A100 LUX elhúzható PVC ponyvás pergola',
-    subtitle: 'Ferde tetős, négy évszakos, előtetővel – 1–3 modul (500 / 900 / 1300 cm-ig)',
+    subtitle: 'Ferde tetős, négy évszakos, előtetővel - 1-3 modul (500 / 900 / 1300 cm-ig)',
     sizeLimits: { minWidthCm: 250, maxWidthCm: 1300, minProjectionCm: 250, maxProjectionCm: 600 },
     catalogRef: { productAlias: 'Gennius A100 LUX', note: `legacy: templates/elhuzhato_ponyvas/datasheet.py A100Lux (1_modul / 2_3_modul + előtető táblák) + editor.py item1; ár = (gyári + előtető) × ${m} × 0,9 + 2470 (+1400 / +2400 a 2 / 3 modulnál); motor 800 + 100/modul; szerelés 13/12/10%` },
     introText:
@@ -629,12 +629,12 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     closingText: 'Hóesésben a termék használata nem ajánlott. ' + CLOSING_STD,
     photos: photos('tpl_legacy_a100_lux', [
       ['elhuzhato_ponyvas', 'image_01.jpg', 'Olasz elhúzható PVC ponyvás pergola előtetővel; a ponyva motorosan elhúzható és távirányítóval vezérelhető.'],
-      ['elhuzhato_ponyvas', 'image_02.png', 'Integrált esőcsatorna és az első oszlopokban rejtett csapadékvíz-elvezetés, 1–3 modulos kivitel.'],
+      ['elhuzhato_ponyvas', 'image_02.png', 'Integrált esőcsatorna és az első oszlopokban rejtett csapadékvíz-elvezetés, 1-3 modulos kivitel.'],
       ['elhuzhato_ponyvas', 'image_03.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_base`, name: 'GENIUS A100 LUX elhúzható PVC ponyvás pergola előtetővel – Opatex Flat szövet', description: '1 modul 500 cm-ig (elöl 2 láb), 2 modul 900 cm-ig (3 láb), 3 modul 1300 cm-ig (4 láb). Profilok: gerenda 14×13 cm, oszlop 13×10 cm.', pricingMode: 'matrix_cm', matrixTable: matrix, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 2470 }),
-      mat({ id: `mat_${p}_motor`, name: 'Motor – automatizált, Somfy IO', pricingMode: 'matrix_cm', matrixTable: widthKeyed(600, [[500, 800], [900, 900], [1300, 1000]]) }),
+      mat({ id: `mat_${p}_base`, name: 'GENIUS A100 LUX elhúzható PVC ponyvás pergola előtetővel - Opatex Flat szövet', description: '1 modul 500 cm-ig (elöl 2 láb), 2 modul 900 cm-ig (3 láb), 3 modul 1300 cm-ig (4 láb). Profilok: gerenda 14×13 cm, oszlop 13×10 cm.', pricingMode: 'matrix_cm', matrixTable: matrix, multiplier: m, extraDiscountPct: 10, fixedSurcharge: 2470 }),
+      mat({ id: `mat_${p}_motor`, name: 'Motor - automatizált, Somfy IO', pricingMode: 'matrix_cm', matrixTable: widthKeyed(600, [[500, 800], [900, 900], [1300, 1000]]) }),
       remote(p, 125),
       gift(`mat_${p}_gift_sensor`, 'Szél- vagy esőérzékelő', 300),
       installPct(p, TIERS_13_12_10, { description: 'Részösszeg 13% (< 5000 EUR) / 12% (< 7500 EUR) / 10%' }),
@@ -656,7 +656,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_keplan',
     cat: 'ponyvas',
     name: 'KEPLAN sík tetejű elhúzható PVC ponyvás pergola',
-    subtitle: 'Sík tető, négy évszakos – falra szerelt (550 × 600) vagy szabadon álló (450 × 500)',
+    subtitle: 'Sík tető, négy évszakos - falra szerelt (550 × 600) vagy szabadon álló (450 × 500)',
     sizeLimits: { minWidthCm: 250, maxWidthCm: 550, minProjectionCm: 250, maxProjectionCm: 600 },
     catalogRef: { productAlias: 'KE Keplan A', note: `legacy: templates/elhuzhato_ponyvas/datasheet.py Keplan + editor.py item2; ár = gyári × ${m} + 2470; motor 800; szerelés 12%` },
     introText:
@@ -669,9 +669,9 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
       ['elhuzhato_ponyvas', 'image_08.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_wall`, name: 'KEPLAN A elhúzható PVC ponyvás pergola – Opatex Flat szövet, falhoz rögzítve, elöl 2 lábbal', description: 'Profilok: gerenda 11×11 cm, oszlop 11×11 cm.', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.Keplan.wall_mounted), multiplier: m, fixedSurcharge: 2470, mountTypes: [WALL] }),
-      mat({ id: `mat_${p}_free`, name: 'KEPLAN A elhúzható PVC ponyvás pergola – Opatex Flat szövet, szabadon álló, 4 lábbal', description: 'Profilok: gerenda 11×11 cm, oszlop 11×11 cm.', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.Keplan.free_standing), multiplier: m, fixedSurcharge: 2470, mountTypes: [FREE] }),
-      fixedItem(`mat_${p}_motor`, 'Motor – automatizált, Somfy IO', 800),
+      mat({ id: `mat_${p}_wall`, name: 'KEPLAN A elhúzható PVC ponyvás pergola - Opatex Flat szövet, falhoz rögzítve, elöl 2 lábbal', description: 'Profilok: gerenda 11×11 cm, oszlop 11×11 cm.', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.Keplan.wall_mounted), multiplier: m, fixedSurcharge: 2470, mountTypes: [WALL] }),
+      mat({ id: `mat_${p}_free`, name: 'KEPLAN A elhúzható PVC ponyvás pergola - Opatex Flat szövet, szabadon álló, 4 lábbal', description: 'Profilok: gerenda 11×11 cm, oszlop 11×11 cm.', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.Keplan.free_standing), multiplier: m, fixedSurcharge: 2470, mountTypes: [FREE] }),
+      fixedItem(`mat_${p}_motor`, 'Motor - automatizált, Somfy IO', 800),
       remote(p, 125),
       gift(`mat_${p}_gift_sensor`, 'Szél- vagy esőérzékelő', 300),
       installPct(p, flatTier(12), { description: 'Részösszeg 12%-a' }),
@@ -691,7 +691,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     const legs = mount === WALL ? (large ? 3 : 2) : large ? 6 : 4;
     return mat({
       id: `mat_${p}_${mount === WALL ? 'wall' : 'free'}${large ? '_2m' : ''}`,
-      name: `ISOLA 2A – elhúzható PVC ponyvával, ${mount === WALL ? 'falhoz rögzítve, elöl' : 'szabadon álló,'} ${legs} lábbal${large ? ' (700 cm felett)' : ''}`,
+      name: `ISOLA 2A - elhúzható PVC ponyvával, ${mount === WALL ? 'falhoz rögzítve, elöl' : 'szabadon álló,'} ${legs} lábbal${large ? ' (700 cm felett)' : ''}`,
       description: 'Profilok: gerenda 22×13 cm, oszlop 12×12 cm.',
       pricingMode: 'matrix_cm',
       matrixTable: tableToMatrix(t),
@@ -706,7 +706,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_isola_2a',
     cat: 'ponyvas',
     name: 'ISOLA 2A prémium elhúzható ponyvás pergola',
-    subtitle: 'Olasz prémium, sík tető, rejtett motor – 700 cm-ig 1, 1000 cm-ig 2 modul',
+    subtitle: 'Olasz prémium, sík tető, rejtett motor - 700 cm-ig 1, 1000 cm-ig 2 modul',
     sizeLimits: { minWidthCm: 250, maxWidthCm: 1000, minProjectionCm: 250, maxProjectionCm: 550 },
     moduleSplit: { axis: 'width', maxCm: 700, maxModules: 2 },
     catalogRef: { productAlias: 'KE Isola 2', note: `legacy: templates/elhuzhato_ponyvas/datasheet.py Isola + editor.py item3; ár = gyári × ${m} × 0,9 + 2870 (+650 700 cm felett); motor 1000/1200; szerelés 8% / 9%` },
@@ -723,8 +723,8 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
       base(FREE, false),
       base(WALL, true),
       base(FREE, true),
-      fixedItem(`mat_${p}_motor`, 'Motor – automatizált, Somfy IO – 1 db', 1000, { maxModules: 1 }),
-      fixedItem(`mat_${p}_motor_2m`, 'Motor – automatizált, Somfy IO – 1 db', 1200, { minModules: 2 }),
+      fixedItem(`mat_${p}_motor`, 'Motor - automatizált, Somfy IO - 1 db', 1000, { maxModules: 1 }),
+      fixedItem(`mat_${p}_motor_2m`, 'Motor - automatizált, Somfy IO - 1 db', 1200, { minModules: 2 }),
       remote(p, 125),
       gift(`mat_${p}_gift_sensor`, 'Esőérzékelő', 200),
       gift(`mat_${p}_gift_infra`, 'Infrafűtés', 300),
@@ -746,7 +746,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
 }
 
 // === 4. FESZÍTETT VÁSZON TETŐRE ==============================================
-// 4.1 VERANDA TENS — modulszám = ceil(szélesség / 450), modulonként int(szél. / n), ár × n
+// 4.1 VERANDA TENS - modulszám = ceil(szélesség / 450), modulonként int(szél. / n), ár × n
 {
   const p = 'veranda_tens';
   const m = ARK.ARKEPZO_VERANDA_TENS_FESZITETT_VASZNAS_TETORE;
@@ -754,12 +754,12 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_veranda_tens',
     cat: 'tetore',
     name: 'VERANDA TENS tetőárnyékoló (meglévő szerkezetre)',
-    subtitle: 'Bowden-huzalos, rugós feszítésű elhúzható vászon tető fölé vagy alá – 450 cm-enként új modul',
+    subtitle: 'Bowden-huzalos, rugós feszítésű elhúzható vászon tető fölé vagy alá - 450 cm-enként új modul',
     sizeLimits: { minWidthCm: 125, maxWidthCm: 1800, minProjectionCm: 150, maxProjectionCm: 400 },
     moduleSplit: { axis: 'width', maxCm: 450 },
     catalogRef: { productAlias: 'Veranda Tens', note: `legacy: templates/feszitett_vasznas_tetore/datasheet.py VerandaTens + editor.py item1; ár = (gyári × modulszám) × ${m} + 125, motor 350/modul, szerelés 15% (1 modul) / 13% (több modul)` },
     introText:
-      'A VERANDA TENS ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre – télikertre, üvegtetőre vagy pergolára – építhető elhúzható vásznas árnyékoló, a tető fölé és alá is szerelhető; egymodulos és többmodulos kivitelben. Csak motoros vezérléssel; szélállóság EN 13561 2. osztály (30–50 km/h).',
+      'A VERANDA TENS ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre - télikertre, üvegtetőre vagy pergolára - építhető elhúzható vásznas árnyékoló, a tető fölé és alá is szerelhető; egymodulos és többmodulos kivitelben. Csak motoros vezérléssel; szélállóság EN 13561 2. osztály (30-50 km/h).',
     closingText: 'Csak árnyékolásra ajánljuk, hóesésben nem használható. ' + CLOSING_STD,
     photos: photos('tpl_legacy_veranda_tens', [
       ['feszitett_vasznas_tetore', 'image_01.png', 'Meglévő télikertre, üvegtetőre vagy pergolára (tető fölé és alá is) szerelhető motoros tetőárnyékoló.'],
@@ -767,8 +767,8 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
       ['feszitett_vasznas_tetore', 'image_03.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_base`, name: 'Veranda Tens – elhúzható ponyvával, Acrilico ponyva, tető fölé (modulonként 1 db)', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.VerandaTens), splitByModule: true, multiplier: m, fixedSurcharge: 125 }),
-      fixedItem(`mat_${p}_motor`, 'Motor – automatizált, Somfy IO (modulonként 1 db)', 350, { perModule: true }),
+      mat({ id: `mat_${p}_base`, name: 'Veranda Tens - elhúzható ponyvával, Acrilico ponyva, tető fölé (modulonként 1 db)', pricingMode: 'matrix_cm', matrixTable: tableToMatrix(TABLES.VerandaTens), splitByModule: true, multiplier: m, fixedSurcharge: 125 }),
+      fixedItem(`mat_${p}_motor`, 'Motor - automatizált, Somfy IO (modulonként 1 db)', 350, { perModule: true }),
       remote(p, 120),
       gift(`mat_${p}_gift_sensor`, 'Szélérzékelő', 300),
       installPct(p, flatTier(15), { description: 'Részösszeg 15%-a (1 modul)', maxModules: 1 }),
@@ -777,7 +777,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   });
 }
 
-// 4.2 VERANDA V ZIIP — modulszám = ceil(szélesség / 500); több modulnál +500 EUR
+// 4.2 VERANDA V ZIIP - modulszám = ceil(szélesség / 500); több modulnál +500 EUR
 {
   const p = 'veranda_vzip';
   const m = ARK.ARKEPZO_VERANDA_V_ZIP;
@@ -786,20 +786,20 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
     id: 'tpl_legacy_veranda_v_zip',
     cat: 'tetore',
     name: 'VERANDA V ZIIP feszített vászon (meglévő szerkezetre)',
-    subtitle: 'ZIP-megvezetésű, feszített elhúzható vászon meglévő szerkezet tetejére – 500 cm-enként új modul',
+    subtitle: 'ZIP-megvezetésű, feszített elhúzható vászon meglévő szerkezet tetejére - 500 cm-enként új modul',
     sizeLimits: { minWidthCm: 200, maxWidthCm: 2000, minProjectionCm: 200, maxProjectionCm: 600 },
     moduleSplit: { axis: 'width', maxCm: 500 },
     catalogRef: { productAlias: 'Selt Veranda V-ZIIP', note: `legacy: templates/feszitett_vasznas_tetore/datasheet.py VerandaVZIP + editor.py item2; ár = (gyári × modulszám) × ${m} + 1125 (+500 több modulnál); szerelés 12%` },
     introText:
-      'A VERANDA V ZIIP ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre építhető, ZIP-rendszerű feszített árnyékoló: a zipzáras oldalvezetés miatt a ponyva mindig feszes marad. Szélállóság EN 13561 3. osztály (50–70 km/h).',
+      'A VERANDA V ZIIP ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre építhető, ZIP-rendszerű feszített árnyékoló: a zipzáras oldalvezetés miatt a ponyva mindig feszes marad. Szélállóság EN 13561 3. osztály (50-70 km/h).',
     closingText: 'Csak árnyékolásra ajánljuk, hóesésben nem használható. ' + CLOSING_STD,
     photos: photos('tpl_legacy_veranda_v_zip', [
       ['feszitett_vasznas_tetore', 'image_05.png', 'Meglévő szerkezetre építhető ZIP-rendszerű feszített árnyékoló.'],
       ['feszitett_vasznas_tetore', 'image_06.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_base`, name: 'Veranda V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére', ...common, fixedSurcharge: 1125, maxModules: 1 }),
-      mat({ id: `mat_${p}_base_multi`, name: 'Veranda V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére (több modul)', ...common, fixedSurcharge: 1125 + 500, minModules: 2 }),
+      mat({ id: `mat_${p}_base`, name: 'Veranda V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére', ...common, fixedSurcharge: 1125, maxModules: 1 }),
+      mat({ id: `mat_${p}_base_multi`, name: 'Veranda V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére (több modul)', ...common, fixedSurcharge: 1125 + 500, minModules: 2 }),
       remote(p, 125),
       gift(`mat_${p}_gift_sensor`, 'Szélérzékelő', 500),
       installPct(p, flatTier(12), { description: 'Részösszeg 12%-a' }),
@@ -807,7 +807,7 @@ const BIO_SNAP = { matrixColSnap: 'nearest', matrixRowSnap: 'up' };
   });
 }
 
-// === 5. POLIFIX és 6. GLASSFIX — lábszám = modulszám + 1, modul = ceil(szélesség / 600) ======
+// === 5. POLIFIX és 6. GLASSFIX - lábszám = modulszám + 1, modul = ceil(szélesség / 600) ======
 const POLIFIX_TIERS = {
   1: [[12, 238], [18, 196], [24, 176], [36, 156]],
   2: [[24, 238], [36, 205], [48, 186], [72, 166]],
@@ -859,8 +859,8 @@ for (const kind of ['polifix', 'glassfix']) {
       mat({
         id: `mat_${p}_base_${mod + 1}lab`,
         name: isGlass
-          ? `GLASSFIX – 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl ${mod + 1} lábbal`
-          : `POLIFIX – 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl ${mod + 1} lábbal`,
+          ? `GLASSFIX - 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl ${mod + 1} lábbal`
+          : `POLIFIX - 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl ${mod + 1} lábbal`,
         description: (isGlass
           ? 'Edzett-laminált biztonsági üvegtető, belső csatornás esővíz-elvezetés, min. 6° lejtés. Profilok: gerenda 11×15 cm, oszlop 11×14 cm.'
           : 'Szinterezett alumínium váz, SOLAR CONTROL polikarbonát (10 év garancia UV és jégeső ellen), min. 8° lejtés. Profilok: gerenda 19×15 / 6×12 cm, oszlop 11×14 cm.') +
@@ -899,7 +899,7 @@ for (const kind of ['polifix', 'glassfix']) {
     materials.push(
       mat({
         id: `mat_${p}_veranda`,
-        name: 'Veranda Tens tetőárnyékoló a pergola tetejére – motoros, szélérzékelős, távirányítós (szereléssel)',
+        name: 'Veranda Tens tetőárnyékoló a pergola tetejére - motoros, szélérzékelős, távirányítós (szereléssel)',
         description: 'Darabszám: szélesség / 450 cm felfelé kerekítve; darabonként motor 250 + távirányító 200 + szerelés 800 EUR',
         itemRole: 'optional',
         defaultSelected: false,
@@ -926,14 +926,14 @@ for (const kind of ['polifix', 'glassfix']) {
   );
   if (isGlass) {
     materials.push(
-      mat({ id: `mat_${p}_glass_triangle`, name: 'Háromszögrész beépítése üvegből – 1 db (szereléssel)', description: 'Kinyúlás (cm) × 1,3 EUR, +12% szerelés', itemRole: 'optional', defaultSelected: false, pricingMode: 'per_lm', dimensionSource: 'proj_lm', unitPrice: 130, multiplier: 1.12, unitLabel: 'fm' })
+      mat({ id: `mat_${p}_glass_triangle`, name: 'Háromszögrész beépítése üvegből - 1 db (szereléssel)', description: 'Kinyúlás (cm) × 1,3 EUR, +12% szerelés', itemRole: 'optional', defaultSelected: false, pricingMode: 'per_lm', dimensionSource: 'proj_lm', unitPrice: 130, multiplier: 1.12, unitLabel: 'fm' })
     );
   }
   addTemplate({
     id: tplId,
     cat: isGlass ? 'uvegteto' : 'poli',
     name: isGlass ? 'GLASSFIX üvegtetős pergola' : 'POLIFIX polikarbonát tetős pergola',
-    subtitle: `Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig – max. ${maxB / 100} m kinyúlás`,
+    subtitle: `Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig - max. ${maxB / 100} m kinyúlás`,
     sizeLimits: { minWidthCm: 100, maxWidthCm: 1800, minProjectionCm: 50, maxProjectionCm: maxB },
     moduleSplit: { axis: 'width', maxCm: 600, maxModules: 3 },
     catalogRef: {
@@ -944,8 +944,8 @@ for (const kind of ['polifix', 'glassfix']) {
       ? 'A GLASSFIX ({{meret}}) fix tetejű alumínium pergola 10 mm vastag, edzett-laminált biztonsági üvegtetővel (opál vagy víztiszta). Télen-nyáron használható, az üvegtetőn át elegendő fény jut a tető alá; később üvegfallal, oldalsó és tetőárnyékolóval bővíthető.'
       : 'A POLIFIX ({{meret}}) fix tetejű alumínium pergola 16 mm vastag, opál üregkamrás polikarbonát tetővel: elegendő fényt enged át, de a meleget megszűri. Szélállóság EN 13561 6. osztály; később üvegfallal és oldalsó árnyékolóval bővíthető.',
     closingText: isGlass
-      ? 'Hóterhelés: üvegtető max. 120 kg/m², szerkezet 200 kg/m². Garancia: szerkezet és üveg 10 év, vásznak 5 év, motorok, érzékelők 3 év. Átfutási idő 30–60 nap. A lábak rögzítéséhez beton alap szükséges.'
-      : 'Hóterhelés: szerkezet max. 150 kg/m², polikarbonát lemez 85 kg/m². Garancia: szerkezet 10 év, tető 5 év. Átfutási idő 10–30 nap. A lábak rögzítéséhez beton alap szükséges.',
+      ? 'Hóterhelés: üvegtető max. 120 kg/m², szerkezet 200 kg/m². Garancia: szerkezet és üveg 10 év, vásznak 5 év, motorok, érzékelők 3 év. Átfutási idő 30-60 nap. A lábak rögzítéséhez beton alap szükséges.'
+      : 'Hóterhelés: szerkezet max. 150 kg/m², polikarbonát lemez 85 kg/m². Garancia: szerkezet 10 év, tető 5 év. Átfutási idő 10-30 nap. A lábak rögzítéséhez beton alap szükséges.',
     photos: photos(tplId, isGlass
       ? [
           ['uvegtetos', 'image_01.png', '10 mm vastag edzett, laminált biztonsági üvegtetős alumínium pergola belső csatornás esővíz-elvezetéssel.'],
@@ -973,13 +973,13 @@ for (const es of [true, false]) {
     id: tplId,
     cat: 'uvegfal',
     name: es ? 'LINE GLASS spanyol prémium üvegfal' : 'SLIDING DOORS lengyel üvegfal',
-    subtitle: es ? 'Keret nélküli, elcsúsztatható 10 mm edzett üvegfal – prémium kategória' : 'Keret nélküli, elcsúsztatható 10 mm edzett üvegfal – középkategória',
+    subtitle: es ? 'Keret nélküli, elcsúsztatható 10 mm edzett üvegfal - prémium kategória' : 'Keret nélküli, elcsúsztatható 10 mm edzett üvegfal - középkategória',
     sizeLimits: { minWidthCm: 50, minProjectionCm: 50 },
     catalogRef: { productAlias: es ? 'Line Glass / Run 2' : 'Sliding Doors', note: `legacy: templates/uvegfalas/datasheet.py ${es ? 'Spanyol' : 'Lengyel'} (sávos m² ár oldalanként) + editor.py item${es ? 1 : 2}; szerelés ${inst}%` },
     introText: es
       ? 'Meglévő terasz vagy pergola beépítése keret nélküli, síneken csúszó LINE GLASS üvegfalrendszerrel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. A táblák mozgatás közben csatlakoznak egymáshoz; belső biztonsági zár és levehető szilikon profil az alapár része.'
       : 'Meglévő terasz vagy pergola beépítése keret nélküli, síneken csúszó SLIDING DOORS üvegfalrendszerrel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. 10 mm edzett biztonsági üveg, a táblák elhúzás közben csatlakoznak egymáshoz.',
-    closingText: 'Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
+    closingText: 'Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
     photos: photos(tplId, es
       ? [
           ['uvegfalas', 'image_01.png', 'Keret nélküli, síneken csúszó 10 mm vastag edzett biztonsági üvegfalrendszer.'],
@@ -993,14 +993,14 @@ for (const es of [true, false]) {
           ['uvegfalas', 'image_09.jpg'],
         ]),
     materials: [
-      mat({ id: `mat_${p}_a`, name: 'Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben – 1 db', description: `Szélesség × magasság, sávos m² ár (≤8,5 m²: ${tiers[0].pricePerM2}, ≤13,5 m²: ${tiers[1].pricePerM2}, felette ${tiers[2].pricePerM2} EUR/m²)`, pricingMode: 'tiered_m2', m2Tiers: tiers, dimensionSource: 'front_wall', multiplier: ARK.ARKEPZO_UVEGFAL_RENDSZER, unitLabel: 'm²' }),
-      mat({ id: `mat_${p}_b`, name: 'Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben – 1 db', description: 'Kinyúlás × magasság, sávos m² ár', pricingMode: 'tiered_m2', m2Tiers: tiers, dimensionSource: 'side_wall', multiplier: ARK.ARKEPZO_UVEGFAL_RENDSZER, unitLabel: 'm²' }),
+      mat({ id: `mat_${p}_a`, name: 'Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben - 1 db', description: `Szélesség × magasság, sávos m² ár (≤8,5 m²: ${tiers[0].pricePerM2}, ≤13,5 m²: ${tiers[1].pricePerM2}, felette ${tiers[2].pricePerM2} EUR/m²)`, pricingMode: 'tiered_m2', m2Tiers: tiers, dimensionSource: 'front_wall', multiplier: ARK.ARKEPZO_UVEGFAL_RENDSZER, unitLabel: 'm²' }),
+      mat({ id: `mat_${p}_b`, name: 'Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben - 1 db', description: 'Kinyúlás × magasság, sávos m² ár', pricingMode: 'tiered_m2', m2Tiers: tiers, dimensionSource: 'side_wall', multiplier: ARK.ARKEPZO_UVEGFAL_RENDSZER, unitLabel: 'm²' }),
       installPct(p, flatTier(inst), { name: 'Üvegfalak szerelése', description: `Üvegfalak ${inst}%-a` }),
     ],
   });
 }
 
-// === 8. ZIP ÁRNYÉKOLÓ (önálló) — tábla: árnyékoló szélessége × magassága ==========
+// === 8. ZIP ÁRNYÉKOLÓ (önálló) - tábla: árnyékoló szélessége × magassága ==========
 {
   const p = 'zip';
   const tplId = 'tpl_legacy_refleksol_zip';
@@ -1010,12 +1010,12 @@ for (const es of [true, false]) {
     id: tplId,
     cat: 'zip',
     name: 'Refleksol 120 ZIP oldalsó árnyékoló',
-    subtitle: 'Motoros, szélálló ZIP árnyékoló, Serge 600 naphálóval, Somfy IO motorral – oldalanként',
+    subtitle: 'Motoros, szélálló ZIP árnyékoló, Serge 600 naphálóval, Somfy IO motorral - oldalanként',
     sizeLimits: { minWidthCm: 100, maxWidthCm: 700, minProjectionCm: 100, maxProjectionCm: 700, minHeightCm: 100, maxHeightCm: 400 },
     catalogRef: { productAlias: 'Vertica 120 ZIP / Screeny GPZ', note: 'legacy: templates/ZIPes/datasheet.py Refleksol_120_ZIP + editor.py; ár = gyári (szélesség × magasság) + 370; szerelés 12%' },
     introText:
       'Meglévő terasz beépítése oldalsó ZIP árnyékolóval: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es vertikális árnyékoló, motoros működéssel. A ponyvára hegesztett zipzár miatt a napháló mindig feszes, szúnyoghálóként is működik; szélállóság EN 13561 6. osztály (119 km/h).',
-    closingText: 'Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
+    closingText: 'Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
     photos: photos(tplId, [
       ['ZIPes', 'image_01.jpg', 'Szélálló motoros oldalsó ZIP árnyékoló Serge 600 naphálóval és Somfy IO motorral.'],
       ['ZIPes', 'image_02.jpg', 'Az oldalsó zipzáras megvezetés biztosítja a ponyva feszességét és a szúnyogháló funkciót.'],
@@ -1023,9 +1023,9 @@ for (const es of [true, false]) {
       ['ZIPes', 'image_04.png'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_a`, name: 'Külön szerelt oldalsó árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító – 1 db', description: 'Ár: szélesség × magasság', ...common, matrixRowAxis: 'width' }),
-      mat({ id: `mat_${p}_b`, name: 'Külön szerelt oldalsó árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító – 1 db', description: 'Ár: kinyúlás × magasság', ...common, matrixRowAxis: 'projection' }),
-      gift(`mat_${p}_gift_sensor`, 'Szélérzékelő – Somfy IO', 300),
+      mat({ id: `mat_${p}_a`, name: 'Külön szerelt oldalsó árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db', description: 'Ár: szélesség × magasság', ...common, matrixRowAxis: 'width' }),
+      mat({ id: `mat_${p}_b`, name: 'Külön szerelt oldalsó árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db', description: 'Ár: kinyúlás × magasság', ...common, matrixRowAxis: 'projection' }),
+      gift(`mat_${p}_gift_sensor`, 'Szélérzékelő - Somfy IO', 300),
       installPct(p, flatTier(12), { name: 'Árnyékolók szerelése, programozása', description: 'Árnyékolók 12%-a' }),
       smartHome(p),
     ],
@@ -1040,18 +1040,18 @@ for (const es of [true, false]) {
     id: tplId,
     cat: 'zip',
     name: 'Vertica PRIME ZIP gerendába integrált árnyékoló',
-    subtitle: 'Pergola gerendába rejtett motoros ZIP árnyékoló, Soltis 92 textil, Somfy IO – oldalanként',
+    subtitle: 'Pergola gerendába rejtett motoros ZIP árnyékoló, Soltis 92 textil, Somfy IO - oldalanként',
     sizeLimits: { minWidthCm: 120, maxWidthCm: 600, minProjectionCm: 120, maxProjectionCm: 600, minHeightCm: 140, maxHeightCm: 300 },
     catalogRef: { productAlias: 'KE Vertica PRIME ZIP', note: `legacy: templates/bioklimatikus/datasheet.py OldalfalZaras_Vertica_PRIME_ZIP (Kedry Skylife opció); ár = gyári × ${m} × 0,9 + 1000, szerelés 8%` },
     introText:
       'A Vertica PRIME ZIP a pergola (pl. Kedry Skylife) gerendájába rejtve integrálható prémium motoros ZIP árnyékoló Soltis 92 mikroperforált textillel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. Távirányítóval vagy okostelefonról vezérelhető.',
-    closingText: 'Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
+    closingText: 'Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.',
     photos: photos(tplId, [
       ['bioklimatikus', 'image_14.jpg', 'Gerendába integrált Vertica PRIME ZIP árnyékoló Kedry Skylife pergolán.'],
     ]),
     materials: [
-      mat({ id: `mat_${p}_a`, name: 'Felső gerendába integrált oldalsó árnyékoló a szélesség oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor – 1 db', description: 'Ár: szélesség × magasság', ...common, matrixRowAxis: 'width' }),
-      mat({ id: `mat_${p}_b`, name: 'Felső gerendába integrált oldalsó árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor – 1 db', description: 'Ár: kinyúlás × magasság', ...common, matrixRowAxis: 'projection' }),
+      mat({ id: `mat_${p}_a`, name: 'Felső gerendába integrált oldalsó árnyékoló a szélesség oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db', description: 'Ár: szélesség × magasság', ...common, matrixRowAxis: 'width' }),
+      mat({ id: `mat_${p}_b`, name: 'Felső gerendába integrált oldalsó árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db', description: 'Ár: kinyúlás × magasság', ...common, matrixRowAxis: 'projection' }),
       installPct(p, flatTier(8), { name: 'Árnyékolók szerelése, programozása', description: 'Árnyékolók 8%-a' }),
       smartHome(p),
     ],
@@ -1069,13 +1069,13 @@ const L = (cat, file, caption = '') => [cat, file, caption];
 const BIO = 'bioklimatikus', PON = 'elhuzhato_ponyvas', FESZ = 'feszitett_vasznas', TET = 'feszitett_vasznas_tetore';
 const POLI = 'polikarbonatos', UT = 'uvegtetos', UF = 'uvegfalas', ZIPC = 'ZIPes', C = '_cache';
 const ZIP_PHOTOS = [L(C, '_zip_photo.png', 'Oldalsó ZIP árnyékoló'), L(ZIPC, 'image_03.png', 'Refleksol 120 ZIP kazetta')];
-const GLASS_PHOTOS = [L(C, '_uveg_photo.jpg', 'Keret nélküli, elcsúsztatható üvegfalrendszer'), L(C, '_uveg_rails.png', 'Sínrendszer (3–5 sínes kivitel)')];
+const GLASS_PHOTOS = [L(C, '_uveg_photo.jpg', 'Keret nélküli, elcsúsztatható üvegfalrendszer'), L(C, '_uveg_rails.png', 'Sínrendszer (3-5 sínes kivitel)')];
 const BIO_LED = [L(BIO, 'image_12.png', 'LED világítás')];
 
 const TEMPLATE_PHOTOS = {
-  tpl_legacy_sb400: [L(BIO, 'image_01.jpg', 'Alumínium váz, 0–120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.'), L(BIO, 'image_02.jpg', 'A lamellák állása szabályozza a bejutó fényt; a motor a pergola tetején látható, kérésre a gerendába rejtve.'), L(BIO, 'image_03.jpg')],
+  tpl_legacy_sb400: [L(BIO, 'image_01.jpg', 'Alumínium váz, 0-120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.'), L(BIO, 'image_02.jpg', 'A lamellák állása szabályozza a bejutó fényt; a motor a pergola tetején látható, kérésre a gerendába rejtve.'), L(BIO, 'image_03.jpg')],
   tpl_legacy_seesky_bio: [L(BIO, 'image_09.png', 'Hőszigetelt lamellák, motor rejtve a gerendákban.'), L(BIO, 'image_10.png', 'A lamellák állása szabályozza a bejutó fényt és a természetes légáramlást.')],
-  tpl_legacy_kedry_skylife: [L(BIO, 'image_13.png', 'A lamellák elhúzás közben elforognak – rejtett motorok, csavarok és fali konzolok.'), L(BIO, 'image_14.jpg')],
+  tpl_legacy_kedry_skylife: [L(BIO, 'image_13.png', 'A lamellák elhúzás közben elforognak - rejtett motorok, csavarok és fali konzolok.'), L(BIO, 'image_14.jpg')],
   tpl_legacy_pergola_v_ziip: [L(FESZ, 'image_01.png', 'ZIP-megvezetés: a ponyva mindig feszes, ráncmentes.'), L(FESZ, 'image_02.png'), L(FESZ, 'image_03.png')],
   tpl_legacy_hydra: [L(FESZ, 'image_05.png', 'Kazettába zárt, feszített ponyva víztaszító szövettel.'), L(FESZ, 'image_06.png'), L(FESZ, 'image_07.png')],
   tpl_legacy_a100_lux: [L(PON, 'image_01.jpg', 'Elhúzható PVC ponyvás pergola előtetővel.'), L(PON, 'image_02.png')],
@@ -1092,9 +1092,9 @@ const TEMPLATE_PHOTOS = {
     L(UT, 'image_01.png', '10 mm edzett-laminált biztonsági üvegtető, belső csatornás esővíz-elvezetés.'), L(UT, 'image_02.png'), L(UT, 'image_03.png'),
     L(UT, 'image_05.jpg', 'Opcionálisan fix polikarbonát oldalfallal is kérhető.'), L(UT, 'image_06.jpg'), L(UT, 'image_07.jpg'), L(UT, 'image_08.jpg'),
   ],
-  tpl_legacy_uvegfal_spanyol: [L(UF, 'image_01.png', 'LINE GLASS / RUN 2 – keret nélküli, síneken csúszó üvegfal.'), L(UF, 'image_02.png', 'Belső zár, alapár része, üvegfalanként 2 db alul'), L(UF, 'image_03.png', 'Kilincs típusok'), L(UF, 'image_04.jpg'), L(UF, 'image_05.jpg'), L(UF, 'image_06.jpg')],
-  tpl_legacy_uvegfal_lengyel: [L(UF, 'image_07.jpg', 'SLIDING DOORS – keret nélküli, síneken csúszó üvegfal.'), L(UF, 'image_08.jpg'), L(UF, 'image_09.jpg')],
-  tpl_legacy_refleksol_zip: [L(ZIPC, 'image_01.jpg', 'Szélálló (EN 13561 6. osztály) motoros ZIP árnyékoló, Serge 600 napháló.'), L(ZIPC, 'image_02.jpg', 'Zipzáras oldalsó megvezetés – szúnyogháló funkcióval.'), L(ZIPC, 'image_03.png'), L(ZIPC, 'image_04.png'), L(ZIPC, 'image_05.png')],
+  tpl_legacy_uvegfal_spanyol: [L(UF, 'image_01.png', 'LINE GLASS / RUN 2 - keret nélküli, síneken csúszó üvegfal.'), L(UF, 'image_02.png', 'Belső zár, alapár része, üvegfalanként 2 db alul'), L(UF, 'image_03.png', 'Kilincs típusok'), L(UF, 'image_04.jpg'), L(UF, 'image_05.jpg'), L(UF, 'image_06.jpg')],
+  tpl_legacy_uvegfal_lengyel: [L(UF, 'image_07.jpg', 'SLIDING DOORS - keret nélküli, síneken csúszó üvegfal.'), L(UF, 'image_08.jpg'), L(UF, 'image_09.jpg')],
+  tpl_legacy_refleksol_zip: [L(ZIPC, 'image_01.jpg', 'Szélálló (EN 13561 6. osztály) motoros ZIP árnyékoló, Serge 600 napháló.'), L(ZIPC, 'image_02.jpg', 'Zipzáras oldalsó megvezetés - szúnyogháló funkcióval.'), L(ZIPC, 'image_03.png'), L(ZIPC, 'image_04.png'), L(ZIPC, 'image_05.png')],
   tpl_legacy_vertica_zip: [L(BIO, 'image_14.jpg', 'Gerendába integrált Vertica PRIME ZIP árnyékoló (Kedry Skylife).')],
 };
 
@@ -1112,7 +1112,7 @@ const ITEM_PHOTOS = {
   tpl_legacy_veranda_v_zip: [[/_base(_multi)?$/, [L(TET, 'image_07.png', 'Alapszínek')]]],
   tpl_legacy_polifix: [
     [/_base_/, [L(POLI, 'image_05.png', 'Alapszínek')]],
-    [/_ral_/, [L(POLI, 'image_05.png', 'Alapszínek – egyedi RAL szín felár ellenében')]],
+    [/_ral_/, [L(POLI, 'image_05.png', 'Alapszínek - egyedi RAL szín felár ellenében')]],
     [/_glass_/, [L(POLI, 'image_10.jpg', 'Profil metszet'), L(POLI, 'image_11.jpg'), L(POLI, 'image_12.jpg'), L(POLI, 'image_13.jpg'), L(C, '_uveg_rails.png', 'Sínrendszer')]],
     [/_zip_/, [L(POLI, 'image_14.png', 'Oldalsó ZIP árnyékoló'), L(ZIPC, 'image_03.png')]],
   ],

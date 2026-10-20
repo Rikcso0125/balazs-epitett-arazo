@@ -290,7 +290,7 @@ export default function CustomPricerAppPage() {
         isUpdate
           ? 'Szerkesztett PDF frissítve és elmentve!'
           : 'Új PDF Árajánlat legenerálva és elmentve!',
-        `${savedQuote.customerName} (${savedQuote.quoteNumber}) — bármikor újra szerkeszthető.`
+        `${savedQuote.customerName} (${savedQuote.quoteNumber}) - bármikor újra szerkeszthető.`
       );
       if (!downloadAfterSave) {
         setActiveModule('saved_quotes');

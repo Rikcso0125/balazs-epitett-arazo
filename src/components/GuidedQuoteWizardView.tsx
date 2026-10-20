@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  Check,
   ChevronRight,
   Plus,
   RefreshCw,
@@ -121,7 +122,7 @@ export function GuidedQuoteWizardView({
   // Honnan jön az árfolyam (pl. "MNB hivatalos középárfolyam · 2026-10-16"), kézi átírásnál üres
   const [rateSource, setRateSource] = useState('');
 
-  // 4. Sablon – a kijelölés kategóriákon átível (pergola + napellenző egy ajánlatban)
+  // 4. Sablon - a kijelölés kategóriákon átível (pergola + napellenző egy ajánlatban)
   const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>([]);
   const [forcedTemplateIds, setForcedTemplateIds] = useState<string[]>([]);
   const [showTestTemplates, setShowTestTemplates] = useState(false);
@@ -135,7 +136,7 @@ export function GuidedQuoteWizardView({
   const [adjustmentsByTemplate, setAdjustmentsByTemplate] = useState<
     Record<string, PriceAdjustment[]>
   >({});
-  // Oldalanként árazott extrák (pl. üveg): hány oldalra kéri (1–4)
+  // Oldalanként árazott extrák (pl. üveg): hány oldalra kéri (1-4)
   const [sidesByTemplate, setSidesByTemplate] = useState<
     Record<string, Record<string, number>>
   >({});
@@ -315,7 +316,7 @@ export function GuidedQuoteWizardView({
       ...prev,
       {
         id: `ms_${Date.now()}`,
-        title: `${selectedCategory.name} – egyedi, több modulos`,
+        title: `${selectedCategory.name} - egyedi, több modulos`,
         categoryId: selectedCategory.id,
       },
     ]);
@@ -398,11 +399,11 @@ export function GuidedQuoteWizardView({
     );
   }
 
-  // Egy modul méretkorlátai röviden, pl. "Szél. 300–600 · Kiny. 250–400 cm"
+  // Egy modul méretkorlátai röviden, pl. "Szél. 300-600 · Kiny. 250-400 cm"
   const limitsText = (tpl: QuoteTemplate): string => {
     const l = tpl.sizeLimits || {};
     const part = (label: string, min?: number, max?: number) =>
-      min || max ? `${label} ${min || 0}–${max || '∞'}` : '';
+      min || max ? `${label} ${min || 0}-${max || '∞'}` : '';
     const text = [
       part('Szél.', l.minWidthCm, l.maxWidthCm),
       part('Kiny.', l.minProjectionCm, l.maxProjectionCm),
@@ -422,6 +423,64 @@ export function GuidedQuoteWizardView({
   );
 
   // withFit = false: sablonválasztás (3. lépés), true: okos szűrő a méret után (4. lépés)
+  const renderTemplateCards = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {categoryTemplates.length === 0 && (
+        <div className="col-span-full px-4 py-6 text-sm text-slate-500 text-center border border-dashed border-slate-300 rounded-xl">
+          Nincs aktív termék ebben a kategóriában.
+        </div>
+      )}
+      {categoryTemplates.map((tpl) => {
+        const isSelected = selectedTemplateIds.includes(tpl.id);
+        const l = tpl.sizeLimits || {};
+        const short = shortProductName(tpl.name);
+        const rest = tpl.name.slice(short.length).trim();
+        const photo = tpl.photos?.find((ph) => ph.imageUrl)?.imageUrl;
+        return (
+          <button
+            key={tpl.id}
+            type="button"
+            onClick={() => handleToggleTemplate(tpl)}
+            aria-pressed={isSelected}
+            className={`relative flex sm:block text-left rounded-xl border overflow-hidden bg-white transition ${
+              isSelected ? 'border-slate-900 ring-2 ring-slate-900/10' : 'border-slate-200 hover:border-slate-400'
+            }`}
+          >
+            <div className="w-24 sm:w-auto shrink-0 sm:aspect-[16/10] bg-slate-100">
+              {photo && (
+                <img src={thumbUrl(photo)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
+              )}
+            </div>
+            <span
+              className={`absolute top-2 right-2 w-7 h-7 rounded-full grid place-items-center border-2 ${
+                isSelected ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white/90 border-white text-transparent'
+              }`}
+              aria-hidden
+            >
+              <Check className="w-4 h-4" />
+            </span>
+            <div className="min-w-0 flex-1 p-3 pr-10 sm:pr-3">
+              <div className="text-sm font-semibold text-slate-950">
+                {short}
+                {tpl.status === 'seasonal' && <span className="ml-2 text-xs font-normal text-amber-700">időszakos</span>}
+                {tpl.status === 'test' && <span className="ml-2 text-xs font-normal text-violet-700">teszt</span>}
+              </div>
+              {rest && <div className="text-xs text-slate-500">{rest}</div>}
+              {tpl.subtitle && (
+                <div className="hidden sm:block text-[13px] text-slate-600 mt-1.5 leading-snug">{tpl.subtitle}</div>
+              )}
+              {(l.maxWidthCm || l.maxProjectionCm) && (
+                <div className="mt-2 inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-600 whitespace-nowrap">
+                  max. {l.maxWidthCm || '?'} × {l.maxProjectionCm || '?'} cm
+                </div>
+              )}
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+
   const renderTemplateList = (withFit: boolean) => (
     <div className="divide-y divide-slate-200 border border-slate-200 rounded-xl overflow-hidden">
       {categoryTemplates.length === 0 && (
@@ -447,7 +506,7 @@ export function GuidedQuoteWizardView({
           : isOut
           ? fit.reasons.join(' · ')
           : fit.status === 'no_limits'
-          ? 'Nincs megadva méretkorlát – ellenőrizd'
+          ? 'Nincs megadva méretkorlát - ellenőrizd'
           : 'Ebben a méretben gyártható';
         return (
           <div
@@ -748,7 +807,7 @@ export function GuidedQuoteWizardView({
           </>
         )}
 
-        {/* 3. SABLON – a kiválasztott kategórián belül */}
+        {/* 3. SABLON - a kiválasztott kategórián belül */}
         {step === 3 && (
           <>
             {!selectedCategory ? (
@@ -768,7 +827,7 @@ export function GuidedQuoteWizardView({
                     Tesztsablonok
                   </label>
                 </div>
-                {renderTemplateList(false)}
+                {renderTemplateCards()}
               </>
             )}
             {footer(
@@ -782,7 +841,7 @@ export function GuidedQuoteWizardView({
                 Tovább
                 <ArrowRight className="w-4 h-4" />
               </button>,
-              <button type="button" onClick={() => setStep(2)} className={btn.ghost}>
+              <button type="button" onClick={() => setStep(2)} className={`${btn.ghost} whitespace-nowrap`}>
                 <Plus className="w-4 h-4" />
                 Másik termék
               </button>
@@ -859,7 +918,7 @@ export function GuidedQuoteWizardView({
             <details className="mt-4 group">
               <summary className="cursor-pointer text-[13px] text-slate-600 hover:text-slate-950 select-none">
                 Árfolyam és szállítás ({eurHufRate} Ft/EUR
-                {rateSource ? ` – ${rateSource}` : fetchingRate ? ' – frissítés…' : ' – kézi'} ·{' '}
+                {rateSource ? ` - ${rateSource}` : fetchingRate ? ' - frissítés…' : ' - kézi'} ·{' '}
                 {formatDotNumber(deliveryFeeHuf)} Ft)
               </summary>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3">
@@ -908,7 +967,7 @@ export function GuidedQuoteWizardView({
                   Mely sablonok jöhetnek szóba ebben a méretben?
                 </div>
                 <div className="text-[13px] text-slate-500 mb-3">
-                  {selectedCategory.name} – ami nem gyártható egy modulban, pirossal jelölve.
+                  {selectedCategory.name} - ami nem gyártható egy modulban, pirossal jelölve.
                 </div>
                 {renderTemplateList(true)}
               </div>
@@ -1255,7 +1314,7 @@ export function GuidedQuoteWizardView({
                   key={ms.id}
                   className="border border-dashed border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-600"
                 >
-                  <span className="font-medium text-slate-950">{ms.title}</span> – az
+                  <span className="font-medium text-slate-950">{ms.title}</span> - az
                   árat a szerkesztőben adod meg.
                 </div>
               ))}

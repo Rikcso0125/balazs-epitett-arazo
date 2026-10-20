@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Árajánlat kiküldése e-mailben PDF melléklettel (+ opcionális megnyitás-követő pixel).
- * body: { to, subject?, message?, markOnly? } – markOnly: csak kiküldöttnek jelöli (pl. saját levelezőből küldte)
+ * body: { to, subject?, message?, markOnly? } - markOnly: csak kiküldöttnek jelöli (pl. saját levelezőből küldte)
  */
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {

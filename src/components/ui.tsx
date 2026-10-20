@@ -34,7 +34,7 @@ export function PageHeader({
 }
 
 /**
- * Halk lépésjelző: 1 Ügyfél · 2 Termék · ... – kattintható.
+ * Halk lépésjelző: 1 Ügyfél · 2 Termék · ... - kattintható.
  */
 export function Stepper<T extends number>({
   steps,
@@ -120,7 +120,7 @@ export function VariableChips({
           <button
             key={v.token}
             type="button"
-            title={`${v.label} – ${v.token}`}
+            title={`${v.label} - ${v.token}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => onInsert(v.token)}
             className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-[13px] text-slate-700"

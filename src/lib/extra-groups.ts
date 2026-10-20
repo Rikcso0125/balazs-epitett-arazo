@@ -15,7 +15,7 @@ export interface ExtraPresentation {
   choiceGroup?: string;
   choiceLabel?: string;
   choiceMulti: boolean;
-  title: string; // rövid cím (a név „ – ” előtti része)
+  title: string; // rövid cím (a név „ - ” előtti része)
   detail?: string; // a név többi része, kisebb betűvel
 }
 
@@ -41,7 +41,7 @@ function guessGroup(name: string, groups?: ExtraGroupConfig[]): string {
 }
 
 function splitTitle(name: string): { title: string; detail?: string } {
-  const idx = name.indexOf(' – ');
+  const idx = name.indexOf(' - ');
   return idx > 0 ? { title: name.slice(0, idx), detail: name.slice(idx + 3) } : { title: name };
 }
 

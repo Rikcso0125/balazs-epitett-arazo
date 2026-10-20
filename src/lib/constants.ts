@@ -355,7 +355,7 @@ export const PROFIT_MODE_OPTIONS: { id: ProfitMode; label: string; description: 
   },
 ];
 
-// A végleges képletet Balázs írásban adja meg – addig 0 haszonnal és 0 szereléssel számol
+// A végleges képletet Balázs írásban adja meg - addig 0 haszonnal és 0 szereléssel számol
 export const DEFAULT_PRICING_FORMULA: PricingFormulaConfig = {
   profitMode: 'markup_percent',
   profitValue: 0,
@@ -370,7 +370,7 @@ export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: 'tpl_ajanlat',
     name: 'Árajánlat küldése',
-    subject: 'Árajánlat – {{sorszam}} – {{ceg}}',
+    subject: 'Árajánlat - {{sorszam}} - {{ceg}}',
     body:
       'Kedves {{megszolitas}}!\n\nKöszönjük megkeresését! Mellékelten küldjük a(z) {{meret_m}} ({{meret}}) méretű szerkezetre vonatkozó, személyre szabott árajánlatunkat.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani.\n\nAmennyiben ajánlatunk elnyerte tetszését, kérjük, jelezzen vissza, és egyeztetjük a helyszíni felmérés időpontját. Bármilyen kérdés esetén keressen minket bizalommal!\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
     suggestFor: ['piszkozat'],
@@ -386,7 +386,7 @@ export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: 'tpl_hatarido',
     name: 'Határidős kedvezmény',
-    subject: 'Kedvezmény {{hatarido}}-ig – árajánlat {{sorszam}}',
+    subject: 'Kedvezmény {{hatarido}}-ig - árajánlat {{sorszam}}',
     body:
       'Kedves {{megszolitas}}!\n\nSzeretnénk jelezni, hogy a mellékelt árajánlatban ({{sorszam}}) szereplő alapszerkezetre {{hatarido}}-ig leadott megrendelés esetén kedvezményt tudunk biztosítani.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa). Ha szeretné, egyeztessünk egy helyszíni felmérést, ahol minden részletet pontosítunk.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
     suggestFor: [],
@@ -394,7 +394,7 @@ export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: 'tpl_felmeres',
     name: 'Helyszíni felmérés egyeztetése',
-    subject: 'Helyszíni felmérés egyeztetése – {{sorszam}}',
+    subject: 'Helyszíni felmérés egyeztetése - {{sorszam}}',
     body:
       'Kedves {{megszolitas}}!\n\nKöszönjük visszajelzését! A pontos méretek és a beépítési körülmények egyeztetéséhez helyszíni felmérésre van szükség ({{telepules}}).\n\nKérjük, írjon néhány Önnek megfelelő időpontot a következő két hétből, és visszaigazoljuk. A felmérés után véglegesítjük az ajánlatot.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
     suggestFor: [],
@@ -402,7 +402,7 @@ export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: 'tpl_modositott',
     name: 'Módosított ajánlat',
-    subject: 'Módosított árajánlat – {{sorszam}}',
+    subject: 'Módosított árajánlat - {{sorszam}}',
     body:
       'Kedves {{megszolitas}}!\n\nAz egyeztetésünk alapján átdolgoztuk az árajánlatot, a módosított változatot mellékelten küldjük ({{meret_m}}, {{beepites}}).\n\nAz új összeg: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa minden rendben, kérjük, jelezzen vissza, és egyeztetjük a következő lépéseket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
     suggestFor: [],
@@ -410,9 +410,9 @@ export const DEFAULT_EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: 'tpl_koszonjuk',
     name: 'Köszönjük a megrendelést',
-    subject: 'Köszönjük megrendelését! – {{sorszam}}',
+    subject: 'Köszönjük megrendelését! - {{sorszam}}',
     body:
-      'Kedves {{megszolitas}}!\n\nKöszönjük megrendelését és bizalmát! A következő lépések:\n\n1. Elküldjük a szerződést és az előlegszámlát (a végösszeg 60%-a).\n2. Az előleg beérkezése után indul a gyártás, az átfutási idő 30–60 nap.\n3. A szerelés időpontját a gyártás végén egyeztetjük Önnel.\n\nA rendelés alapja a mellékelt ajánlat ({{sorszam}}). Kérdés esetén bármikor elérhet minket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
+      'Kedves {{megszolitas}}!\n\nKöszönjük megrendelését és bizalmát! A következő lépések:\n\n1. Elküldjük a szerződést és az előlegszámlát (a végösszeg 60%-a).\n2. Az előleg beérkezése után indul a gyártás, az átfutási idő 30-60 nap.\n3. A szerelés időpontját a gyártás végén egyeztetjük Önnel.\n\nA rendelés alapja a mellékelt ajánlat ({{sorszam}}). Kérdés esetén bármikor elérhet minket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}',
     suggestFor: ['elfogadva'],
   },
 ];
@@ -475,7 +475,7 @@ export const DEFAULT_SYSTEM_CONFIG: SystemConfig = {
     '• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: {{arfolyam}} Ft/EUR)\n' +
     '• Szállítási költség ide: {{telepules}}: + {{szallitas}} (+Áfa)\n' +
     '• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n' +
-    '• Átfutási idő a visszaigazolástól számítva: 30–60 nap\n' +
+    '• Átfutási idő a visszaigazolástól számítva: 30-60 nap\n' +
     '• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n' +
     '• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\n' +
     'Amennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\n' +

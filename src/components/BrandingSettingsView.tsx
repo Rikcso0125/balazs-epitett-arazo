@@ -108,7 +108,7 @@ export function BrandingSettingsView({
       {
         id,
         name: 'Új sablon',
-        subject: 'Árajánlat – {{sorszam}}',
+        subject: 'Árajánlat - {{sorszam}}',
         body: 'Kedves {{megszolitas}}!\n\n\n\nÜdvözlettel:\n{{ceg}}',
         suggestFor: [],
       },

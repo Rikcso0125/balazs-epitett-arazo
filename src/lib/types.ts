@@ -123,7 +123,7 @@ export interface TemplateMaterialItem {
   defaultNote: string;        // Megjegyzés oszlop a PDF táblázatban (pl. "-20%", "Ajándék", "Opció")
   // Termékhez közvetlenül felcsatolt fotók + fotó alatti szövegdobozok
   photos: PhotoCaptionBlock[];
-  // Oldalanként árazott extra (pl. üveg, árnyékoló): az árazóban 1–4 oldal választható,
+  // Oldalanként árazott extra (pl. üveg, árnyékoló): az árazóban 1-4 oldal választható,
   // a darabszám = oldalak száma
   perSide?: boolean;
   // Csak ezeknél a beépítési módoknál szerepel (pl. falra szerelt / szabadon álló mérettábla)
@@ -202,7 +202,7 @@ export interface ModuleSplitRule {
 }
 
 /**
- * Menürendszer – a legfelső szint (pl. Pergola, Karos napellenző, Utólagos ledezés,
+ * Menürendszer - a legfelső szint (pl. Pergola, Karos napellenző, Utólagos ledezés,
  * Fényárnyékoló, Kocsibeálló). A sorrend és a tartalom bármikor átírható.
  */
 export interface ProductMenu {
@@ -358,8 +358,8 @@ export interface QuoteTableRow {
   note: string;               // Szerkeszthető megjegyzés (pl. "-20%", "Ajándék", "Opció")
   photos: PhotoCaptionBlock[]; // Termékhez csatolt fotók + fotó alatti szövegdobozok
   algorithm?: TemplateMaterialItem; // A tétel mögötti árazási algoritmus
-  costEur?: number;           // Katalógus (beszerzési) ár haszon nélkül – belső adat, nem kerül a PDF-be
-  priceOverridden?: boolean;  // Kézzel átírt ár – újraszámoláskor megmarad
+  costEur?: number;           // Katalógus (beszerzési) ár haszon nélkül - belső adat, nem kerül a PDF-be
+  priceOverridden?: boolean;  // Kézzel átírt ár - újraszámoláskor megmarad
   quantityOverridden?: boolean;
   systemRole?: 'assembly';    // Képletből generált sor (szerelés)
   outOfRange?: boolean;       // A méret kívül esik a mérettáblán
@@ -547,7 +547,7 @@ export interface SystemConfig {
   quoteNumberFormat: QuoteNumberFormat;
   quoteNumberDigits: number;
   extraPresets: ExtraPreset[];
-  // Az árazóban az extrák gyűjteményei (sorrend, név, kép) – teljesen szerkeszthető
+  // Az árazóban az extrák gyűjteményei (sorrend, név, kép) - teljesen szerkeszthető
   extraGroups?: ExtraGroupConfig[];
 }
 

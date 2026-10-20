@@ -5,17 +5,13 @@ import { isTemplateInCategory } from '@/lib/pricing-engine';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
-  Pencil,
   ArrowDown,
   ArrowUp,
-  BookOpen,
-  Edit3,
-  Eye,
   EyeOff,
   ImagePlus,
+  MoreHorizontal,
   Plus,
   RotateCcw,
-  Ruler,
   Save,
   Trash2,
   X,
@@ -241,7 +237,7 @@ function PhotoStrip({
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <div className="text-[13px] font-medium text-slate-700">
-          Fotók ({photos.length}) – az első a főkép
+          Fotók ({photos.length}) - az első a főkép
         </div>
         <label className="text-[13px] text-slate-600 hover:text-slate-950 cursor-pointer inline-flex items-center gap-1">
           <Plus className="w-3.5 h-3.5" />
@@ -322,7 +318,7 @@ function PhotoStrip({
                   onChange={(e) =>
                     onChange(photos.map((p, i) => (i === idx ? { ...p, captionBelow: e.target.value } : p)))
                   }
-                  placeholder="Képaláírás – ez jelenik meg a kép alatt a PDF-ben"
+                  placeholder="Képaláírás - ez jelenik meg a kép alatt a PDF-ben"
                   className="w-full flex-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-sm leading-snug resize-y"
                 />
                 <div className="flex items-center gap-1 text-slate-500">
@@ -394,63 +390,6 @@ function PhotoStrip({
 /**
  * Név szövegként; a ceruzára kattintva szerkeszthető (Enter / kattintás máshova: kész, Esc: vissza).
  */
-function EditableName({
-  value,
-  onChange,
-  onSelect,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  onSelect: () => void;
-}) {
-  const [editing, setEditing] = useState(false);
-  const [original, setOriginal] = useState(value);
-  if (editing) {
-    return (
-      <input
-        autoFocus
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={(e) => e.currentTarget.select()}
-        onBlur={() => {
-          if (!value.trim()) onChange(original);
-          setEditing(false);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
-          if (e.key === 'Escape') {
-            onChange(original);
-            setEditing(false);
-          }
-        }}
-        className="flex-1 min-w-0 px-2 py-1 rounded-lg border border-slate-400 bg-white text-sm font-semibold"
-      />
-    );
-  }
-  return (
-    <div className="flex-1 min-w-0 flex items-center gap-1 group">
-      <button
-        type="button"
-        onClick={onSelect}
-        className="flex-1 min-w-0 text-left px-1 py-1 text-sm font-semibold text-slate-950 leading-snug break-words"
-      >
-        {value}
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setOriginal(value);
-          setEditing(true);
-          onSelect();
-        }}
-        className="p-1 rounded-md text-slate-400 hover:text-slate-950 hover:bg-slate-100 opacity-60 group-hover:opacity-100"
-        title="Átnevezés"
-      >
-        <Pencil className="w-3.5 h-3.5" />
-      </button>
-    </div>
-  );
-}
 
 function Thumb({ tpl }: { tpl: QuoteTemplate }) {
   const url = tpl.photos?.find((p) => p.imageUrl)?.imageUrl;
@@ -470,6 +409,95 @@ function MissingNote({ missing }: { missing: MissingKey[] }) {
   return (
     <div className="text-xs text-amber-700 mt-0.5">
       Hiányzik: {missing.map((k) => MISSING_LABELS[k]).join(' · ')}
+    </div>
+  );
+}
+
+/** Helyben szerkeszthető név: Enter / kattintás máshova mentés, Esc mégse */
+function InlineInput({
+  initial,
+  placeholder,
+  onDone,
+}: {
+  initial: string;
+  placeholder?: string;
+  onDone: (value: string | null) => void;
+}) {
+  const [value, setValue] = useState(initial);
+  return (
+    <input
+      autoFocus
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={() => onDone(value.trim() || null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') onDone(value.trim() || null);
+        if (e.key === 'Escape') onDone(null);
+      }}
+      className="min-w-0 w-44 px-2.5 py-1.5 rounded-lg border border-slate-400 bg-white text-sm"
+    />
+  );
+}
+
+/** „⋯” gomb egy kis műveleti menüvel (kattintásra nyílik, kívül kattintva bezár) */
+function RowMenu({
+  label,
+  items,
+  subtle,
+}: {
+  label: string;
+  items: { label: string; onClick: () => void; disabled?: boolean; danger?: boolean }[];
+  subtle?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent | TouchEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', close);
+    document.addEventListener('touchstart', close);
+    return () => {
+      document.removeEventListener('mousedown', close);
+      document.removeEventListener('touchstart', close);
+    };
+  }, [open]);
+  return (
+    <div ref={ref} className="relative shrink-0">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`p-1.5 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100 ${
+          subtle && !open ? 'lg:opacity-0 lg:group-hover:opacity-100 focus:opacity-100' : ''
+        }`}
+        aria-label={label}
+        title={label}
+        aria-expanded={open}
+      >
+        <MoreHorizontal className="w-4 h-4" />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-30 min-w-[12rem] bg-white border border-slate-200 rounded-xl shadow-lg p-1">
+          {items.map((it) => (
+            <button
+              key={it.label}
+              type="button"
+              disabled={it.disabled}
+              onClick={() => {
+                setOpen(false);
+                it.onClick();
+              }}
+              className={`w-full text-left px-3 py-1.5 rounded-lg text-[13px] disabled:opacity-40 ${
+                it.danger ? 'text-rose-600 hover:bg-rose-50' : 'text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              {it.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -498,10 +526,8 @@ export function CatalogManagerView({
   const [expandedTemplateId, setExpandedTemplateId] = useState<string | null>(
     null
   );
-  const [newMenuName, setNewMenuName] = useState('');
   // Lista: menü → kategória → sablon; Táblázat: minden sablon mérete és katalógus adata egyben
   const [viewMode, setViewMode] = useState<'tree' | 'table'>('tree');
-  const [newCategoryName, setNewCategoryName] = useState('');
 
   // Ha nincs mentetlen változás, a szerverről jövő adat az irányadó
   useEffect(() => {
@@ -589,8 +615,8 @@ export function CatalogManagerView({
     markDirty();
   };
 
-  const handleAddMenu = () => {
-    const name = newMenuName.trim();
+  const handleAddMenu = (raw: string) => {
+    const name = raw.trim();
     if (!name) return;
     const menu: ProductMenu = {
       id: `menu_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -601,7 +627,6 @@ export function CatalogManagerView({
     };
     setDraftMenus((prev) => [...prev, menu]);
     setSelectedMenuId(menu.id);
-    setNewMenuName('');
     markDirty();
   };
 
@@ -618,8 +643,8 @@ export function CatalogManagerView({
     markDirty();
   };
 
-  const handleAddCategory = () => {
-    const name = newCategoryName.trim();
+  const handleAddCategory = (raw: string) => {
+    const name = raw.trim();
     if (!name || !selectedMenuId) return;
     const cat: ProductCategory = {
       id: `cat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -634,7 +659,6 @@ export function CatalogManagerView({
     };
     setDraftCategories((prev) => [...prev, cat]);
     setSelectedCategoryId(cat.id);
-    setNewCategoryName('');
     markDirty();
   };
 
@@ -663,14 +687,79 @@ export function CatalogManagerView({
     setDirty(false);
   };
 
-  const arrowBtn =
-    'p-1 rounded-md text-slate-400 hover:text-slate-800 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent';
+  const [renameMenuId, setRenameMenuId] = useState<string | null>(null);
+  const [renameCategoryId, setRenameCategoryId] = useState<string | null>(null);
+  const [addingMenu, setAddingMenu] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const categoryImageInput = useRef<HTMLInputElement>(null);
+  const imageTargetCategory = useRef<string | null>(null);
+
+  const selectedMenu = sortedMenus.find((m) => m.id === selectedMenuId);
+  const selectedMenuIdx = sortedMenus.findIndex((m) => m.id === selectedMenuId);
+  const selectedCategory = menuCategories.find((c) => c.id === selectedCategoryId);
+
+  const pickImageFor = (catId: string) => {
+    imageTargetCategory.current = catId;
+    categoryImageInput.current?.click();
+  };
+  const moveMenu = (dir: -1 | 1) => {
+    setDraftMenus((prev) => moveInScope(prev, () => true, selectedMenuId, dir));
+    markDirty();
+  };
+  const moveCategory = (catId: string, dir: -1 | 1) => {
+    setDraftCategories((prev) => moveInScope(prev, (c) => c.menuId === selectedMenuId, catId, dir));
+    markDirty();
+  };
+  const moveTemplate = (tplId: string, dir: -1 | 1) => {
+    setDraftTemplates((prev) => moveInScope(prev, (t) => t.categoryId === selectedCategoryId, tplId, dir));
+    markDirty();
+  };
+  const categoryActions = (cat: ProductCategory, idx: number) => [
+    { label: 'Átnevezés', onClick: () => setRenameCategoryId(cat.id) },
+    { label: cat.imageUrl ? 'Kép cseréje' : 'Kép feltöltése', onClick: () => pickImageFor(cat.id) },
+    { label: 'Feljebb', disabled: idx <= 0, onClick: () => moveCategory(cat.id, -1) },
+    { label: 'Lejjebb', disabled: idx === menuCategories.length - 1, onClick: () => moveCategory(cat.id, 1) },
+    ...sortedMenus
+      .filter((m) => m.id !== cat.menuId)
+      .map((m) => ({ label: `Áthelyezés: ${m.name}`, onClick: () => updateCategory(cat.id, { menuId: m.id, order: 999 }) })),
+    { label: 'Törlés', danger: true, onClick: () => handleDeleteCategory(cat) },
+  ];
+
+  const handleDeleteCategory = (cat: ProductCategory) => {
+    if (draftTemplates.some((t) => t.categoryId === cat.id)) {
+      window.alert('Ebben a kategóriában még vannak termékek. Előbb helyezd át vagy töröld őket.');
+      return;
+    }
+    if (!window.confirm(`Törlöd a(z) „${cat.name}” kategóriát?`)) return;
+    setDraftCategories((prev) => prev.filter((c) => c.id !== cat.id));
+    setDraftTemplates((prev) =>
+      prev.map((t) =>
+        t.alsoInCategoryIds?.includes(cat.id)
+          ? { ...t, alsoInCategoryIds: t.alsoInCategoryIds.filter((id) => id !== cat.id) }
+          : t
+      )
+    );
+    markDirty();
+  };
+  const confirmLeave = () =>
+    !dirty || window.confirm('Mentetlen változások vannak a Termékek oldalon. Elveted őket?');
+  const openTemplate = (tplId: string) => {
+    if (!confirmLeave()) return;
+    setDirty(false);
+    onEditTemplate(tplId);
+  };
+  const openNewTemplate = (catId: string) => {
+    if (!confirmLeave()) return;
+    setDirty(false);
+    onNewTemplate(catId);
+  };
+
 
   return (
     <div className="space-y-5">
       <PageHeader
         title="Termékek"
-        subtitle="Menü → kategória → sablon. Sorrend, állapot, méretkorlát és katalógus hivatkozás."
+        subtitle="Menük, kategóriák és termékek. Dupla kattintás egy névre: átnevezés."
         actions={
           <>
             {dirty && (
@@ -679,24 +768,6 @@ export function CatalogManagerView({
                 Elvetés
               </button>
             )}
-            <button
-              type="button"
-              onClick={() => {
-                const target = selectedCategoryId || draftCategories[0]?.id;
-                if (!target) {
-                  window.alert('Előbb vegyél fel egy kategóriát.');
-                  return;
-                }
-                if (dirty && !window.confirm('Mentetlen változások vannak. Elveted őket?')) return;
-                setDirty(false);
-                onNewTemplate(target);
-              }}
-              className={btn.secondary}
-              title="Új termék / sablon a kiválasztott kategóriában"
-            >
-              <Plus className="w-4 h-4" />
-              Új termék
-            </button>
             <button
               type="button"
               onClick={handleSave}
@@ -736,8 +807,8 @@ export function CatalogManagerView({
       <div className="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
         {(
           [
-            ['tree', 'Menü → kategória → sablon'],
-            ['table', 'Méretek & katalógus táblázat'],
+            ['tree', 'Lista'],
+            ['table', 'Táblázat (méretek, katalógus)'],
           ] as const
         ).map(([mode, label]) => (
           <button
@@ -823,7 +894,7 @@ export function CatalogManagerView({
                     <td className="px-3 py-2 min-w-[180px]">
                       <div className="font-medium text-slate-950">{tpl.name}</div>
                       <div className="text-xs text-slate-500">
-                        {menu?.name || '–'} / {cat?.name || '–'}
+                        {menu?.name || '-'} / {cat?.name || '-'}
                       </div>
                       <MissingNote missing={missing} />
                     </td>
@@ -865,7 +936,7 @@ export function CatalogManagerView({
                     {SIZE_ROWS.map(([label, minKey, maxKey]) => (
                       <td key={label} className="px-3 py-2 whitespace-nowrap">
                         {numInput(minKey, 'min')}
-                        <span className="mx-1 text-slate-400">–</span>
+                        <span className="mx-1 text-slate-400">-</span>
                         {numInput(maxKey, 'max')}
                       </td>
                     ))}
@@ -881,448 +952,337 @@ export function CatalogManagerView({
       )}
 
       {viewMode === 'tree' && (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-        {/* MENUS */}
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
-          <div className="text-[13px] font-medium text-slate-600">
-            Menü ({sortedMenus.length})
-          </div>
-          <div className="space-y-1.5">
-            {sortedMenus.map((menu, idx) => {
-              const isSelected = menu.id === selectedMenuId;
-              const catCount = draftCategories.filter(
-                (c) => c.menuId === menu.id
-              ).length;
-              return (
-                <div
-                  key={menu.id}
-                  className={`rounded-xl border p-2 transition ${
-                    isSelected
-                      ? 'border-emerald-500 bg-emerald-50/50'
-                      : 'border-slate-200 hover:bg-slate-50'
-                  } ${menu.enabled ? '' : 'opacity-60'}`}
-                >
-                  <div className="flex items-center gap-1">
-                    <div className="flex flex-col">
-                      <button
-                        type="button"
-                        disabled={idx === 0}
-                        onClick={() => {
-                          setDraftMenus((prev) =>
-                            moveInScope(prev, () => true, menu.id, -1)
-                          );
-                          markDirty();
-                        }}
-                        className={arrowBtn}
-                        title="Feljebb"
-                      >
-                        <ArrowUp className="w-3 h-3" />
-                      </button>
-                      <button
-                        type="button"
-                        disabled={idx === sortedMenus.length - 1}
-                        onClick={() => {
-                          setDraftMenus((prev) =>
-                            moveInScope(prev, () => true, menu.id, 1)
-                          );
-                          markDirty();
-                        }}
-                        className={arrowBtn}
-                        title="Lejjebb"
-                      >
-                        <ArrowDown className="w-3 h-3" />
-                      </button>
-                    </div>
-                    <EditableName
-                      value={menu.name}
-                      onSelect={() => setSelectedMenuId(menu.id)}
-                      onChange={(v) => updateMenu(menu.id, { name: v })}
+        <div className="space-y-4">
+          {/* MENÜK: fülek, a kiválasztott menü műveletei egy „⋯” menüben */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200 max-w-full">
+              {sortedMenus.map((menu) => {
+                const active = menu.id === selectedMenuId;
+                const count = draftCategories.filter((c) => c.menuId === menu.id).length;
+                if (renameMenuId === menu.id) {
+                  return (
+                    <InlineInput
+                      key={menu.id}
+                      initial={menu.name}
+                      onDone={(v) => {
+                        if (v) updateMenu(menu.id, { name: v });
+                        setRenameMenuId(null);
+                      }}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setSelectedMenuId(menu.id)}
-                      className="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold"
-                      title="Kategóriák megnyitása"
-                    >
-                      {catCount}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => updateMenu(menu.id, { enabled: !menu.enabled })}
-                      className="p-1.5 rounded-md text-slate-500 hover:bg-slate-100"
-                      title={menu.enabled ? 'Elrejtés az árazóból' : 'Megjelenítés az árazóban'}
-                    >
-                      {menu.enabled ? (
-                        <Eye className="w-3.5 h-3.5" />
-                      ) : (
-                        <EyeOff className="w-3.5 h-3.5" />
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteMenu(menu)}
-                      className="p-1.5 rounded-md text-rose-500 hover:bg-rose-50"
-                      title="Menüpont törlése"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex items-center gap-1.5 pt-2 border-t border-slate-100">
-            <input
-              type="text"
-              value={newMenuName}
-              onChange={(e) => setNewMenuName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddMenu()}
-              placeholder="Új menüpont (pl. Kocsibeálló)"
-              className="flex-1 min-w-0 px-2.5 py-2 rounded-lg border border-slate-300 text-xs"
-            />
-            <button
-              type="button"
-              onClick={handleAddMenu}
-              className="p-2 rounded-lg bg-slate-900 text-white"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* CATEGORIES */}
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
-          <div className="text-[13px] font-medium text-slate-600">
-            Kategória ({menuCategories.length})
-          </div>
-          {!selectedMenuId ? (
-            <div className="text-xs text-slate-500 italic">
-              Válassz egy menüpontot.
+                  );
+                }
+                return (
+                  <button
+                    key={menu.id}
+                    type="button"
+                    onClick={() => setSelectedMenuId(menu.id)}
+                    onDoubleClick={() => setRenameMenuId(menu.id)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition ${
+                      active ? 'bg-white text-slate-950 font-semibold shadow-sm' : 'text-slate-600 hover:text-slate-950'
+                    } ${menu.enabled ? '' : 'opacity-50'}`}
+                    title={menu.enabled ? undefined : 'Rejtett az árazóban'}
+                  >
+                    {menu.name}
+                    <span className="text-xs text-slate-400 tabular-nums">{count}</span>
+                    {!menu.enabled && <EyeOff className="w-3.5 h-3.5" />}
+                  </button>
+                );
+              })}
+              {addingMenu ? (
+                <InlineInput
+                  initial=""
+                  placeholder="Új menü neve"
+                  onDone={(v) => {
+                    setAddingMenu(false);
+                    if (v) handleAddMenu(v);
+                  }}
+                />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setAddingMenu(true)}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-slate-500 hover:text-slate-950"
+                >
+                  <Plus className="w-4 h-4" />
+                  Menü
+                </button>
+              )}
             </div>
-          ) : (
-            <>
-              <div className="space-y-1.5">
-                {menuCategories.length === 0 && (
-                  <div className="text-xs text-slate-500 italic">
-                    Ebben a menüpontban még nincs kategória.
-                  </div>
-                )}
+            {selectedMenu && (
+              <RowMenu
+                label={`„${selectedMenu.name}” menü műveletei`}
+                items={[
+                  { label: 'Átnevezés', onClick: () => setRenameMenuId(selectedMenu.id) },
+                  {
+                    label: selectedMenu.enabled ? 'Elrejtés az árazóból' : 'Megjelenítés az árazóban',
+                    onClick: () => updateMenu(selectedMenu.id, { enabled: !selectedMenu.enabled }),
+                  },
+                  { label: 'Balra', disabled: selectedMenuIdx === 0, onClick: () => moveMenu(-1) },
+                  { label: 'Jobbra', disabled: selectedMenuIdx === sortedMenus.length - 1, onClick: () => moveMenu(1) },
+                  { label: 'Törlés', danger: true, onClick: () => handleDeleteMenu(selectedMenu) },
+                ]}
+              />
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)] gap-4 items-start">
+            {/* KATEGÓRIÁK telefonon: vízszintes gombsor */}
+            <div className="lg:hidden flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+              {menuCategories.map((cat) => {
+                const active = cat.id === selectedCategoryId;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setSelectedCategoryId(cat.id)}
+                    className={`shrink-0 inline-flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl border text-sm ${
+                      active ? 'border-slate-900 bg-white font-semibold text-slate-950' : 'border-slate-200 bg-white text-slate-700'
+                    }`}
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-slate-100 overflow-hidden shrink-0">
+                      {cat.imageUrl && <img src={thumbUrl(cat.imageUrl)} alt="" className="w-full h-full object-cover" />}
+                    </span>
+                    {cat.name}
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                disabled={!selectedMenuId}
+                onClick={() => setAddingCategory(true)}
+                className="shrink-0 inline-flex items-center gap-1 px-3 py-1 rounded-xl border border-dashed border-slate-300 text-sm text-slate-600"
+              >
+                <Plus className="w-4 h-4" />
+                Kategória
+              </button>
+            </div>
+
+            {/* KATEGÓRIÁK */}
+            <div className={`${addingCategory ? '' : 'hidden'} lg:block bg-white rounded-2xl border border-slate-200 p-2`}>
+              <div className="px-2 pt-1 pb-2 text-xs font-medium text-slate-500 uppercase tracking-wide">
+                Kategóriák
+              </div>
+              {menuCategories.length === 0 && !addingCategory && (
+                <div className="px-2 py-3 text-sm text-slate-500">Ebben a menüben még nincs kategória.</div>
+              )}
+              <div className="space-y-0.5">
                 {menuCategories.map((cat, idx) => {
-                  const isSelected = cat.id === selectedCategoryId;
-                  const tplCount = draftTemplates.filter(
-                    (t) => isTemplateInCategory(t, cat.id)
-                  ).length;
+                  const active = cat.id === selectedCategoryId;
+                  const count = draftTemplates.filter((t) => isTemplateInCategory(t, cat.id)).length;
                   return (
                     <div
                       key={cat.id}
-                      className={`rounded-xl border p-2 space-y-1.5 transition ${
-                        isSelected
-                          ? 'border-emerald-500 bg-emerald-50/50'
-                          : 'border-slate-200 hover:bg-slate-50'
+                      className={`group flex items-center gap-2 rounded-xl pr-1 transition ${
+                        active ? 'bg-slate-100' : 'hover:bg-slate-50'
                       }`}
                     >
-                      <div className="flex items-center gap-1">
-                        <div className="flex flex-col">
-                          <button
-                            type="button"
-                            disabled={idx === 0}
-                            onClick={() => {
-                              setDraftCategories((prev) =>
-                                moveInScope(
-                                  prev,
-                                  (c) => c.menuId === selectedMenuId,
-                                  cat.id,
-                                  -1
-                                )
-                              );
-                              markDirty();
+                      {renameCategoryId === cat.id ? (
+                        <div className="flex-1 p-1.5">
+                          <InlineInput
+                            initial={cat.name}
+                            onDone={(v) => {
+                              if (v) updateCategory(cat.id, { name: v, shortName: v });
+                              setRenameCategoryId(null);
                             }}
-                            className={arrowBtn}
-                          >
-                            <ArrowUp className="w-3 h-3" />
-                          </button>
-                          <button
-                            type="button"
-                            disabled={idx === menuCategories.length - 1}
-                            onClick={() => {
-                              setDraftCategories((prev) =>
-                                moveInScope(
-                                  prev,
-                                  (c) => c.menuId === selectedMenuId,
-                                  cat.id,
-                                  1
-                                )
-                              );
-                              markDirty();
-                            }}
-                            className={arrowBtn}
-                          >
-                            <ArrowDown className="w-3 h-3" />
-                          </button>
+                          />
                         </div>
-                        <EditableName
-                          value={cat.name}
-                          onSelect={() => setSelectedCategoryId(cat.id)}
-                          onChange={(v) => updateCategory(cat.id, { name: v, shortName: v })}
-                        />
+                      ) : (
                         <button
                           type="button"
                           onClick={() => setSelectedCategoryId(cat.id)}
-                          className="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold"
-                          title="Sablonok megnyitása"
+                          onDoubleClick={() => setRenameCategoryId(cat.id)}
+                          className="min-w-0 flex-1 flex items-center gap-2.5 p-1.5 text-left"
                         >
-                          {tplCount}
-                        </button>
-                      </div>
-                      {isSelected && (
-                        <div className="pl-6 flex items-center gap-2">
-                          <div className="w-14 h-10 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden grid place-items-center shrink-0">
+                          <span className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden grid place-items-center shrink-0">
                             {cat.imageUrl ? (
-                              <img src={thumbUrl(cat.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-contain" />
+                              <img src={thumbUrl(cat.imageUrl)} loading="lazy" decoding="async" alt="" className="w-full h-full object-cover" />
                             ) : (
-                              <span className="text-xs text-slate-400">kép</span>
+                              <ImagePlus className="w-4 h-4 text-slate-300" />
                             )}
-                          </div>
-                          <label className="text-xs text-slate-600 hover:text-slate-950 underline cursor-pointer">
-                            {cat.imageUrl ? 'Kép cseréje' : 'Kép feltöltése'}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={async (e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                const url = await onUploadImage(file);
-                                if (url) updateCategory(cat.id, { imageUrl: url });
-                              }}
-                            />
-                          </label>
-                        </div>
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className={`block text-sm leading-snug break-words ${active ? 'font-semibold text-slate-950' : 'text-slate-800'}`}>
+                              {cat.name}
+                            </span>
+                            <span className="block text-xs text-slate-500">{count} termék</span>
+                          </span>
+                        </button>
                       )}
-                      {isSelected && (
-                        <div className="pl-6">
-                          <label className="block text-xs text-slate-500 mb-0.5">
-                            Menü
-                          </label>
-                          <select
-                            value={cat.menuId || ''}
-                            onChange={(e) =>
-                              updateCategory(cat.id, {
-                                menuId: e.target.value,
-                                order: 999,
-                              })
-                            }
-                            className="w-full px-2 py-1 rounded-lg border border-slate-200 text-xs"
-                          >
-                            {sortedMenus.map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      )}
+                      <RowMenu label={`„${cat.name}” kategória műveletei`} subtle={!active} items={categoryActions(cat, idx)} />
                     </div>
                   );
                 })}
               </div>
-              <div className="flex items-center gap-1.5 pt-2 border-t border-slate-100">
-                <input
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
-                  placeholder="Új kategória (pl. Bioklimatikus)"
-                  className="flex-1 min-w-0 px-2.5 py-2 rounded-lg border border-slate-300 text-xs"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddCategory}
-                  className="p-2 rounded-lg bg-slate-900 text-white"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* TEMPLATES */}
-        <div className="lg:col-span-6 bg-white rounded-2xl border border-slate-200 p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="text-[13px] font-medium text-slate-600">
-              Sablon ({categoryTemplates.length})
-            </div>
-            {selectedCategoryId && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (
-                    dirty &&
-                    !window.confirm('Mentetlen változások vannak. Elveted őket?')
-                  ) {
-                    return;
-                  }
-                  setDirty(false);
-                  onNewTemplate(selectedCategoryId);
-                }}
-                className={btn.ghost}
-              >
-                <Plus className="w-4 h-4" />
-                Új sablon
-              </button>
-            )}
-          </div>
-
-          {!selectedCategoryId ? (
-            <div className="text-xs text-slate-500 italic">
-              Válassz egy kategóriát.
-            </div>
-          ) : categoryTemplates.length === 0 ? (
-            <div className="text-xs text-slate-500 italic">
-              Ebben a kategóriában még nincs sablon.
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {categoryTemplates.map((tpl, idx) => {
-                const status: TemplateStatus = tpl.status || 'active';
-                const statusOpt = TEMPLATE_STATUS_OPTIONS.find(
-                  (s) => s.id === status
-                );
-                const isExpanded = expandedTemplateId === tpl.id;
-                const limits = tpl.sizeLimits || {};
-                const ref: CatalogReference = tpl.catalogRef || {};
-                return (
-                  <div
-                    key={tpl.id}
-                    className={`rounded-xl border p-3 space-y-2 ${
-                      isExpanded
-                        ? 'border-slate-900'
-                        : status === 'inactive'
-                        ? 'border-slate-200 bg-slate-50 opacity-70'
-                        : 'border-slate-200'
-                    }`}
-                  >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <div className="flex flex-col">
-                        <button
-                          type="button"
-                          disabled={idx === 0}
-                          onClick={() => {
-                            setDraftTemplates((prev) =>
-                              moveInScope(
-                                prev,
-                                (t) => t.categoryId === selectedCategoryId,
-                                tpl.id,
-                                -1
-                              )
-                            );
-                            markDirty();
-                          }}
-                          className={arrowBtn}
-                        >
-                          <ArrowUp className="w-3 h-3" />
-                        </button>
-                        <button
-                          type="button"
-                          disabled={idx === categoryTemplates.length - 1}
-                          onClick={() => {
-                            setDraftTemplates((prev) =>
-                              moveInScope(
-                                prev,
-                                (t) => t.categoryId === selectedCategoryId,
-                                tpl.id,
-                                1
-                              )
-                            );
-                            markDirty();
-                          }}
-                          className={arrowBtn}
-                        >
-                          <ArrowDown className="w-3 h-3" />
-                        </button>
-                      </div>
-
-                      <Thumb tpl={tpl} />
-                      <div className="flex-1 basis-40 min-w-0">
-                        <div className="text-sm font-bold text-slate-900 leading-snug break-words">
-                          {tpl.name}
-                        </div>
-                        <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                          {hasSizeLimits(tpl) ? (
-                            <span className="text-xs font-semibold text-slate-500">
-                              <Ruler className="inline w-3 h-3 mr-0.5" />
-                              {limits.minWidthCm || '–'}–{limits.maxWidthCm || '–'} ×{' '}
-                              {limits.minProjectionCm || '–'}–
-                              {limits.maxProjectionCm || '–'} cm
-                            </span>
-                          ) : null}
-                          {hasCatalogRef(tpl) && (
-                            <span className="text-xs font-semibold text-slate-500">
-                              <BookOpen className="inline w-3 h-3 mr-0.5" />
-                              {ref.pdfFile || 'PDF'}
-                              {ref.pages ? `, ${ref.pages}. o.` : ''}
-                            </span>
-                          )}
-                        </div>
-                        <MissingNote missing={getMissing(tpl)} />
-                      </div>
-
-                      <div className="flex items-center gap-2 ml-auto shrink-0">
-                      <select
-                        value={status}
-                        onChange={(e) =>
-                          updateTemplate(tpl.id, {
-                            status: e.target.value as TemplateStatus,
-                          })
-                        }
-                        className={`px-2 py-1 rounded-lg border text-xs font-bold ${statusOpt?.badgeClass}`}
-                      >
-                        {TEMPLATE_STATUS_OPTIONS.map((s) => (
-                          <option key={s.id} value={s.id}>
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedTemplateId(isExpanded ? null : tpl.id)
-                        }
-                        className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
-                      >
-                        {isExpanded ? 'Bezár' : 'Részletek'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (
-                            dirty &&
-                            !window.confirm(
-                              'Mentetlen változások vannak a sablonkezelőben. Elveted őket és megnyitod a sablont?'
-                            )
-                          ) {
-                            return;
-                          }
-                          setDirty(false);
-                          onEditTemplate(tpl.id);
-                        }}
-                        className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-50"
-                        title="Sablon termékeinek és árainak szerkesztése"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                      </div>
-                    </div>
-
+              <div className="pt-1.5 mt-1.5 border-t border-slate-100">
+                {addingCategory ? (
+                  <div className="p-1.5">
+                    <InlineInput
+                      initial=""
+                      placeholder="Új kategória neve"
+                      onDone={(v) => {
+                        setAddingCategory(false);
+                        if (v) handleAddCategory(v);
+                      }}
+                    />
                   </div>
-                );
-              })}
+                ) : (
+                  <button
+                    type="button"
+                    disabled={!selectedMenuId}
+                    onClick={() => setAddingCategory(true)}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-950 disabled:opacity-40"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Új kategória
+                  </button>
+                )}
+              </div>
+              <input
+                ref={categoryImageInput}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = '';
+                  const catId = imageTargetCategory.current;
+                  if (!file || !catId) return;
+                  const url = await onUploadImage(file);
+                  if (url) updateCategory(catId, { imageUrl: url });
+                }}
+              />
             </div>
-          )}
+
+            {/* TERMÉKEK A KIVÁLASZTOTT KATEGÓRIÁBAN */}
+            <div className="bg-white rounded-2xl border border-slate-200 min-w-0">
+              {!selectedCategory ? (
+                <div className="p-6 text-sm text-slate-500">Válassz vagy hozz létre egy kategóriát.</div>
+              ) : (
+                <>
+                  <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => pickImageFor(selectedCategory.id)}
+                      className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden grid place-items-center shrink-0 hover:border-slate-400"
+                      title="Kategória képe"
+                    >
+                      {selectedCategory.imageUrl ? (
+                        <img src={thumbUrl(selectedCategory.imageUrl)} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <ImagePlus className="w-5 h-5 text-slate-400" />
+                      )}
+                    </button>
+                    <div className="min-w-0 flex-1">
+                      {renameCategoryId === selectedCategory.id ? (
+                        <InlineInput
+                          initial={selectedCategory.name}
+                          onDone={(v) => {
+                            if (v) updateCategory(selectedCategory.id, { name: v, shortName: v });
+                            setRenameCategoryId(null);
+                          }}
+                        />
+                      ) : (
+                        <div
+                          className="text-base font-semibold text-slate-950 break-words"
+                          onDoubleClick={() => setRenameCategoryId(selectedCategory.id)}
+                        >
+                          {selectedCategory.name}
+                        </div>
+                      )}
+                      <div className="text-xs text-slate-500">{categoryTemplates.length} termék</div>
+                    </div>
+                    <RowMenu
+                      label={`„${selectedCategory.name}” kategória műveletei`}
+                      items={categoryActions(selectedCategory, menuCategories.findIndex((c) => c.id === selectedCategory.id))}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => openNewTemplate(selectedCategory.id)}
+                      className={`${btn.secondary} w-full sm:w-auto`}
+                    >
+                      <Plus className="w-4 h-4" />
+                      Új termék
+                    </button>
+                  </div>
+
+                  {categoryTemplates.length === 0 ? (
+                    <div className="p-6 text-sm text-slate-500">Ebben a kategóriában még nincs termék.</div>
+                  ) : (
+                    <div className="divide-y divide-slate-100">
+                      {categoryTemplates.map((tpl, idx) => {
+                        const status: TemplateStatus = tpl.status || 'active';
+                        const statusOpt = TEMPLATE_STATUS_OPTIONS.find((o) => o.id === status);
+                        const isExpanded = expandedTemplateId === tpl.id;
+                        const limits = tpl.sizeLimits || {};
+                        const sizeText =
+                          limits.maxWidthCm || limits.maxProjectionCm
+                            ? `max. ${limits.maxWidthCm || '?'} × ${limits.maxProjectionCm || '?'} cm`
+                            : '';
+                        const isSecondary = tpl.categoryId !== selectedCategoryId;
+                        return (
+                          <div
+                            key={tpl.id}
+                            className={`flex flex-wrap items-center gap-3 px-4 py-3 ${
+                              isExpanded ? 'bg-slate-50' : ''
+                            } ${status === 'inactive' ? 'opacity-60' : ''}`}
+                          >
+                            <Thumb tpl={tpl} />
+                            <div className="min-w-0 flex-1 basis-48">
+                              <div className="text-sm font-semibold text-slate-950 break-words">{tpl.name}</div>
+                              <div className="text-xs text-slate-500 break-words">
+                                {[tpl.subtitle, sizeText, isSecondary ? 'más kategóriából is' : '']
+                                  .filter(Boolean)
+                                  .join(' · ')}
+                              </div>
+                              <MissingNote missing={getMissing(tpl)} />
+                            </div>
+                            <div className="flex items-center gap-2 ml-auto">
+                              <select
+                                value={status}
+                                onChange={(e) => updateTemplate(tpl.id, { status: e.target.value as TemplateStatus })}
+                                className={`px-2 py-1 rounded-lg border text-xs font-semibold ${statusOpt?.badgeClass}`}
+                                aria-label="Állapot"
+                              >
+                                {TEMPLATE_STATUS_OPTIONS.map((o) => (
+                                  <option key={o.id} value={o.id}>
+                                    {o.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <button
+                                type="button"
+                                onClick={() => openTemplate(tpl.id)}
+                                className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-[13px] font-medium text-slate-800 hover:border-slate-500"
+                                title="Sablon termékeinek és árainak szerkesztése"
+                              >
+                                Szerkesztés
+                              </button>
+                              <RowMenu
+                                label={`„${tpl.name}” műveletei`}
+                                items={[
+                                  {
+                                    label: isExpanded ? 'Fotók és méretek bezárása' : 'Fotók és méretek',
+                                    onClick: () => setExpandedTemplateId(isExpanded ? null : tpl.id),
+                                  },
+                                  { label: 'Feljebb', disabled: idx === 0, onClick: () => moveTemplate(tpl.id, -1) },
+                                  {
+                                    label: 'Lejjebb',
+                                    disabled: idx === categoryTemplates.length - 1,
+                                    onClick: () => moveTemplate(tpl.id, 1),
+                                  },
+                                ]}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
       )}
 
       {/* Kinyitott sablon részletei teljes szélességben: fotók, méretek, katalógus */}
@@ -1426,7 +1386,7 @@ export function CatalogManagerView({
                               <span className="w-24 text-sm text-slate-600">{label}</span>
                               {[minKey, maxKey].map((key, kIdx) => (
                                 <React.Fragment key={key}>
-                                  {kIdx === 1 && <span className="text-slate-400">–</span>}
+                                  {kIdx === 1 && <span className="text-slate-400">-</span>}
                                   <input
                                     type="number"
                                     min={0}

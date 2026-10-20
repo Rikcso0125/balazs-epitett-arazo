@@ -14,7 +14,7 @@
     {
      "key": "sb400_freestanding",
      "label": "Pergola SB 400 free-standing (no middle pole)",
-     "config": "PERGOLA SB 400 FREE-STANDING – no middle pole",
+     "config": "PERGOLA SB 400 FREE-STANDING - no middle pole",
      "mountType": "freestanding",
      "modulesWidth": 1,
      "modulesProjection": 1,
@@ -210,7 +210,7 @@
     {
      "key": "sb400_wall",
      "label": "Pergola SB 400 wall-mounted (no middle pole)",
-     "config": "PERGOLA SB400 WALL-MOUNTED – No middle pole",
+     "config": "PERGOLA SB400 WALL-MOUNTED - No middle pole",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 1,
@@ -597,11 +597,11 @@
      },
      "priceIncludes": "structure, slats, wall mounts (appropriate for the selected version), drive transmission mechanism and motor; two gutters without water drainage. Control NOT included.",
      "page": 14,
-     "notes": "Same dimension grid as SB 400 (width 150-400, projection 340-700 cm, 20 cm steps); no column-group label printed. Page 27: 'SB400R – water drainage on the client's side. Dedicated DN50 gutter outlets.' No posts are priced or mentioned on this page and the price includes wall mounts, so mapped to no_legs (fixed to walls / existing structure) - see uncertainties. Hidden motor +10%. Option: 4 gutters with angle overflows 250 EUR (not discountable)."
+     "notes": "Same dimension grid as SB 400 (width 150-400, projection 340-700 cm, 20 cm steps); no column-group label printed. Page 27: 'SB400R - water drainage on the client's side. Dedicated DN50 gutter outlets.' No posts are priced or mentioned on this page and the price includes wall mounts, so mapped to no_legs (fixed to walls / existing structure) - see uncertainties. Hidden motor +10%. Option: 4 gutters with angle overflows 250 EUR (not discountable)."
     },
     {
      "key": "sb400_roof_module",
-     "label": "Pergola SB 400 – roof module (SB400MD, blades on guides, Picolo XL motor)",
+     "label": "Pergola SB 400 - roof module (SB400MD, blades on guides, Picolo XL motor)",
      "config": "PERGOLA SB 400 - ROOF MODULE",
      "mountType": "existing_structure",
      "modulesWidth": 1,
@@ -856,7 +856,7 @@
      "notes": ""
     },
     {
-     "name": "System height above standard 2801-3300 mm – free-standing",
+     "name": "System height above standard 2801-3300 mm - free-standing",
      "price": 250,
      "unit": "pcs",
      "page": 6,
@@ -864,7 +864,7 @@
      "notes": "Partial warranty exclusions"
     },
     {
-     "name": "System height above standard 2801-3300 mm – wall-mounted",
+     "name": "System height above standard 2801-3300 mm - wall-mounted",
      "price": 150,
      "unit": "pcs",
      "page": 6,
@@ -904,7 +904,7 @@
      "notes": "20% of system price after discount; wood decors Mahogany 26, Cherry 27, Walnut 28, Golden Oak 30, Malt oak 49, Winchester 52 (p.7)"
     },
     {
-     "name": "BleBox Pergola DC controller set with 1-channel remote (T7) or 6-channel remote (T8) – for Pergola motor 24V BleBox control",
+     "name": "BleBox Pergola DC controller set with 1-channel remote (T7) or 6-channel remote (T8) - for Pergola motor 24V BleBox control",
      "price": 142,
      "unit": "pcs",
      "page": 12,
@@ -912,7 +912,7 @@
      "notes": "6k remote (T8) if order includes LED or ZiiiP"
     },
     {
-     "name": "Teleco IOALL868 Pergola Controller (V2) – for hidden motor Tilt 24V",
+     "name": "Teleco IOALL868 Pergola Controller (V2) - for hidden motor Tilt 24V",
      "price": 709,
      "unit": "pcs",
      "page": 12,
@@ -928,7 +928,7 @@
      "notes": "optional"
     },
     {
-     "name": "Pergola Slim receiver io (WC) – for Picolo XL motor",
+     "name": "Pergola Slim receiver io (WC) - for Picolo XL motor",
      "price": 174,
      "unit": "pcs",
      "page": 12,
@@ -936,7 +936,7 @@
      "notes": ""
     },
     {
-     "name": "Elero COMBIO 868 RM receiver (DB) – for Picolo XL motor",
+     "name": "Elero COMBIO 868 RM receiver (DB) - for Picolo XL motor",
      "price": 117,
      "unit": "pcs",
      "page": 12,
@@ -1117,10 +1117,10 @@
      "unit": "pcs",
      "page": 20,
      "appliesTo": "SB400",
-     "notes": "RGB* – only available in a version with hidden motor"
+     "notes": "RGB* - only available in a version with hidden motor"
     },
     {
-     "name": "LED COB RGB in blades – projection 1400-3590 mm (2 blades)",
+     "name": "LED COB RGB in blades - projection 1400-3590 mm (2 blades)",
      "price": 670,
      "unit": "set",
      "page": 20,
@@ -1128,7 +1128,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED COB RGB in blades – projection 3600-5390 mm (3 blades)",
+     "name": "LED COB RGB in blades - projection 3600-5390 mm (3 blades)",
      "price": 1010,
      "unit": "set",
      "page": 20,
@@ -1136,7 +1136,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED COB RGB in blades – projection 5400-7000 mm (4 blades)",
+     "name": "LED COB RGB in blades - projection 5400-7000 mm (4 blades)",
      "price": 1340,
      "unit": "set",
      "page": 20,
@@ -1144,7 +1144,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED COB 3200 K or 4000 K in blades – projection 1400-3590 mm (2 blades)",
+     "name": "LED COB 3200 K or 4000 K in blades - projection 1400-3590 mm (2 blades)",
      "price": 550,
      "unit": "set",
      "page": 20,
@@ -1152,7 +1152,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED COB 3200 K or 4000 K in blades – projection 3600-5390 mm (3 blades)",
+     "name": "LED COB 3200 K or 4000 K in blades - projection 3600-5390 mm (3 blades)",
      "price": 825,
      "unit": "set",
      "page": 20,
@@ -1160,7 +1160,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED COB 3200 K or 4000 K in blades – projection 5400-7000 mm (4 blades)",
+     "name": "LED COB 3200 K or 4000 K in blades - projection 5400-7000 mm (4 blades)",
      "price": 1100,
      "unit": "set",
      "page": 20,
@@ -1168,7 +1168,7 @@
      "notes": "* only with hidden motor"
     },
     {
-     "name": "LED points 3300 K – projection 1400-3590 mm, column 1500-2740 (4 points)",
+     "name": "LED points 3300 K - projection 1400-3590 mm, column 1500-2740 (4 points)",
      "price": 824,
      "unit": "set",
      "page": 20,
@@ -1176,7 +1176,7 @@
      "notes": "column header 1500-2740 / 2750-4000 is not labelled; presumably width in mm"
     },
     {
-     "name": "LED points 3300 K – projection 1400-3590 mm, column 2750-4000 (6 points)",
+     "name": "LED points 3300 K - projection 1400-3590 mm, column 2750-4000 (6 points)",
      "price": 902,
      "unit": "set",
      "page": 20,
@@ -1184,7 +1184,7 @@
      "notes": ""
     },
     {
-     "name": "LED points 3300 K – projection 3600-5390 mm, column 1500-2740 (6 points)",
+     "name": "LED points 3300 K - projection 3600-5390 mm, column 1500-2740 (6 points)",
      "price": 902,
      "unit": "set",
      "page": 20,
@@ -1192,7 +1192,7 @@
      "notes": ""
     },
     {
-     "name": "LED points 3300 K – projection 3600-5390 mm, column 2750-4000 (9 points)",
+     "name": "LED points 3300 K - projection 3600-5390 mm, column 2750-4000 (9 points)",
      "price": 1098,
      "unit": "set",
      "page": 20,
@@ -1200,7 +1200,7 @@
      "notes": ""
     },
     {
-     "name": "LED points 3300 K – projection 5400-7000 mm, column 1500-2740 (8 points)",
+     "name": "LED points 3300 K - projection 5400-7000 mm, column 1500-2740 (8 points)",
      "price": 1020,
      "unit": "set",
      "page": 20,
@@ -1208,7 +1208,7 @@
      "notes": ""
     },
     {
-     "name": "LED points 3300 K – projection 5400-7000 mm, column 2750-4000 (12 points)",
+     "name": "LED points 3300 K - projection 5400-7000 mm, column 2750-4000 (12 points)",
      "price": 1255,
      "unit": "set",
      "page": 20,
@@ -1379,7 +1379,7 @@
    "variants": [
     {
      "key": "veranda_motor_excl",
-     "label": "VERANDA horizontal roller blind – price without motor",
+     "label": "VERANDA horizontal roller blind - price without motor",
      "config": "VERANDA",
      "mountType": "existing_structure",
      "modulesWidth": 1,
@@ -1735,7 +1735,7 @@
      "notes": ""
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 1-4 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 1-4 systems",
      "price": 300,
      "unit": "order",
      "page": 65,
@@ -1743,7 +1743,7 @@
      "notes": "ALUPROF palette colours included in price"
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 5-9 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 5-9 systems",
      "price": 400,
      "unit": "order",
      "page": 65,
@@ -1751,7 +1751,7 @@
      "notes": ""
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 10-20 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 10-20 systems",
      "price": 500,
      "unit": "order",
      "page": 65,
@@ -1916,7 +1916,7 @@
    "variants": [
     {
      "key": "rziip120_motor_excl",
-     "label": "R ZIIIP 120 vertical ZIP screen – price without motor",
+     "label": "R ZIIIP 120 vertical ZIP screen - price without motor",
      "config": "R ZIIIP 120, R ZIIIP 120 FOR CONCEALED INSTALLATION",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2419,7 +2419,7 @@
      "notes": ""
     },
     {
-     "name": "Motor ALUPROF MH45-20/26 (T4) – for widths above 4 m, mech. limit switches, 5m white VVF",
+     "name": "Motor ALUPROF MH45-20/26 (T4) - for widths above 4 m, mech. limit switches, 5m white VVF",
      "price": 111,
      "unit": "pcs",
      "page": 69,
@@ -2427,7 +2427,7 @@
      "notes": "not for concealed version; 20 Nm class"
     },
     {
-     "name": "Motor ELERO VariEasy M20/14 (T1) – for widths above 4 m, RNF 2.0m white",
+     "name": "Motor ELERO VariEasy M20/14 (T1) - for widths above 4 m, RNF 2.0m white",
      "price": 131,
      "unit": "pcs",
      "page": 69,
@@ -2435,7 +2435,7 @@
      "notes": "not for concealed version; 20 Nm class"
     },
     {
-     "name": "Motor SOMFY Maestria 50 WT 25/17 (T2) – for widths above 4 m, electronic + obstacle detection",
+     "name": "Motor SOMFY Maestria 50 WT 25/17 (T2) - for widths above 4 m, electronic + obstacle detection",
      "price": 269,
      "unit": "pcs",
      "page": 69,
@@ -2443,7 +2443,7 @@
      "notes": "25 Nm"
     },
     {
-     "name": "Motor SOMFY Maestria+ 50 io 25/17 (T3) – for widths above 4 m, electronic + io + obstacle detection",
+     "name": "Motor SOMFY Maestria+ 50 io 25/17 (T3) - for widths above 4 m, electronic + io + obstacle detection",
      "price": 332,
      "unit": "pcs",
      "page": 69,
@@ -2483,7 +2483,7 @@
      "notes": ""
     },
     {
-     "name": "Extended guide rails (up to 1000 mm) – Ziiip systems",
+     "name": "Extended guide rails (up to 1000 mm) - Ziiip systems",
      "price": 17,
      "unit": "system",
      "page": 65,
@@ -2507,7 +2507,7 @@
      "notes": ""
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 1-4 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 1-4 systems",
      "price": 300,
      "unit": "order",
      "page": 65,
@@ -2515,7 +2515,7 @@
      "notes": "ALUPROF palette colours included"
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 5-9 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 5-9 systems",
      "price": 400,
      "unit": "order",
      "page": 65,
@@ -2523,7 +2523,7 @@
      "notes": ""
     },
     {
-     "name": "Construction in RAL colour outside ALUPROF palette – 10-20 systems",
+     "name": "Construction in RAL colour outside ALUPROF palette - 10-20 systems",
      "price": 500,
      "unit": "order",
      "page": 65,
@@ -2546,7 +2546,7 @@
    "variants": [
     {
      "key": "madeira_wall_motor_excl",
-     "label": "MADEIRA cassette awning – wall brackets + LED, price without motor",
+     "label": "MADEIRA cassette awning - wall brackets + LED, price without motor",
      "config": "MADEIRA",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2616,7 +2616,7 @@
     },
     {
      "key": "corsica_wall_motor_excl",
-     "label": "CORSICA cassette awning – wall brackets + LED, price without motor",
+     "label": "CORSICA cassette awning - wall brackets + LED, price without motor",
      "config": "CORSICA CASSETTE",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2692,7 +2692,7 @@
     },
     {
      "key": "australia_wall_manual",
-     "label": "AUSTRALIA terrace awning (no cassette) – manual crank drive",
+     "label": "AUSTRALIA terrace awning (no cassette) - manual crank drive",
      "config": "AUSTRALIA",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2770,7 +2770,7 @@
     },
     {
      "key": "jamaica_wall_manual",
-     "label": "JAMAICA terrace awning (no cassette) – manual crank drive",
+     "label": "JAMAICA terrace awning (no cassette) - manual crank drive",
      "config": "JAMAICA*",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2869,7 +2869,7 @@
      "notes": "30% of system price after discount"
     },
     {
-     "name": "Packaging – double cardboard",
+     "name": "Packaging - double cardboard",
      "price": 1.6,
      "unit": "m",
      "page": 94,
@@ -2877,7 +2877,7 @@
      "notes": "per running metre"
     },
     {
-     "name": "Packaging – honeycomb cardboard",
+     "name": "Packaging - honeycomb cardboard",
      "price": 2.95,
      "unit": "m",
      "page": 94,
@@ -2933,7 +2933,7 @@
      "notes": ""
     },
     {
-     "name": "Folding arm PLUS 310 cm (KS) – third middle arm",
+     "name": "Folding arm PLUS 310 cm (KS) - third middle arm",
      "price": 131,
      "unit": "pcs",
      "page": 98,
@@ -2941,7 +2941,7 @@
      "notes": ""
     },
     {
-     "name": "Folding arm PLUS 360 cm (KT) – third middle arm",
+     "name": "Folding arm PLUS 360 cm (KT) - third middle arm",
      "price": 143,
      "unit": "pcs",
      "page": 98,
@@ -2949,7 +2949,7 @@
      "notes": ""
     },
     {
-     "name": "Arm support – Australia (L1)",
+     "name": "Arm support - Australia (L1)",
      "price": 60,
      "unit": "pcs",
      "page": 98,
@@ -2957,7 +2957,7 @@
      "notes": ""
     },
     {
-     "name": "Arm support – Jamaica (L2)",
+     "name": "Arm support - Jamaica (L2)",
      "price": 56,
      "unit": "pcs",
      "page": 98,
@@ -2965,7 +2965,7 @@
      "notes": ""
     },
     {
-     "name": "Arm support – Corsica (L4)",
+     "name": "Arm support - Corsica (L4)",
      "price": 64,
      "unit": "pcs",
      "page": 98,
@@ -2973,7 +2973,7 @@
      "notes": ""
     },
     {
-     "name": "Arm support – Madeira (L4)",
+     "name": "Arm support - Madeira (L4)",
      "price": 64,
      "unit": "pcs",
      "page": 98,
@@ -2981,7 +2981,7 @@
      "notes": ""
     },
     {
-     "name": "Front bar connector – Australia (LA)",
+     "name": "Front bar connector - Australia (LA)",
      "price": 12,
      "unit": "pcs",
      "page": 98,
@@ -2989,7 +2989,7 @@
      "notes": ""
     },
     {
-     "name": "Front bar connector – Jamaica (LB)",
+     "name": "Front bar connector - Jamaica (LB)",
      "price": 12,
      "unit": "pcs",
      "page": 98,
@@ -2997,7 +2997,7 @@
      "notes": ""
     },
     {
-     "name": "Front bar connector – Corsica (LD)",
+     "name": "Front bar connector - Corsica (LD)",
      "price": 12,
      "unit": "pcs",
      "page": 98,
@@ -3005,7 +3005,7 @@
      "notes": ""
     },
     {
-     "name": "Front bar connector – Madeira (LD)",
+     "name": "Front bar connector - Madeira (LD)",
      "price": 12,
      "unit": "pcs",
      "page": 98,
@@ -3113,11 +3113,11 @@
      "price": 12,
      "unit": "pcs",
      "page": 99,
-     "appliesTo": "Terrace awnings (Australia, Jamaica, Corsica, Madeira – not stated per model)",
+     "appliesTo": "Terrace awnings (Australia, Jamaica, Corsica, Madeira - not stated per model)",
      "notes": ""
     },
     {
-     "name": "Ceiling bracket (1E) – mounted to the wall bracket",
+     "name": "Ceiling bracket (1E) - mounted to the wall bracket",
      "price": 16,
      "unit": "pcs",
      "page": 99,
@@ -3125,7 +3125,7 @@
      "notes": ""
     },
     {
-     "name": "Rafter bracket (1F) – mounted to the wall bracket",
+     "name": "Rafter bracket (1F) - mounted to the wall bracket",
      "price": 75,
      "unit": "pair",
      "page": 99,
@@ -3141,7 +3141,7 @@
      "notes": ""
     },
     {
-     "name": "Gear box 11:1 (IE) – manual drive",
+     "name": "Gear box 11:1 (IE) - manual drive",
      "price": 34,
      "unit": "pcs",
      "page": 100,
@@ -3541,7 +3541,7 @@
      "notes": "until stocks last"
     },
     {
-     "name": "LED lighting in arms COB 3000K – 2 arms 3100",
+     "name": "LED lighting in arms COB 3000K - 2 arms 3100",
      "price": 535,
      "unit": "set",
      "page": 108,
@@ -3549,7 +3549,7 @@
      "notes": "Only with SOMFY control; includes LED strips + power supply with receiver"
     },
     {
-     "name": "LED lighting in arms – 3 arms 3100",
+     "name": "LED lighting in arms - 3 arms 3100",
      "price": 663,
      "unit": "set",
      "page": 108,
@@ -3557,7 +3557,7 @@
      "notes": "3 arms 3100 from 5910 mm width"
     },
     {
-     "name": "LED lighting in arms – 2 arms 3600",
+     "name": "LED lighting in arms - 2 arms 3600",
      "price": 568,
      "unit": "set",
      "page": 108,
@@ -3565,7 +3565,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 3 arms 3600",
+     "name": "LED lighting in arms - 3 arms 3600",
      "price": 711,
      "unit": "set",
      "page": 108,
@@ -3573,7 +3573,7 @@
      "notes": "3 arms 3600 from 6510 mm width"
     },
     {
-     "name": "LED lighting in arms – 2 arms 3100, width up to 5000 mm",
+     "name": "LED lighting in arms - 2 arms 3100, width up to 5000 mm",
      "price": 691,
      "unit": "set",
      "page": 108,
@@ -3581,7 +3581,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 3 arms 3100, width up to 5000 mm",
+     "name": "LED lighting in arms - 3 arms 3100, width up to 5000 mm",
      "price": 825,
      "unit": "set",
      "page": 108,
@@ -3589,7 +3589,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 2 arms 3600, width up to 5000 mm",
+     "name": "LED lighting in arms - 2 arms 3600, width up to 5000 mm",
      "price": 723,
      "unit": "set",
      "page": 108,
@@ -3597,7 +3597,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 3 arms 3600, width up to 5000 mm",
+     "name": "LED lighting in arms - 3 arms 3600, width up to 5000 mm",
      "price": 925,
      "unit": "set",
      "page": 108,
@@ -3605,7 +3605,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 2 arms 3100, width from 5001 mm",
+     "name": "LED lighting in arms - 2 arms 3100, width from 5001 mm",
      "price": 749,
      "unit": "set",
      "page": 108,
@@ -3613,7 +3613,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 3 arms 3100, width from 5001 mm",
+     "name": "LED lighting in arms - 3 arms 3100, width from 5001 mm",
      "price": 876,
      "unit": "set",
      "page": 108,
@@ -3621,7 +3621,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 2 arms 3600, width from 5001 mm",
+     "name": "LED lighting in arms - 2 arms 3600, width from 5001 mm",
      "price": 781,
      "unit": "set",
      "page": 108,
@@ -3629,7 +3629,7 @@
      "notes": ""
     },
     {
-     "name": "LED lighting in arms – 3 arms 3600, width from 5001 mm",
+     "name": "LED lighting in arms - 3 arms 3600, width from 5001 mm",
      "price": 925,
      "unit": "set",
      "page": 108,
@@ -3653,7 +3653,7 @@
      "notes": ""
     },
     {
-     "name": "IO receiver – Heating Slim Receiver io (NZ)",
+     "name": "IO receiver - Heating Slim Receiver io (NZ)",
      "price": 202,
      "unit": "pcs",
      "page": 108,

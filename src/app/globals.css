@@ -435,7 +435,7 @@ textarea:focus {
   font-size: 14px;
 }
 
-/* ---- mobil: iOS Safari a 16px-nél kisebb betűs mezőkbe belenagyít – telefonon 16px ---- */
+/* ---- mobil: iOS Safari a 16px-nél kisebb betűs mezőkbe belenagyít - telefonon 16px ---- */
 @media (max-width: 900px) {
   input:not([type='checkbox']):not([type='radio']):not([type='file']),
   select,

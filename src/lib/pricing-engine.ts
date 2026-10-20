@@ -403,7 +403,7 @@ export function checkTemplateFit(
     if (rule.mountType && rule.mountType !== mountType) continue;
     if (rule.ifWidthOverCm && !(widthCm > rule.ifWidthOverCm)) continue;
     if (rule.ifProjectionOverCm && !(projectionCm > rule.ifProjectionOverCm)) continue;
-    const why = rule.label ? ` – ${rule.label}` : '';
+    const why = rule.label ? ` - ${rule.label}` : '';
     if (rule.maxWidthCm && widthCm > rule.maxWidthCm)
       reasons.push(`Szélesség max. ${rule.maxWidthCm} cm (kért: ${widthCm} cm)${why}`);
     if (rule.maxProjectionCm && projectionCm > rule.maxProjectionCm)
@@ -714,7 +714,7 @@ export function calculateTemplateRows(
               }${qty > 1 ? ` (${qty} db)` : ''}`;
         formulaSummary = `Mérettábla algoritmus (${matrixLookup.matchedCol}×${matrixLookup.matchedRow} cm): ${effectiveMatrixPrice} ${curr} × ${qty} db${
           matrixLookup.outOfRange
-            ? ' ⚠ A kért méret nagyobb, mint a táblázat – kézi ellenőrzés szükséges!'
+            ? ' ⚠ A kért méret nagyobb, mint a táblázat - kézi ellenőrzés szükséges!'
             : ''
         }`;
         outOfRange = matrixLookup.outOfRange;
@@ -987,11 +987,11 @@ export function buildEditableBlockFromTemplate(
     type: 'template_section',
     templateId: template.id,
     categoryId: template.categoryId,
-    sectionTitle: `${indexNumber}. ${template.name} (${ctx.widthCm}×${ctx.projectionCm}×${ctx.heightCm} cm — ${ctx.mountType})`,
+    sectionTitle: `${indexNumber}. ${template.name} (${ctx.widthCm}×${ctx.projectionCm}×${ctx.heightCm} cm - ${ctx.mountType})`,
     sectionSubtitle: replaceTemplateVariables(template.subtitle || '', varCtx),
     sectionIntroText: introCombined,
     sectionPhotos: resolvedPhotos,
-    tableTitle: `${template.name} — Részletes árkalkuláció (${ctx.widthCm}×${ctx.projectionCm} cm)`,
+    tableTitle: `${template.name} - Részletes árkalkuláció (${ctx.widthCm}×${ctx.projectionCm} cm)`,
     tableHeaders: [
       'Megnevezés / Anyag / Műszaki tartalom',
       'Mennyiség / Méret',
@@ -1052,7 +1052,7 @@ export function buildManualSectionBlock(
     sectionSubtitle: 'Egyedi, több modulos kialakítás',
     sectionIntroText: '',
     sectionPhotos: [],
-    tableTitle: `${title} — Egyedi árkalkuláció`,
+    tableTitle: `${title} - Egyedi árkalkuláció`,
     tableHeaders: [
       'Megnevezés / Anyag / Műszaki tartalom',
       'Mennyiség / Méret',

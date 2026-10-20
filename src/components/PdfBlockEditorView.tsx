@@ -817,7 +817,7 @@ export function PdfBlockEditorView({
                   className="text-xs text-slate-600 hover:text-slate-950 underline mt-1"
                   title="Átállítja az ajánlatot az aktuális MNB árfolyamra és újraszámolja az árakat"
                 >
-                  MNB ma: {liveRate.exact.toFixed(2).replace('.', ',')} – frissítés
+                  MNB ma: {liveRate.exact.toFixed(2).replace('.', ',')} - frissítés
                 </button>
               )
             )}
@@ -1542,7 +1542,7 @@ export function PdfBlockEditorView({
                                       ),
                                     })
                                   }
-                                  title="Listaár (EUR) – kézzel átírható"
+                                  title="Listaár (EUR) - kézzel átírható"
                                   className={`w-full pl-2.5 pr-9 py-1.5 rounded-lg border text-right line-through tabular-nums ${
                                     row.priceOverridden
                                       ? 'bg-amber-50 border-amber-300 text-amber-900'
@@ -1567,7 +1567,7 @@ export function PdfBlockEditorView({
                                       ),
                                     })
                                   }
-                                  title="Kedvezményes ár (EUR) – kézzel átírható"
+                                  title="Kedvezményes ár (EUR) - kézzel átírható"
                                   className={`w-full pl-2.5 pr-9 py-1.5 rounded-lg border font-semibold text-right tabular-nums ${
                                     row.priceOverridden
                                       ? 'bg-amber-100 border-amber-400 text-amber-950'
@@ -2237,7 +2237,7 @@ export function PdfBlockEditorView({
         <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex flex-col p-4">
           <div className="flex items-center justify-between text-white pb-3">
             <h3 className="text-sm font-bold">
-              Teljes képernyős A4 PDF előnézet — {customerName}
+              Teljes képernyős A4 PDF előnézet - {customerName}
             </h3>
             <button
               type="button"

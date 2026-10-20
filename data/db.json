@@ -11,7 +11,7 @@
     "defaultDiscountLabel": "-20%",
     "defaultGreetingTemplate": "Kedves {{megszolitas}}!",
     "defaultIntroTemplate": "Örömmel fogadtuk megkeresését! Kérésének megfelelően küldjük személyre szabott árajánlatunkat az Ön által megadott ({{meret_m}} / {{meret}}, {{beepites}}) paraméterek alapján.",
-    "defaultClosingInfoTemplate": "Ha {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani!\n\n• Az ajánlat érvényes 30 napig\n• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: {{arfolyam}} Ft/EUR)\n• Szállítási költség ide: {{telepules}}: + {{szallitas}} (+Áfa)\n• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n• Átfutási idő a visszaigazolástól számítva: 30–60 nap\n• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\nAmennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\nMegjegyzés: az extra anyagmozgatás, villamos tervezés és elektromos kiállások, kiegészítő lakatos szerkezetek, beton alap, burkolási munkák és fogadó szerkezetek költségei a vevőt terhelik. Vállalási díjaink normál szerelési körülmények esetén, szabad és folyamatos munkaterület biztosítása mellett érvényesek.",
+    "defaultClosingInfoTemplate": "Ha {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani!\n\n• Az ajánlat érvényes 30 napig\n• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: {{arfolyam}} Ft/EUR)\n• Szállítási költség ide: {{telepules}}: + {{szallitas}} (+Áfa)\n• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n• Átfutási idő a visszaigazolástól számítva: 30-60 nap\n• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\nAmennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\nMegjegyzés: az extra anyagmozgatás, villamos tervezés és elektromos kiállások, kiegészítő lakatos szerkezetek, beton alap, burkolási munkák és fogadó szerkezetek költségei a vevőt terhelik. Vállalási díjaink normál szerelési körülmények esetén, szabad és folyamatos munkaterület biztosítása mellett érvényesek.",
     "pdfPageBackgroundUrl": "",
     "pdfLogoUrl": "/uploads/legacy/opensky_logo.png",
     "pdfSignatureCardUrl": "/uploads/legacy/_cache/_balazs_card.jpg",
@@ -34,7 +34,7 @@
         {
           "id": "tpl_ajanlat",
           "name": "Árajánlat küldése",
-          "subject": "Árajánlat – {{sorszam}} – {{ceg}}",
+          "subject": "Árajánlat - {{sorszam}} - {{ceg}}",
           "body": "Kedves {{megszolitas}}!\n\nKöszönjük megkeresését! Mellékelten küldjük a(z) {{meret_m}} ({{meret}}) méretű szerkezetre vonatkozó, személyre szabott árajánlatunkat.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa {{hatarido}}-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani.\n\nAmennyiben ajánlatunk elnyerte tetszését, kérjük, jelezzen vissza, és egyeztetjük a helyszíni felmérés időpontját. Bármilyen kérdés esetén keressen minket bizalommal!\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
           "suggestFor": [
             "piszkozat"
@@ -53,29 +53,29 @@
         {
           "id": "tpl_hatarido",
           "name": "Határidős kedvezmény",
-          "subject": "Kedvezmény {{hatarido}}-ig – árajánlat {{sorszam}}",
+          "subject": "Kedvezmény {{hatarido}}-ig - árajánlat {{sorszam}}",
           "body": "Kedves {{megszolitas}}!\n\nSzeretnénk jelezni, hogy a mellékelt árajánlatban ({{sorszam}}) szereplő alapszerkezetre {{hatarido}}-ig leadott megrendelés esetén kedvezményt tudunk biztosítani.\n\nAz ajánlat összege: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa). Ha szeretné, egyeztessünk egy helyszíni felmérést, ahol minden részletet pontosítunk.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
           "suggestFor": []
         },
         {
           "id": "tpl_felmeres",
           "name": "Helyszíni felmérés egyeztetése",
-          "subject": "Helyszíni felmérés egyeztetése – {{sorszam}}",
+          "subject": "Helyszíni felmérés egyeztetése - {{sorszam}}",
           "body": "Kedves {{megszolitas}}!\n\nKöszönjük visszajelzését! A pontos méretek és a beépítési körülmények egyeztetéséhez helyszíni felmérésre van szükség ({{telepules}}).\n\nKérjük, írjon néhány Önnek megfelelő időpontot a következő két hétből, és visszaigazoljuk. A felmérés után véglegesítjük az ajánlatot.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
           "suggestFor": []
         },
         {
           "id": "tpl_modositott",
           "name": "Módosított ajánlat",
-          "subject": "Módosított árajánlat – {{sorszam}}",
+          "subject": "Módosított árajánlat - {{sorszam}}",
           "body": "Kedves {{megszolitas}}!\n\nAz egyeztetésünk alapján átdolgoztuk az árajánlatot, a módosított változatot mellékelten küldjük ({{meret_m}}, {{beepites}}).\n\nAz új összeg: {{osszeg_eur}} EUR + Áfa ({{osszeg_huf}} Ft + Áfa).\n\nHa minden rendben, kérjük, jelezzen vissza, és egyeztetjük a következő lépéseket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
           "suggestFor": []
         },
         {
           "id": "tpl_koszonjuk",
           "name": "Köszönjük a megrendelést",
-          "subject": "Köszönjük megrendelését! – {{sorszam}}",
-          "body": "Kedves {{megszolitas}}!\n\nKöszönjük megrendelését és bizalmát! A következő lépések:\n\n1. Elküldjük a szerződést és az előlegszámlát (a végösszeg 60%-a).\n2. Az előleg beérkezése után indul a gyártás, az átfutási idő 30–60 nap.\n3. A szerelés időpontját a gyártás végén egyeztetjük Önnel.\n\nA rendelés alapja a mellékelt ajánlat ({{sorszam}}). Kérdés esetén bármikor elérhet minket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
+          "subject": "Köszönjük megrendelését! - {{sorszam}}",
+          "body": "Kedves {{megszolitas}}!\n\nKöszönjük megrendelését és bizalmát! A következő lépések:\n\n1. Elküldjük a szerződést és az előlegszámlát (a végösszeg 60%-a).\n2. Az előleg beérkezése után indul a gyártás, az átfutási idő 30-60 nap.\n3. A szerelés időpontját a gyártás végén egyeztetjük Önnel.\n\nA rendelés alapja a mellékelt ajánlat ({{sorszam}}). Kérdés esetén bármikor elérhet minket.\n\nÜdvözlettel:\n{{ceg}}\n{{telefon}} · {{weboldal}}",
           "suggestFor": [
             "elfogadva"
           ]
@@ -454,7 +454,7 @@
       "id": "tpl_legacy_sb400",
       "categoryId": "cat_1792391983811_seed",
       "name": "SOLARE 400 bioklimatikus pergola",
-      "subtitle": "Forgatható lamellás tető, Somfy IO motorral – 150 kg/m² hóterhelés",
+      "subtitle": "Forgatható lamellás tető, Somfy IO motorral - 150 kg/m² hóterhelés",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -467,7 +467,7 @@
       },
       "catalogRef": {
         "pdfFile": "Price list 2026_27_Új.pdf",
-        "pages": "13. o. (PERGOLA SB400 WALL-MOUNTED – No middle pole); 12. o. (PERGOLA SB 400 FREE-STANDING – no middle pole); 14. o. (PERGOLA SB 400 R)",
+        "pages": "13. o. (PERGOLA SB400 WALL-MOUNTED - No middle pole); 12. o. (PERGOLA SB 400 FREE-STANDING - no middle pole); 14. o. (PERGOLA SB 400 R)",
         "productAlias": "Selt SB400 / Solare 400",
         "note": "Árképző: Aluprof gyári listaár × 0,66 + fix felár (a régi árképző szerint). Több modulnál modulonkénti ár × modulszám (a gyártónak nincs külön 2 modulos táblája)."
       },
@@ -477,15 +477,15 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A SOLARE 400 ({{meret}}, {{beepites}}) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20–30 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
-      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A SOLARE 400 ({{meret}}, {{beepites}}) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20-30 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
+      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
           "id": "sphoto_legacy_sb400_1",
           "imageUrl": "/uploads/legacy/bioklimatikus/image_01.jpg",
           "titleAbove": "",
-          "captionBelow": "Alumínium váz, 0–120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.",
+          "captionBelow": "Alumínium váz, 0-120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.",
           "widthPct": 75,
           "align": "center",
           "subPhotos": [
@@ -499,7 +499,7 @@
             {
               "id": "sub_sb400_rajz",
               "imageUrl": "/uploads/legacy/bioklimatikus/image_15.png",
-              "captionBelow": "Műszaki rajz – max. 700 cm szélesség",
+              "captionBelow": "Műszaki rajz - max. 700 cm szélesség",
               "widthPct": 25,
               "align": "center"
             },
@@ -531,7 +531,7 @@
       ],
       "materials": [
         {
-          "description": "Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -550,7 +550,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_sb400_wall",
-          "name": "SOLARE 400 – elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "name": "SOLARE 400 - elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -948,7 +948,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -967,7 +967,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_sb400_free",
-          "name": "SOLARE 400 – elforgatható lamellákkal, szabadon álló, 4 lábbal",
+          "name": "SOLARE 400 - elforgatható lamellákkal, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -1365,7 +1365,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -1384,7 +1384,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_sb400_nolegs",
-          "name": "SOLARE 400 – elforgatható lamellákkal, lábak nélkül (falak közé / meglévő szerkezetre)",
+          "name": "SOLARE 400 - elforgatható lamellákkal, lábak nélkül (falak közé / meglévő szerkezetre)",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -1783,7 +1783,7 @@
         },
         {
           "id": "mat_sb400_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -1957,7 +1957,7 @@
         },
         {
           "id": "mat_sb400_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 30 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -2402,7 +2402,7 @@
         },
         {
           "id": "mat_sb400_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 8.5 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -2850,7 +2850,7 @@
         },
         {
           "id": "mat_sb400_zip_b_free",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 17 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -3343,7 +3343,7 @@
               "id": "iphoto_legacy_sb400_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -3400,7 +3400,7 @@
               "id": "iphoto_legacy_sb400_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -3460,7 +3460,7 @@
               "id": "iphoto_legacy_sb400_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -3728,7 +3728,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -3755,7 +3755,7 @@
       "id": "tpl_legacy_seesky_bio",
       "categoryId": "cat_1792391983811_seed",
       "name": "SEESKY BIO bioklimatikus pergola",
-      "subtitle": "Hőszigetelt lamellák, rejtett motor – 200 kg/m² hóterhelés",
+      "subtitle": "Hőszigetelt lamellák, rejtett motor - 200 kg/m² hóterhelés",
       "enabled": false,
       "status": "inactive",
       "order": 2,
@@ -3778,8 +3778,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A SEESKY BIO ({{meret}}, {{beepites}}) magas minőségű, hőszigetelt lamellás pergola rejtett motorral és rejtett csavarokkal; zárt lamellák esetén teljesen vízzáró. Gyártási idő 30–40 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
-      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A SEESKY BIO ({{meret}}, {{beepites}}) magas minőségű, hőszigetelt lamellás pergola rejtett motorral és rejtett csavarokkal; zárt lamellák esetén teljesen vízzáró. Gyártási idő 30-40 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
+      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -3802,8 +3802,8 @@
       "materials": [
         {
           "id": "mat_seesky_wall",
-          "name": "SEESKY BIO – elforgatható, szigetelt lamellákkal, falhoz rögzítve, elöl 2 lábbal",
-          "description": "Hőszigetelt, 0–135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.",
+          "name": "SEESKY BIO - elforgatható, szigetelt lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "description": "Hőszigetelt, 0-135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "tiered_m2",
@@ -3841,8 +3841,8 @@
         },
         {
           "id": "mat_seesky_free",
-          "name": "SEESKY BIO – elforgatható, szigetelt lamellákkal, szabadon álló, 4 lábbal",
-          "description": "Hőszigetelt, 0–135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.",
+          "name": "SEESKY BIO - elforgatható, szigetelt lamellákkal, szabadon álló, 4 lábbal",
+          "description": "Hőszigetelt, 0-135° között elforgatható lamellák (20 cm), rejtett motor a gerendákban, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 20×16 cm, oszlop 16×16 cm. Az ár tartalmazza a motort.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "tiered_m2",
@@ -4015,7 +4015,7 @@
         },
         {
           "id": "mat_seesky_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -4460,7 +4460,7 @@
         },
         {
           "id": "mat_seesky_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 16 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -4908,7 +4908,7 @@
         },
         {
           "id": "mat_seesky_zip_b_free",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -5401,7 +5401,7 @@
               "id": "iphoto_legacy_seesky_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -5458,7 +5458,7 @@
               "id": "iphoto_legacy_seesky_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -5518,7 +5518,7 @@
               "id": "iphoto_legacy_seesky_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -5758,7 +5758,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -5780,7 +5780,7 @@
       "id": "tpl_legacy_kedry_skylife",
       "categoryId": "cat_1792391983811_seed",
       "name": "KEDRY SKYLIFE bioklimatikus pergola",
-      "subtitle": "Forgatva elhúzható lamellás tető, olasz prémium – 250 kg/m² hóterhelés",
+      "subtitle": "Forgatva elhúzható lamellás tető, olasz prémium - 250 kg/m² hóterhelés",
       "enabled": true,
       "status": "active",
       "order": 3,
@@ -5793,7 +5793,7 @@
       },
       "catalogRef": {
         "pdfFile": "LISTINO BIOCLIMATICA 10_EN.pdf",
-        "pages": "23. o. (1P A); 23. o. (1L); 27. o. (2P A); 27. o. (2P); 25. o. (2L – placed against wall on SP side); 25. o. (2L); 33. o. (4P A); 33. o. (4L)",
+        "pages": "23. o. (1P A); 23. o. (1L); 27. o. (2P A); 27. o. (2P); 25. o. (2L - placed against wall on SP side); 25. o. (2L); 33. o. (4P A); 33. o. (4L)",
         "productAlias": "KE Kedry Skylife 1L",
         "note": "Árképző: KE gyári listaár × 0,65 + fix felár (a régi árképző szerint). Fali kivitel: a gyári ár mínusz a fali levonás (KE táblázat alatt)."
       },
@@ -5803,8 +5803,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A KEDRY SKYLIFE ({{meret}}, {{beepites}}) lamellái elhúzás közben elforognak – minőségben a legmagasabb szint: rejtett motorok, csavarok és fali konzolok, hatalmas hóterhelési index. Olasz prémium termék, gyártási idő 30–40 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
-      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat. (SKYLIFE termékre +2 év garancia kérhető.)",
+      "introText": "A KEDRY SKYLIFE ({{meret}}, {{beepites}}) lamellái elhúzás közben elforognak - minőségben a legmagasabb szint: rejtett motorok, csavarok és fali konzolok, hatalmas hóterhelési index. Olasz prémium termék, gyártási idő 30-40 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
+      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat. (SKYLIFE termékre +2 év garancia kérhető.)",
       "textBlocks": [],
       "photos": [
         {
@@ -5819,14 +5819,14 @@
           "id": "sphoto_legacy_kedry_skylife_1",
           "imageUrl": "/uploads/legacy/bioklimatikus/image_13.png",
           "titleAbove": "",
-          "captionBelow": "A lamellák elhúzás közben elforognak – rejtett motorok, csavarok és fali konzolok.",
+          "captionBelow": "A lamellák elhúzás közben elforognak - rejtett motorok, csavarok és fali konzolok.",
           "widthPct": 75,
           "align": "center"
         }
       ],
       "materials": [
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -5845,7 +5845,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_wall",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -6204,7 +6204,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6223,7 +6223,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_free",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -6582,7 +6582,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6601,7 +6601,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_wall_2w",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -6960,7 +6960,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6979,7 +6979,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_free_2w",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -7338,7 +7338,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -7357,7 +7357,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_wall_2p",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -7716,7 +7716,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -7735,7 +7735,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_free_2p",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -8094,7 +8094,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -8113,7 +8113,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_wall_4",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -8472,7 +8472,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Forgatva elhúzható lamellák (0–85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -8491,7 +8491,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_kedry_free_4",
-          "name": "KEDRY SKYLIFE – forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
+          "name": "KEDRY SKYLIFE - forgatva elhúzható lamellákkal, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -8851,7 +8851,7 @@
         },
         {
           "id": "mat_kedry_motor",
-          "name": "Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -8876,7 +8876,7 @@
         },
         {
           "id": "mat_kedry_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -9194,7 +9194,7 @@
         },
         {
           "id": "mat_kedry_zip_a",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a szélesség oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a szélesség oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: szélesség − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -9371,7 +9371,7 @@
         },
         {
           "id": "mat_kedry_zip_b_wall",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: kinyúlás − 16 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -9551,7 +9551,7 @@
         },
         {
           "id": "mat_kedry_zip_b_free",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: kinyúlás − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -9776,7 +9776,7 @@
               "id": "iphoto_legacy_kedry_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -9833,7 +9833,7 @@
               "id": "iphoto_legacy_kedry_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -9893,7 +9893,7 @@
               "id": "iphoto_legacy_kedry_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -9933,7 +9933,7 @@
               "id": "ph_cat2026_x_kedry_skylife_led_beam",
               "imageUrl": "/uploads/catalog-2026/led/drawing-1.jpg",
               "titleAbove": "",
-              "captionBelow": "Kedry Skylife / Prime / Neos – LED a csatornában",
+              "captionBelow": "Kedry Skylife / Prime / Neos - LED a csatornában",
               "widthPct": 75,
               "align": "center"
             }
@@ -10113,7 +10113,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -10136,7 +10136,7 @@
       "id": "tpl_legacy_pergola_v_ziip",
       "categoryId": "cat_legacy_feszitett",
       "name": "PERGOLA V ZIIP feszített vásznas pergola",
-      "subtitle": "Elhúzható, ZIP-megvezetésű feszített vászon – árnyékolásra; 600 cm kinyúlásonként új modul",
+      "subtitle": "Elhúzható, ZIP-megvezetésű feszített vászon - árnyékolásra; 600 cm kinyúlásonként új modul",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -10159,8 +10159,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A PERGOLA V ZIIP ({{meret}}) elhúzható, feszített vásznas pergola: a ponyva mindkét oldalára hegesztett zipzár az oldalsó profilokban vezeti a vásznat, így az mindig feszes, ráncmentes marad. Elsősorban árnyékolásra ajánljuk; szélállóság EN 13561 3. osztály (50–70 km/h).",
-      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A PERGOLA V ZIIP ({{meret}}) elhúzható, feszített vásznas pergola: a ponyva mindkét oldalára hegesztett zipzár az oldalsó profilokban vezeti a vásznat, így az mindig feszes, ráncmentes marad. Elsősorban árnyékolásra ajánljuk; szélállóság EN 13561 3. osztály (50-70 km/h).",
+      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -10209,7 +10209,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_pvziip_base",
-          "name": "Pergola V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet (modulonként elöl 2 láb)",
+          "name": "Pergola V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet (modulonként elöl 2 láb)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -10359,7 +10359,7 @@
         },
         {
           "id": "mat_pvziip_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -10681,7 +10681,7 @@
         },
         {
           "id": "mat_pvziip_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -11127,7 +11127,7 @@
         },
         {
           "id": "mat_pvziip_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 11 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -11725,7 +11725,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [
         "Épülethez rögzített"
       ],
@@ -11742,7 +11742,7 @@
       "id": "tpl_legacy_hydra",
       "categoryId": "cat_legacy_feszitett",
       "name": "HYDRA feszített vásznas pergola",
-      "subtitle": "Olasz elhúzható feszített vászon víztaszító szövettel – 1 modul 600 cm-ig, felette 2 modul",
+      "subtitle": "Olasz elhúzható feszített vászon víztaszító szövettel - 1 modul 600 cm-ig, felette 2 modul",
       "enabled": true,
       "status": "active",
       "order": 2,
@@ -11765,8 +11765,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A HYDRA ({{meret}}) olasz, elhúzható feszített vásznas pergola: a kazettába zárt, zipzáras oldalvezetésű ponyva mindig feszes marad, víztaszító szövettel kisebb esőben is használható. Szélállóság EN 13561 3. osztály (50–70 km/h).",
-      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A HYDRA ({{meret}}) olasz, elhúzható feszített vásznas pergola: a kazettába zárt, zipzáras oldalvezetésű ponyva mindig feszes marad, víztaszító szövettel kisebb esőben is használható. Szélállóság EN 13561 3. osztály (50-70 km/h).",
+      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -11815,7 +11815,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_hydra_base",
-          "name": "HYDRA – elhúzható, feszített ponyvával, Acrilico szövet, elöl 2 lábbal (1 modul)",
+          "name": "HYDRA - elhúzható, feszített ponyvával, Acrilico szövet, elöl 2 lábbal (1 modul)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -11968,7 +11968,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_hydra_base_2m",
-          "name": "HYDRA – elhúzható, feszített ponyvával, Acrilico szövet, elöl 3 lábbal (2 modul)",
+          "name": "HYDRA - elhúzható, feszített ponyvával, Acrilico szövet, elöl 3 lábbal (2 modul)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -12145,7 +12145,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_hydra_t_1",
-          "name": "HYDRA T – elhúzható, feszített ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)",
+          "name": "HYDRA T - elhúzható, feszített ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -12298,7 +12298,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_hydra_t_2m",
-          "name": "HYDRA T – elhúzható, feszített ponyvával, lábak nélkül, 2 modul",
+          "name": "HYDRA T - elhúzható, feszített ponyvával, lábak nélkül, 2 modul",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -12457,7 +12457,7 @@
         },
         {
           "id": "mat_hydra_motor",
-          "name": "Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -12481,7 +12481,7 @@
         },
         {
           "id": "mat_hydra_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -12791,7 +12791,7 @@
         },
         {
           "id": "mat_hydra_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -13237,7 +13237,7 @@
         },
         {
           "id": "mat_hydra_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 11 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -13868,7 +13868,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -13889,7 +13889,7 @@
       "id": "tpl_legacy_a100_lux",
       "categoryId": "cat_legacy_elhuzhato",
       "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola",
-      "subtitle": "Ferde tetős, négy évszakos, előtetővel – 1–3 modul (500 / 900 / 1300 cm-ig)",
+      "subtitle": "Ferde tetős, négy évszakos, előtetővel - 1-3 modul (500 / 900 / 1300 cm-ig)",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -13913,7 +13913,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "A GENIUS A100 LUX ({{meret}}) jó ár-érték arányú, ferde tetős, elcsúsztatható PVC ponyvás pergola előtetővel; négy évszakos, zárt ponyva esetén teljesen vízzáró. Szélállóság EN 13561 6. osztály (119 km/h).",
-      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -13954,7 +13954,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_a100_base",
-          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola – 1 modul (2 vezetősín)",
+          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola - 1 modul (2 vezetősín)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -14092,7 +14092,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_a100_base_2",
-          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola – 2 modul (3 vezetősín)",
+          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola - 2 modul (3 vezetősín)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -14241,7 +14241,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_a100_base_3",
-          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola – 3 modul (4 vezetősín)",
+          "name": "GENIUS A100 LUX elhúzható PVC ponyvás pergola - 3 modul (4 vezetősín)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -14383,12 +14383,12 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_a100_motor_box",
-          "name": "Motor – Somfy Sunilus IO 30/17 motoros doboz (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus IO 30/17 motoros doboz (modulonként 1 db)",
           "perModule": true
         },
         {
           "id": "mat_a100_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -14698,7 +14698,7 @@
         },
         {
           "id": "mat_a100_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -15143,7 +15143,7 @@
         },
         {
           "id": "mat_a100_zip_b",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 11 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -15634,7 +15634,7 @@
               "id": "iphoto_legacy_a100_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -15692,7 +15692,7 @@
               "id": "iphoto_legacy_a100_glass_b_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -15723,11 +15723,11 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_a100_led_cross2",
-          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
+          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1-2 db)",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
-          "choiceLabel": "1–2 db",
+          "choiceLabel": "1-2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_a100_led_cross2",
@@ -15962,7 +15962,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [
         "Épülethez rögzített"
       ],
@@ -15980,7 +15980,7 @@
       "sizeRules": [
         {
           "id": "rule_a100_multi",
-          "label": "2–3 modulnál",
+          "label": "2-3 modulnál",
           "ifWidthOverCm": 500,
           "maxProjectionCm": 550
         }
@@ -15990,7 +15990,7 @@
       "id": "tpl_legacy_keplan",
       "categoryId": "cat_legacy_elhuzhato",
       "name": "KEPLAN sík tetejű elhúzható PVC ponyvás pergola",
-      "subtitle": "Sík tető, négy évszakos – falra szerelt (550 × 600) vagy szabadon álló (450 × 500)",
+      "subtitle": "Sík tető, négy évszakos - falra szerelt (550 × 600) vagy szabadon álló (450 × 500)",
       "enabled": true,
       "status": "active",
       "order": 2,
@@ -16014,7 +16014,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "A KEPLAN ({{meret}}, {{beepites}}) sík tetejű, elhúzható-összecsukható PVC ponyvás alumínium pergola; a tető mozgatását villanymotor végzi, távirányítóval vagy okostelefonnal. Négy évszakos, zárt ponyva esetén vízzáró. Szélállóság EN 13561 6. osztály.",
-      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -16063,7 +16063,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_keplan_wall",
-          "name": "KEPLAN A elhúzható PVC ponyvás pergola – Opatex Flat szövet, falhoz rögzítve, elöl 2 lábbal",
+          "name": "KEPLAN A elhúzható PVC ponyvás pergola - Opatex Flat szövet, falhoz rögzítve, elöl 2 lábbal",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -16210,7 +16210,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_keplan_free",
-          "name": "KEPLAN A elhúzható PVC ponyvás pergola – Opatex Flat szövet, szabadon álló, 4 lábbal",
+          "name": "KEPLAN A elhúzható PVC ponyvás pergola - Opatex Flat szövet, szabadon álló, 4 lábbal",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -16305,7 +16305,7 @@
         },
         {
           "id": "mat_keplan_motor",
-          "name": "Motor – Somfy Sunilus IO 30/17 motoros doboz",
+          "name": "Motor - Somfy Sunilus IO 30/17 motoros doboz",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -16328,7 +16328,7 @@
         },
         {
           "id": "mat_keplan_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -16630,7 +16630,7 @@
         },
         {
           "id": "mat_keplan_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -17076,7 +17076,7 @@
         },
         {
           "id": "mat_keplan_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 11 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -17525,7 +17525,7 @@
         },
         {
           "id": "mat_keplan_zip_b_free",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 22 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -18019,7 +18019,7 @@
               "id": "iphoto_legacy_keplan_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -18077,7 +18077,7 @@
               "id": "iphoto_legacy_keplan_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -18138,7 +18138,7 @@
               "id": "iphoto_legacy_keplan_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -18172,11 +18172,11 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_keplan_led_cross2",
-          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
+          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1-2 db)",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
-          "choiceLabel": "1–2 db",
+          "choiceLabel": "1-2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_keplan_led_cross2",
@@ -18411,7 +18411,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [
         "Épülethez rögzített",
         "Szabadon álló"
@@ -18438,7 +18438,7 @@
       "id": "tpl_legacy_isola_2a",
       "categoryId": "cat_legacy_elhuzhato",
       "name": "ISOLA 2 elhúzható PVC ponyvás pergola",
-      "subtitle": "Olasz prémium, sík tető, rejtett motor – 700 cm-ig 1, 1000 cm-ig 2 modul",
+      "subtitle": "Olasz prémium, sík tető, rejtett motor - 700 cm-ig 1, 1000 cm-ig 2 modul",
       "enabled": true,
       "status": "active",
       "order": 3,
@@ -18462,7 +18462,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "Az ISOLA 2A ({{meret}}, {{beepites}}) prémium kategóriás, sík tetejű, elhúzható PVC ponyvás pergola: rejtett motorok, csavarok és fali konzolok, a legmodernebb technológiával. Négy évszakos, zárt ponyva esetén vízzáró; szélállóság EN 13561 6. osztály.",
-      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -18503,7 +18503,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola_wall",
-          "name": "ISOLA 2A – elhúzható PVC ponyvával, falhoz rögzítve",
+          "name": "ISOLA 2A - elhúzható PVC ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -18728,7 +18728,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola_free",
-          "name": "ISOLA 2 – elhúzható PVC ponyvával, szabadon álló",
+          "name": "ISOLA 2 - elhúzható PVC ponyvával, szabadon álló",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -18953,7 +18953,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola_nolegs",
-          "name": "ISOLA 2T – elhúzható PVC ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)",
+          "name": "ISOLA 2T - elhúzható PVC ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -19160,7 +19160,7 @@
         },
         {
           "id": "mat_isola_motor",
-          "name": "Motor – Somfy Sunilus IO 30/17 motoros doboz",
+          "name": "Motor - Somfy Sunilus IO 30/17 motoros doboz",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -19183,7 +19183,7 @@
         },
         {
           "id": "mat_isola_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -19508,7 +19508,7 @@
         },
         {
           "id": "mat_isola_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 24 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -19953,7 +19953,7 @@
         },
         {
           "id": "mat_isola_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 12 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -20401,7 +20401,7 @@
         },
         {
           "id": "mat_isola_zip_b_free",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 24 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -20894,7 +20894,7 @@
               "id": "iphoto_legacy_isola_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -20951,7 +20951,7 @@
               "id": "iphoto_legacy_isola_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -21011,7 +21011,7 @@
               "id": "iphoto_legacy_isola_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -21044,11 +21044,11 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola_led_cross2",
-          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
+          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1-2 db)",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
-          "choiceLabel": "1–2 db",
+          "choiceLabel": "1-2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola_led_cross2",
@@ -21152,7 +21152,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola_led_beam27",
-          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 27,5 m²-ig",
+          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) - 27,5 m²-ig",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
@@ -21178,7 +21178,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola_led_beam55",
-          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 55 m²-ig",
+          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) - 55 m²-ig",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
@@ -21335,7 +21335,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "alsoInCategoryIds": [
         "cat_legacy_tetore"
       ],
@@ -21351,7 +21351,7 @@
       "id": "tpl_legacy_veranda_tens",
       "categoryId": "cat_legacy_tetore",
       "name": "VERANDA TENS tetőárnyékoló (meglévő szerkezetre)",
-      "subtitle": "Bowden-huzalos, rugós feszítésű elhúzható vászon tető fölé vagy alá – 450 cm-enként új modul",
+      "subtitle": "Bowden-huzalos, rugós feszítésű elhúzható vászon tető fölé vagy alá - 450 cm-enként új modul",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -21374,8 +21374,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A VERANDA TENS ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre – télikertre, üvegtetőre vagy pergolára – építhető elhúzható vásznas árnyékoló, a tető fölé és alá is szerelhető; egymodulos és többmodulos kivitelben. Csak motoros vezérléssel; szélállóság EN 13561 2. osztály (30–50 km/h).",
-      "closingText": "Csak árnyékolásra ajánljuk, hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A VERANDA TENS ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre - télikertre, üvegtetőre vagy pergolára - építhető elhúzható vásznas árnyékoló, a tető fölé és alá is szerelhető; egymodulos és többmodulos kivitelben. Csak motoros vezérléssel; szélállóság EN 13561 2. osztály (30-50 km/h).",
+      "closingText": "Csak árnyékolásra ajánljuk, hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -21424,7 +21424,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_veranda_tens_base",
-          "name": "Veranda Tens – elhúzható ponyvával, Acrilico ponyva, tető fölé (modulonként 1 db)",
+          "name": "Veranda Tens - elhúzható ponyvával, Acrilico ponyva, tető fölé (modulonként 1 db)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -21893,7 +21893,7 @@
         },
         {
           "id": "mat_veranda_tens_motor",
-          "name": "Motor – Somfy Sunilus 50 IO 40/17 (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus 50 IO 40/17 (modulonként 1 db)",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -21917,7 +21917,7 @@
         },
         {
           "id": "mat_veranda_tens_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -22243,7 +22243,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "alsoInCategoryIds": [
         "cat_legacy_feszitett"
       ],
@@ -22263,7 +22263,7 @@
       "id": "tpl_legacy_veranda_v_zip",
       "categoryId": "cat_legacy_tetore",
       "name": "VERANDA V ZIIP feszített vászon (meglévő szerkezetre)",
-      "subtitle": "ZIP-megvezetésű, feszített elhúzható vászon meglévő szerkezet tetejére – 500 cm-enként új modul",
+      "subtitle": "ZIP-megvezetésű, feszített elhúzható vászon meglévő szerkezet tetejére - 500 cm-enként új modul",
       "enabled": true,
       "status": "active",
       "order": 2,
@@ -22286,8 +22286,8 @@
         "assemblyFixedEur": 0,
         "assemblyPerM2Eur": 0
       },
-      "introText": "A VERANDA V ZIIP ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre építhető, ZIP-rendszerű feszített árnyékoló: a zipzáras oldalvezetés miatt a ponyva mindig feszes marad. Szélállóság EN 13561 3. osztály (50–70 km/h).",
-      "closingText": "Csak árnyékolásra ajánljuk, hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "introText": "A VERANDA V ZIIP ({{szelesseg}} × {{kinyulas}} cm) meglévő szerkezetre építhető, ZIP-rendszerű feszített árnyékoló: a zipzáras oldalvezetés miatt a ponyva mindig feszes marad. Szélállóság EN 13561 3. osztály (50-70 km/h).",
+      "closingText": "Csak árnyékolásra ajánljuk, hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -22328,7 +22328,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_veranda_vzip_base",
-          "name": "Veranda V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére",
+          "name": "Veranda V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -22495,7 +22495,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_veranda_vzip_base_multi",
-          "name": "Veranda V ZIIP – elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére (több modul)",
+          "name": "Veranda V ZIIP - elhúzható, feszített ponyvával, Serge 600 szövet, meglévő szerkezet tetejére (több modul)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -22644,7 +22644,7 @@
         },
         {
           "id": "mat_veranda_vzip_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -23107,7 +23107,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "alsoInCategoryIds": [
         "cat_legacy_feszitett"
       ],
@@ -23127,7 +23127,7 @@
       "id": "tpl_legacy_polifix",
       "categoryId": "cat_legacy_polikarbonat",
       "name": "POLIFIX polikarbonát tetős pergola",
-      "subtitle": "Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig – max. 6 m kinyúlás",
+      "subtitle": "Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig - max. 6 m kinyúlás",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -23151,7 +23151,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "A POLIFIX ({{meret}}) fix tetejű alumínium pergola 16 mm vastag, opál üregkamrás polikarbonát tetővel: elegendő fényt enged át, de a meleget megszűri. Szélállóság EN 13561 6. osztály; később üvegfallal és oldalsó árnyékolóval bővíthető.",
-      "closingText": "Hóterhelés: szerkezet max. 150 kg/m², polikarbonát lemez 85 kg/m². Garancia: szerkezet 10 év, tető 5 év. Átfutási idő 10–30 nap. A lábak rögzítéséhez beton alap szükséges.",
+      "closingText": "Hóterhelés: szerkezet max. 150 kg/m², polikarbonát lemez 85 kg/m². Garancia: szerkezet 10 év, tető 5 év. Átfutási idő 10-30 nap. A lábak rögzítéséhez beton alap szükséges.",
       "textBlocks": [],
       "photos": [
         {
@@ -23222,7 +23222,7 @@
       "materials": [
         {
           "id": "mat_polifix_base_2lab",
-          "name": "POLIFIX – 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 2 lábbal",
+          "name": "POLIFIX - 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 2 lábbal",
           "description": "Szinterezett alumínium váz, SOLAR CONTROL polikarbonát (10 év garancia UV és jégeső ellen), min. 8° lejtés. Profilok: gerenda 19×15 / 6×12 cm, oszlop 11×14 cm. Sávos m² ár (2 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -23279,7 +23279,7 @@
         },
         {
           "id": "mat_polifix_base_3lab",
-          "name": "POLIFIX – 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 3 lábbal",
+          "name": "POLIFIX - 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 3 lábbal",
           "description": "Szinterezett alumínium váz, SOLAR CONTROL polikarbonát (10 év garancia UV és jégeső ellen), min. 8° lejtés. Profilok: gerenda 19×15 / 6×12 cm, oszlop 11×14 cm. Sávos m² ár (3 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -23336,7 +23336,7 @@
         },
         {
           "id": "mat_polifix_base_4lab",
-          "name": "POLIFIX – 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 4 lábbal",
+          "name": "POLIFIX - 16 mm opál polikarbonát tetővel, falhoz rögzítve, elöl 4 lábbal",
           "description": "Szinterezett alumínium váz, SOLAR CONTROL polikarbonát (10 év garancia UV és jégeső ellen), min. 8° lejtés. Profilok: gerenda 19×15 / 6×12 cm, oszlop 11×14 cm. Sávos m² ár (4 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -27784,7 +27784,7 @@
         },
         {
           "id": "mat_polifix_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -28312,7 +28312,7 @@
         },
         {
           "id": "mat_polifix_zip_b",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 14 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -28840,7 +28840,7 @@
         },
         {
           "id": "mat_polifix_veranda",
-          "name": "Veranda Tens tetőárnyékoló a pergola tetejére – motoros, szélérzékelős, távirányítós (szereléssel)",
+          "name": "Veranda Tens tetőárnyékoló a pergola tetejére - motoros, szélérzékelős, távirányítós (szereléssel)",
           "description": "Darabszám: szélesség / 450 cm felfelé kerekítve; darabonként motor 250 + távirányító 200 + szerelés 800 EUR",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -29421,7 +29421,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_polifix_led_spot",
-          "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) – db",
+          "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) - db",
           "excludeFromPercentBase": true
         },
         {
@@ -29460,7 +29460,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "moduleSplits": [
         {
           "axis": "width",
@@ -29487,7 +29487,7 @@
       "id": "tpl_legacy_glassfix",
       "categoryId": "cat_legacy_uvegteto",
       "name": "GLASSFIX üvegtetős pergola",
-      "subtitle": "Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig – max. 4 m kinyúlás",
+      "subtitle": "Falhoz rögzítve; elöl 2 láb 6 m-ig, 3 láb 12 m-ig, 4 láb 18 m-ig - max. 4 m kinyúlás",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -29511,7 +29511,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "A GLASSFIX ({{meret}}) fix tetejű alumínium pergola 10 mm vastag, edzett-laminált biztonsági üvegtetővel (opál vagy víztiszta). Télen-nyáron használható, az üvegtetőn át elegendő fény jut a tető alá; később üvegfallal, oldalsó és tetőárnyékolóval bővíthető.",
-      "closingText": "Hóterhelés: üvegtető max. 120 kg/m², szerkezet 200 kg/m². Garancia: szerkezet és üveg 10 év, vásznak 5 év, motorok, érzékelők 3 év. Átfutási idő 30–60 nap. A lábak rögzítéséhez beton alap szükséges.",
+      "closingText": "Hóterhelés: üvegtető max. 120 kg/m², szerkezet 200 kg/m². Garancia: szerkezet és üveg 10 év, vásznak 5 év, motorok, érzékelők 3 év. Átfutási idő 30-60 nap. A lábak rögzítéséhez beton alap szükséges.",
       "textBlocks": [],
       "photos": [
         {
@@ -29574,7 +29574,7 @@
       "materials": [
         {
           "id": "mat_glassfix_base_2lab",
-          "name": "GLASSFIX – 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 2 lábbal",
+          "name": "GLASSFIX - 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 2 lábbal",
           "description": "Edzett-laminált biztonsági üvegtető, belső csatornás esővíz-elvezetés, min. 6° lejtés. Profilok: gerenda 11×15 cm, oszlop 11×14 cm. Sávos m² ár (2 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -29627,7 +29627,7 @@
         },
         {
           "id": "mat_glassfix_base_3lab",
-          "name": "GLASSFIX – 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 3 lábbal",
+          "name": "GLASSFIX - 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 3 lábbal",
           "description": "Edzett-laminált biztonsági üvegtető, belső csatornás esővíz-elvezetés, min. 6° lejtés. Profilok: gerenda 11×15 cm, oszlop 11×14 cm. Sávos m² ár (3 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -29680,7 +29680,7 @@
         },
         {
           "id": "mat_glassfix_base_4lab",
-          "name": "GLASSFIX – 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 4 lábbal",
+          "name": "GLASSFIX - 10 mm vastag biztonsági üvegtetővel, falhoz rögzítve, elöl 4 lábbal",
           "description": "Edzett-laminált biztonsági üvegtető, belső csatornás esővíz-elvezetés, min. 6° lejtés. Profilok: gerenda 11×15 cm, oszlop 11×14 cm. Sávos m² ár (4 láb).",
           "itemRole": "base",
           "defaultSelected": true,
@@ -31265,7 +31265,7 @@
         },
         {
           "id": "mat_glassfix_veranda",
-          "name": "Veranda Tens tetőárnyékoló a pergola tetejére – motoros, szélérzékelős, távirányítós (szereléssel)",
+          "name": "Veranda Tens tetőárnyékoló a pergola tetejére - motoros, szélérzékelős, távirányítós (szereléssel)",
           "description": "Darabszám: szélesség / 450 cm felfelé kerekítve; darabonként motor 250 + távirányító 200 + szerelés 800 EUR",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -31773,7 +31773,7 @@
         },
         {
           "id": "mat_glassfix_zip_a_2lab",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -32305,7 +32305,7 @@
         },
         {
           "id": "mat_glassfix_zip_a_3lab",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 33 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -32837,7 +32837,7 @@
         },
         {
           "id": "mat_glassfix_zip_a_4lab",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 44 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -33369,7 +33369,7 @@
         },
         {
           "id": "mat_glassfix_zip_b",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 14 cm × magasság − 30 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -33897,7 +33897,7 @@
         },
         {
           "id": "mat_glassfix_glass_triangle",
-          "name": "Háromszögrész beépítése üvegből – 1 db (szereléssel)",
+          "name": "Háromszögrész beépítése üvegből - 1 db (szereléssel)",
           "description": "Kinyúlás (cm) × 1,3 EUR, +12% szerelés",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -34035,7 +34035,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_glassfix_led_spot",
-          "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) – db",
+          "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) - db",
           "excludeFromPercentBase": true
         },
         {
@@ -34074,7 +34074,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "moduleSplits": [
         {
           "axis": "width",
@@ -34101,7 +34101,7 @@
       "id": "tpl_legacy_uvegfal_spanyol",
       "categoryId": "cat_1792346155886_2odc",
       "name": "LINE GLASS spanyol prémium üvegfal",
-      "subtitle": "Keret nélküli, elcsúsztatható 10 mm edzett üvegfal – prémium kategória",
+      "subtitle": "Keret nélküli, elcsúsztatható 10 mm edzett üvegfal - prémium kategória",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -34122,7 +34122,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "Meglévő terasz vagy pergola beépítése keret nélküli, síneken csúszó LINE GLASS üvegfalrendszerrel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. A táblák mozgatás közben csatlakoznak egymáshoz; belső biztonsági zár és levehető szilikon profil az alapár része.",
-      "closingText": "Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -34137,7 +34137,7 @@
           "id": "sphoto_legacy_uvegfal_spanyol_1",
           "imageUrl": "/uploads/legacy/uvegfalas/image_01.png",
           "titleAbove": "",
-          "captionBelow": "LINE GLASS / RUN 2 – keret nélküli, síneken csúszó üvegfal.",
+          "captionBelow": "LINE GLASS / RUN 2 - keret nélküli, síneken csúszó üvegfal.",
           "widthPct": 75,
           "align": "center"
         },
@@ -34177,7 +34177,7 @@
       "materials": [
         {
           "id": "mat_uvegfal_es_a",
-          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben – 1 db",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben - 1 db",
           "description": "Szélesség × magasság, sávos m² ár (≤8,5 m²: 324, ≤13,5 m²: 278, felette 268 EUR/m²)",
           "itemRole": "base",
           "defaultSelected": true,
@@ -34213,7 +34213,7 @@
         },
         {
           "id": "mat_uvegfal_es_b",
-          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben – 1 db",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben - 1 db",
           "description": "Kinyúlás × magasság, sávos m² ár",
           "itemRole": "base",
           "defaultSelected": true,
@@ -34310,13 +34310,13 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_legacy_uvegfal_lengyel",
       "categoryId": "cat_1792346155886_2odc",
       "name": "SLIDING DOORS lengyel üvegfal",
-      "subtitle": "Keret nélküli, elcsúsztatható 10 mm edzett üvegfal – középkategória",
+      "subtitle": "Keret nélküli, elcsúsztatható 10 mm edzett üvegfal - középkategória",
       "enabled": true,
       "status": "active",
       "order": 2,
@@ -34337,7 +34337,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "Meglévő terasz vagy pergola beépítése keret nélküli, síneken csúszó SLIDING DOORS üvegfalrendszerrel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. 10 mm edzett biztonsági üveg, a táblák elhúzás közben csatlakoznak egymáshoz.",
-      "closingText": "Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Szélállóság EN 13561 6. osztály (119 km/h). Garancia az üvegfalrendszerre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -34352,7 +34352,7 @@
           "id": "sphoto_legacy_uvegfal_lengyel_1",
           "imageUrl": "/uploads/legacy/uvegfalas/image_07.jpg",
           "titleAbove": "",
-          "captionBelow": "SLIDING DOORS – keret nélküli, síneken csúszó üvegfal.",
+          "captionBelow": "SLIDING DOORS - keret nélküli, síneken csúszó üvegfal.",
           "widthPct": 75,
           "align": "center"
         },
@@ -34368,7 +34368,7 @@
       "materials": [
         {
           "id": "mat_uvegfal_pl_a",
-          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben – 1 db",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a szélesség oldalán, profilok RAL színben - 1 db",
           "description": "Szélesség × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²)",
           "itemRole": "base",
           "defaultSelected": true,
@@ -34404,7 +34404,7 @@
         },
         {
           "id": "mat_uvegfal_pl_b",
-          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben – 1 db",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer 10 mm edzett üveggel a kinyúlás oldalán, profilok RAL színben - 1 db",
           "description": "Kinyúlás × magasság, sávos m² ár",
           "itemRole": "base",
           "defaultSelected": true,
@@ -34501,13 +34501,13 @@
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_legacy_refleksol_zip",
       "categoryId": "cat_legacy_zip",
       "name": "Refleksol 120 ZIP oldalsó árnyékoló",
-      "subtitle": "Motoros, szélálló ZIP árnyékoló, Serge 600 naphálóval, Somfy IO motorral – oldalanként",
+      "subtitle": "Motoros, szélálló ZIP árnyékoló, Serge 600 naphálóval, Somfy IO motorral - oldalanként",
       "enabled": true,
       "status": "active",
       "order": 1,
@@ -34523,7 +34523,7 @@
         "pdfFile": "",
         "pages": "",
         "productAlias": "Vertica 120 ZIP / Screeny GPZ",
-        "note": "legacy: templates/ZIPes/datasheet.py Refleksol_120_ZIP + editor.py; ár = gyári (szélesség × magasság) + 370; szerelés 12% | 2026: a régi mérettábla maradt – az új Aluprof R ZIIIP 120 tábla (69. o.) motor nélküli, más alapú, ellenőrizd. Egyedi szövet katalógusból: ár nincs megadva. | Aluprof R ZIIIP 120 gyári ár + Somfy Sunilus SCR IO 10/17 motor (nagy méretnél Maestria+ io 25/17)."
+        "note": "legacy: templates/ZIPes/datasheet.py Refleksol_120_ZIP + editor.py; ár = gyári (szélesség × magasság) + 370; szerelés 12% | 2026: a régi mérettábla maradt - az új Aluprof R ZIIIP 120 tábla (69. o.) motor nélküli, más alapú, ellenőrizd. Egyedi szövet katalógusból: ár nincs megadva. | Aluprof R ZIIIP 120 gyári ár + Somfy Sunilus SCR IO 10/17 motor (nagy méretnél Maestria+ io 25/17)."
       },
       "pricingOverride": {
         "profitMode": "markup_percent",
@@ -34532,7 +34532,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "Meglévő terasz beépítése oldalsó ZIP árnyékolóval: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es vertikális árnyékoló, motoros működéssel. A ponyvára hegesztett zipzár miatt a napháló mindig feszes, szúnyoghálóként is működik; szélállóság EN 13561 6. osztály (119 km/h).",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -34555,7 +34555,7 @@
           "id": "sphoto_legacy_refleksol_zip_2",
           "imageUrl": "/uploads/legacy/ZIPes/image_02.jpg",
           "titleAbove": "",
-          "captionBelow": "Zipzáras oldalsó megvezetés – szúnyogháló funkcióval.",
+          "captionBelow": "Zipzáras oldalsó megvezetés - szúnyogháló funkcióval.",
           "widthPct": 75,
           "align": "center"
         },
@@ -34579,7 +34579,7 @@
       "materials": [
         {
           "id": "mat_zip_a",
-          "name": "Külön szerelt oldalsó árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító – 1 db",
+          "name": "Külön szerelt oldalsó árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db",
           "description": "Ár: szélesség × magasság Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
@@ -35214,7 +35214,7 @@
         },
         {
           "id": "mat_zip_b",
-          "name": "Külön szerelt oldalsó árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító – 1 db",
+          "name": "Külön szerelt oldalsó árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db",
           "description": "Ár: kinyúlás × magasság Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
@@ -35647,7 +35647,7 @@
         },
         {
           "id": "mat_zip_gift_sensor",
-          "name": "Szélérzékelő – Somfy IO",
+          "name": "Szélérzékelő - Somfy IO",
           "description": "",
           "itemRole": "gift",
           "defaultSelected": true,
@@ -35854,7 +35854,7 @@
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
-      "updatedAt": "2026-10-20T19:58:03.481023Z",
+      "updatedAt": "2026-10-20T20:55:09.835376Z",
       "mountTypes": [],
       "moduleSplits": [
         {
@@ -35869,7 +35869,7 @@
       "id": "tpl_legacy_vertica_zip",
       "categoryId": "cat_legacy_zip",
       "name": "Vertica PRIME ZIP gerendába integrált árnyékoló",
-      "subtitle": "Pergola gerendába rejtett motoros ZIP árnyékoló, Soltis 92 textil, Somfy IO – oldalanként",
+      "subtitle": "Pergola gerendába rejtett motoros ZIP árnyékoló, Soltis 92 textil, Somfy IO - oldalanként",
       "enabled": true,
       "status": "active",
       "order": 2,
@@ -35894,7 +35894,7 @@
         "assemblyPerM2Eur": 0
       },
       "introText": "A Vertica PRIME ZIP a pergola (pl. Kedry Skylife) gerendájába rejtve integrálható prémium motoros ZIP árnyékoló Soltis 92 mikroperforált textillel: 1 db {{szelesseg}}×{{magassag}} cm-es és 1 db {{kinyulas}}×{{magassag}} cm-es oldal. Távirányítóval vagy okostelefonról vezérelhető.",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -35909,7 +35909,7 @@
       "materials": [
         {
           "id": "mat_vertica_a",
-          "name": "Felső gerendába integrált oldalsó árnyékoló a szélesség oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor – 1 db",
+          "name": "Felső gerendába integrált oldalsó árnyékoló a szélesség oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db",
           "description": "Ár: szélesség × magasság",
           "itemRole": "base",
           "defaultSelected": true,
@@ -36073,7 +36073,7 @@
         },
         {
           "id": "mat_vertica_b",
-          "name": "Felső gerendába integrált oldalsó árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor – 1 db",
+          "name": "Felső gerendába integrált oldalsó árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db",
           "description": "Ár: kinyúlás × magasság",
           "itemRole": "base",
           "defaultSelected": true,
@@ -36267,7 +36267,7 @@
         {
           "id": "mat_vertica_smarthome",
           "name": "Okosotthon vezérlő",
-          "description": "Conexxon, Tahoma – Somfy vagy BLEBOX applikációval",
+          "description": "Conexxon, Tahoma - Somfy vagy BLEBOX applikációval",
           "itemRole": "optional",
           "defaultSelected": false,
           "pricingMode": "fixed",
@@ -36294,11 +36294,11 @@
     },
     {
       "id": "tpl_kedry_neos",
-      "subtitle": "Forgatható lamellás tető, Somfy motorral – minimalista, letisztult profilokkal",
+      "subtitle": "Forgatható lamellás tető, Somfy motorral - minimalista, letisztult profilokkal",
       "enabled": true,
       "status": "active",
       "introText": "A KEDRY NEOS ({{meret}}, {{beepites}}) letisztult, minimalista bioklimatikus pergola forgatható alumínium lamellákkal. A lamellák dőlésszögével a bejutó fény és a szellőzés szabályozható, zárt állásban a tető vízzáró, az esővíz a rejtett ereszcsatornán és az oszlopokon át távozik. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
-      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -36321,7 +36321,7 @@
           "id": "ph_cat2026_kedry-neos_2",
           "imageUrl": "/uploads/catalog-2026/kedry-neos/drawing-1.jpg",
           "titleAbove": "",
-          "captionBelow": "1L – szabadon álló, egymodulos kiosztás",
+          "captionBelow": "1L - szabadon álló, egymodulos kiosztás",
           "widthPct": 75,
           "align": "center"
         },
@@ -36329,14 +36329,14 @@
           "id": "ph_cat2026_kedry-neos_3",
           "imageUrl": "/uploads/catalog-2026/kedry-neos/drawing-2.jpg",
           "titleAbove": "",
-          "captionBelow": "1L A – falhoz rögzítve az SP oldalon",
+          "captionBelow": "1L A - falhoz rögzítve az SP oldalon",
           "widthPct": 75,
           "align": "center"
         }
       ],
       "materials": [
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -36355,7 +36355,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_wall_1",
-          "name": "KEDRY NEOS – forgatható lamellákkal, falhoz rögzítve",
+          "name": "KEDRY NEOS - forgatható lamellákkal, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -36756,7 +36756,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -36775,7 +36775,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_wall_2w",
-          "name": "KEDRY NEOS – forgatható lamellákkal, falhoz rögzítve",
+          "name": "KEDRY NEOS - forgatható lamellákkal, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -37176,7 +37176,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37195,7 +37195,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_free_1",
-          "name": "KEDRY NEOS – forgatható lamellákkal, szabadon álló",
+          "name": "KEDRY NEOS - forgatható lamellákkal, szabadon álló",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -37596,7 +37596,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37615,7 +37615,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_free_2w",
-          "name": "KEDRY NEOS – forgatható lamellákkal, szabadon álló",
+          "name": "KEDRY NEOS - forgatható lamellákkal, szabadon álló",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -38016,7 +38016,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -38035,7 +38035,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_free_2p",
-          "name": "KEDRY NEOS – forgatható lamellákkal, szabadon álló",
+          "name": "KEDRY NEOS - forgatható lamellákkal, szabadon álló",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -38352,7 +38352,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -38371,7 +38371,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_nolegs_1",
-          "name": "KEDRY NEOS – forgatható lamellákkal, lábak nélkül (konzolos, falak közé)",
+          "name": "KEDRY NEOS - forgatható lamellákkal, lábak nélkül (konzolos, falak közé)",
           "matrixTable": {
             "rowLabel": "Szélesség (cm)",
             "colLabel": "Kinyúlás (cm)",
@@ -38791,12 +38791,12 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_neos_motor",
-          "name": "Motor – Somfy Sunea Screen IO (modulonként 1 db)",
+          "name": "Motor - Somfy Sunea Screen IO (modulonként 1 db)",
           "perModule": true
         },
         {
           "id": "mat_neos_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -39114,7 +39114,7 @@
         },
         {
           "id": "mat_neos_zip_a",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a szélesség oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a szélesség oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: szélesség − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -39291,7 +39291,7 @@
         },
         {
           "id": "mat_neos_zip_b_wall",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: kinyúlás − 16 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -39471,7 +39471,7 @@
         },
         {
           "id": "mat_neos_zip_b_free",
-          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára – Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
+          "name": "Gerendába integrált oldalsó ZIP árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor (szereléssel)",
           "description": "Nettó méret: kinyúlás − 32 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -39696,7 +39696,7 @@
               "id": "iphoto_legacy_kedry_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -39753,7 +39753,7 @@
               "id": "iphoto_legacy_kedry_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -39813,7 +39813,7 @@
               "id": "iphoto_legacy_kedry_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -39853,7 +39853,7 @@
               "id": "ph_cat2026_x_neos_led_beam",
               "imageUrl": "/uploads/catalog-2026/led/drawing-1.jpg",
               "titleAbove": "",
-              "captionBelow": "Kedry Skylife / Prime / Neos – LED a csatornában",
+              "captionBelow": "Kedry Skylife / Prime / Neos - LED a csatornában",
               "widthPct": 75,
               "align": "center"
             }
@@ -40056,9 +40056,9 @@
         "productAlias": "KE Kedry Neos",
         "note": "Árképző: KE gyári listaár × 0,65 + fix felár (a régi árképző szerint). Motor: Somfy Sunea Screen IO gyári listaáron. A gyártó szerint a max. magasság 270 cm (a docx 300 cm-t írt).",
         "pdfFile": "LISTINO BIOCLIMATICA 10_EN.pdf",
-        "pages": "97. o. (1L A (mounted to wall on SP side)); 101. o. (2P – placed against wall on SP side); 97. o. (1L); 101. o. (2P); 99. o. (2L); 105. o. (1T)"
+        "pages": "97. o. (1L A (mounted to wall on SP side)); 101. o. (2P - placed against wall on SP side); 97. o. (1L); 101. o. (2P); 99. o. (2L); 105. o. (1T)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_isola_3",
@@ -40066,7 +40066,7 @@
       "enabled": false,
       "status": "inactive",
       "introText": "Az ISOLA 3 ({{meret}}, {{beepites}}) elhúzható, PVC vásznas tetejű prémium pergola nagy, akár több modulos lefedésekhez. A vászon motorral nyitható és zárható, az esővíz a rejtett ereszcsatornán és az oszlopokon át távozik.",
-      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Hóesésben a termék használata nem ajánlott. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -40105,7 +40105,7 @@
           "id": "ph_cat2026_isola-3_4",
           "imageUrl": "/uploads/catalog-2026/isola-3/drawing-2.jpg",
           "titleAbove": "",
-          "captionBelow": "1L – szabadon álló, egymodulos kiosztás",
+          "captionBelow": "1L - szabadon álló, egymodulos kiosztás",
           "widthPct": 75,
           "align": "center"
         }
@@ -40131,7 +40131,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_free_1",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, szabadon álló",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, szabadon álló",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -40358,7 +40358,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_wall_1",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, falhoz rögzítve",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -40585,7 +40585,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_free_2w",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, szabadon álló",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, szabadon álló",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -40812,7 +40812,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_wall_2w",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, falhoz rögzítve",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -41039,7 +41039,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_free_2p",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, szabadon álló",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, szabadon álló",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -41266,7 +41266,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_wall_2p",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, falhoz rögzítve",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -41493,7 +41493,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_free_4",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, szabadon álló",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, szabadon álló",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -41720,7 +41720,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_wall_4",
-          "name": "ISOLA 3 – elhúzható PVC ponyvával, falhoz rögzítve",
+          "name": "ISOLA 3 - elhúzható PVC ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -41947,12 +41947,12 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_isola3_motor",
-          "name": "Motor – Somfy Sunilus IO (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus IO (modulonként 1 db)",
           "perModule": true
         },
         {
           "id": "mat_isola3_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -42277,7 +42277,7 @@
         },
         {
           "id": "mat_isola3_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 24 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -42722,7 +42722,7 @@
         },
         {
           "id": "mat_isola3_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 12 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -43170,7 +43170,7 @@
         },
         {
           "id": "mat_isola3_zip_b_free",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 24 cm × magasság. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -43663,7 +43663,7 @@
               "id": "iphoto_legacy_isola_glass_a_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -43720,7 +43720,7 @@
               "id": "iphoto_legacy_isola_glass_b_wall_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -43780,7 +43780,7 @@
               "id": "iphoto_legacy_isola_glass_b_free_2",
               "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
               "titleAbove": "",
-              "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
               "widthPct": 75,
               "align": "center"
             }
@@ -43813,11 +43813,11 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola3_led_cross2",
-          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1–2 db)",
+          "name": "LED világítás a vásznat tartó keresztgerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 1-2 db)",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a vásznat tartó keresztgerendákban (szabályozható, meleg fehér)",
-          "choiceLabel": "1–2 db",
+          "choiceLabel": "1-2 db",
           "photos": [
             {
               "id": "ph_cat2026_x_isola3_led_cross2",
@@ -43921,7 +43921,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola3_led_beam27",
-          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 27,5 m²-ig",
+          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) - 27,5 m²-ig",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
@@ -43947,7 +43947,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
           "id": "x_isola3_led_beam55",
-          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) – 55 m²-ig",
+          "name": "LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér) - 55 m²-ig",
           "excludeFromPercentBase": true,
           "group": "Világítás",
           "choiceGroup": "LED a gerendák belső felén (szabályozható, COB LED-szalag)",
@@ -44160,15 +44160,15 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "35. o. (1L); 37. o. (2L); 39. o. (2 P); 45. o. (4)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_xtesa",
-      "subtitle": "Elhúzható, feszített vásznas tető – falhoz rögzítve, nagy kinyúlással",
+      "subtitle": "Elhúzható, feszített vásznas tető - falhoz rögzítve, nagy kinyúlással",
       "enabled": true,
       "status": "active",
       "introText": "Az XTESA ({{meret}}, {{beepites}}) falhoz rögzített, elhúzható, feszített vásznas tetejű pergola. A vászon motorral nyitható és zárható, feszítve stabil és esztétikus, az esővíz az elülső ereszcsatornán át távozik.",
-      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+      "closingText": "Hóesésben nem használható. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
       "textBlocks": [],
       "photos": [
         {
@@ -44191,7 +44191,7 @@
           "id": "ph_cat2026_xtesa_2",
           "imageUrl": "/uploads/catalog-2026/xtesa/drawing-2.jpg",
           "titleAbove": "",
-          "captionBelow": "2 modul – 3 oszlop",
+          "captionBelow": "2 modul - 3 oszlop",
           "widthPct": 75,
           "align": "center"
         }
@@ -44217,7 +44217,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_xtesa_1",
-          "name": "XTESA – elhúzható, feszített ponyvával, falhoz rögzítve",
+          "name": "XTESA - elhúzható, feszített ponyvával, falhoz rögzítve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -44372,7 +44372,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_xtesa_2m",
-          "name": "XTESA – elhúzható, feszített ponyvával, falhoz rögzítve, 2 modul (3 oszlop)",
+          "name": "XTESA - elhúzható, feszített ponyvával, falhoz rögzítve, 2 modul (3 oszlop)",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -44570,7 +44570,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_xtesa_motor",
-          "name": "Motor – Somfy PERGOLA IO motoros doboz (modulonként 1 db)",
+          "name": "Motor - Somfy PERGOLA IO motoros doboz (modulonként 1 db)",
           "perModule": true,
           "photos": [
             {
@@ -44585,7 +44585,7 @@
         },
         {
           "id": "mat_xtesa_remote",
-          "name": "Távirányító – Somfy Situo 1 Pure II io",
+          "name": "Távirányító - Somfy Situo 1 Pure II io",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -44895,7 +44895,7 @@
         },
         {
           "id": "mat_xtesa_zip_a",
-          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: szélesség − 22 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -45341,7 +45341,7 @@
         },
         {
           "id": "mat_xtesa_zip_b_wall",
-          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+          "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
           "description": "Nettó méret: kinyúlás − 11 cm × magasság − 10 cm. Az ár tartalmazza a 10% szerelést, programozást. Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "optional",
           "defaultSelected": false,
@@ -45976,7 +45976,7 @@
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
         "pages": "12. o. (1 MODULE); 13. o. (2 MODULES - 3 COLUMNS)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_madeira",
@@ -45984,7 +45984,7 @@
       "enabled": true,
       "status": "active",
       "introText": "A MADEIRA ({{meret}}) teljesen zárt kazettás karos napellenző motoros működtetéssel. Behúzott állapotban a vászon és a karok a kazettában védve vannak az időjárástól.",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [],
       "materials": [
@@ -46008,7 +46008,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_madeira_base",
-          "name": "MADEIRA kazettás karos napellenző – kazettás, falra szerelve",
+          "name": "MADEIRA kazettás karos napellenző - kazettás, falra szerelve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -46142,7 +46142,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_madeira_motor",
-          "name": "Motor – Somfy NEMO-H IO (SUNEA CSI io) 40 Nm (modulonként 1 db)",
+          "name": "Motor - Somfy NEMO-H IO (SUNEA CSI io) 40 Nm (modulonként 1 db)",
           "perModule": true,
           "photos": [
             {
@@ -46175,7 +46175,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_madeira_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "excludeFromPercentBase": true,
           "photos": [
             {
@@ -46639,11 +46639,11 @@
       "sizeRules": [],
       "catalogRef": {
         "productAlias": "Aluprof Madeira",
-        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár a motort nem tartalmazza.",
+        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző - ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár a motort nem tartalmazza.",
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (MADEIRA)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_corsica",
@@ -46651,7 +46651,7 @@
       "enabled": true,
       "status": "active",
       "introText": "A CORSICA ({{meret}}) teljesen zárt kazettás karos napellenző motoros működtetéssel. Behúzott állapotban a vászon és a karok a kazettában védve vannak az időjárástól.",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [],
       "materials": [
@@ -46675,7 +46675,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_corsica_base",
-          "name": "CORSICA kazettás karos napellenző – kazettás, falra szerelve",
+          "name": "CORSICA kazettás karos napellenző - kazettás, falra szerelve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -46827,7 +46827,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_corsica_motor",
-          "name": "Motor – Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
+          "name": "Motor - Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
           "perModule": true,
           "photos": [
             {
@@ -46860,7 +46860,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_corsica_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "excludeFromPercentBase": true,
           "photos": [
             {
@@ -47312,11 +47312,11 @@
       "sizeRules": [],
       "catalogRef": {
         "productAlias": "Aluprof Corsica",
-        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár a motort nem tartalmazza.",
+        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző - ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár a motort nem tartalmazza.",
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (CORSICA CASSETTE)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_jamaica",
@@ -47324,7 +47324,7 @@
       "enabled": true,
       "status": "active",
       "introText": "A JAMAICA ({{meret}}) kazetta nélküli karos napellenző motoros működtetéssel. Behúzott állapotban a vászon és a karok a falon kompaktan helyezkednek el.",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [],
       "materials": [
@@ -47348,7 +47348,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_jamaica_base",
-          "name": "JAMAICA kazetta nélküli karos napellenző – kazetta nélküli, falra szerelve",
+          "name": "JAMAICA kazetta nélküli karos napellenző - kazetta nélküli, falra szerelve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -47488,7 +47488,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_jamaica_motor",
-          "name": "Motor – Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
+          "name": "Motor - Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
           "perModule": true,
           "photos": [
             {
@@ -47521,7 +47521,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_jamaica_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "excludeFromPercentBase": true,
           "photos": [
             {
@@ -47962,11 +47962,11 @@
       "sizeRules": [],
       "catalogRef": {
         "productAlias": "Aluprof Jamaica",
-        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár kézi (hajtókaros) kivitel, a motor külön tétel.",
+        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző - ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár kézi (hajtókaros) kivitel, a motor külön tétel.",
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (JAMAICA*)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_australia",
@@ -47974,7 +47974,7 @@
       "enabled": true,
       "status": "active",
       "introText": "A AUSTRALIA ({{meret}}) kazetta nélküli karos napellenző motoros működtetéssel. Behúzott állapotban a vászon és a karok a falon kompaktan helyezkednek el.",
-      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30–60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
+      "closingText": "Garancia: ponyvákra 5 év, motorokra és érzékelőkre 3 év. Átfutási idő 30-60 nap. Az árajánlat a helyszíni felmérés után módosulhat.",
       "textBlocks": [],
       "photos": [],
       "materials": [
@@ -47998,7 +47998,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_australia_base",
-          "name": "AUSTRALIA kazetta nélküli karos napellenző – kazetta nélküli, falra szerelve",
+          "name": "AUSTRALIA kazetta nélküli karos napellenző - kazetta nélküli, falra szerelve",
           "matrixTable": {
             "rowLabel": "Kinyúlás (cm)",
             "colLabel": "Szélesség (cm)",
@@ -48140,7 +48140,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_australia_motor",
-          "name": "Motor – Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
+          "name": "Motor - Somfy NEMO IO (SUNEA IO) 40 Nm (modulonként 1 db)",
           "perModule": true,
           "photos": [
             {
@@ -48173,7 +48173,7 @@
           "listPriceMultiplier": 1.25,
           "defaultNote": "",
           "id": "mat_australia_remote",
-          "name": "Távirányító – Somfy Situo 1 io Pure",
+          "name": "Távirányító - Somfy Situo 1 io Pure",
           "excludeFromPercentBase": true,
           "photos": [
             {
@@ -48614,11 +48614,11 @@
       "sizeRules": [],
       "catalogRef": {
         "productAlias": "Aluprof Australia",
-        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár kézi (hajtókaros) kivitel, a motor külön tétel.",
+        "note": "Árképző: gyári listaár × 1,0 (nincs megadott árképző - ellenőrizd, és állítsd be a szorzót / felárat). A gyári ár kézi (hajtókaros) kivitel, a motor külön tétel.",
         "pdfFile": "Price list 2026_27_Új.pdf",
         "pages": "96. o. (AUSTRALIA)"
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_thermo_glass",
@@ -48695,9 +48695,9 @@
       },
       "sizeRules": [],
       "catalogRef": {
-        "note": "Nincs ár a kapott anyagokban – add meg a m² árat (sávosan), majd állítsd aktívra."
+        "note": "Nincs ár a kapott anyagokban - add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     },
     {
       "id": "tpl_guillotine_vertica",
@@ -48774,9 +48774,9 @@
       },
       "sizeRules": [],
       "catalogRef": {
-        "note": "Nincs ár a kapott anyagokban – add meg a m² árat (sávosan), majd állítsd aktívra."
+        "note": "Nincs ár a kapott anyagokban - add meg a m² árat (sávosan), majd állítsd aktívra."
       },
-      "updatedAt": "2026-10-20T19:58:03.481023Z"
+      "updatedAt": "2026-10-20T20:55:09.835376Z"
     }
   ],
   "quotes": [
@@ -48819,15 +48819,15 @@
           "type": "template_section",
           "templateId": "tpl_legacy_sb400",
           "categoryId": "cat_1792391983811_seed",
-          "sectionTitle": "1. SOLARE 400 bioklimatikus pergola (540×360×260 cm — Épülethez rögzített)",
-          "sectionSubtitle": "Forgatható lamellás tető, Somfy IO motorral – 150 kg/m² hóterhelés",
-          "sectionIntroText": "A SOLARE 400 (540x360x260 cm, Épülethez rögzített) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20–30 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
+          "sectionTitle": "1. SOLARE 400 bioklimatikus pergola (540×360×260 cm - Épülethez rögzített)",
+          "sectionSubtitle": "Forgatható lamellás tető, Somfy IO motorral - 150 kg/m² hóterhelés",
+          "sectionIntroText": "A SOLARE 400 (540x360x260 cm, Épülethez rögzített) kedvező árú, forgatható lamellás pergola látható fali konzolokkal és jó terhelési indexekkel; zárt lamellák esetén teljesen vízzáró. Gyártási idő 20-30 nap. Télen-nyáron használható: a lamellák dőlésszögével a bejutó fény és a szellőzés is szabályozható. Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.",
           "sectionPhotos": [
             {
               "id": "sphoto_legacy_sb400_1",
               "imageUrl": "/uploads/legacy/bioklimatikus/image_01.jpg",
               "titleAbove": "",
-              "captionBelow": "Alumínium váz, 0–120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.",
+              "captionBelow": "Alumínium váz, 0-120° között elforgatható lamellák, oszlopokban rejtett esővíz-elvezetés.",
               "widthPct": 75,
               "align": "center",
               "subPhotos": [
@@ -48841,7 +48841,7 @@
                 {
                   "id": "sub_sb400_rajz",
                   "imageUrl": "/uploads/legacy/bioklimatikus/image_15.png",
-                  "captionBelow": "Műszaki rajz – max. 700 cm szélesség",
+                  "captionBelow": "Műszaki rajz - max. 700 cm szélesség",
                   "widthPct": 25,
                   "align": "center"
                 },
@@ -48871,7 +48871,7 @@
               "align": "center"
             }
           ],
-          "tableTitle": "SOLARE 400 bioklimatikus pergola — Részletes árkalkuláció (540×360 cm)",
+          "tableTitle": "SOLARE 400 bioklimatikus pergola - Részletes árkalkuláció (540×360 cm)",
           "tableHeaders": [
             "Megnevezés / Anyag / Műszaki tartalom",
             "Mennyiség / Méret",
@@ -48882,8 +48882,8 @@
             {
               "id": "row_mat_sb400_wall_c12b",
               "materialId": "mat_sb400_wall",
-              "name": "SOLARE 400 – elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
-              "description": "Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
+              "name": "SOLARE 400 - elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+              "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
               "quantityLabel": "540×360 cm",
               "listPriceEur": 11490,
               "discountPriceEur": 9192,
@@ -48895,8 +48895,8 @@
               "photos": [],
               "algorithm": {
                 "id": "mat_sb400_wall",
-                "name": "SOLARE 400 – elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
-                "description": "Alumínium váz, 0–120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
+                "name": "SOLARE 400 - elforgatható lamellákkal, falhoz rögzítve, elöl 2 lábbal",
+                "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
                 "itemRole": "base",
                 "defaultSelected": true,
                 "pricingMode": "matrix_cm",
@@ -49839,7 +49839,7 @@
               "id": "row_mat_sb400_smarthome_ubrp",
               "materialId": "mat_sb400_smarthome",
               "name": "Okosotthon vezérlő",
-              "description": "Conexxon, Tahoma – Somfy vagy BLEBOX applikációval",
+              "description": "Conexxon, Tahoma - Somfy vagy BLEBOX applikációval",
               "quantityLabel": "1 db",
               "listPriceEur": 313,
               "discountPriceEur": 250,
@@ -49852,7 +49852,7 @@
               "algorithm": {
                 "id": "mat_sb400_smarthome",
                 "name": "Okosotthon vezérlő",
-                "description": "Conexxon, Tahoma – Somfy vagy BLEBOX applikációval",
+                "description": "Conexxon, Tahoma - Somfy vagy BLEBOX applikációval",
                 "itemRole": "optional",
                 "defaultSelected": false,
                 "pricingMode": "fixed",
@@ -49879,7 +49879,7 @@
             {
               "id": "row_mat_sb400_zip_a_ybhh",
               "materialId": "mat_sb400_zip_a",
-              "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+              "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
               "description": "Nettó méret: szélesség − 30 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
               "quantityLabel": "510×360 cm",
               "listPriceEur": 2906,
@@ -49909,7 +49909,7 @@
               ],
               "algorithm": {
                 "id": "mat_sb400_zip_a",
-                "name": "Oldalsó ZIP árnyékoló a szélesség oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+                "name": "Oldalsó ZIP árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
                 "description": "Nettó méret: szélesség − 30 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
                 "itemRole": "base",
                 "defaultSelected": true,
@@ -50382,7 +50382,7 @@
             {
               "id": "row_mat_sb400_zip_b_wall_6wus",
               "materialId": "mat_sb400_zip_b_wall",
-              "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+              "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
               "description": "Nettó méret: kinyúlás − 8.5 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
               "quantityLabel": "540×351.5 cm",
               "listPriceEur": 2009,
@@ -50412,7 +50412,7 @@
               ],
               "algorithm": {
                 "id": "mat_sb400_zip_b_wall",
-                "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára – Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
+                "name": "Oldalsó ZIP árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító (szereléssel)",
                 "description": "Nettó méret: kinyúlás − 8.5 cm × magasság. Az ár tartalmazza a 8% szerelést, programozást.",
                 "itemRole": "optional",
                 "defaultSelected": false,
@@ -50908,7 +50908,7 @@
                   "id": "iphoto_legacy_sb400_glass_a_2",
                   "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
                   "titleAbove": "",
-                  "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+                  "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
                   "widthPct": 75,
                   "align": "center"
                 }
@@ -50960,7 +50960,7 @@
                     "id": "iphoto_legacy_sb400_glass_a_2",
                     "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
                     "titleAbove": "",
-                    "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+                    "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
                     "widthPct": 75,
                     "align": "center"
                   }
@@ -50999,7 +50999,7 @@
                   "id": "iphoto_legacy_sb400_glass_b_wall_2",
                   "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
                   "titleAbove": "",
-                  "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+                  "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
                   "widthPct": 75,
                   "align": "center"
                 }
@@ -51051,7 +51051,7 @@
                     "id": "iphoto_legacy_sb400_glass_b_wall_2",
                     "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
                     "titleAbove": "",
-                    "captionBelow": "Sínrendszer (3–5 sínes kivitel)",
+                    "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
                     "widthPct": 75,
                     "align": "center"
                   }
@@ -51068,7 +51068,7 @@
           "autoCalculateTotals": true,
           "customTotalBaseEur": 13236,
           "customTotalBaseHuf": 4805000,
-          "sectionClosingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30–60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
+          "sectionClosingText": "Ha a hónap végéig megrendeli az alapszerkezetet, az infrafűtést és az eső-/szélérzékelőt ajándékba adjuk. Garancia: a szerkezetre 10 év, a vásznakra/ponyvákra 5 év, a motorokra és érzékelőkre 3 év. Átfutási idő a visszaigazolástól számítva 30-60 nap. Az árajánlat a helyszíni felmérés és a műszaki tartalom pontosítása után módosulhat.",
           "adjustments": [],
           "manualTotalEur": null
         },
@@ -51076,7 +51076,7 @@
           "id": "blk_closing_1792410422214",
           "type": "text_box",
           "title": "Fontos információk és vállalási feltételek",
-          "content": "Ha Október 31-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani!\n\n• Az ajánlat érvényes 30 napig\n• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: 363 Ft/EUR)\n• Szállítási költség ide: Szentendre: + 40.000 Ft (+Áfa)\n• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n• Átfutási idő a visszaigazolástól számítva: 30–60 nap\n• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\nAmennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\nMegjegyzés: az extra anyagmozgatás, villamos tervezés és elektromos kiállások, kiegészítő lakatos szerkezetek, beton alap, burkolási munkák és fogadó szerkezetek költségei a vevőt terhelik. Vállalási díjaink normál szerelési körülmények esetén, szabad és folyamatos munkaterület biztosítása mellett érvényesek.",
+          "content": "Ha Október 31-ig megrendeli az alapszerkezetet, kedvezményt tudunk biztosítani!\n\n• Az ajánlat érvényes 30 napig\n• EUR áraink az aktuális nap MNB középárfolyamán számítandók (ajánlatírás napján: 363 Ft/EUR)\n• Szállítási költség ide: Szentendre: + 40.000 Ft (+Áfa)\n• Garancia: a szerkezetre 10 év; a vásznakra, ponyvákra 5 év; a motorokra, érzékelőkre 3 év\n• Átfutási idő a visszaigazolástól számítva: 30-60 nap\n• Fizetés: szerződéskötéskor 60%, átvételkor a maradék 40%\n• Az árajánlat a későbbi műszaki tartalom változása és a helyszíni felmérés miatt módosulhat\n\nAmennyiben ajánlatunk szimpatikus Önnek, kérjük, e-mailben jelezzen vissza, ezután helyszíni felmérésre és méretpontosításra van szükség. Bármilyen kérdés esetén keressen minket bizalommal.\n\nMegjegyzés: az extra anyagmozgatás, villamos tervezés és elektromos kiállások, kiegészítő lakatos szerkezetek, beton alap, burkolási munkák és fogadó szerkezetek költségei a vevőt terhelik. Vállalási díjaink normál szerelési körülmények esetén, szabad és folyamatos munkaterület biztosítása mellett érvényesek.",
           "textStyle": "footer_info",
           "bold": false,
           "align": "left"
@@ -51129,7 +51129,7 @@
           "type": "template_section",
           "templateId": "tpl_1792345585789_r48k",
           "categoryId": "cat_1792345372674_leoq",
-          "sectionTitle": "1. Teszt sablon (600×400×250 cm — Épülethez rögzített)",
+          "sectionTitle": "1. Teszt sablon (600×400×250 cm - Épülethez rögzített)",
           "sectionSubtitle": "10 év garancia",
           "sectionIntroText": "A kiválasztott 6 x 4 m (600x400x250 cm) méretű konstrukció prémium alapanyagokból, egyedi méretre gyártva készül.",
           "sectionPhotos": [
@@ -51142,7 +51142,7 @@
               "align": "center"
             }
           ],
-          "tableTitle": "Teszt sablon — Részletes árkalkuláció (600×400 cm)",
+          "tableTitle": "Teszt sablon - Részletes árkalkuláció (600×400 cm)",
           "tableHeaders": [
             "Megnevezés / Anyag / Műszaki tartalom",
             "Mennyiség / Méret",
@@ -51198,595 +51198,595 @@
     {
       "id": "media_cat2026_kedry-skylife_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "kedry-skylife/photo-1.jpg – KEDRY SKYLIFE szabadon álló, 1 modulos (termék látványterv)",
+      "originalName": "kedry-skylife/photo-1.jpg - KEDRY SKYLIFE szabadon álló, 1 modulos (termék látványterv)",
       "url": "/uploads/catalog-2026/kedry-skylife/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "kedry-skylife/drawing-1.jpg – 1L – szabadon álló, egymodulos kiosztás",
+      "originalName": "kedry-skylife/drawing-1.jpg - 1L - szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "kedry-skylife/drawing-2.jpg – 1L A – egymodulos, L oldalon falhoz rögzítve",
+      "originalName": "kedry-skylife/drawing-2.jpg - 1L A - egymodulos, L oldalon falhoz rögzítve",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "kedry-skylife/drawing-3.jpg – 2L – szabadon álló, 2 modul L oldalon egymás mellett",
+      "originalName": "kedry-skylife/drawing-3.jpg - 2L - szabadon álló, 2 modul L oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-4",
       "filename": "drawing-4.jpg",
-      "originalName": "kedry-skylife/drawing-4.jpg – 2P – szabadon álló, 2 modul SP oldalon egymás mellett",
+      "originalName": "kedry-skylife/drawing-4.jpg - 2P - szabadon álló, 2 modul SP oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-5",
       "filename": "drawing-5.jpg",
-      "originalName": "kedry-skylife/drawing-5.jpg – 3L – szabadon álló, 3 modulos kiosztás",
+      "originalName": "kedry-skylife/drawing-5.jpg - 3L - szabadon álló, 3 modulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-skylife_drawing-6",
       "filename": "drawing-6.jpg",
-      "originalName": "kedry-skylife/drawing-6.jpg – 4L – szabadon álló, 4 modul egymás mellett",
+      "originalName": "kedry-skylife/drawing-6.jpg - 4L - szabadon álló, 4 modul egymás mellett",
       "url": "/uploads/catalog-2026/kedry-skylife/drawing-6.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "kedry-neos/photo-1.jpg – KEDRY NEOS kertben, nyitott lamellákkal",
+      "originalName": "kedry-neos/photo-1.jpg - KEDRY NEOS kertben, nyitott lamellákkal",
       "url": "/uploads/catalog-2026/kedry-neos/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "kedry-neos/photo-2.jpg – KEDRY NEOS 1L szabadon álló (termék látványterv)",
+      "originalName": "kedry-neos/photo-2.jpg - KEDRY NEOS 1L szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/kedry-neos/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "kedry-neos/drawing-1.jpg – 1L – szabadon álló, egymodulos kiosztás",
+      "originalName": "kedry-neos/drawing-1.jpg - 1L - szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "kedry-neos/drawing-2.jpg – 1L A – falhoz rögzítve az SP oldalon",
+      "originalName": "kedry-neos/drawing-2.jpg - 1L A - falhoz rögzítve az SP oldalon",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "kedry-neos/drawing-3.jpg – 1T – tetőtéri (loft) kiosztás",
+      "originalName": "kedry-neos/drawing-3.jpg - 1T - tetőtéri (loft) kiosztás",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-4",
       "filename": "drawing-4.jpg",
-      "originalName": "kedry-neos/drawing-4.jpg – 2L – 2 modul L oldalon egymás mellett",
+      "originalName": "kedry-neos/drawing-4.jpg - 2L - 2 modul L oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-5",
       "filename": "drawing-5.jpg",
-      "originalName": "kedry-neos/drawing-5.jpg – 2P – 2 modul SP oldalon egymás mellett",
+      "originalName": "kedry-neos/drawing-5.jpg - 2P - 2 modul SP oldalon egymás mellett",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_kedry-neos_drawing-6",
       "filename": "drawing-6.jpg",
-      "originalName": "kedry-neos/drawing-6.jpg – 2SC – 2 modul köztes oszlop nélkül",
+      "originalName": "kedry-neos/drawing-6.jpg - 2SC - 2 modul köztes oszlop nélkül",
       "url": "/uploads/catalog-2026/kedry-neos/drawing-6.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "solare-400/photo-1.jpg – Aluprof SB lamellás pergola LED-világítással (látványterv)",
+      "originalName": "solare-400/photo-1.jpg - Aluprof SB lamellás pergola LED-világítással (látványterv)",
       "url": "/uploads/catalog-2026/solare-400/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "solare-400/drawing-1.jpg – SB 400 lamella-, oszlop- és gerendakeresztmetszetek",
+      "originalName": "solare-400/drawing-1.jpg - SB 400 lamella-, oszlop- és gerendakeresztmetszetek",
       "url": "/uploads/catalog-2026/solare-400/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_solare-400_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "solare-400/drawing-2.jpg – SB 400 falhoz rögzítés: fali konzol és gerendacsatlakozó",
+      "originalName": "solare-400/drawing-2.jpg - SB 400 falhoz rögzítés: fali konzol és gerendacsatlakozó",
       "url": "/uploads/catalog-2026/solare-400/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_pergola-v-ziiip_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "pergola-v-ziiip/drawing-1.jpg – Pergola V ZIIIP gerenda-, vezetősín-, oszlop- és kazetta-keresztmetszet",
+      "originalName": "pergola-v-ziiip/drawing-1.jpg - Pergola V ZIIIP gerenda-, vezetősín-, oszlop- és kazetta-keresztmetszet",
       "url": "/uploads/catalog-2026/pergola-v-ziiip/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "isola-3/photo-1.jpg – ISOLA 3 Classic házhoz építve, oldalsó árnyékolóval",
+      "originalName": "isola-3/photo-1.jpg - ISOLA 3 Classic házhoz építve, oldalsó árnyékolóval",
       "url": "/uploads/catalog-2026/isola-3/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "isola-3/photo-2.jpg – ISOLA 3 szabadon álló (termék látványterv)",
+      "originalName": "isola-3/photo-2.jpg - ISOLA 3 szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/isola-3/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "isola-3/photo-3.jpg – ISOLA 3 sarokrészlet: rejtett vízelvezetés az oszlopban",
+      "originalName": "isola-3/photo-3.jpg - ISOLA 3 sarokrészlet: rejtett vízelvezetés az oszlopban",
       "url": "/uploads/catalog-2026/isola-3/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "isola-3/drawing-1.jpg – ISOLA 3 felépítése és rögzítési változatai",
+      "originalName": "isola-3/drawing-1.jpg - ISOLA 3 felépítése és rögzítési változatai",
       "url": "/uploads/catalog-2026/isola-3/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "isola-3/drawing-2.jpg – 1L – szabadon álló, egymodulos kiosztás",
+      "originalName": "isola-3/drawing-2.jpg - 1L - szabadon álló, egymodulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "isola-3/drawing-3.jpg – 1L A – egymodulos, falhoz rögzítve",
+      "originalName": "isola-3/drawing-3.jpg - 1L A - egymodulos, falhoz rögzítve",
       "url": "/uploads/catalog-2026/isola-3/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-4",
       "filename": "drawing-4.jpg",
-      "originalName": "isola-3/drawing-4.jpg – 2L – szabadon álló, 2 modulos kiosztás",
+      "originalName": "isola-3/drawing-4.jpg - 2L - szabadon álló, 2 modulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-3_drawing-5",
       "filename": "drawing-5.jpg",
-      "originalName": "isola-3/drawing-5.jpg – 3L – szabadon álló, 3 modulos kiosztás",
+      "originalName": "isola-3/drawing-5.jpg - 3L - szabadon álló, 3 modulos kiosztás",
       "url": "/uploads/catalog-2026/isola-3/drawing-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "isola-2/photo-1.jpg – ISOLA 2, 4 oszlopos szabadon álló (termék látványterv)",
+      "originalName": "isola-2/photo-1.jpg - ISOLA 2, 4 oszlopos szabadon álló (termék látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "isola-2/photo-2.jpg – ISOLA 2A falhoz rögzített változat (látványterv)",
+      "originalName": "isola-2/photo-2.jpg - ISOLA 2A falhoz rögzített változat (látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "isola-2/photo-3.jpg – ISOLA 2T változat (látványterv)",
+      "originalName": "isola-2/photo-3.jpg - ISOLA 2T változat (látványterv)",
       "url": "/uploads/catalog-2026/isola-2/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "isola-2/drawing-1.jpg – 4 oszlopos kiosztás, méretekkel",
+      "originalName": "isola-2/drawing-1.jpg - 4 oszlopos kiosztás, méretekkel",
       "url": "/uploads/catalog-2026/isola-2/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "isola-2/drawing-2.jpg – 4 oszlop – ponyvatartók a fallal párhuzamosan",
+      "originalName": "isola-2/drawing-2.jpg - 4 oszlop - ponyvatartók a fallal párhuzamosan",
       "url": "/uploads/catalog-2026/isola-2/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_isola-2_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "isola-2/drawing-3.jpg – 2 oszlop – ponyvatartók a falra merőlegesen",
+      "originalName": "isola-2/drawing-3.jpg - 2 oszlop - ponyvatartók a falra merőlegesen",
       "url": "/uploads/catalog-2026/isola-2/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "keplan/photo-1.jpg – KEPLAN falhoz rögzített ponyvás pergola (látványterv)",
+      "originalName": "keplan/photo-1.jpg - KEPLAN falhoz rögzített ponyvás pergola (látványterv)",
       "url": "/uploads/catalog-2026/keplan/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "keplan/photo-2.jpg – KEPLAN A változat (látványterv)",
+      "originalName": "keplan/photo-2.jpg - KEPLAN A változat (látványterv)",
       "url": "/uploads/catalog-2026/keplan/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_keplan_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "keplan/drawing-1.jpg – 2 vezetősínes kiosztás, oldalnézet",
+      "originalName": "keplan/drawing-1.jpg - 2 vezetősínes kiosztás, oldalnézet",
       "url": "/uploads/catalog-2026/keplan/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "a100-lux/photo-1.jpg – A100 LUX falhoz rögzített ponyvás pergola (látványterv)",
+      "originalName": "a100-lux/photo-1.jpg - A100 LUX falhoz rögzített ponyvás pergola (látványterv)",
       "url": "/uploads/catalog-2026/a100-lux/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "a100-lux/drawing-1.jpg – 2 vezetősínes kiosztás, oldalnézet",
+      "originalName": "a100-lux/drawing-1.jpg - 2 vezetősínes kiosztás, oldalnézet",
       "url": "/uploads/catalog-2026/a100-lux/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "a100-lux/drawing-2.jpg – 3 vezetősínes kiosztás",
+      "originalName": "a100-lux/drawing-2.jpg - 3 vezetősínes kiosztás",
       "url": "/uploads/catalog-2026/a100-lux/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_a100-lux_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "a100-lux/drawing-3.jpg – 4 vezetősínes kiosztás",
+      "originalName": "a100-lux/drawing-3.jpg - 4 vezetősínes kiosztás",
       "url": "/uploads/catalog-2026/a100-lux/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "xtesa/photo-1.jpg – XTESA ponyvás pergola (termék látványterv)",
+      "originalName": "xtesa/photo-1.jpg - XTESA ponyvás pergola (termék látványterv)",
       "url": "/uploads/catalog-2026/xtesa/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "xtesa/drawing-1.jpg – 1 modulos kiosztás, oldal- és elölnézet",
+      "originalName": "xtesa/drawing-1.jpg - 1 modulos kiosztás, oldal- és elölnézet",
       "url": "/uploads/catalog-2026/xtesa/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "xtesa/drawing-2.jpg – 2 modul – 3 oszlop",
+      "originalName": "xtesa/drawing-2.jpg - 2 modul - 3 oszlop",
       "url": "/uploads/catalog-2026/xtesa/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_xtesa_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "xtesa/drawing-3.jpg – 2 modul – 2 oszlop",
+      "originalName": "xtesa/drawing-3.jpg - 2 modul - 2 oszlop",
       "url": "/uploads/catalog-2026/xtesa/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "hydra/photo-1.jpg – HYDRA ponyvás pergola (termék látványterv)",
+      "originalName": "hydra/photo-1.jpg - HYDRA ponyvás pergola (termék látványterv)",
       "url": "/uploads/catalog-2026/hydra/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "hydra/photo-2.jpg – HYDRA T változat (látványterv)",
+      "originalName": "hydra/photo-2.jpg - HYDRA T változat (látványterv)",
       "url": "/uploads/catalog-2026/hydra/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "hydra/drawing-1.jpg – 1 modulos kiosztás, méretekkel",
+      "originalName": "hydra/drawing-1.jpg - 1 modulos kiosztás, méretekkel",
       "url": "/uploads/catalog-2026/hydra/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_hydra_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "hydra/drawing-2.jpg – 2 modul – 3 oszlop",
+      "originalName": "hydra/drawing-2.jpg - 2 modul - 3 oszlop",
       "url": "/uploads/catalog-2026/hydra/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "led/photo-1.jpg – Napellenző LED-világítással (Aluprof)",
+      "originalName": "led/photo-1.jpg - Napellenző LED-világítással (Aluprof)",
       "url": "/uploads/catalog-2026/led/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "led/photo-2.jpg – LED szalag készlet Gennius ponyvás pergolához (2 vezetősín)",
+      "originalName": "led/photo-2.jpg - LED szalag készlet Gennius ponyvás pergolához (2 vezetősín)",
       "url": "/uploads/catalog-2026/led/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "led/photo-3.jpg – LED szalag készlet – Gennius Vega",
+      "originalName": "led/photo-3.jpg - LED szalag készlet - Gennius Vega",
       "url": "/uploads/catalog-2026/led/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_photo-4",
       "filename": "photo-4.jpg",
-      "originalName": "led/photo-4.jpg – LED szalag Kedry Plus pergolához",
+      "originalName": "led/photo-4.jpg - LED szalag Kedry Plus pergolához",
       "url": "/uploads/catalog-2026/led/photo-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "led/drawing-1.jpg – Kedry Skylife / Prime / Neos – LED a csatornában",
+      "originalName": "led/drawing-1.jpg - Kedry Skylife / Prime / Neos - LED a csatornában",
       "url": "/uploads/catalog-2026/led/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "led/drawing-2.jpg – LED profil keresztmetszet",
+      "originalName": "led/drawing-2.jpg - LED profil keresztmetszet",
       "url": "/uploads/catalog-2026/led/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "led/drawing-3.jpg – Külső LED profil keresztmetszet",
+      "originalName": "led/drawing-3.jpg - Külső LED profil keresztmetszet",
       "url": "/uploads/catalog-2026/led/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_led_drawing-4",
       "filename": "drawing-4.jpg",
-      "originalName": "led/drawing-4.jpg – LED vezetősín profil (Hydra)",
+      "originalName": "led/drawing-4.jpg - LED vezetősín profil (Hydra)",
       "url": "/uploads/catalog-2026/led/drawing-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "heaters/photo-1.jpg – HELIOSA Wide Angle 2000 W infra hősugárzó",
+      "originalName": "heaters/photo-1.jpg - HELIOSA Wide Angle 2000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "heaters/photo-2.jpg – HELIOSA 77 Radio 2000 W infra hősugárzó",
+      "originalName": "heaters/photo-2.jpg - HELIOSA 77 Radio 2000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "heaters/photo-3.jpg – HELIOSA 88 Radio 3000 W infra hősugárzó",
+      "originalName": "heaters/photo-3.jpg - HELIOSA 88 Radio 3000 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_heaters_photo-4",
       "filename": "photo-4.jpg",
-      "originalName": "heaters/photo-4.jpg – HELIOSA Black Evo Radio 2500 W infra hősugárzó",
+      "originalName": "heaters/photo-4.jpg - HELIOSA Black Evo Radio 2500 W infra hősugárzó",
       "url": "/uploads/catalog-2026/heaters/photo-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "automation/photo-1.jpg – Somfy motoros doboz ponyvás pergolához",
+      "originalName": "automation/photo-1.jpg - Somfy motoros doboz ponyvás pergolához",
       "url": "/uploads/catalog-2026/automation/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "automation/photo-2.jpg – Somfy Nina többcsatornás érintőképernyős távirányító",
+      "originalName": "automation/photo-2.jpg - Somfy Nina többcsatornás érintőképernyős távirányító",
       "url": "/uploads/catalog-2026/automation/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "automation/photo-3.jpg – Somfy Ysia Patio IO 16 csatornás kijelzős távirányító",
+      "originalName": "automation/photo-3.jpg - Somfy Ysia Patio IO 16 csatornás kijelzős távirányító",
       "url": "/uploads/catalog-2026/automation/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-4",
       "filename": "photo-4.jpg",
-      "originalName": "automation/photo-4.jpg – Somfy Situo 1 Pure II egycsatornás távirányító",
+      "originalName": "automation/photo-4.jpg - Somfy Situo 1 Pure II egycsatornás távirányító",
       "url": "/uploads/catalog-2026/automation/photo-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-5",
       "filename": "photo-5.jpg",
-      "originalName": "automation/photo-5.jpg – Somfy Eolis Wirefree IO szélérzékelő",
+      "originalName": "automation/photo-5.jpg - Somfy Eolis Wirefree IO szélérzékelő",
       "url": "/uploads/catalog-2026/automation/photo-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-6",
       "filename": "photo-6.jpg",
-      "originalName": "automation/photo-6.jpg – Aluprof pergola lamellamozgató motor",
+      "originalName": "automation/photo-6.jpg - Aluprof pergola lamellamozgató motor",
       "url": "/uploads/catalog-2026/automation/photo-6.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-7",
       "filename": "photo-7.jpg",
-      "originalName": "automation/photo-7.jpg – Somfy fali kapcsoló",
+      "originalName": "automation/photo-7.jpg - Somfy fali kapcsoló",
       "url": "/uploads/catalog-2026/automation/photo-7.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_automation_photo-8",
       "filename": "photo-8.jpg",
-      "originalName": "automation/photo-8.jpg – Csőmotor napellenzőhöz (Aluprof)",
+      "originalName": "automation/photo-8.jpg - Csőmotor napellenzőhöz (Aluprof)",
       "url": "/uploads/catalog-2026/automation/photo-8.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-ke_colours-1",
       "filename": "colours-1.jpg",
-      "originalName": "colours-ke/colours-1.jpg – KE szerkezeti színek (Bioclimatica árlista)",
+      "originalName": "colours-ke/colours-1.jpg - KE szerkezeti színek (Bioclimatica árlista)",
       "url": "/uploads/catalog-2026/colours-ke/colours-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-ke_colours-2",
       "filename": "colours-2.jpg",
-      "originalName": "colours-ke/colours-2.jpg – KE szerkezeti színek (Gennius árlista)",
+      "originalName": "colours-ke/colours-2.jpg - KE szerkezeti színek (Gennius árlista)",
       "url": "/uploads/catalog-2026/colours-ke/colours-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-1",
       "filename": "colours-1.jpg",
-      "originalName": "colours-aluprof/colours-1.jpg – Aluprof pergola színek (RAL)",
+      "originalName": "colours-aluprof/colours-1.jpg - Aluprof pergola színek (RAL)",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-2",
       "filename": "colours-2.jpg",
-      "originalName": "colours-aluprof/colours-2.jpg – Aluprof színkártya 1. oldal",
+      "originalName": "colours-aluprof/colours-2.jpg - Aluprof színkártya 1. oldal",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-3",
       "filename": "colours-3.jpg",
-      "originalName": "colours-aluprof/colours-3.jpg – Aluprof színkártya 2. oldal (fahatású)",
+      "originalName": "colours-aluprof/colours-3.jpg - Aluprof színkártya 2. oldal (fahatású)",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-4",
       "filename": "colours-4.jpg",
-      "originalName": "colours-aluprof/colours-4.jpg – Aluprof árnyékoló (screen) színek",
+      "originalName": "colours-aluprof/colours-4.jpg - Aluprof árnyékoló (screen) színek",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_colours-aluprof_colours-5",
       "filename": "colours-5.jpg",
-      "originalName": "colours-aluprof/colours-5.jpg – Aluprof napellenző színkártya",
+      "originalName": "colours-aluprof/colours-5.jpg - Aluprof napellenző színkártya",
       "url": "/uploads/catalog-2026/colours-aluprof/colours-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-1",
       "filename": "photo-1.jpg",
-      "originalName": "accessories/photo-1.jpg – Technikai oszlop lamellás pergolában, nappali bútorral",
+      "originalName": "accessories/photo-1.jpg - Technikai oszlop lamellás pergolában, nappali bútorral",
       "url": "/uploads/catalog-2026/accessories/photo-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-2",
       "filename": "photo-2.jpg",
-      "originalName": "accessories/photo-2.jpg – MORE FTA-e elektromos padlófűtés üvegfalas pergolában",
+      "originalName": "accessories/photo-2.jpg - MORE FTA-e elektromos padlófűtés üvegfalas pergolában",
       "url": "/uploads/catalog-2026/accessories/photo-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-3",
       "filename": "photo-3.jpg",
-      "originalName": "accessories/photo-3.jpg – MORE VMC páramentesítő rendszer pergolában",
+      "originalName": "accessories/photo-3.jpg - MORE VMC páramentesítő rendszer pergolában",
       "url": "/uploads/catalog-2026/accessories/photo-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-4",
       "filename": "photo-4.jpg",
-      "originalName": "accessories/photo-4.jpg – MORE VMC egység az oszlopon",
+      "originalName": "accessories/photo-4.jpg - MORE VMC egység az oszlopon",
       "url": "/uploads/catalog-2026/accessories/photo-4.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-5",
       "filename": "photo-5.jpg",
-      "originalName": "accessories/photo-5.jpg – Konnektor az oszlop szervizhálózatában",
+      "originalName": "accessories/photo-5.jpg - Konnektor az oszlop szervizhálózatában",
       "url": "/uploads/catalog-2026/accessories/photo-5.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-6",
       "filename": "photo-6.jpg",
-      "originalName": "accessories/photo-6.jpg – Fali csatlakozó profil (bemutató)",
+      "originalName": "accessories/photo-6.jpg - Fali csatlakozó profil (bemutató)",
       "url": "/uploads/catalog-2026/accessories/photo-6.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_photo-7",
       "filename": "photo-7.jpg",
-      "originalName": "accessories/photo-7.jpg – Aluprof VertoLine dekorelemek pergolán",
+      "originalName": "accessories/photo-7.jpg - Aluprof VertoLine dekorelemek pergolán",
       "url": "/uploads/catalog-2026/accessories/photo-7.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-1",
       "filename": "drawing-1.jpg",
-      "originalName": "accessories/drawing-1.jpg – Technikai oszlop rajza",
+      "originalName": "accessories/drawing-1.jpg - Technikai oszlop rajza",
       "url": "/uploads/catalog-2026/accessories/drawing-1.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-2",
       "filename": "drawing-2.jpg",
-      "originalName": "accessories/drawing-2.jpg – Univerzális fali konzol (Aluprof SB pergola)",
+      "originalName": "accessories/drawing-2.jpg - Univerzális fali konzol (Aluprof SB pergola)",
       "url": "/uploads/catalog-2026/accessories/drawing-2.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     },
     {
       "id": "media_cat2026_accessories_drawing-3",
       "filename": "drawing-3.jpg",
-      "originalName": "accessories/drawing-3.jpg – Napellenző szövet varrási és illesztési részletei",
+      "originalName": "accessories/drawing-3.jpg - Napellenző szövet varrási és illesztési részletei",
       "url": "/uploads/catalog-2026/accessories/drawing-3.jpg",
       "uploadedAt": "2026-10-20T19:56:17.422540Z"
     }

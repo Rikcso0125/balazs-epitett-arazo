@@ -3,10 +3,10 @@
 2026-os gyártói árlisták + „Árajánlat készítő szoftver_menű rendszer.docx” betöltése a data/db.json-ba.
 
 Források (data/pricelists-2026/):
-  ke_bioclimatica.json – KE Price book 10 Bioclimatic (Kedry Skylife, Kedry Neos)
-  ke_gennius.json      – KE Price book Gennius (Isola 2/3, Keplan, A100 LUX, Xtesa, Hydra)
-  aluprof.json         – Aluprof árlista 2026/27 (SB 400 = SOLARE 400, karos napellenzők …)
-  images.json          – katalógusképek (ha már elkészült)
+  ke_bioclimatica.json - KE Price book 10 Bioclimatic (Kedry Skylife, Kedry Neos)
+  ke_gennius.json      - KE Price book Gennius (Isola 2/3, Keplan, A100 LUX, Xtesa, Hydra)
+  aluprof.json         - Aluprof árlista 2026/27 (SB 400 = SOLARE 400, karos napellenzők …)
+  images.json          - katalógusképek (ha már elkészült)
 
 Mit csinál:
   - A docx szerinti kategóriák, beépítési módok, modulszabályok, méretkorlátok, extrák (fix EUR árak)
@@ -212,7 +212,7 @@ BLADE = {'group': 'Világítás', 'choiceGroup': 'Világítás a lamellákban (s
 
 def cat2_led(prefix):
     return [
-        fixed_extra(f'x_{prefix}_led_cross2', f'{LED_CROSS}, 1–2 db)', 800, **CROSS, choiceLabel='1–2 db'),
+        fixed_extra(f'x_{prefix}_led_cross2', f'{LED_CROSS}, 1-2 db)', 800, **CROSS, choiceLabel='1-2 db'),
         fixed_extra(f'x_{prefix}_led_cross3', f'{LED_CROSS}, 3 db)', 1200, **CROSS, choiceLabel='3 db'),
         fixed_extra(f'x_{prefix}_led_cross4', f'{LED_CROSS}, 4 db)', 1500, **CROSS, choiceLabel='4 db'),
     ]
@@ -220,8 +220,8 @@ def cat2_led(prefix):
 
 def isola_beam_led(prefix):
     return [
-        fixed_extra(f'x_{prefix}_led_beam27', f'{LED_BEAM} – 27,5 m²-ig', 900, **BEAM, choiceLabel='27,5 m²-ig'),
-        fixed_extra(f'x_{prefix}_led_beam55', f'{LED_BEAM} – 55 m²-ig', 1700, **BEAM, choiceLabel='55 m²-ig'),
+        fixed_extra(f'x_{prefix}_led_beam27', f'{LED_BEAM} - 27,5 m²-ig', 900, **BEAM, choiceLabel='27,5 m²-ig'),
+        fixed_extra(f'x_{prefix}_led_beam55', f'{LED_BEAM} - 55 m²-ig', 1700, **BEAM, choiceLabel='55 m²-ig'),
     ]
 
 
@@ -340,10 +340,10 @@ KE_TPLS_ALL = {'tpl_legacy_kedry_skylife', 'tpl_kedry_neos', 'tpl_legacy_hydra',
                'tpl_legacy_a100_lux', 'tpl_legacy_isola_2a', 'tpl_isola_3'}
 KE_NOTE = 'Árképző: KE gyári listaár × 0,65 + fix felár (a régi árképző szerint).'
 AL_NOTE = 'Árképző: Aluprof gyári listaár × 0,66 + fix felár (a régi árképző szerint).'
-LIST_NOTE = 'Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat).'
+LIST_NOTE = 'Árképző: gyári listaár × 1,0 (nincs megadott árképző - ellenőrizd, és állítsd be a szorzót / felárat).'
 
 # ================================================================ 1. BIOKLIMATIKUS
-# SOLARE 400 = Aluprof SB 400. A gyártó „kinyúlása” (340–700) nálunk a szélesség.
+# SOLARE 400 = Aluprof SB 400. A gyártó „kinyúlása” (340-700) nálunk a szélesség.
 tid = 'tpl_legacy_sb400'
 template(tid, categoryId=C1, alsoInCategoryIds=[C4], mountTypes=[W, F, N],
          moduleSplits=[{'axis': 'width', 'maxCm': 700, 'maxModules': 2}, {'axis': 'projection', 'maxCm': 400, 'maxModules': 2}],
@@ -354,7 +354,7 @@ drop(tid, ['mat_sb400_wall', 'mat_sb400_free', 'mat_sb400_led', 'mat_sb400_spot'
 put(tid, [
     matrix_item('mat_sb400_wall', old['mat_sb400_wall']['name'], table('sb400_wall', swap=True), W, 0.66, 2500, old['mat_sb400_wall']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
     matrix_item('mat_sb400_free', old['mat_sb400_free']['name'], table('sb400_freestanding', swap=True), F, 0.66, 2500, old['mat_sb400_free']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
-    matrix_item('mat_sb400_nolegs', 'SOLARE 400 – elforgatható lamellákkal, lábak nélkül (falak közé / meglévő szerkezetre)', table('sb400r', swap=True), N, 0.66, 2500, old['mat_sb400_wall']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
+    matrix_item('mat_sb400_nolegs', 'SOLARE 400 - elforgatható lamellákkal, lábak nélkül (falak közé / meglévő szerkezetre)', table('sb400r', swap=True), N, 0.66, 2500, old['mat_sb400_wall']['description'], modules=False, split=True, snap=NEAREST_WIDTH),
 ], [
     fixed_extra('x_sb400_led_beam', LED_BEAM, 700, **BEAM, choiceLabel='Meleg fehér'),
     fixed_extra('x_sb400_led_rgb', 'LED világítás a gerendák belső felén (szabályozható, COB LED-szalag, RGB)', 800, **BEAM, choiceLabel='RGB'),
@@ -396,7 +396,7 @@ tpls[tid]['materials'] = [m for m in tpls[tid]['materials'] if not m['id'].start
 for m in tpls[tid]['materials']:
     if m['id'] == 'mat_kedry_motor':
         m['perModule'] = True
-        m['name'] = 'Motor – automatizált, Somfy IO (modulonként 1 db)'
+        m['name'] = 'Motor - automatizált, Somfy IO (modulonként 1 db)'
 put(tid, base, [
     fixed_extra('x_kedry_skylife_led_beam', LED_BEAM, 900),
     fixed_extra('x_kedry_skylife_led_rgb', 'RGB színes LED világítás körben a felső gerendákban, kívülről és belülről', 1000),
@@ -408,7 +408,7 @@ tpls[tid]['catalogRef']['note'] = KE_NOTE + ' Fali kivitel: a gyári ár mínusz
 tid = 'tpl_kedry_neos'
 sky = tpls['tpl_legacy_kedry_skylife']
 template(tid, categoryId=C1, name='KEDRY NEOS bioklimatikus pergola', order=3,
-         subtitle='Forgatható lamellás tető, Somfy motorral – minimalista, letisztult profilokkal',
+         subtitle='Forgatható lamellás tető, Somfy motorral - minimalista, letisztult profilokkal',
          mountTypes=[W, F, N],
          moduleSplits=[{'axis': 'width', 'maxCm': 600, 'maxModules': 2}, {'axis': 'projection', 'maxCm': 450, 'maxModules': 2}],
          sizeLimits={'minWidthCm': 211, 'maxWidthCm': 1200, 'minProjectionCm': 200, 'maxProjectionCm': 900, 'maxHeightCm': 270},
@@ -419,9 +419,9 @@ template(tid, categoryId=C1, name='KEDRY NEOS bioklimatikus pergola', order=3,
                    'Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.',
          closingText=re.sub(r'\s*\([^)]*SKYLIFE[^)]*\)', '', sky.get('closingText', '')),
          catalogRef={'productAlias': 'KE Kedry Neos', 'note': KE_NOTE + ' Motor: Somfy Sunea Screen IO gyári listaáron. A gyártó szerint a max. magasság 270 cm (a docx 300 cm-t írt).'})
-neos_desc = 'Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).'
-nw, nf, nn = ('KEDRY NEOS – forgatható lamellákkal, falhoz rögzítve', 'KEDRY NEOS – forgatható lamellákkal, szabadon álló',
-              'KEDRY NEOS – forgatható lamellákkal, lábak nélkül (konzolos, falak közé)')
+neos_desc = 'Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).'
+nw, nf, nn = ('KEDRY NEOS - forgatható lamellákkal, falhoz rögzítve', 'KEDRY NEOS - forgatható lamellákkal, szabadon álló',
+              'KEDRY NEOS - forgatható lamellákkal, lábak nélkül (konzolos, falak közé)')
 tpls[tid]['materials'] = [m for m in tpls[tid]['materials'] if not m.get('_import2026')]
 neos_base = [
     matrix_item('mat_neos_wall_1', nw, table('neos_1L_wall_SP'), W, 0.65, 3500, neos_desc, snap=NEAREST_WIDTH, disc=10),
@@ -433,7 +433,7 @@ neos_base = [
 ]
 if not any(m['id'] == 'mat_neos_motor' for m in tpls[tid]['materials']):
     tpls[tid]['materials'] = [
-        material(id='mat_neos_motor', name='Motor – Somfy Sunea Screen IO (modulonként 1 db)', basePrice=531, unitPrice=531, perModule=True),
+        material(id='mat_neos_motor', name='Motor - Somfy Sunea Screen IO (modulonként 1 db)', basePrice=531, unitPrice=531, perModule=True),
         *copy_items('tpl_legacy_kedry_skylife', {'mat_kedry_remote', 'mat_kedry_gift_sensor', 'mat_kedry_gift_infra', 'mat_kedry_install',
                                                  'mat_kedry_zip_a', 'mat_kedry_zip_b_wall', 'mat_kedry_zip_b_free',
                                                  'mat_kedry_glass_a', 'mat_kedry_glass_b_wall', 'mat_kedry_glass_b_free'}, 'neos'),
@@ -446,10 +446,10 @@ tid = 'tpl_legacy_a100_lux'
 template(tid, categoryId=C2, mountTypes=[W],
          moduleSplits=[{'axis': 'width', 'maxCm': 500, 'breakpointsCm': [500, 900, 1300]}],
          sizeLimits={'minWidthCm': 250, 'maxWidthCm': 1300, 'minProjectionCm': 250, 'maxProjectionCm': 600, 'maxHeightCm': 260},
-         sizeRules=[{'id': 'rule_a100_multi', 'label': '2–3 modulnál', 'ifWidthOverCm': 500, 'maxProjectionCm': 550}])
+         sizeRules=[{'id': 'rule_a100_multi', 'label': '2-3 modulnál', 'ifWidthOverCm': 500, 'maxProjectionCm': 550}])
 drop(tid, ['mat_a100_led', 'mat_a100_smarthome'])
 put(tid, [], [*cat2_led('a100'), *common_extras('a100')])
-add_note(tid, '2026: a régi mérettábla maradt – az új KE árlista (78–79. o.) más alapú, ellenőrizd. A gyártó szerint az oszlop max. 260 cm.')
+add_note(tid, '2026: a régi mérettábla maradt - az új KE árlista (78-79. o.) más alapú, ellenőrizd. A gyártó szerint az oszlop max. 260 cm.')
 
 # KEPLAN
 tid = 'tpl_legacy_keplan'
@@ -478,16 +478,16 @@ for m in tpls[tid]['materials']:
     for k in ('minModules', 'maxModules'):
         m.pop(k, None)
 put(tid, [
-    matrix_item('mat_isola_wall', 'ISOLA 2A – elhúzható PVC ponyvával, falhoz rögzítve', table(['isola2a_wall_2p_par', 'isola2a_wall_4p_par']), W, 0.65, 2870,
+    matrix_item('mat_isola_wall', 'ISOLA 2A - elhúzható PVC ponyvával, falhoz rögzítve', table(['isola2a_wall_2p_par', 'isola2a_wall_4p_par']), W, 0.65, 2870,
                 ISOLA_DESC + ' 700 cm kinyúlás felett 4 lábbal.', modules=False, disc=10),
-    matrix_item('mat_isola_free', 'ISOLA 2 – elhúzható PVC ponyvával, szabadon álló', table(['isola2_free_4p', 'isola2_free_6p']), F, 0.65, 2870,
+    matrix_item('mat_isola_free', 'ISOLA 2 - elhúzható PVC ponyvával, szabadon álló', table(['isola2_free_4p', 'isola2_free_6p']), F, 0.65, 2870,
                 ISOLA_DESC + ' 700 cm kinyúlás felett 6 lábbal.', modules=False, disc=10),
-    matrix_item('mat_isola_nolegs', 'ISOLA 2T – elhúzható PVC ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)', table('isola2t_nolegs'), N, 0.65, 2870,
+    matrix_item('mat_isola_nolegs', 'ISOLA 2T - elhúzható PVC ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)', table('isola2t_nolegs'), N, 0.65, 2870,
                 ISOLA_DESC, modules=False, disc=10),
 ], [*cat2_led('isola'), *isola_beam_led('isola'), *common_extras('isola')], prefix='isola')
 tpls[tid]['catalogRef'].update({'productAlias': 'KE Isola 2 / 2A / 2T', 'note': KE_NOTE + ' A régi „2 modulos” (+650 EUR) felár megszűnt: a 700 cm feletti kinyúlás többletlábai a gyári táblában vannak.'})
 
-# ISOLA 3 (új, jelenleg nem használt – docx)
+# ISOLA 3 (új, jelenleg nem használt - docx)
 tid = 'tpl_isola_3'
 isola2 = tpls['tpl_legacy_isola_2a']
 template(tid, categoryId=C2, name='ISOLA 3 elhúzható PVC ponyvás pergola', status='inactive', order=5,
@@ -501,14 +501,14 @@ template(tid, categoryId=C2, name='ISOLA 3 elhúzható PVC ponyvás pergola', st
          closingText=isola2.get('closingText', ''),
          catalogRef={'productAlias': 'KE Isola 3', 'note': KE_NOTE + ' Fali kivitel: a gyári ár mínusz a fali levonás. Motor: Sunilus IO 30/17 gyári listaáron.'})
 w_desc = 'Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).'
-iw, iff = 'ISOLA 3 – elhúzható PVC ponyvával, falhoz rögzítve', 'ISOLA 3 – elhúzható PVC ponyvával, szabadon álló'
+iw, iff = 'ISOLA 3 - elhúzható PVC ponyvával, falhoz rögzítve', 'ISOLA 3 - elhúzható PVC ponyvával, szabadon álló'
 i3 = []
 for code, vk, dec in [('1', 'isola3_free_1l', 1791), ('2w', 'isola3_free_2l', 2429), ('2p', 'isola3_free_2p', 1791), ('4', 'isola3_free_4', 2429)]:
     i3.append(matrix_item(f'mat_isola3_free_{code}', iff, table(vk), F, 0.65, 2870, w_desc, disc=10))
     i3.append(matrix_item(f'mat_isola3_wall_{code}', iw, table(vk, minus=dec), W, 0.65, 2870, w_desc, disc=10))
 if not any(m['id'] == 'mat_isola3_motor' for m in tpls[tid]['materials']):
     tpls[tid]['materials'] = [
-        material(id='mat_isola3_motor', name='Motor – Somfy Sunilus IO (modulonként 1 db)', basePrice=462, unitPrice=462, perModule=True),
+        material(id='mat_isola3_motor', name='Motor - Somfy Sunilus IO (modulonként 1 db)', basePrice=462, unitPrice=462, perModule=True),
         *copy_items('tpl_legacy_isola_2a', {'mat_isola_remote', 'mat_isola_gift_sensor', 'mat_isola_gift_infra', 'mat_isola_install',
                                             'mat_isola_zip_a', 'mat_isola_zip_b_wall', 'mat_isola_zip_b_free',
                                             'mat_isola_glass_a', 'mat_isola_glass_b_wall', 'mat_isola_glass_b_free'}, 'isola3'),
@@ -528,7 +528,7 @@ drop(tid, ['mat_pvziip_smarthome'])
 if not any('_zip_' in m['id'] for m in tpls[tid]['materials']):
     tpls[tid]['materials'] += copy_items('tpl_legacy_keplan', ZIP_FROM_KEPLAN, 'pvziip')
 put(tid, [], common_extras('pvziip'))
-add_note(tid, '2026: a régi mérettábla maradt – az új Aluprof táblával (18. o.) nem egyezik az alapja, ellenőrizd.')
+add_note(tid, '2026: a régi mérettábla maradt - az új Aluprof táblával (18. o.) nem egyezik az alapja, ellenőrizd.')
 
 tid = 'tpl_legacy_hydra'
 template(tid, categoryId=C3, alsoInCategoryIds=[C4], mountTypes=[W, N],
@@ -542,8 +542,8 @@ if not any('_zip_' in m['id'] for m in tpls[tid]['materials']):
 put(tid, [
     matrix_item('mat_hydra_base', old['mat_hydra_base']['name'], table('hydra_wall_1'), W, 0.65, 2345, hd, disc=10),
     matrix_item('mat_hydra_base_2m', old['mat_hydra_base_2m']['name'], table('hydra_wall_2m_3col'), W, 0.65, 2870, hd, disc=10),
-    matrix_item('mat_hydra_t_1', 'HYDRA T – elhúzható, feszített ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)', table('hydra_t_nolegs_1'), N, 0.65, 2345, hd, disc=10),
-    matrix_item('mat_hydra_t_2m', 'HYDRA T – elhúzható, feszített ponyvával, lábak nélkül, 2 modul', table('hydra_t_nolegs_2m'), N, 0.65, 2870, hd, disc=10),
+    matrix_item('mat_hydra_t_1', 'HYDRA T - elhúzható, feszített ponyvával, lábak nélkül (falak közé / meglévő szerkezetre)', table('hydra_t_nolegs_1'), N, 0.65, 2345, hd, disc=10),
+    matrix_item('mat_hydra_t_2m', 'HYDRA T - elhúzható, feszített ponyvával, lábak nélkül, 2 modul', table('hydra_t_nolegs_2m'), N, 0.65, 2870, hd, disc=10),
 ], [fixed_extra('x_hydra_led', 'LED világítás a vásznat vezető szélső gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér, 2 db)', 800),
     *common_extras('hydra')])
 tpls[tid]['catalogRef']['note'] = KE_NOTE + ' A 2 modulos ár a gyártó 2 modulos táblájából jön (nem modulonként × 2).'
@@ -551,7 +551,7 @@ tpls[tid]['catalogRef']['note'] = KE_NOTE + ' A 2 modulos ár a gyártó 2 modul
 tid = 'tpl_xtesa'
 hydra = tpls['tpl_legacy_hydra']
 template(tid, categoryId=C3, name='XTESA elhúzható feszített ponyvás pergola', order=3,
-         subtitle='Elhúzható, feszített vásznas tető – falhoz rögzítve, nagy kinyúlással',
+         subtitle='Elhúzható, feszített vásznas tető - falhoz rögzítve, nagy kinyúlással',
          mountTypes=[W],
          moduleSplits=[{'axis': 'width', 'maxCm': 500, 'breakpointsCm': [500, 1000]}],
          sizeLimits={'minWidthCm': 200, 'maxWidthCm': 1000, 'minProjectionCm': 250, 'maxProjectionCm': 700, 'maxHeightCm': 300},
@@ -563,12 +563,12 @@ template(tid, categoryId=C3, name='XTESA elhúzható feszített ponyvás pergola
 xd = 'Alumínium szerkezet, motorral elhúzható, feszített vászon. Az ár a motort nem tartalmazza (külön tétel).'
 if not any(m['id'] == 'mat_xtesa_motor' for m in tpls[tid]['materials']):
     tpls[tid]['materials'] = [
-        material(id='mat_xtesa_motor', name='Motor – Somfy PERGOLA IO motoros doboz (modulonként 1 db)', basePrice=975, unitPrice=975, perModule=True),
+        material(id='mat_xtesa_motor', name='Motor - Somfy PERGOLA IO motoros doboz (modulonként 1 db)', basePrice=975, unitPrice=975, perModule=True),
         *copy_items('tpl_legacy_hydra', {'mat_hydra_remote', 'mat_hydra_gift_sensor', 'mat_hydra_install', 'mat_hydra_zip_a', 'mat_hydra_zip_b_wall'}, 'xtesa'),
     ]
 put(tid, [
-    matrix_item('mat_xtesa_1', 'XTESA – elhúzható, feszített ponyvával, falhoz rögzítve', table('xtesa_wall_1'), W, 0.65, 2345, xd, disc=10),
-    matrix_item('mat_xtesa_2m', 'XTESA – elhúzható, feszített ponyvával, falhoz rögzítve, 2 modul (3 oszlop)', table('xtesa_wall_2m_3col'), W, 0.65, 2870, xd, disc=10),
+    matrix_item('mat_xtesa_1', 'XTESA - elhúzható, feszített ponyvával, falhoz rögzítve', table('xtesa_wall_1'), W, 0.65, 2345, xd, disc=10),
+    matrix_item('mat_xtesa_2m', 'XTESA - elhúzható, feszített ponyvával, falhoz rögzítve, 2 modul (3 oszlop)', table('xtesa_wall_2m_3col'), W, 0.65, 2870, xd, disc=10),
 ], common_extras('xtesa'), prefix='xtesa')
 
 # ================================================================ 4. MEGLÉVŐ SZERKEZETRE (lábak nélkül)
@@ -577,21 +577,21 @@ template(tid, categoryId=C4, alsoInCategoryIds=[C3], mountTypes=[N],
          moduleSplits=[{'axis': 'width', 'maxCm': 450, 'maxModules': 2}],
          sizeLimits={'minWidthCm': 125, 'maxWidthCm': 900, 'minProjectionCm': 150, 'maxProjectionCm': 500, 'maxHeightCm': 300}, sizeRules=[])
 put(tid, [], common_extras('veranda_tens'))
-add_note(tid, '2026: a régi mérettábla maradt – az új Aluprof táblával (89. o.) nem egyezik az alapja, ellenőrizd.')
+add_note(tid, '2026: a régi mérettábla maradt - az új Aluprof táblával (89. o.) nem egyezik az alapja, ellenőrizd.')
 
 tid = 'tpl_legacy_veranda_v_zip'
 template(tid, categoryId=C4, alsoInCategoryIds=[C3], mountTypes=[N],
          moduleSplits=[{'axis': 'width', 'maxCm': 500, 'maxModules': 2}],
          sizeLimits={'minWidthCm': 200, 'maxWidthCm': 1000, 'minProjectionCm': 200, 'maxProjectionCm': 600, 'maxHeightCm': 300}, sizeRules=[])
 put(tid, [], common_extras('veranda_vzip'))
-add_note(tid, '2026: a régi mérettábla maradt – az új Aluprof táblával (90. o.) nem egyezik az alapja, ellenőrizd.')
+add_note(tid, '2026: a régi mérettábla maradt - az új Aluprof táblával (90. o.) nem egyezik az alapja, ellenőrizd.')
 
 # ================================================================ 5. KAROS NAPELLENZŐK (új)
 AW = {
-    'madeira': ('MADEIRA kazettás karos napellenző', C5A, 'madeira_wall_motor_excl', 600, 'Motor – Somfy NEMO-H IO (SUNEA CSI io) 40 Nm', 456, True),
-    'corsica': ('CORSICA kazettás karos napellenző', C5A, 'corsica_wall_motor_excl', 700, 'Motor – Somfy NEMO IO (SUNEA IO) 40 Nm', 411, True),
-    'jamaica': ('JAMAICA kazetta nélküli karos napellenző', C5B, 'jamaica_wall_manual', 700, 'Motor – Somfy NEMO IO (SUNEA IO) 40 Nm', 411, False),
-    'australia': ('AUSTRALIA kazetta nélküli karos napellenző', C5B, 'australia_wall_manual', 700, 'Motor – Somfy NEMO IO (SUNEA IO) 40 Nm', 411, False),
+    'madeira': ('MADEIRA kazettás karos napellenző', C5A, 'madeira_wall_motor_excl', 600, 'Motor - Somfy NEMO-H IO (SUNEA CSI io) 40 Nm', 456, True),
+    'corsica': ('CORSICA kazettás karos napellenző', C5A, 'corsica_wall_motor_excl', 700, 'Motor - Somfy NEMO IO (SUNEA IO) 40 Nm', 411, True),
+    'jamaica': ('JAMAICA kazetta nélküli karos napellenző', C5B, 'jamaica_wall_manual', 700, 'Motor - Somfy NEMO IO (SUNEA IO) 40 Nm', 411, False),
+    'australia': ('AUSTRALIA kazetta nélküli karos napellenző', C5B, 'australia_wall_manual', 700, 'Motor - Somfy NEMO IO (SUNEA IO) 40 Nm', 411, False),
 }
 zip_install = next(m for m in tpls['tpl_legacy_refleksol_zip']['materials'] if m['id'] == 'mat_zip_install')
 for slug, (name, cid, vk, maxw, motor, motor_price, cassette) in AW.items():
@@ -612,7 +612,7 @@ for slug, (name, cid, vk, maxw, motor, motor_price, cassette) in AW.items():
         inst['name'] = 'Szerelés, programozás'
         tpls[tid]['materials'] = [
             material(id=f'mat_{slug}_motor', name=f'{motor} (modulonként 1 db)', basePrice=motor_price, unitPrice=motor_price, perModule=True),
-            material(id=f'mat_{slug}_remote', name='Távirányító – Somfy Situo 1 io', basePrice=61, unitPrice=61, excludeFromPercentBase=True),
+            material(id=f'mat_{slug}_remote', name='Távirányító - Somfy Situo 1 io', basePrice=61, unitPrice=61, excludeFromPercentBase=True),
             inst,
         ]
     aw_extras = []
@@ -620,11 +620,11 @@ for slug, (name, cid, vk, maxw, motor, motor_price, cassette) in AW.items():
         aw_extras.append(fixed_extra(f'x_{slug}_led_cassette', 'LED világítás a kazetta alsó felén (szabályozható, COB LED-szalag, meleg fehér)', 100))
     aw_extras.append(fixed_extra(f'x_{slug}_led_arms', 'LED világítás a vásznat mozgató karokban (szabályozható, COB LED-szalag, meleg fehér)', 500))
     aw_extras += common_extras(slug, infra=False)
-    put(tid, [matrix_item(f'mat_{slug}_base', f'{name} – {"kazettás" if cassette else "kazetta nélküli"}, falra szerelve', table(vk), W, 1.0, 0,
+    put(tid, [matrix_item(f'mat_{slug}_base', f'{name} - {"kazettás" if cassette else "kazetta nélküli"}, falra szerelve', table(vk), W, 1.0, 0,
                           'Alumínium szerkezet, összecsukható karok. Több modulnál modulonkénti ár × modulszám.', modules=False, split=True)],
         aw_extras, ral=False, prefix=slug)
 
-# ================================================================ 6–7. POLIKARBONÁT / ÜVEGTETŐ
+# ================================================================ 6-7. POLIKARBONÁT / ÜVEGTETŐ
 veranda_roof = next(m for m in tpls['tpl_legacy_glassfix']['materials'] if m['id'] == 'mat_glassfix_veranda')
 for tid, prefix, wall_proj in [('tpl_legacy_polifix', 'polifix', 600), ('tpl_legacy_glassfix', 'glassfix', 450)]:
     t = template(tid, mountTypes=[W, F],
@@ -639,7 +639,7 @@ for tid, prefix, wall_proj in [('tpl_legacy_polifix', 'polifix', 600), ('tpl_leg
     put(tid, [], [
         fixed_extra(f'x_{prefix}_led_strip', 'LED-szalag világítás a tetőtartó gerendák belső felén (szabályozható, COB LED-szalag, meleg fehér)', 50,
                     pricingMode='per_lm', dimensionSource='perimeter_lm', unitLabel='fm'),
-        fixed_extra(f'x_{prefix}_led_spot', 'LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) – db', 50,
+        fixed_extra(f'x_{prefix}_led_spot', 'LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) - db', 50,
                     defaultQuantity=6),
         *common_extras(prefix, sensors=False, smart=False, sun=False),
     ], prefix=prefix)
@@ -652,7 +652,7 @@ for tid, name, sub in [('tpl_thermo_glass', 'THERMO GLASS hőszigetelt, eltolhat
                        ('tpl_guillotine_vertica', 'GUILLOTINE Vertica motoros üvegfal', 'Motoros mozgatású, függőlegesen nyíló (guillotine) üvegfalrendszer')]:
     template(tid, categoryId=C8, name=name, subtitle=sub, status='inactive', order=3, mountTypes=[],
              sizeLimits={'maxHeightCm': 300}, sizeRules=[],
-             catalogRef={'note': 'Nincs ár a kapott anyagokban – add meg a m² árat (sávosan), majd állítsd aktívra.'})
+             catalogRef={'note': 'Nincs ár a kapott anyagokban - add meg a m² árat (sávosan), majd állítsd aktívra.'})
     if not tpls[tid]['materials']:
         tpls[tid]['materials'] = [material(id=f'mat_{tid[4:]}_base', name=name, pricingMode='tiered_m2', dimensionSource='front_wall', unitLabel='m²', m2Tiers=[])]
     put(tid, [], [], prefix=tid[4:])
@@ -668,7 +668,7 @@ for m in tpls[tid]['materials']:
 drop(tid, ['mat_zip_smarthome'])
 put(tid, [], [*common_extras('zip', infra=False, sensors=False),
               fixed_extra('x_zip_wind', 'Szélérzékelő', 200)], prefix='zip')
-add_note(tid, '2026: a régi mérettábla maradt – az új Aluprof R ZIIIP 120 tábla (69. o.) motor nélküli, más alapú, ellenőrizd. Egyedi szövet katalógusból: ár nincs megadva.')
+add_note(tid, '2026: a régi mérettábla maradt - az új Aluprof R ZIIIP 120 tábla (69. o.) motor nélküli, más alapú, ellenőrizd. Egyedi szövet katalógusból: ár nincs megadva.')
 
 # ================================================================ TELJES EGYEZÉS A 2026-OS LISTÁKKAL
 # A korábban megtartott régi táblák is a gyári táblára cserélődnek (a régi árképzővel), a motorok és
@@ -680,12 +680,12 @@ old = items(tid)
 a100_desc = old['mat_a100_base']['description'] if 'mat_a100_base' in old else ''
 drop(tid, ['mat_a100_base', 'mat_a100_base_2', 'mat_a100_base_3', 'mat_a100_motor'])
 if not any(m['id'] == 'mat_a100_motor_box' for m in tpls[tid]['materials']):
-    tpls[tid]['materials'].insert(0, material(id='mat_a100_motor_box', name='Motor – Somfy Sunilus IO 30/17 motoros doboz (modulonként 1 db)',
+    tpls[tid]['materials'].insert(0, material(id='mat_a100_motor_box', name='Motor - Somfy Sunilus IO 30/17 motoros doboz (modulonként 1 db)',
                                               basePrice=910, unitPrice=910, perModule=True))
 put(tid, [
-    matrix_item('mat_a100_base', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 1 modul (2 vezetősín)', table('a100lux_wall_1'), W, 0.65, 2470, a100_desc, disc=10),
-    matrix_item('mat_a100_base_2', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 2 modul (3 vezetősín)', table('a100lux_wall_2'), W, 0.65, 2470, a100_desc, disc=10),
-    matrix_item('mat_a100_base_3', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 3 modul (4 vezetősín)', table('a100lux_wall_3'), W, 0.65, 2470, a100_desc, disc=10),
+    matrix_item('mat_a100_base', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola - 1 modul (2 vezetősín)', table('a100lux_wall_1'), W, 0.65, 2470, a100_desc, disc=10),
+    matrix_item('mat_a100_base_2', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola - 2 modul (3 vezetősín)', table('a100lux_wall_2'), W, 0.65, 2470, a100_desc, disc=10),
+    matrix_item('mat_a100_base_3', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola - 3 modul (4 vezetősín)', table('a100lux_wall_3'), W, 0.65, 2470, a100_desc, disc=10),
 ], [m for m in tpls[tid]['materials'] if m['id'].startswith('x_') and not m['id'].endswith('_ral')], prefix='a100')
 tpls[tid]['catalogRef']['note'] = KE_NOTE + ' Motor: Sunilus IO 30/17 motoros doboz gyári listaáron, modulonként.'
 
@@ -750,14 +750,14 @@ add_note('tpl_legacy_refleksol_zip', ZIP_NOTE)
 
 # Motorok és távirányítók gyári listaáron
 MOTORS = {
-    'mat_kedry_motor': ('Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
-    'mat_hydra_motor': ('Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
-    'mat_keplan_motor': ('Motor – Somfy Sunilus IO 30/17 motoros doboz', 910),
-    'mat_isola_motor': ('Motor – Somfy Sunilus IO 30/17 motoros doboz', 910),
-    'mat_veranda_tens_motor': ('Motor – Somfy Sunilus 50 IO 40/17 (modulonként 1 db)', 383),
+    'mat_kedry_motor': ('Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
+    'mat_hydra_motor': ('Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
+    'mat_keplan_motor': ('Motor - Somfy Sunilus IO 30/17 motoros doboz', 910),
+    'mat_isola_motor': ('Motor - Somfy Sunilus IO 30/17 motoros doboz', 910),
+    'mat_veranda_tens_motor': ('Motor - Somfy Sunilus 50 IO 40/17 (modulonként 1 db)', 383),
 }
-KE_REMOTE = ('Távirányító – Somfy Situo 1 Pure II io', 79)
-AL_REMOTE = ('Távirányító – Somfy Situo 1 io Pure', 61)
+KE_REMOTE = ('Távirányító - Somfy Situo 1 Pure II io', 79)
+AL_REMOTE = ('Távirányító - Somfy Situo 1 io Pure', 61)
 for t in db['templates']:
     for m in t['materials']:
         if m['id'] in MOTORS:
@@ -906,7 +906,7 @@ for slug, lst in images.items():
         media.append({
             'id': 'media_cat2026_' + im['url'].split('catalog-2026/')[1].replace('/', '_').replace('.jpg', ''),
             'filename': im['url'].split('/')[-1],
-            'originalName': f"{slug}/{im['url'].split('/')[-1]} – {im.get('caption', '')}",
+            'originalName': f"{slug}/{im['url'].split('/')[-1]} - {im.get('caption', '')}",
             'url': im['url'],
             'uploadedAt': NOW,
         })

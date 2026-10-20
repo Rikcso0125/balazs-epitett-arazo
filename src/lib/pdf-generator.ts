@@ -76,7 +76,7 @@ async function embedImageFromSource(
     }
   }
 
-  // 2. Local file in public/uploads or tmp – ha van kisebb, PDF-re optimalizált másolata
+  // 2. Local file in public/uploads or tmp - ha van kisebb, PDF-re optimalizált másolata
   // (public/uploads/_pdf/<útvonal>.jpg, lásd scripts/optimize-pdf-images.py), azt használjuk
   const originalPath = resolveLocalFileFromUrl(trimmed);
   const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
@@ -581,7 +581,7 @@ export async function renderEditableQuotePdfBytes(
     // ---- Termék szekció ----
     ensureSpace(120);
     if (block.sectionTitle) {
-      // A "1. Sablon (600×400×250 cm — …)" előtagot és méretet az alapadatok már mutatják
+      // A "1. Sablon (600×400×250 cm - …)" előtagot és méretet az alapadatok már mutatják
       const title = replaceTemplateVariables(block.sectionTitle, varCtx)
         .replace(/^\d+\.\s*/, '')
         .replace(/\s*\(\d+\s*[×x]\s*\d+[^)]*\)\s*$/, '');

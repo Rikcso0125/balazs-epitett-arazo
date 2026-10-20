@@ -1,7 +1,7 @@
 {
  "source": {
   "file": "LISTINO BIOCLIMATICA 10_EN.pdf",
-  "edition": "KE Protezioni Solari – Price book 10 Bioclimatic, 31.03.26 rev.01"
+  "edition": "KE Protezioni Solari - Price book 10 Bioclimatic, 31.03.26 rev.01"
  },
  "currency": "EUR",
  "priceBasis": "List prices excl. VAT (general conditions p116), EXW for sales abroad. Pergola tables = freestanding structure price in standard colour at standard height 250 cm; motor (one per module) and remote control are mandatory but NOT included. Wall-mounted variants are derived by subtracting the printed 'price decrease for wall installation' from the freestanding table.",
@@ -13,7 +13,7 @@
    "variants": [
     {
      "key": "skylife_1L_freestanding",
-     "label": "Kedry Skylife 1L – freestanding",
+     "label": "Kedry Skylife 1L - freestanding",
      "config": "1L",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -376,7 +376,7 @@
     },
     {
      "key": "skylife_1L_wall_L",
-     "label": "Kedry Skylife 1L A – wall-mounted on L side",
+     "label": "Kedry Skylife 1L A - wall-mounted on L side",
      "config": "1L A",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -744,7 +744,7 @@
     },
     {
      "key": "skylife_1L_wall_SP",
-     "label": "Kedry Skylife 1P A – wall-mounted on SP side",
+     "label": "Kedry Skylife 1P A - wall-mounted on SP side",
      "config": "1P A",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -1112,7 +1112,7 @@
     },
     {
      "key": "skylife_2L_freestanding",
-     "label": "Kedry Skylife 2L – freestanding",
+     "label": "Kedry Skylife 2L - freestanding",
      "config": "2L",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -1475,7 +1475,7 @@
     },
     {
      "key": "skylife_2L_wall_L",
-     "label": "Kedry Skylife 2L A – wall-mounted on L side",
+     "label": "Kedry Skylife 2L A - wall-mounted on L side",
      "config": "2L A",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -1843,8 +1843,8 @@
     },
     {
      "key": "skylife_2L_wall_SP",
-     "label": "Kedry Skylife 2L – placed against wall on SP side – wall-mounted on SP side",
-     "config": "2L – placed against wall on SP side",
+     "label": "Kedry Skylife 2L - placed against wall on SP side - wall-mounted on SP side",
+     "config": "2L - placed against wall on SP side",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 2,
@@ -2211,7 +2211,7 @@
     },
     {
      "key": "skylife_2P_freestanding",
-     "label": "Kedry Skylife 2P – freestanding",
+     "label": "Kedry Skylife 2P - freestanding",
      "config": "2P",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -2574,8 +2574,8 @@
     },
     {
      "key": "skylife_2P_wall_L",
-     "label": "Kedry Skylife 2P – placed against wall on L side – wall-mounted on L side",
-     "config": "2P – placed against wall on L side",
+     "label": "Kedry Skylife 2P - placed against wall on L side - wall-mounted on L side",
+     "config": "2P - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 2,
@@ -2942,7 +2942,7 @@
     },
     {
      "key": "skylife_2P_wall_SP",
-     "label": "Kedry Skylife 2P A – wall-mounted on SP side",
+     "label": "Kedry Skylife 2P A - wall-mounted on SP side",
      "config": "2P A",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -3310,7 +3310,7 @@
     },
     {
      "key": "skylife_3L_freestanding",
-     "label": "Kedry Skylife 3L – freestanding",
+     "label": "Kedry Skylife 3L - freestanding",
      "config": "3L",
      "mountType": "freestanding",
      "modulesWidth": 3,
@@ -3673,7 +3673,7 @@
     },
     {
      "key": "skylife_3L_wall_L",
-     "label": "Kedry Skylife 3L A – wall-mounted on L side",
+     "label": "Kedry Skylife 3L A - wall-mounted on L side",
      "config": "3L A",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -4041,8 +4041,8 @@
     },
     {
      "key": "skylife_3L_wall_SP",
-     "label": "Kedry Skylife 3L – placed against wall on SP side – wall-mounted on SP side",
-     "config": "3L – placed against wall on SP side",
+     "label": "Kedry Skylife 3L - placed against wall on SP side - wall-mounted on SP side",
+     "config": "3L - placed against wall on SP side",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 3,
@@ -4409,7 +4409,7 @@
     },
     {
      "key": "skylife_3P_freestanding",
-     "label": "Kedry Skylife 3P – freestanding",
+     "label": "Kedry Skylife 3P - freestanding",
      "config": "3P",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -4772,8 +4772,8 @@
     },
     {
      "key": "skylife_3P_wall_L",
-     "label": "Kedry Skylife 3P – placed against wall on L side – wall-mounted on L side",
-     "config": "3P – placed against wall on L side",
+     "label": "Kedry Skylife 3P - placed against wall on L side - wall-mounted on L side",
+     "config": "3P - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 3,
@@ -5140,7 +5140,7 @@
     },
     {
      "key": "skylife_3P_wall_SP",
-     "label": "Kedry Skylife 3P A – wall-mounted on SP side",
+     "label": "Kedry Skylife 3P A - wall-mounted on SP side",
      "config": "3P A",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -5508,7 +5508,7 @@
     },
     {
      "key": "skylife_4_freestanding",
-     "label": "Kedry Skylife 4L – freestanding",
+     "label": "Kedry Skylife 4L - freestanding",
      "config": "4L",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -5871,7 +5871,7 @@
     },
     {
      "key": "skylife_4_wall_L",
-     "label": "Kedry Skylife 4L A – wall-mounted on L side",
+     "label": "Kedry Skylife 4L A - wall-mounted on L side",
      "config": "4L A",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -6239,7 +6239,7 @@
     },
     {
      "key": "skylife_4_wall_SP",
-     "label": "Kedry Skylife 4P A – wall-mounted on SP side",
+     "label": "Kedry Skylife 4P A - wall-mounted on SP side",
      "config": "4P A",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -6607,7 +6607,7 @@
     },
     {
      "key": "skylife_6L_freestanding",
-     "label": "Kedry Skylife 6L – freestanding",
+     "label": "Kedry Skylife 6L - freestanding",
      "config": "6L",
      "mountType": "freestanding",
      "modulesWidth": 3,
@@ -6970,7 +6970,7 @@
     },
     {
      "key": "skylife_6L_wall_L",
-     "label": "Kedry Skylife 6L A – wall-mounted on L side",
+     "label": "Kedry Skylife 6L A - wall-mounted on L side",
      "config": "6L A",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -7338,8 +7338,8 @@
     },
     {
      "key": "skylife_6L_wall_SP",
-     "label": "Kedry Skylife 6L – placed against wall on SP side – wall-mounted on SP side",
-     "config": "6L – placed against wall on SP side",
+     "label": "Kedry Skylife 6L - placed against wall on SP side - wall-mounted on SP side",
+     "config": "6L - placed against wall on SP side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 3,
@@ -7706,7 +7706,7 @@
     },
     {
      "key": "skylife_6P_freestanding",
-     "label": "Kedry Skylife 6P – freestanding",
+     "label": "Kedry Skylife 6P - freestanding",
      "config": "6P",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -8069,8 +8069,8 @@
     },
     {
      "key": "skylife_6P_wall_L",
-     "label": "Kedry Skylife 6P – placed against wall on L side – wall-mounted on L side",
-     "config": "6P – placed against wall on L side",
+     "label": "Kedry Skylife 6P - placed against wall on L side - wall-mounted on L side",
+     "config": "6P - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 3,
@@ -8437,7 +8437,7 @@
     },
     {
      "key": "skylife_6P_wall_SP",
-     "label": "Kedry Skylife 6P A – wall-mounted on SP side",
+     "label": "Kedry Skylife 6P A - wall-mounted on SP side",
      "config": "6P A",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -8805,7 +8805,7 @@
     },
     {
      "key": "skylife_2SC_freestanding",
-     "label": "Kedry Skylife 2SC – freestanding",
+     "label": "Kedry Skylife 2SC - freestanding",
      "config": "2SC",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -8985,8 +8985,8 @@
     },
     {
      "key": "skylife_2SC_wall_L",
-     "label": "Kedry Skylife 2SC – placed against wall on L side – wall-mounted on L side",
-     "config": "2SC – placed against wall on L side",
+     "label": "Kedry Skylife 2SC - placed against wall on L side - wall-mounted on L side",
+     "config": "2SC - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 1,
@@ -9173,7 +9173,7 @@
     "maxWidthCm": 450,
     "maxProjectionCm": 611,
     "maxHeightCm": 300,
-    "notes": "Per module per KE: L (larghezza/width) max 450 cm, SP (sporgenza/projection) max 611 cm (p8, p16, tables). Max area 27.5 m2 per module (p8). Standard H 250 cm, up to 300 cm with +EUR 131/post. Multi-module maxima: 2L L884, 2P SP1206, 3L L1318, 3P SP1801, 4 = 884x1206, 6L = L1318 x SP1206, 6P = L884 x SP1801, 2SC = L600 x SP511 (no intermediate pillars). Customer spec quotes 611 wide x 450 projection: that matches KE's dimensions only if the pergola is wall-mounted on the SP side (wall along the 611 edge) – see *_wall_SP variants whose axes are tagged accordingly."
+    "notes": "Per module per KE: L (larghezza/width) max 450 cm, SP (sporgenza/projection) max 611 cm (p8, p16, tables). Max area 27.5 m2 per module (p8). Standard H 250 cm, up to 300 cm with +EUR 131/post. Multi-module maxima: 2L L884, 2P SP1206, 3L L1318, 3P SP1801, 4 = 884x1206, 6L = L1318 x SP1206, 6P = L884 x SP1801, 2SC = L600 x SP511 (no intermediate pillars). Customer spec quotes 611 wide x 450 projection: that matches KE's dimensions only if the pergola is wall-mounted on the SP side (wall along the 611 edge) - see *_wall_SP variants whose axes are tagged accordingly."
    },
    "options": [
     {
@@ -9441,7 +9441,7 @@
      "notes": "Optional technical compartment for electrical components; mandatory when installing MORE FTA-e floor heating / MORE VMC (p69)."
     },
     {
-     "name": "Classic version – corner column, ordered as an addition",
+     "name": "Classic version - corner column, ordered as an addition",
      "price": 471,
      "unit": "pcs",
      "page": 76,
@@ -9449,7 +9449,7 @@
      "notes": "Skylife/Prime Classic: decorative outer profiles; no LEDs possible in outer profiles."
     },
     {
-     "name": "Classic version – corner column, ordered together with the structure",
+     "name": "Classic version - corner column, ordered together with the structure",
      "price": 135,
      "unit": "pcs",
      "page": 76,
@@ -9457,7 +9457,7 @@
      "notes": ""
     },
     {
-     "name": "Classic version – central column, ordered as an addition",
+     "name": "Classic version - central column, ordered as an addition",
      "price": 305,
      "unit": "pcs",
      "page": 76,
@@ -9465,7 +9465,7 @@
      "notes": ""
     },
     {
-     "name": "Classic version – central column, ordered together with the structure",
+     "name": "Classic version - central column, ordered together with the structure",
      "price": 59,
      "unit": "pcs",
      "page": 76,
@@ -9473,7 +9473,7 @@
      "notes": ""
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 250 cm",
+     "name": "Classic version - perimeter beam, side length up to 250 cm",
      "price": 188,
      "unit": "side",
      "page": 77,
@@ -9481,7 +9481,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 300 cm",
+     "name": "Classic version - perimeter beam, side length up to 300 cm",
      "price": 225,
      "unit": "side",
      "page": 77,
@@ -9489,7 +9489,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 350 cm",
+     "name": "Classic version - perimeter beam, side length up to 350 cm",
      "price": 263,
      "unit": "side",
      "page": 77,
@@ -9497,7 +9497,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 400 cm",
+     "name": "Classic version - perimeter beam, side length up to 400 cm",
      "price": 300,
      "unit": "side",
      "page": 77,
@@ -9505,7 +9505,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 450 cm",
+     "name": "Classic version - perimeter beam, side length up to 450 cm",
      "price": 338,
      "unit": "side",
      "page": 77,
@@ -9513,7 +9513,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 500 cm",
+     "name": "Classic version - perimeter beam, side length up to 500 cm",
      "price": 375,
      "unit": "side",
      "page": 77,
@@ -9521,7 +9521,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 550 cm",
+     "name": "Classic version - perimeter beam, side length up to 550 cm",
      "price": 413,
      "unit": "side",
      "page": 77,
@@ -9529,7 +9529,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 600 cm",
+     "name": "Classic version - perimeter beam, side length up to 600 cm",
      "price": 449,
      "unit": "side",
      "page": 77,
@@ -9537,7 +9537,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 650 cm",
+     "name": "Classic version - perimeter beam, side length up to 650 cm",
      "price": 487,
      "unit": "side",
      "page": 77,
@@ -9545,7 +9545,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 700 cm",
+     "name": "Classic version - perimeter beam, side length up to 700 cm",
      "price": 524,
      "unit": "side",
      "page": 77,
@@ -9553,7 +9553,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 750 cm",
+     "name": "Classic version - perimeter beam, side length up to 750 cm",
      "price": 562,
      "unit": "side",
      "page": 77,
@@ -9561,7 +9561,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 800 cm",
+     "name": "Classic version - perimeter beam, side length up to 800 cm",
      "price": 599,
      "unit": "side",
      "page": 77,
@@ -9569,7 +9569,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 850 cm",
+     "name": "Classic version - perimeter beam, side length up to 850 cm",
      "price": 637,
      "unit": "side",
      "page": 77,
@@ -9577,7 +9577,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 900 cm",
+     "name": "Classic version - perimeter beam, side length up to 900 cm",
      "price": 674,
      "unit": "side",
      "page": 77,
@@ -9585,7 +9585,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 950 cm",
+     "name": "Classic version - perimeter beam, side length up to 950 cm",
      "price": 712,
      "unit": "side",
      "page": 77,
@@ -9593,7 +9593,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Classic version – perimeter beam, side length up to 1000 cm",
+     "name": "Classic version - perimeter beam, side length up to 1000 cm",
      "price": 749,
      "unit": "side",
      "page": 77,
@@ -9601,7 +9601,7 @@
      "notes": "Per side"
     },
     {
-     "name": "Gutter strip LED white light – side length up to 250 cm",
+     "name": "Gutter strip LED white light - side length up to 250 cm",
      "price": 259,
      "unit": "side",
      "page": 108,
@@ -9609,7 +9609,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 300 cm",
+     "name": "Gutter strip LED white light - side length up to 300 cm",
      "price": 280,
      "unit": "side",
      "page": 108,
@@ -9617,7 +9617,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 350 cm",
+     "name": "Gutter strip LED white light - side length up to 350 cm",
      "price": 301,
      "unit": "side",
      "page": 108,
@@ -9625,7 +9625,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 400 cm",
+     "name": "Gutter strip LED white light - side length up to 400 cm",
      "price": 322,
      "unit": "side",
      "page": 108,
@@ -9633,7 +9633,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 450 cm",
+     "name": "Gutter strip LED white light - side length up to 450 cm",
      "price": 360,
      "unit": "side",
      "page": 108,
@@ -9641,7 +9641,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 500 cm",
+     "name": "Gutter strip LED white light - side length up to 500 cm",
      "price": 384,
      "unit": "side",
      "page": 108,
@@ -9649,7 +9649,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 550 cm",
+     "name": "Gutter strip LED white light - side length up to 550 cm",
      "price": 404,
      "unit": "side",
      "page": 108,
@@ -9657,7 +9657,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 600 cm",
+     "name": "Gutter strip LED white light - side length up to 600 cm",
      "price": 427,
      "unit": "side",
      "page": 108,
@@ -9665,7 +9665,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 650 cm",
+     "name": "Gutter strip LED white light - side length up to 650 cm",
      "price": 446,
      "unit": "side",
      "page": 108,
@@ -9673,7 +9673,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 700 cm",
+     "name": "Gutter strip LED white light - side length up to 700 cm",
      "price": 471,
      "unit": "side",
      "page": 108,
@@ -9681,7 +9681,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 750 cm",
+     "name": "Gutter strip LED white light - side length up to 750 cm",
      "price": 624,
      "unit": "side",
      "page": 108,
@@ -9689,7 +9689,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). Breakpoint = side length (cm)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 250 cm",
+     "name": "Gutter strip LED RGB light - side length up to 250 cm",
      "price": 322,
      "unit": "side",
      "page": 108,
@@ -9697,7 +9697,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 300 cm",
+     "name": "Gutter strip LED RGB light - side length up to 300 cm",
      "price": 357,
      "unit": "side",
      "page": 108,
@@ -9705,7 +9705,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 350 cm",
+     "name": "Gutter strip LED RGB light - side length up to 350 cm",
      "price": 392,
      "unit": "side",
      "page": 108,
@@ -9713,7 +9713,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 400 cm",
+     "name": "Gutter strip LED RGB light - side length up to 400 cm",
      "price": 429,
      "unit": "side",
      "page": 108,
@@ -9721,7 +9721,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 450 cm",
+     "name": "Gutter strip LED RGB light - side length up to 450 cm",
      "price": 479,
      "unit": "side",
      "page": 108,
@@ -9729,7 +9729,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 500 cm",
+     "name": "Gutter strip LED RGB light - side length up to 500 cm",
      "price": 514,
      "unit": "side",
      "page": 108,
@@ -9737,7 +9737,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 550 cm",
+     "name": "Gutter strip LED RGB light - side length up to 550 cm",
      "price": 550,
      "unit": "side",
      "page": 108,
@@ -9745,7 +9745,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 600 cm",
+     "name": "Gutter strip LED RGB light - side length up to 600 cm",
      "price": 584,
      "unit": "side",
      "page": 108,
@@ -9753,7 +9753,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 650 cm",
+     "name": "Gutter strip LED RGB light - side length up to 650 cm",
      "price": 620,
      "unit": "side",
      "page": 108,
@@ -9761,7 +9761,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 700 cm",
+     "name": "Gutter strip LED RGB light - side length up to 700 cm",
      "price": 653,
      "unit": "side",
      "page": 108,
@@ -9769,7 +9769,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "Gutter strip LED RGB light – side length up to 750 cm",
+     "name": "Gutter strip LED RGB light - side length up to 750 cm",
      "price": 820,
      "unit": "side",
      "page": 108,
@@ -9777,7 +9777,7 @@
      "notes": "Price per side; not for Neos (p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 250 cm",
+     "name": "External strip LED RGB - side length up to 250 cm",
      "price": 322,
      "unit": "side",
      "page": 108,
@@ -9785,7 +9785,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 300 cm",
+     "name": "External strip LED RGB - side length up to 300 cm",
      "price": 357,
      "unit": "side",
      "page": 108,
@@ -9793,7 +9793,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 350 cm",
+     "name": "External strip LED RGB - side length up to 350 cm",
      "price": 392,
      "unit": "side",
      "page": 108,
@@ -9801,7 +9801,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 400 cm",
+     "name": "External strip LED RGB - side length up to 400 cm",
      "price": 429,
      "unit": "side",
      "page": 108,
@@ -9809,7 +9809,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 450 cm",
+     "name": "External strip LED RGB - side length up to 450 cm",
      "price": 479,
      "unit": "side",
      "page": 108,
@@ -9817,7 +9817,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 500 cm",
+     "name": "External strip LED RGB - side length up to 500 cm",
      "price": 514,
      "unit": "side",
      "page": 108,
@@ -9825,7 +9825,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 550 cm",
+     "name": "External strip LED RGB - side length up to 550 cm",
      "price": 550,
      "unit": "side",
      "page": 108,
@@ -9833,7 +9833,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 600 cm",
+     "name": "External strip LED RGB - side length up to 600 cm",
      "price": 584,
      "unit": "side",
      "page": 108,
@@ -9841,7 +9841,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 650 cm",
+     "name": "External strip LED RGB - side length up to 650 cm",
      "price": 620,
      "unit": "side",
      "page": 108,
@@ -9849,7 +9849,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 700 cm",
+     "name": "External strip LED RGB - side length up to 700 cm",
      "price": 653,
      "unit": "side",
      "page": 108,
@@ -9857,7 +9857,7 @@
      "notes": "Price per side; not for Neos; Classic version cannot have LEDs in outer profiles (p76, p108)."
     },
     {
-     "name": "External strip LED RGB – side length up to 750 cm",
+     "name": "External strip LED RGB - side length up to 750 cm",
      "price": 820,
      "unit": "side",
      "page": 108,
@@ -9870,7 +9870,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Control Unit TELECO/KE with power supply 150W 9CLA--746150",
@@ -9878,7 +9878,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Control Unit TELECO/KE with power supply 240W 9CLA--746240",
@@ -9886,7 +9886,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 60 W 2TRANE870107",
@@ -9894,7 +9894,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 100 W 2TRANE870108",
@@ -9902,7 +9902,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 200 W 2TRANE870112",
@@ -9910,7 +9910,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 60 W 2TRANE870207",
@@ -9918,7 +9918,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 100 W 2TRANE870208",
@@ -9926,7 +9926,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 200 W 2TRANE870212",
@@ -9934,7 +9934,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Light IO control unit on/off (240 W max) MS1822612",
@@ -9942,7 +9942,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (RGB lights (p109 right column); Tahoma compatible; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (RGB lights (p109 right column); Tahoma compatible; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Heater HELIOSA Wide Angle 2000 W IPX5",
@@ -9977,7 +9977,7 @@
      "notes": "Star Progetti Heliosa infrared heater, radio remote included; general accessory page"
     },
     {
-     "name": "Colour surcharge structure – RAL group 4% (see colors)",
+     "name": "Colour surcharge structure - RAL group 4% (see colors)",
      "price": 4,
      "unit": "%",
      "page": 115,
@@ -9985,7 +9985,7 @@
      "notes": "Applies to structure price for colours marked 4% on p115; blades of the same colour +2%."
     },
     {
-     "name": "Colour surcharge blades – RAL group 2% (see colors)",
+     "name": "Colour surcharge blades - RAL group 2% (see colors)",
      "price": 2,
      "unit": "%",
      "page": 115,
@@ -9993,7 +9993,7 @@
      "notes": "Blades surcharge for the 4%/2% colour group (p115)."
     },
     {
-     "name": "Colour surcharge structure – RAL no standard",
+     "name": "Colour surcharge structure - RAL no standard",
      "price": 15,
      "unit": "%",
      "page": 115,
@@ -10001,7 +10001,7 @@
      "notes": "Non-standard RAL: structure +15%, blades +10% (p115)."
     },
     {
-     "name": "Colour surcharge blades – RAL no standard",
+     "name": "Colour surcharge blades - RAL no standard",
      "price": 10,
      "unit": "%",
      "page": 115,
@@ -10014,7 +10014,7 @@
     "Wall-mounted variants are DERIVED (table minus printed wall decrease), not printed tables. Decreases: 1L 1791/1791; 2L L2429/SP1791; 2P L1791/SP2429; 3L L3066/SP1791; 3P L1791/SP3066; 4 L2429/SP2429; 6L L3066/SP2429; 6P L2429/SP3066; 2SC L1791 only (p22-38).",
     "Config names for wall variants not shown in the overview pages (e.g. 2L table with wall on SP side, 2P with wall on L side, 3L/3P/6L/6P cross cases, 2SC wall) are my descriptive names; the price pages do show both 'placed-against side' diagrams and decreases for them.",
     "B/C gutter surcharge interpretation: right-hand '**B/C' column (keyed by SP) and bottom '**B/C' row (keyed by L) read as price per one side of that length ('** Attention price per one side'). Stored per variant in gutterBCSurchargePerSide.",
-    "Overview p18/p20 footnote '* COLONNA OBBLIGATORIA OLTRE. 700 CM PER MODULO' (column mandatory beyond 700 cm per module) – not applicable to Skylife's 611 cm max as printed; likely copied from Prime. Not modelled.",
+    "Overview p18/p20 footnote '* COLONNA OBBLIGATORIA OLTRE. 700 CM PER MODULO' (column mandatory beyond 700 cm per module) - not applicable to Skylife's 611 cm max as printed; likely copied from Prime. Not modelled.",
     "Special configuration 'single module with back-set frontal pillars' (p21) is 'on quotation' but also says 'ADD EUR 403,00 compared to 1L'; captured as an option.",
     "Sensor prices (p75) are listed per motor family (KE cable KEW / KE radio KER / Somfy Altus RTS / Somfy IO Sunilus); KE cable KEW motor itself is not priced on Skylife pages.",
     "Colour list: p115 places CORTEN ROUGH in the +4%/+2% surcharge group although product pages show it as a STANDARD swatch; RAL 9005 Black Matt is surcharge-free on p115 but not among product-page standard swatches.",
@@ -10028,7 +10028,7 @@
    "variants": [
     {
      "key": "neos_1L_freestanding",
-     "label": "Kedry Neos 1L – freestanding",
+     "label": "Kedry Neos 1L - freestanding",
      "config": "1L",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -10394,7 +10394,7 @@
     },
     {
      "key": "neos_1L_wall_L",
-     "label": "Kedry Neos 1L A (mounted to wall on L side) – wall-mounted on L side",
+     "label": "Kedry Neos 1L A (mounted to wall on L side) - wall-mounted on L side",
      "config": "1L A (mounted to wall on L side)",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -10765,7 +10765,7 @@
     },
     {
      "key": "neos_1L_wall_SP",
-     "label": "Kedry Neos 1L A (mounted to wall on SP side) – wall-mounted on SP side",
+     "label": "Kedry Neos 1L A (mounted to wall on SP side) - wall-mounted on SP side",
      "config": "1L A (mounted to wall on SP side)",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -11136,7 +11136,7 @@
     },
     {
      "key": "neos_2L_freestanding",
-     "label": "Kedry Neos 2L – freestanding",
+     "label": "Kedry Neos 2L - freestanding",
      "config": "2L",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -11418,8 +11418,8 @@
     },
     {
      "key": "neos_2L_wall_L",
-     "label": "Kedry Neos 2L – placed against wall on L side – wall-mounted on L side",
-     "config": "2L – placed against wall on L side",
+     "label": "Kedry Neos 2L - placed against wall on L side - wall-mounted on L side",
+     "config": "2L - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 1,
@@ -11705,7 +11705,7 @@
     },
     {
      "key": "neos_2P_freestanding",
-     "label": "Kedry Neos 2P – freestanding",
+     "label": "Kedry Neos 2P - freestanding",
      "config": "2P",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -12071,8 +12071,8 @@
     },
     {
      "key": "neos_2P_wall_L",
-     "label": "Kedry Neos 2P – placed against wall on L side – wall-mounted on L side",
-     "config": "2P – placed against wall on L side",
+     "label": "Kedry Neos 2P - placed against wall on L side - wall-mounted on L side",
+     "config": "2P - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 1,
      "modulesProjection": 2,
@@ -12442,8 +12442,8 @@
     },
     {
      "key": "neos_2P_wall_SP",
-     "label": "Kedry Neos 2P – placed against wall on SP side – wall-mounted on SP side",
-     "config": "2P – placed against wall on SP side",
+     "label": "Kedry Neos 2P - placed against wall on SP side - wall-mounted on SP side",
+     "config": "2P - placed against wall on SP side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 1,
@@ -12813,7 +12813,7 @@
     },
     {
      "key": "neos_2SC_freestanding",
-     "label": "Kedry Neos 2SC – freestanding",
+     "label": "Kedry Neos 2SC - freestanding",
      "config": "2SC",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -12981,8 +12981,8 @@
     },
     {
      "key": "neos_2SC_wall_L",
-     "label": "Kedry Neos 2SC – placed against wall on L side – wall-mounted on L side",
-     "config": "2SC – placed against wall on L side",
+     "label": "Kedry Neos 2SC - placed against wall on L side - wall-mounted on L side",
+     "config": "2SC - placed against wall on L side",
      "mountType": "wall",
      "modulesWidth": 2,
      "modulesProjection": 1,
@@ -13154,7 +13154,7 @@
     },
     {
      "key": "neos_1T_loft",
-     "label": "Kedry Neos 1T – loft (no posts)",
+     "label": "Kedry Neos 1T - loft (no posts)",
      "config": "1T",
      "mountType": "no_legs",
      "modulesWidth": 1,
@@ -13523,7 +13523,7 @@
     "maxWidthCm": 450,
     "maxProjectionCm": 600,
     "maxHeightCm": 270,
-    "notes": "Per module per KE: L max 450 cm, SP max 600 cm (p8, p94, tables). Max area 27 m2 per module (p8). Standard H 250 cm, max 270 cm (+EUR 80/pillar) – customer spec says 300 cm, PDF says 270. Multi-module: 2L = L900 x SP500, 2P = L450 x SP1200, 2SC = L600 x SP500. Motor must sit on an external perimeter beam not fixed to the wall, >= 13 cm from it."
+    "notes": "Per module per KE: L max 450 cm, SP max 600 cm (p8, p94, tables). Max area 27 m2 per module (p8). Standard H 250 cm, max 270 cm (+EUR 80/pillar) - customer spec says 300 cm, PDF says 270. Multi-module: 2L = L900 x SP500, 2P = L450 x SP1200, 2SC = L600 x SP500. Motor must sit on an external perimeter beam not fixed to the wall, >= 13 cm from it."
    },
    "options": [
     {
@@ -13644,7 +13644,7 @@
      "unit": "pcs",
      "page": 75,
      "appliesTo": "RTS motor",
-     "notes": "As above – confirm with KE for Neos."
+     "notes": "As above - confirm with KE for Neos."
     },
     {
      "name": "Rain sensor ONDEIS (Somfy IO)",
@@ -13660,7 +13660,7 @@
      "unit": "pcs",
      "page": 75,
      "appliesTo": "IO motor",
-     "notes": "As above – confirm with KE for Neos."
+     "notes": "As above - confirm with KE for Neos."
     },
     {
      "name": "Kit Somfy IO rain sensor + temperature sensor (snow), only with Tahoma",
@@ -13671,7 +13671,7 @@
      "notes": "General automation page p75."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 250 cm",
+     "name": "Gutter strip LED white light - side length up to 250 cm",
      "price": 259,
      "unit": "side",
      "page": 108,
@@ -13679,7 +13679,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 300 cm",
+     "name": "Gutter strip LED white light - side length up to 300 cm",
      "price": 280,
      "unit": "side",
      "page": 108,
@@ -13687,7 +13687,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 350 cm",
+     "name": "Gutter strip LED white light - side length up to 350 cm",
      "price": 301,
      "unit": "side",
      "page": 108,
@@ -13695,7 +13695,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 400 cm",
+     "name": "Gutter strip LED white light - side length up to 400 cm",
      "price": 322,
      "unit": "side",
      "page": 108,
@@ -13703,7 +13703,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 450 cm",
+     "name": "Gutter strip LED white light - side length up to 450 cm",
      "price": 360,
      "unit": "side",
      "page": 108,
@@ -13711,7 +13711,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 500 cm",
+     "name": "Gutter strip LED white light - side length up to 500 cm",
      "price": 384,
      "unit": "side",
      "page": 108,
@@ -13719,7 +13719,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 550 cm",
+     "name": "Gutter strip LED white light - side length up to 550 cm",
      "price": 404,
      "unit": "side",
      "page": 108,
@@ -13727,7 +13727,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 600 cm",
+     "name": "Gutter strip LED white light - side length up to 600 cm",
      "price": 427,
      "unit": "side",
      "page": 108,
@@ -13735,7 +13735,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 650 cm",
+     "name": "Gutter strip LED white light - side length up to 650 cm",
      "price": 446,
      "unit": "side",
      "page": 108,
@@ -13743,7 +13743,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 700 cm",
+     "name": "Gutter strip LED white light - side length up to 700 cm",
      "price": 471,
      "unit": "side",
      "page": 108,
@@ -13751,7 +13751,7 @@
      "notes": "Price per side; Skylife/Prime/Neos (p108). RGB strips are NOT available for Neos."
     },
     {
-     "name": "Gutter strip LED white light – side length up to 750 cm",
+     "name": "Gutter strip LED white light - side length up to 750 cm",
      "price": 624,
      "unit": "side",
      "page": 108,
@@ -13764,7 +13764,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Control Unit TELECO/KE with power supply 150W 9CLA--746150",
@@ -13772,7 +13772,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Control Unit TELECO/KE with power supply 240W 9CLA--746240",
@@ -13780,7 +13780,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights or RGB lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 60 W 2TRANE870107",
@@ -13788,7 +13788,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 100 W 2TRANE870108",
@@ -13796,7 +13796,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply KE / RTS 200 W 2TRANE870112",
@@ -13804,7 +13804,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 60 W 2TRANE870207",
@@ -13812,7 +13812,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 100 W 2TRANE870208",
@@ -13820,7 +13820,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Receiver + power supply Somfy IO 200 W 2TRANE870212",
@@ -13828,7 +13828,7 @@
      "unit": "pcs",
      "page": 109,
      "appliesTo": "all variants",
-     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m – size the control unit accordingly."
+     "notes": "Lighting control for LED strips (white lights; remote not included). LED strip consumption 10 W/m - size the control unit accordingly."
     },
     {
      "name": "Heater HELIOSA Wide Angle 2000 W IPX5",
@@ -13863,7 +13863,7 @@
      "notes": "Star Progetti Heliosa infrared heater, radio remote included; general accessory page"
     },
     {
-     "name": "Colour surcharge structure – RAL group 4% (see colors)",
+     "name": "Colour surcharge structure - RAL group 4% (see colors)",
      "price": 4,
      "unit": "%",
      "page": 115,
@@ -13871,7 +13871,7 @@
      "notes": "Applies to structure price for colours marked 4% on p115; blades of the same colour +2%."
     },
     {
-     "name": "Colour surcharge blades – RAL group 2% (see colors)",
+     "name": "Colour surcharge blades - RAL group 2% (see colors)",
      "price": 2,
      "unit": "%",
      "page": 115,
@@ -13879,7 +13879,7 @@
      "notes": "Blades surcharge for the 4%/2% colour group (p115)."
     },
     {
-     "name": "Colour surcharge structure – RAL no standard",
+     "name": "Colour surcharge structure - RAL no standard",
      "price": 15,
      "unit": "%",
      "page": 115,
@@ -13887,7 +13887,7 @@
      "notes": "Non-standard RAL: structure +15%, blades +10% (p115)."
     },
     {
-     "name": "Colour surcharge blades – RAL no standard",
+     "name": "Colour surcharge blades - RAL no standard",
      "price": 10,
      "unit": "%",
      "page": 115,
@@ -13900,10 +13900,10 @@
     "Customer spec height max 300 cm, but the PDF says max 270 cm (p8 'H.max 270' and note under every Neos table).",
     "Neos price rows (projection) are in odd steps of 17.5 cm (210.8, 228.3, ... 595.8, 600); 2P rows in 35 cm steps (415.2 ... 1185.2, 1200). Kept exactly as printed (decimal cm).",
     "p101 (Neos 2P) row labels printed '4852', '5552', '8002', '8352' are typos for 485.2/555.2/800.2/835.2 cm (verified visually: decimal point missing in the PDF itself); corrected.",
-    "Wall-mounted variants are DERIVED (table minus decrease): 1L 827 (L) / 827 (SP); 2L 1902 (L only); 2P 827 (L) / 1902 (SP); 2SC 603 (L only; lower than the 1L decrease – as printed p102). 1T loft has no decrease.",
+    "Wall-mounted variants are DERIVED (table minus decrease): 1L 827 (L) / 827 (SP); 2L 1902 (L only); 2P 827 (L) / 1902 (SP); 2SC 603 (L only; lower than the 1L decrease - as printed p102). 1T loft has no decrease.",
     "Neos 1L page p96 shows only the 'placed-against side L' diagram but prints decreases for both L and SP sides; overview p94 shows both 1L A variants.",
     "Products Summary p8 lists Neos fastener 'freestanding/wall/roof' and column profile '13x13 / 13x19,5'; '1T loft' mapped to no_legs (no posts, fixed to building on surface-mounted bracket, p104).",
-    "Sensors (p75) are listed for Somfy Altus RTS / Sunilus IO rows; Neos uses Altus 40 RTS / Sunea Screen IO motors – compatibility assumed by protocol (RTS/IO) but not stated; confirm with KE.",
+    "Sensors (p75) are listed for Somfy Altus RTS / Sunilus IO rows; Neos uses Altus 40 RTS / Sunea Screen IO motors - compatibility assumed by protocol (RTS/IO) but not stated; confirm with KE.",
     "No B/C gutter options and no RGB LED for Neos (p108 'no KEDRY NEOS')."
    ]
   }
@@ -13912,31 +13912,31 @@
   {
    "code": "RAL 9010",
    "name": "White",
-   "surchargeNote": "Standard colour – no surcharge (structure, blades, Vertika, Vertika Prime).",
+   "surchargeNote": "Standard colour - no surcharge (structure, blades, Vertika, Vertika Prime).",
    "page": 115
   },
   {
    "code": "RAL 9010",
    "name": "White Matt",
-   "surchargeNote": "Standard colour – no surcharge (structure, blades, Vertika, Vertika Prime).",
+   "surchargeNote": "Standard colour - no surcharge (structure, blades, Vertika, Vertika Prime).",
    "page": 115
   },
   {
    "code": "RAL 7016",
    "name": "Iron Matt",
-   "surchargeNote": "Standard colour – no surcharge (structure, blades, Vertika, Vertika Prime). * +10 days delivery time compared to standard RAL.",
+   "surchargeNote": "Standard colour - no surcharge (structure, blades, Vertika, Vertika Prime). * +10 days delivery time compared to standard RAL.",
    "page": 115
   },
   {
    "code": "CARBON ROUGH",
    "name": "Carbon Rough",
-   "surchargeNote": "Standard colour – no surcharge (structure, blades, Vertika, Vertika Prime). * +10 days delivery time compared to standard RAL.",
+   "surchargeNote": "Standard colour - no surcharge (structure, blades, Vertika, Vertika Prime). * +10 days delivery time compared to standard RAL.",
    "page": 115
   },
   {
    "code": "RAL 9005",
    "name": "Black Matt",
-   "surchargeNote": "Standard colour – no surcharge (structure, blades, Vertika, Vertika Prime). Marked as no-surcharge on p115 although product pages show only 9010 White, 9010 White Matt, 7016 Iron Matt, Carbon Rough, Corten Rough as STANDARD swatches.",
+   "surchargeNote": "Standard colour - no surcharge (structure, blades, Vertika, Vertika Prime). Marked as no-surcharge on p115 although product pages show only 9010 White, 9010 White Matt, 7016 Iron Matt, Carbon Rough, Corten Rough as STANDARD swatches.",
    "page": 115
   },
   {

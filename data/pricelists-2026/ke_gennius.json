@@ -13,7 +13,7 @@
    "variants": [
     {
      "key": "xtesa_wall_1",
-     "label": "XTESA – wall-mounted, 1 module",
+     "label": "XTESA - wall-mounted, 1 module",
      "config": "1 MODULE",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -127,7 +127,7 @@
     },
     {
      "key": "xtesa_wall_2m_3col",
-     "label": "XTESA – wall-mounted, 2 modules side by side, 3 front columns",
+     "label": "XTESA - wall-mounted, 2 modules side by side, 3 front columns",
      "config": "2 MODULES - 3 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -284,7 +284,7 @@
     },
     {
      "key": "xtesa_wall_2m_2col",
-     "label": "XTESA – wall-mounted, 2 modules side by side, 2 front columns (no middle column)",
+     "label": "XTESA - wall-mounted, 2 modules side by side, 2 front columns (no middle column)",
      "config": "2 MODULES - 2 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -377,7 +377,7 @@
     },
     {
      "key": "xtesa_wall_3m_4col",
-     "label": "XTESA – wall-mounted, 3 modules side by side, 4 front columns",
+     "label": "XTESA - wall-mounted, 3 modules side by side, 4 front columns",
      "config": "3 MODULES - 4 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -544,7 +544,7 @@
     },
     {
      "key": "xtesa_wall_3m_3col",
-     "label": "XTESA – wall-mounted, 3 modules side by side, 3 front columns",
+     "label": "XTESA - wall-mounted, 3 modules side by side, 3 front columns",
      "config": "3 MODULES - 3 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -644,7 +644,7 @@
    },
    "options": [
     {
-     "name": "Hood – 1 MODULE",
+     "name": "Hood - 1 MODULE",
      "price": null,
      "unit": "pcs",
      "page": 12,
@@ -661,7 +661,7 @@
      }
     },
     {
-     "name": "Hood – 2 MODULES - 3 COLUMNS",
+     "name": "Hood - 2 MODULES - 3 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 13,
@@ -683,7 +683,7 @@
      }
     },
     {
-     "name": "Hood – 2 MODULES - 2 COLUMNS",
+     "name": "Hood - 2 MODULES - 2 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 13,
@@ -697,7 +697,7 @@
      }
     },
     {
-     "name": "Hood – 3 MODULES - 4 COLUMNS",
+     "name": "Hood - 3 MODULES - 4 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 14,
@@ -721,7 +721,7 @@
      }
     },
     {
-     "name": "Hood – 3 MODULES - 3 COLUMNS",
+     "name": "Hood - 3 MODULES - 3 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 14,
@@ -1096,7 +1096,7 @@
     }
    ],
    "uncertainties": [
-    "p12-18: no motor price is listed for XTESA / XTESA PLAIN (only remotes and wind sensor); the description says each module is motorised separately, so motor is assumed included in the matrix price – confirm with KE.",
+    "p12-18: no motor price is listed for XTESA / XTESA PLAIN (only remotes and wind sensor); the description says each module is motorised separately, so motor is assumed included in the matrix price - confirm with KE.",
     "p13/14/17/18: on each page the two tables are side by side; mapping of tables to \"2 MODULES - 3 COLUMNS\" vs \"2 COLUMNS\" (and 3 modules 4 vs 3 columns) done by width range and verified on the rendered page.",
     "p92: XTESA LED strip table header shows the width icon but is priced \"per side\" with sizes 250-700 (= projection range); key assumed to be the guide/side length.",
     "p87: gable fabric surcharges listed for \"XTESA - A100 STAR - A2C\"; \"CRISTAL +8%\" basis not stated (assumed on gable price)."
@@ -1109,7 +1109,7 @@
    "variants": [
     {
      "key": "xtesa_plain_wall_1",
-     "label": "XTESA PLAIN – wall-mounted, 1 module",
+     "label": "XTESA PLAIN - wall-mounted, 1 module",
      "config": "1 MODULE",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -1223,7 +1223,7 @@
     },
     {
      "key": "xtesa_plain_wall_2m_3col",
-     "label": "XTESA PLAIN – wall-mounted, 2 modules side by side, 3 front columns",
+     "label": "XTESA PLAIN - wall-mounted, 2 modules side by side, 3 front columns",
      "config": "2 MODULES - 3 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -1380,7 +1380,7 @@
     },
     {
      "key": "xtesa_plain_wall_2m_2col",
-     "label": "XTESA PLAIN – wall-mounted, 2 modules side by side, 2 front columns (no middle column)",
+     "label": "XTESA PLAIN - wall-mounted, 2 modules side by side, 2 front columns (no middle column)",
      "config": "2 MODULES - 2 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -1473,7 +1473,7 @@
     },
     {
      "key": "xtesa_plain_wall_3m_4col",
-     "label": "XTESA PLAIN – wall-mounted, 3 modules side by side, 4 front columns",
+     "label": "XTESA PLAIN - wall-mounted, 3 modules side by side, 4 front columns",
      "config": "3 MODULES - 4 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -1640,7 +1640,7 @@
     },
     {
      "key": "xtesa_plain_wall_3m_3col",
-     "label": "XTESA PLAIN – wall-mounted, 3 modules side by side, 3 front columns",
+     "label": "XTESA PLAIN - wall-mounted, 3 modules side by side, 3 front columns",
      "config": "3 MODULES - 3 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -1740,7 +1740,7 @@
    },
    "options": [
     {
-     "name": "Hood – 1 MODULE",
+     "name": "Hood - 1 MODULE",
      "price": null,
      "unit": "pcs",
      "page": 16,
@@ -1757,7 +1757,7 @@
      }
     },
     {
-     "name": "Hood – 2 MODULES - 3 COLUMNS",
+     "name": "Hood - 2 MODULES - 3 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 17,
@@ -1779,7 +1779,7 @@
      }
     },
     {
-     "name": "Hood – 2 MODULES - 2 COLUMNS",
+     "name": "Hood - 2 MODULES - 2 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 17,
@@ -1793,7 +1793,7 @@
      }
     },
     {
-     "name": "Hood – 3 MODULES - 4 COLUMNS",
+     "name": "Hood - 3 MODULES - 4 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 18,
@@ -1817,7 +1817,7 @@
      }
     },
     {
-     "name": "Hood – 3 MODULES - 3 COLUMNS",
+     "name": "Hood - 3 MODULES - 3 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 18,
@@ -2184,7 +2184,7 @@
     }
    ],
    "uncertainties": [
-    "p16-18: no motor price listed; motor assumed included in the matrix price (same as XTESA) – confirm.",
+    "p16-18: no motor price listed; motor assumed included in the matrix price (same as XTESA) - confirm.",
     "p18: text layer lists the 4-column (3 modules - 3 columns) table before the 14-column one; mapped by column count and verified visually.",
     "XTESA PLAIN is a separate, cheaper model on p16-18 (index \"XTESA PLAIN 16\"); included because it sits in the requested XTESA page range."
    ]
@@ -2196,7 +2196,7 @@
    "variants": [
     {
      "key": "hydra_wall_1",
-     "label": "HYDRA – wall/ceiling-mounted with front posts, 1 module",
+     "label": "HYDRA - wall/ceiling-mounted with front posts, 1 module",
      "config": "HYDRA 1 MODULE",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -2308,7 +2308,7 @@
     },
     {
      "key": "hydra_wall_2m_3col",
-     "label": "HYDRA – wall/ceiling-mounted with front posts, 2 modules, 3 columns",
+     "label": "HYDRA - wall/ceiling-mounted with front posts, 2 modules, 3 columns",
      "config": "HYDRA 2 MODULES - 3 COLUMNS",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -2444,7 +2444,7 @@
     },
     {
      "key": "hydra_t_nolegs_1",
-     "label": "HYDRA T – without posts (fixed on wall/ceiling/roof), 1 module",
+     "label": "HYDRA T - without posts (fixed on wall/ceiling/roof), 1 module",
      "config": "HYDRA T 1 MODUL2 (sic)",
      "mountType": "no_legs",
      "modulesWidth": 1,
@@ -2556,7 +2556,7 @@
     },
     {
      "key": "hydra_t_nolegs_2m",
-     "label": "HYDRA T – without posts, 2 modules",
+     "label": "HYDRA T - without posts, 2 modules",
      "config": "HYDRA T 2 MODULES - 3 COLUMNS (as printed)",
      "mountType": "no_legs",
      "modulesWidth": 2,
@@ -2699,7 +2699,7 @@
    },
    "options": [
     {
-     "name": "Hood – HYDRA 1 MODULE",
+     "name": "Hood - HYDRA 1 MODULE",
      "price": null,
      "unit": "pcs",
      "page": 20,
@@ -2718,7 +2718,7 @@
      }
     },
     {
-     "name": "Hood – HYDRA 2 MODULES - 3 COLUMNS",
+     "name": "Hood - HYDRA 2 MODULES - 3 COLUMNS",
      "price": null,
      "unit": "pcs",
      "page": 21,
@@ -2740,7 +2740,7 @@
      }
     },
     {
-     "name": "Hood – HYDRA T 1 MODUL2 (sic)",
+     "name": "Hood - HYDRA T 1 MODUL2 (sic)",
      "price": null,
      "unit": "pcs",
      "page": 22,
@@ -2759,7 +2759,7 @@
      }
     },
     {
-     "name": "Hood – HYDRA T 2 MODULES - 3 COLUMNS (as printed)",
+     "name": "Hood - HYDRA T 2 MODULES - 3 COLUMNS (as printed)",
      "price": null,
      "unit": "pcs",
      "page": 23,
@@ -3220,10 +3220,10 @@
     }
    ],
    "uncertainties": [
-    "p23 (HYDRA T 2 modules): cell projection 400 / width 1100 is printed 10377, lower than its neighbours (11548 at 1050, 11908 at 1150) and lower than 1050 – likely a misprint (maybe 11377); value kept as printed.",
+    "p23 (HYDRA T 2 modules): cell projection 400 / width 1100 is printed 10377, lower than its neighbours (11548 at 1050, 11908 at 1150) and lower than 1050 - likely a misprint (maybe 11377); value kept as printed.",
     "p22: heading printed \"1 MODUL2\" (typo for 1 MODULE). p23 HYDRA T heading says \"2 MODULES - 3 COLUMNS\" although HYDRA T has no columns.",
     "HYDRA T mount mapped to no_legs; the drawing shows it lying on a surface with small supports, so it may be a roof-mounted (existing_structure) product.",
-    "p21/23 LED: \"Guide strip LED – price for guide\" table uses the width icon but values 250-500 (projection range); key assumed = guide length.",
+    "p21/23 LED: \"Guide strip LED - price for guide\" table uses the width icon but values 250-500 (projection range); key assumed = guide length.",
     "p7 products summary gives HYDRA max H 260; no height surcharge is printed."
    ]
   },
@@ -3234,7 +3234,7 @@
    "variants": [
     {
      "key": "isola3_free_1l",
-     "label": "ISOLA 3 - 1L – freestanding, 1 module(s) along width x 1 along projection",
+     "label": "ISOLA 3 - 1L - freestanding, 1 module(s) along width x 1 along projection",
      "config": "1L",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -3420,7 +3420,7 @@
     },
     {
      "key": "isola3_free_2l",
-     "label": "ISOLA 3 - 2L – freestanding, 2 module(s) along width x 1 along projection",
+     "label": "ISOLA 3 - 2L - freestanding, 2 module(s) along width x 1 along projection",
      "config": "2L",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -3606,7 +3606,7 @@
     },
     {
      "key": "isola3_free_2p",
-     "label": "ISOLA 3 - 2 P – freestanding, 1 module(s) along width x 2 along projection",
+     "label": "ISOLA 3 - 2 P - freestanding, 1 module(s) along width x 2 along projection",
      "config": "2 P",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -3792,7 +3792,7 @@
     },
     {
      "key": "isola3_free_3l",
-     "label": "ISOLA 3 - 3 L – freestanding, 3 module(s) along width x 1 along projection",
+     "label": "ISOLA 3 - 3 L - freestanding, 3 module(s) along width x 1 along projection",
      "config": "3 L",
      "mountType": "freestanding",
      "modulesWidth": 3,
@@ -3978,7 +3978,7 @@
     },
     {
      "key": "isola3_free_3p",
-     "label": "ISOLA 3 - 3 P – freestanding, 1 module(s) along width x 3 along projection",
+     "label": "ISOLA 3 - 3 P - freestanding, 1 module(s) along width x 3 along projection",
      "config": "3 P",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -4164,7 +4164,7 @@
     },
     {
      "key": "isola3_free_4",
-     "label": "ISOLA 3 - 4 – freestanding, 2 module(s) along width x 2 along projection",
+     "label": "ISOLA 3 - 4 - freestanding, 2 module(s) along width x 2 along projection",
      "config": "4",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -4350,7 +4350,7 @@
     },
     {
      "key": "isola3_free_6l",
-     "label": "ISOLA 3 - 6 L – freestanding, 3 module(s) along width x 2 along projection",
+     "label": "ISOLA 3 - 6 L - freestanding, 3 module(s) along width x 2 along projection",
      "config": "6 L",
      "mountType": "freestanding",
      "modulesWidth": 3,
@@ -4536,7 +4536,7 @@
     },
     {
      "key": "isola3_free_6p",
-     "label": "ISOLA 3 - 6 P – freestanding, 2 module(s) along width x 3 along projection",
+     "label": "ISOLA 3 - 6 P - freestanding, 2 module(s) along width x 3 along projection",
      "config": "6 P",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -4722,7 +4722,7 @@
     },
     {
      "key": "isola3_free_2sc",
-     "label": "ISOLA 3 - 2 SC – freestanding, 2 module(s) along width x 1 along projection",
+     "label": "ISOLA 3 - 2 SC - freestanding, 2 module(s) along width x 1 along projection",
      "config": "2 SC",
      "mountType": "freestanding",
      "modulesWidth": 2,
@@ -5372,7 +5372,7 @@
      "notes": ""
     },
     {
-     "name": "ISOLA 3 CLASSIC corner column – as an addition",
+     "name": "ISOLA 3 CLASSIC corner column - as an addition",
      "price": 471,
      "unit": "pcs",
      "page": 52,
@@ -5380,7 +5380,7 @@
      "notes": "Classic version: per piece for columns"
     },
     {
-     "name": "ISOLA 3 CLASSIC corner column – together with the structure",
+     "name": "ISOLA 3 CLASSIC corner column - together with the structure",
      "price": 135,
      "unit": "pcs",
      "page": 52,
@@ -5388,7 +5388,7 @@
      "notes": ""
     },
     {
-     "name": "ISOLA 3 CLASSIC central column – as an addition",
+     "name": "ISOLA 3 CLASSIC central column - as an addition",
      "price": 305,
      "unit": "pcs",
      "page": 52,
@@ -5396,7 +5396,7 @@
      "notes": ""
     },
     {
-     "name": "ISOLA 3 CLASSIC central column – together with the structure",
+     "name": "ISOLA 3 CLASSIC central column - together with the structure",
      "price": 59,
      "unit": "pcs",
      "page": 52,
@@ -5982,9 +5982,9 @@
     }
    ],
    "uncertainties": [
-    "All ISOLA 3 tables are freestanding prices; wall-mounted (\"A\") versions are obtained by subtracting the printed fixed decrease (L side or SP side) – no separate wall matrices exist. Decreases stored as negative options per variant.",
+    "All ISOLA 3 tables are freestanding prices; wall-mounted (\"A\") versions are obtained by subtracting the printed fixed decrease (L side or SP side) - no separate wall matrices exist. Decreases stored as negative options per variant.",
     "p35-51 dashed boxes (\"6 columns\", \"9 columns\", ...) mark sizes > 700 cm projection per module that need extra columns; it is assumed (not stated) that the matrix price already includes them. \"Added Pillar 16x16 cm €1510\" is a separate note.",
-    "p50-51 \"2 SC\": meaning of SC is not explained; table L 500-700 x 250-700, only L-side wall decrease (€1791) printed. The drawing on p51 labels the vertical (projection) axis \"L (max mm 7000)\" – presumably projection max 700.",
+    "p50-51 \"2 SC\": meaning of SC is not explained; table L 500-700 x 250-700, only L-side wall decrease (€1791) printed. The drawing on p51 labels the vertical (projection) axis \"L (max mm 7000)\" - presumably projection max 700.",
     "p46 (6 L): K-R1 remote printed €122 while every other page shows €72.",
     "p35-51 header shows \"cm.\" with width icon for columns and projection icon for rows; **B/C prices are per one side.",
     "Configurations 4L/4P A and 6L A/6P A on p29-30 are named differently from the price pages (\"ISOLA 3 - 4\", \"6 L\", \"6 P\"); 4 = 2x2 grid per drawing p44."
@@ -5997,7 +5997,7 @@
    "variants": [
     {
      "key": "isola2_free_4p",
-     "label": "ISOLA 2 – freestanding, 4 pillars, 1 module",
+     "label": "ISOLA 2 - freestanding, 4 pillars, 1 module",
      "config": "ISOLA 2 - 4 PILLARS",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -6123,7 +6123,7 @@
     },
     {
      "key": "isola2_free_6p",
-     "label": "ISOLA 2 – freestanding, 6 pillars, 1 module (projection 750-1000)",
+     "label": "ISOLA 2 - freestanding, 6 pillars, 1 module (projection 750-1000)",
      "config": "ISOLA 2 - 6 PILLARS",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -6209,7 +6209,7 @@
     },
     {
      "key": "isola2a_wall_2p_par",
-     "label": "ISOLA 2A – wall-mounted, 2 pillars, fabric crosspieces parallel to the wall",
+     "label": "ISOLA 2A - wall-mounted, 2 pillars, fabric crosspieces parallel to the wall",
      "config": "ISOLA 2A - 2 PILLARS - crosspieces parallel to the wall",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -6335,7 +6335,7 @@
     },
     {
      "key": "isola2a_wall_4p_par",
-     "label": "ISOLA 2A – wall-mounted, 4 pillars, crosspieces parallel to the wall (projection 750-1000)",
+     "label": "ISOLA 2A - wall-mounted, 4 pillars, crosspieces parallel to the wall (projection 750-1000)",
      "config": "ISOLA 2A - 4 PILLARS - crosspieces parallel to the wall",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -6421,7 +6421,7 @@
     },
     {
      "key": "isola2a_wall_2p_perp",
-     "label": "ISOLA 2A – wall-mounted, 2 pillars, crosspieces perpendicular to the wall",
+     "label": "ISOLA 2A - wall-mounted, 2 pillars, crosspieces perpendicular to the wall",
      "config": "ISOLA 2A - 2 PILLARS - crosspieces perpendicular to the wall",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -6543,11 +6543,11 @@
      },
      "priceIncludes": "Structure + fabric (Opatex Flat), standard height 250; motor box NOT included (priced separately); remote NOT included",
      "page": 63,
-     "notes": "Wall-mounted with the module rotated: the table \"width\" (L, arch length, max 550) runs perpendicular to the wall and the table \"projection\" (P, max 700) runs along the wall – see drawing p63. Prices identical to the parallel 2-pillar table."
+     "notes": "Wall-mounted with the module rotated: the table \"width\" (L, arch length, max 550) runs perpendicular to the wall and the table \"projection\" (P, max 700) runs along the wall - see drawing p63. Prices identical to the parallel 2-pillar table."
     },
     {
      "key": "isola2a_wall_3p_perp",
-     "label": "ISOLA 2A – wall-mounted, 3 pillars, crosspieces perpendicular to the wall (P 750-1000)",
+     "label": "ISOLA 2A - wall-mounted, 3 pillars, crosspieces perpendicular to the wall (P 750-1000)",
      "config": "ISOLA 2A - 3 PILLARS - crosspieces perpendicular to the wall",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -6633,7 +6633,7 @@
     },
     {
      "key": "isola2t_nolegs",
-     "label": "ISOLA 2T – without pillars (fixed to walls/ceiling with brackets), 1 module",
+     "label": "ISOLA 2T - without pillars (fixed to walls/ceiling with brackets), 1 module",
      "config": "ISOLA 2T",
      "mountType": "no_legs",
      "modulesWidth": 1,
@@ -7285,7 +7285,7 @@
     }
    ],
    "uncertainties": [
-    "Motor boxes are listed beside each table (KER 787 / Sunilus IO 30/17 910 / 55/17 1119) – assumed NOT included in the matrix price (remote \"obligatory, not included\"); confirm whether one motor box is mandatory.",
+    "Motor boxes are listed beside each table (KER 787 / Sunilus IO 30/17 910 / 55/17 1119) - assumed NOT included in the matrix price (remote \"obligatory, not included\"); confirm whether one motor box is mandatory.",
     "ISOLA 2A perpendicular versions (p63 right, p64): the table \"width\" (L, max 550) is the dimension perpendicular to the wall; the \"projection\" (P) runs along the wall. Axes kept as printed.",
     "p62: Precontraint 622 Oscurante Grigio/Sabbia printed +17 on ISOLA 2A, +18 elsewhere.",
     "p66 ISOLA 2T: motor boxes listed on p67 (787 / 910 / 1119).",
@@ -7299,7 +7299,7 @@
    "variants": [
     {
      "key": "keplan_free_1",
-     "label": "KEPLAN – freestanding (4 posts), 1 module, 2 guides",
+     "label": "KEPLAN - freestanding (4 posts), 1 module, 2 guides",
      "config": "KEPLAN - 2 GUIDES",
      "mountType": "freestanding",
      "modulesWidth": 1,
@@ -7371,7 +7371,7 @@
     },
     {
      "key": "keplan_a_wall_1",
-     "label": "KEPLAN A – wall-mounted, 1 module, 2 guides",
+     "label": "KEPLAN A - wall-mounted, 1 module, 2 guides",
      "config": "KEPLAN A - 2 GUIDES",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -7809,7 +7809,7 @@
    "variants": [
     {
      "key": "a100lux_wall_1",
-     "label": "A100 LUX – wall-mounted, 1 module (2 guides)",
+     "label": "A100 LUX - wall-mounted, 1 module (2 guides)",
      "config": "2 GUIDES",
      "mountType": "wall",
      "modulesWidth": 1,
@@ -7906,7 +7906,7 @@
     },
     {
      "key": "a100lux_wall_2",
-     "label": "A100 LUX – wall-mounted, 2 modules (3 guides)",
+     "label": "A100 LUX - wall-mounted, 2 modules (3 guides)",
      "config": "3 GUIDES",
      "mountType": "wall",
      "modulesWidth": 2,
@@ -8014,7 +8014,7 @@
     },
     {
      "key": "a100lux_wall_3",
-     "label": "A100 LUX – wall-mounted, 3 modules (4 guides)",
+     "label": "A100 LUX - wall-mounted, 3 modules (4 guides)",
      "config": "4 GUIDES",
      "mountType": "wall",
      "modulesWidth": 3,
@@ -8122,7 +8122,7 @@
    },
    "options": [
     {
-     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") – 2 GUIDES",
+     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") - 2 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 78,
@@ -8140,7 +8140,7 @@
      }
     },
     {
-     "name": "Hood – 2 GUIDES",
+     "name": "Hood - 2 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 78,
@@ -8156,7 +8156,7 @@
      }
     },
     {
-     "name": "Unlabelled extra row (U-shaped profile icon) – 2 GUIDES",
+     "name": "Unlabelled extra row (U-shaped profile icon) - 2 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 78,
@@ -8172,7 +8172,7 @@
      }
     },
     {
-     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") – 3 GUIDES",
+     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") - 3 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8189,7 +8189,7 @@
      }
     },
     {
-     "name": "Hood – 3 GUIDES",
+     "name": "Hood - 3 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8208,7 +8208,7 @@
      }
     },
     {
-     "name": "Unlabelled extra row (U-shaped profile icon) – 3 GUIDES",
+     "name": "Unlabelled extra row (U-shaped profile icon) - 3 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8227,7 +8227,7 @@
      }
     },
     {
-     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") – 4 GUIDES",
+     "name": "Additional module (legend p9 \"ADDITIONAL MODULE\") - 4 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8244,7 +8244,7 @@
      }
     },
     {
-     "name": "Hood – 4 GUIDES",
+     "name": "Hood - 4 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8262,7 +8262,7 @@
      }
     },
     {
-     "name": "Unlabelled extra row (U-shaped profile icon) – 4 GUIDES",
+     "name": "Unlabelled extra row (U-shaped profile icon) - 4 GUIDES",
      "price": null,
      "unit": "pcs",
      "page": 79,
@@ -8514,7 +8514,7 @@
      "notes": "€/ml, profile included, calculated on width (L); listed generically on p87"
     },
     {
-     "name": "LED strip lights kit with snapping – 2 guides (light control unit on/off + light bars, excl. control units)",
+     "name": "LED strip lights kit with snapping - 2 guides (light control unit on/off + light bars, excl. control units)",
      "price": null,
      "unit": "pcs",
      "page": 96,
@@ -8548,7 +8548,7 @@
      }
     },
     {
-     "name": "LED strip lights kit with snapping – 3 guides",
+     "name": "LED strip lights kit with snapping - 3 guides",
      "price": null,
      "unit": "pcs",
      "page": 98,
@@ -8594,7 +8594,7 @@
      }
     },
     {
-     "name": "LED strip lights kit with snapping – 4 guides",
+     "name": "LED strip lights kit with snapping - 4 guides",
      "price": null,
      "unit": "pcs",
      "page": 100,
@@ -8636,7 +8636,7 @@
      }
     },
     {
-     "name": "STRIP LED OUTSIDE – 1 strip, 2 sides",
+     "name": "STRIP LED OUTSIDE - 1 strip, 2 sides",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8656,7 +8656,7 @@
      }
     },
     {
-     "name": "STRIP LED OUTSIDE – 1 strip, 1 side",
+     "name": "STRIP LED OUTSIDE - 1 strip, 1 side",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8676,7 +8676,7 @@
      }
     },
     {
-     "name": "STRIP LED OUTSIDE – 2 strips, 2 sides",
+     "name": "STRIP LED OUTSIDE - 2 strips, 2 sides",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8696,7 +8696,7 @@
      }
     },
     {
-     "name": "STRIP LED OUTSIDE – 2 strips, 1 side",
+     "name": "STRIP LED OUTSIDE - 2 strips, 1 side",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8716,7 +8716,7 @@
      }
     },
     {
-     "name": "STRIP LED INSIDE – 1 strip led",
+     "name": "STRIP LED INSIDE - 1 strip led",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8732,7 +8732,7 @@
      }
     },
     {
-     "name": "STRIP LED INSIDE – 2 strip led",
+     "name": "STRIP LED INSIDE - 2 strip led",
      "price": null,
      "unit": "pcs",
      "page": 102,
@@ -8748,7 +8748,7 @@
      }
     },
     {
-     "name": "Cover extension – fabric holder crosspiece addition",
+     "name": "Cover extension - fabric holder crosspiece addition",
      "price": null,
      "unit": "pcs",
      "page": 104,
@@ -8780,7 +8780,7 @@
      }
     },
     {
-     "name": "Cover extension – terminal traverse addition",
+     "name": "Cover extension - terminal traverse addition",
      "price": null,
      "unit": "pcs",
      "page": 104,
@@ -9024,7 +9024,7 @@
     "p78-79: second extra row under each matrix has an unlabelled U-shaped profile icon (not in legend p9); captured as an option with its prices but meaning unknown.",
     "p78-79: right-hand \"additional module\" column (legend p9) captured as an option per projection; how it is applied is not explained.",
     "p79: width 750-900 (3 guides) and 1200-1300 (4 guides) have no price at projection 550.",
-    "p96-100 LED kits are for \"T1, A100, A100 LUX, A2 COMPACT\"; header icon is width on p96/98 but projection on p100 – keys taken as width (they match the module-width ranges of 2/3/4 guides).",
+    "p96-100 LED kits are for \"T1, A100, A100 LUX, A2 COMPACT\"; header icon is width on p96/98 but projection on p100 - keys taken as width (they match the module-width ranges of 2/3/4 guides).",
     "p102 (Strip LED outside/inside) and p104 (cover extension) do not name the product; attached here as \"unclear\" applicability.",
     "p87: gable fabric surcharges are listed for \"XTESA - A100 STAR - A2C\" only; gable beam row covers \"A100 STAR/A100 LUX\". Fabric gable price for A100 LUX not explicit.",
     "Height: max column height 260 (p78); no height surcharge printed."

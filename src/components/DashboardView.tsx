@@ -99,7 +99,7 @@ export function DashboardView({
     ['Elfogadva', `${formatDotNumber(stats.acceptedEur)} EUR`, `${stats.acceptedCount} megrendelés`],
     [
       'Megnyitási arány',
-      stats.openRate === null ? '–' : `${stats.openRate}%`,
+      stats.openRate === null ? '-' : `${stats.openRate}%`,
       `${stats.sentCount} kiküldött ajánlatból`,
     ],
   ];

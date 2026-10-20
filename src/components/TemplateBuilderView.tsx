@@ -1194,7 +1194,7 @@ export function TemplateBuilderView({
 
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <div className="text-sm font-semibold text-slate-950">
-                      Mérethatárok a teljes kért méretre (cm) – okos szűrő
+                      Mérethatárok a teljes kért méretre (cm) - okos szűrő
                     </div>
                     <div className="grid grid-cols-2 gap-x-3 gap-y-2">
                       {(
@@ -1307,7 +1307,7 @@ export function TemplateBuilderView({
                       );
                     })}
                     <p className="text-xs text-slate-500">
-                      Pl. egy modul max. 700 cm széles: 701–1400 cm között 2 modul. Egyenetlen
+                      Pl. egy modul max. 700 cm széles: 701-1400 cm között 2 modul. Egyenetlen
                       lépcsőknél a határokat add meg (pl. 500, 900, 1300: 500-ig 1, 900-ig 2, 1300-ig 3
                       modul). Két tengelynél a
                       modulszám a kettő szorzata. A tételeknél megadható, melyik modulszámnál
@@ -1340,7 +1340,7 @@ export function TemplateBuilderView({
                             min={0}
                             value={rule[key] ?? ''}
                             onChange={(e) => update({ [key]: num(e.target.value) })}
-                            placeholder="–"
+                            placeholder="-"
                             className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm"
                           />
                         </label>
@@ -1802,7 +1802,7 @@ export function TemplateBuilderView({
                               })
                             }
                           />
-                          Oldalanként árazott (az árazóban 1–4 oldal választható)
+                          Oldalanként árazott (az árazóban 1-4 oldal választható)
                         </label>
 
                         <details className="rounded-xl border border-slate-200 bg-white px-4 py-3">
@@ -1918,7 +1918,7 @@ export function TemplateBuilderView({
                                 placeholder="min"
                                 className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
                               />
-                              <span className="text-slate-400">–</span>
+                              <span className="text-slate-400">-</span>
                               <input
                                 type="number"
                                 min={1}
@@ -1943,7 +1943,7 @@ export function TemplateBuilderView({
                                     modulesWidth: e.target.value === '' ? undefined : Number(e.target.value),
                                   })
                                 }
-                                placeholder="–"
+                                placeholder="-"
                                 className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
                               />
                               <span className="text-[13px] text-slate-600">modul szélességben ×</span>
@@ -1956,7 +1956,7 @@ export function TemplateBuilderView({
                                     modulesProjection: e.target.value === '' ? undefined : Number(e.target.value),
                                   })
                                 }
-                                placeholder="–"
+                                placeholder="-"
                                 className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
                               />
                               <span className="text-[13px] text-slate-600">kinyúlásban</span>
@@ -2773,11 +2773,11 @@ export function TemplateBuilderView({
                           </div>
                         </div>
 
-                        {/* Színválaszték (pl. alapszínek, RAL színek) – a PDF-ben színmintaként */}
+                        {/* Színválaszték (pl. alapszínek, RAL színek) - a PDF-ben színmintaként */}
                         <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
                           <div className="text-sm font-semibold text-slate-950">Színek</div>
                           <p className="text-xs text-slate-500">
-                            Kód és mintaszín – a PDF-ben színmintaként jelenik meg, ha a tétel az ajánlatban van.
+                            Kód és mintaszín - a PDF-ben színmintaként jelenik meg, ha a tétel az ajánlatban van.
                           </p>
                           <ColorOptionsEditor
                             colors={currentMaterial.colorOptions || []}
@@ -3130,7 +3130,7 @@ export function TemplateBuilderView({
                           className="px-2 py-1 rounded-lg bg-white text-emerald-900 border border-emerald-300 text-xs font-mono font-semibold"
                           title={v.label}
                         >
-                          {v.token} – {v.label}
+                          {v.token} - {v.label}
                         </span>
                       ))}
                     </div>
@@ -3332,7 +3332,7 @@ export function TemplateBuilderView({
                   <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
                     <div className="text-sm font-bold text-slate-900">
                       {replaceTemplateVariables(
-                        `Kedves {{megszolitas}}! — ${
+                        `Kedves {{megszolitas}}! - ${
                           tplName || 'Új Sablon'
                         } ({{meret_m}} / {{meret}})`,
                         {
