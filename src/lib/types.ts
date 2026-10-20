@@ -7,7 +7,12 @@ export type QuoteStatus =
   | 'elfogadva'
   | 'elutasitva';
 
-export type MountType = 'Épülethez rögzített' | 'Szabadon álló' | 'Meglévő szerkezetre' | 'Egyedi';
+export type MountType =
+  | 'Épülethez rögzített'
+  | 'Szabadon álló'
+  | 'Lábak nélkül'
+  | 'Meglévő szerkezetre'
+  | 'Egyedi';
 
 /**
  * Milyen árazási módszerrel számoljon egy adott terméket vagy anyagot a rendszer:
@@ -137,6 +142,9 @@ export interface TemplateMaterialItem {
   perModule?: boolean; // darabszám × modulszám (pl. motor modulonként)
   minModules?: number; // csak legalább ennyi modulnál (pl. 2 modulos felár)
   maxModules?: number; // csak legfeljebb ennyi modulnál
+  // Csak pontosan ennyi modulnál a szélesség / kinyúlás mentén (pl. a gyártó 2 L táblázata)
+  modulesWidth?: number;
+  modulesProjection?: number;
   // Nem számít bele a százalékos tételek (pl. szerelés %) alapjába (pl. motor, távirányító)
   excludeFromPercentBase?: boolean;
   // Színválaszték (pl. alapszínek vagy választható RAL színek), a PDF-ben színmintaként
@@ -157,10 +165,25 @@ export type SizeAxis = 'width' | 'projection' | 'height';
 /**
  * Automatikus modulokra bontás: modulszám = felfelé kerekítve (méret ÷ egy modul max. mérete)
  */
+/** Feltételes méretkorlát: ha a feltételek teljesülnek, ezek a maximumok érvényesek */
+export interface ConditionalSizeRule {
+  id: string;
+  label?: string; // magyarázat az árazóban, pl. „2 modulnál max. 550 cm kinyúlás”
+  mountType?: MountType; // csak ennél a beépítésnél
+  ifWidthOverCm?: number; // csak ha a szélesség ennél nagyobb
+  ifProjectionOverCm?: number; // csak ha a kinyúlás ennél nagyobb
+  maxWidthCm?: number;
+  maxProjectionCm?: number;
+  maxHeightCm?: number;
+}
+
 export interface ModuleSplitRule {
   axis: 'width' | 'projection';
   maxCm: number;
   maxModules?: number;
+  // Egyedi modulhatárok növekvő sorrendben (pl. [500, 900, 1300]: 1 modul 500-ig, 2 modul 900-ig,
+  // 3 modul 1300-ig). Ha meg van adva, ez dönt a maxCm / maxModules helyett.
+  breakpointsCm?: number[];
 }
 
 /**
@@ -267,7 +290,15 @@ export interface QuoteTemplate {
   order?: number;
   sizeLimits?: TemplateSizeLimits;
   catalogRef?: CatalogReference;
-  moduleSplit?: ModuleSplitRule;
+  moduleSplit?: ModuleSplitRule; // régi, egytengelyes szabály (moduleSplits váltja)
+  // Modulokra bontás tengelyenként (szélesség és/vagy kinyúlás), modulszám = szorzatuk
+  moduleSplits?: ModuleSplitRule[];
+  // További kategóriák, ahol ez a sablon is megjelenik (pl. Hydra a tetőre építhetők között is)
+  alsoInCategoryIds?: string[];
+  // Milyen beépítéssel kérhető (üres = bármelyikkel)
+  mountTypes?: MountType[];
+  // Feltételes méretkorlátok (pl. szabadon állóként max. 450 × 500, 800 cm felett max. 400 kinyúlás)
+  sizeRules?: ConditionalSizeRule[];
   // Ha meg van adva, felülírja a globális haszon / szerelés képletet ennél a sablonnál
   pricingOverride?: Partial<PricingFormulaConfig>;
   // Sablon szövegdobozok (automatikus {{ugyfel_nev}}, {{meret}} stb. helyettesítéssel)

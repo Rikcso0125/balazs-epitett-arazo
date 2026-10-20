@@ -15,6 +15,7 @@ import {
   buildFullQuoteDocumentBlocks,
   calculateTemplateRows,
   checkTemplateFit,
+  isTemplateInCategory,
   computeBlockBreakdown,
 } from '@/lib/pricing-engine';
 import {
@@ -163,7 +164,7 @@ export function GuidedQuoteWizardView({
         .filter((c) => c.menuId === selectedMenuId)
         .filter((c) =>
           templates.some(
-            (t) => t.categoryId === c.id && t.status !== 'inactive' && t.status !== 'test'
+            (t) => isTemplateInCategory(t, c.id) && t.status !== 'inactive' && t.status !== 'test'
           )
         )
         .sort(byOrder),
@@ -179,9 +180,36 @@ export function GuidedQuoteWizardView({
   };
 
   const categoryTemplates = templates
-    .filter((t) => t.categoryId === selectedCategoryId)
+    .filter((t) => isTemplateInCategory(t, selectedCategoryId))
     .filter(isTemplateVisible)
     .sort(byOrder);
+
+  // Rövid terméknév a nagybetűs részből (pl. „KEDRY NEOS bioklimatikus pergola” → „KEDRY NEOS”)
+  const shortProductName = (name: string) => {
+    const words = name.split(' ');
+    const idx = words.findIndex((w, i) => i > 0 && /^[a-záéíóöőúüű]/.test(w));
+    return (idx > 0 ? words.slice(0, idx) : words).join(' ');
+  };
+
+  // A kategória termékeinél választható beépítések (ha egy termék nem korlátoz, mind választható)
+  const mountOptions = (() => {
+    const unrestricted =
+      categoryTemplates.length === 0 || categoryTemplates.some((t) => !t.mountTypes?.length);
+    const used = new Set(categoryTemplates.flatMap((t) => t.mountTypes || []));
+    return MOUNT_TYPES.filter((mt) => unrestricted || used.has(mt.id)).map((mt) => ({
+      ...mt,
+      products: categoryTemplates
+        .filter((t) => t.mountTypes?.length && t.mountTypes.includes(mt.id))
+        .map((t) => shortProductName(t.name)),
+    }));
+  })();
+
+  useEffect(() => {
+    if (mountOptions.length && !mountOptions.some((mt) => mt.id === mountType)) {
+      setMountType(mountOptions[0].id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategoryId, mountOptions.map((m) => m.id).join('|')]);
 
   const calcCtx = {
     widthCm,
@@ -254,7 +282,7 @@ export function GuidedQuoteWizardView({
       // Ha a kategóriában csak egy sablon választható, a többit kivesszük
       if (cat && !cat.allowMultipleTemplates) {
         const sameCat = templates
-          .filter((t) => t.categoryId === cat.id)
+          .filter((t) => isTemplateInCategory(t, cat.id))
           .map((t) => t.id);
         return [...prev.filter((id) => !sameCat.includes(id)), tpl.id];
       }
@@ -658,10 +686,13 @@ export function GuidedQuoteWizardView({
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
               {menuCategories.map((cat) => {
                 const picked = selectedTemplateIds.filter(
-                  (id) => templates.find((t) => t.id === id)?.categoryId === cat.id
+                  (id) => {
+                    const t = templates.find((x) => x.id === id);
+                    return Boolean(t && isTemplateInCategory(t, cat.id));
+                  }
                 ).length;
                 const count = templates
-                  .filter((t) => t.categoryId === cat.id)
+                  .filter((t) => isTemplateInCategory(t, cat.id))
                   .filter(isTemplateVisible).length;
                 return (
                   <button
@@ -781,7 +812,7 @@ export function GuidedQuoteWizardView({
                 </span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {MOUNT_TYPES.map((mt) => (
+                {mountOptions.map((mt) => (
                   <button
                     key={mt.id}
                     type="button"
@@ -796,8 +827,10 @@ export function GuidedQuoteWizardView({
                       <img src={thumbUrl(mt.imageUrl)} loading="lazy" decoding="async" alt="" className="h-16 w-full object-contain mb-1" />
                     )}
                     <div className="text-[13px] font-medium text-slate-950">{mt.label}</div>
-                    {!mt.imageUrl && (
-                      <div className="text-xs text-slate-500">{mt.description}</div>
+                    {mt.products.length > 0 ? (
+                      <div className="text-xs text-slate-500">{mt.products.join(', ')}</div>
+                    ) : (
+                      !mt.imageUrl && <div className="text-xs text-slate-500">{mt.description}</div>
                     )}
                   </button>
                 ))}
@@ -971,7 +1004,11 @@ export function GuidedQuoteWizardView({
                         }
                         className="rounded"
                       />
-                      <span className={`min-w-0 break-words ${checked ? 'text-slate-950' : 'text-slate-500'}`}>
+                      <span
+                        className={`min-w-0 flex-1 basis-40 break-words ${
+                          checked ? 'text-slate-950' : 'text-slate-500'
+                        }`}
+                      >
                         {r.name}
                       </span>
                       <ColorDots colors={r.algorithm?.colorOptions || []} />

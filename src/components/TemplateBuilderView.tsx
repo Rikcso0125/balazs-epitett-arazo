@@ -39,6 +39,7 @@ import {
 } from '@/lib/pricing-engine';
 import {
   CatalogReference,
+  ConditionalSizeRule,
   CustomMatrixTable,
   CustomTextBlock,
   DimensionSource,
@@ -53,6 +54,7 @@ import {
   SystemConfig,
   TemplateMaterialItem,
   ModuleSplitRule,
+  MountType,
   SizeAxis,
   TemplateSizeLimits,
   TemplateStatus,
@@ -132,7 +134,10 @@ export function TemplateBuilderView({
   const [tplStatus, setTplStatus] = useState<TemplateStatus>('active');
   const [tplOrder, setTplOrder] = useState<number | undefined>(undefined);
   const [tplSizeLimits, setTplSizeLimits] = useState<TemplateSizeLimits>({});
-  const [tplModuleSplit, setTplModuleSplit] = useState<ModuleSplitRule | undefined>(undefined);
+  const [tplModuleSplits, setTplModuleSplits] = useState<ModuleSplitRule[]>([]);
+  const [tplMountTypes, setTplMountTypes] = useState<MountType[]>([]);
+  const [tplAlsoInCategoryIds, setTplAlsoInCategoryIds] = useState<string[]>([]);
+  const [tplSizeRules, setTplSizeRules] = useState<ConditionalSizeRule[]>([]);
   const [tplCatalogRef, setTplCatalogRef] = useState<CatalogReference>({});
   const [tplPricingOverride, setTplPricingOverride] = useState<
     Partial<PricingFormulaConfig> | undefined
@@ -230,7 +235,10 @@ export function TemplateBuilderView({
     setTplStatus('active');
     setTplOrder(undefined);
     setTplSizeLimits({});
-    setTplModuleSplit(undefined);
+    setTplModuleSplits([]);
+    setTplMountTypes([]);
+    setTplAlsoInCategoryIds([]);
+    setTplSizeRules([]);
     setTplCatalogRef({});
     setTplPricingOverride(undefined);
     setTplMaterials([
@@ -259,7 +267,14 @@ export function TemplateBuilderView({
     setTplStatus(tpl.status || (tpl.enabled === false ? 'inactive' : 'active'));
     setTplOrder(tpl.order);
     setTplSizeLimits({ ...(tpl.sizeLimits || {}) });
-    setTplModuleSplit(tpl.moduleSplit ? { ...tpl.moduleSplit } : undefined);
+    setTplModuleSplits(
+      (tpl.moduleSplits?.length ? tpl.moduleSplits : tpl.moduleSplit ? [tpl.moduleSplit] : []).map(
+        (r) => ({ ...r })
+      )
+    );
+    setTplMountTypes([...(tpl.mountTypes || [])]);
+    setTplAlsoInCategoryIds([...(tpl.alsoInCategoryIds || [])]);
+    setTplSizeRules((tpl.sizeRules || []).map((r) => ({ ...r })));
     setTplCatalogRef({ ...(tpl.catalogRef || {}) });
     setTplPricingOverride(
       tpl.pricingOverride ? { ...tpl.pricingOverride } : undefined
@@ -391,7 +406,10 @@ export function TemplateBuilderView({
           tplOrder ??
           templates.filter((t) => t.categoryId === tplCategoryId).length + 1,
         sizeLimits: tplSizeLimits,
-        moduleSplit: tplModuleSplit,
+        moduleSplits: tplModuleSplits,
+        mountTypes: tplMountTypes,
+        sizeRules: tplSizeRules,
+        alsoInCategoryIds: tplAlsoInCategoryIds.filter((id) => id !== tplCategoryId),
         catalogRef: tplCatalogRef,
         pricingOverride: tplPricingOverride,
         introText: tplIntroText,
@@ -442,7 +460,9 @@ export function TemplateBuilderView({
     photos: tplPhotos,
     materials: tplMaterials,
     pricingOverride: tplPricingOverride,
-    moduleSplit: tplModuleSplit,
+    moduleSplits: tplModuleSplits,
+    mountTypes: tplMountTypes,
+    sizeRules: tplSizeRules,
     createdAt: '',
     updatedAt: '',
   };
@@ -1054,6 +1074,39 @@ export function TemplateBuilderView({
                         </button>
                       ))}
                     </div>
+                    {categories.length > 1 && (
+                      <div className="mt-3">
+                        <div className="text-[13px] font-medium text-slate-700 mb-1.5">
+                          Megjelenik ezekben a kategóriákban is
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {categories
+                            .filter((cat) => cat.id !== tplCategoryId)
+                            .map((cat) => {
+                              const on = tplAlsoInCategoryIds.includes(cat.id);
+                              return (
+                                <label
+                                  key={cat.id}
+                                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer ${
+                                    on ? 'border-slate-900' : 'border-slate-200 text-slate-600'
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={on}
+                                    onChange={() =>
+                                      setTplAlsoInCategoryIds((prev) =>
+                                        on ? prev.filter((x) => x !== cat.id) : [...prev, cat.id]
+                                      )
+                                    }
+                                  />
+                                  {cat.name}
+                                </label>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -1106,7 +1159,41 @@ export function TemplateBuilderView({
 
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <div className="text-sm font-semibold text-slate-950">
-                      Egy modul mérethatárai (cm) – okos szűrő
+                      Beépítési módok
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {MOUNT_TYPES.map((mt) => {
+                        const on = tplMountTypes.includes(mt.id);
+                        return (
+                          <label
+                            key={mt.id}
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer ${
+                              on ? 'border-slate-900 bg-white' : 'border-slate-200 bg-white text-slate-600'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={on}
+                              onChange={() =>
+                                setTplMountTypes((prev) =>
+                                  on ? prev.filter((x) => x !== mt.id) : [...prev, mt.id]
+                                )
+                              }
+                            />
+                            {mt.label}
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Ha egyik sincs bejelölve, bármelyik beépítéssel kérhető. Más beépítésnél az
+                      árazóban pirossal, indoklással jelenik meg.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Mérethatárok a teljes kért méretre (cm) – okos szűrő
                     </div>
                     <div className="grid grid-cols-2 gap-x-3 gap-y-2">
                       {(
@@ -1143,52 +1230,181 @@ export function TemplateBuilderView({
                       Ha a kért méret ezen kívül esik, az árazóban a sablon
                       pirossal jelenik meg.
                     </p>
-                    <div className="flex flex-wrap items-center gap-2 pt-2 text-sm text-slate-700">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={Boolean(tplModuleSplit)}
-                          onChange={(e) =>
-                            setTplModuleSplit(
-                              e.target.checked ? { axis: 'width', maxCm: 500 } : undefined
-                            )
-                          }
-                        />
-                        Automatikus modulokra bontás
-                      </label>
-                      {tplModuleSplit && (
-                        <>
-                          <select
-                            value={tplModuleSplit.axis}
-                            onChange={(e) =>
-                              setTplModuleSplit({
-                                ...tplModuleSplit,
-                                axis: e.target.value as 'width' | 'projection',
-                              })
-                            }
-                            className="px-2 py-1.5 rounded-lg border border-slate-300 bg-white"
-                          >
-                            <option value="width">szélesség</option>
-                            <option value="projection">kinyúlás</option>
-                          </select>
-                          <span>szerint, egy modul max.</span>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Modulokra bontás
+                    </div>
+                    {(['width', 'projection'] as const).map((axis) => {
+                      const rule = tplModuleSplits.find((r) => r.axis === axis);
+                      const setRule = (next: ModuleSplitRule | undefined) =>
+                        setTplModuleSplits((prev) => [
+                          ...prev.filter((r) => r.axis !== axis),
+                          ...(next ? [next] : []),
+                        ]);
+                      return (
+                        <div key={axis} className="flex flex-wrap items-center gap-2 text-sm text-slate-700">
+                          <label className="inline-flex items-center gap-2 cursor-pointer min-w-[9rem]">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(rule)}
+                              onChange={(e) =>
+                                setRule(e.target.checked ? { axis, maxCm: 500, maxModules: 2 } : undefined)
+                              }
+                            />
+                            {axis === 'width' ? 'Szélesség szerint' : 'Kinyúlás szerint'}
+                          </label>
+                          {rule && (
+                            <>
+                              <span>egy modul max.</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={rule.maxCm}
+                                onChange={(e) =>
+                                  setRule({ ...rule, maxCm: Math.max(1, Number(e.target.value) || 1) })
+                                }
+                                className="w-20 px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-right"
+                              />
+                              <span>cm, legfeljebb</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={rule.maxModules ?? ''}
+                                placeholder="∞"
+                                onChange={(e) =>
+                                  setRule({
+                                    ...rule,
+                                    maxModules: e.target.value === '' ? undefined : Math.max(1, Number(e.target.value) || 1),
+                                  })
+                                }
+                                className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-right"
+                              />
+                              <span>modul</span>
+                              <label className="flex items-center gap-2 w-full sm:w-auto sm:ml-2">
+                                <span className="text-slate-500">vagy határok:</span>
+                                <input
+                                  type="text"
+                                  inputMode="numeric"
+                                  defaultValue={(rule.breakpointsCm || []).join(', ')}
+                                  onBlur={(e) => {
+                                    const bps = e.target.value
+                                      .split(/[,; ]+/)
+                                      .map((v) => Number(v))
+                                      .filter((v) => v > 0)
+                                      .sort((a, b) => a - b);
+                                    setRule({ ...rule, breakpointsCm: bps.length ? bps : undefined });
+                                  }}
+                                  placeholder="pl. 500, 900, 1300"
+                                  className="min-w-0 flex-1 sm:w-40 px-2 py-1.5 rounded-lg border border-slate-300 bg-white"
+                                />
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                    <p className="text-xs text-slate-500">
+                      Pl. egy modul max. 700 cm széles: 701–1400 cm között 2 modul. Egyenetlen
+                      lépcsőknél a határokat add meg (pl. 500, 900, 1300: 500-ig 1, 900-ig 2, 1300-ig 3
+                      modul). Két tengelynél a
+                      modulszám a kettő szorzata. A tételeknél megadható, melyik modulszámnál
+                      szerepeljenek (pl. a gyártó 2 modulos ártáblája).
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Feltételes méretkorlátok
+                    </div>
+                    {tplSizeRules.length === 0 && (
+                      <p className="text-xs text-slate-500">
+                        Pl. „Szabadon állóként max. 450 × 500 cm” vagy „800 cm szélesség felett max.
+                        400 cm kinyúlás”.
+                      </p>
+                    )}
+                    {tplSizeRules.map((rule, idx) => {
+                      const update = (patch: Partial<ConditionalSizeRule>) =>
+                        setTplSizeRules((prev) => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
+                      const num = (v: string) => (v === '' ? undefined : Math.max(0, Number(v) || 0));
+                      const field = (
+                        key: 'ifWidthOverCm' | 'ifProjectionOverCm' | 'maxWidthCm' | 'maxProjectionCm' | 'maxHeightCm',
+                        label: string
+                      ) => (
+                        <label className="block">
+                          <span className="block text-xs font-semibold text-slate-500">{label}</span>
                           <input
                             type="number"
-                            min={1}
-                            value={tplModuleSplit.maxCm}
-                            onChange={(e) =>
-                              setTplModuleSplit({
-                                ...tplModuleSplit,
-                                maxCm: Math.max(1, Number(e.target.value) || 1),
-                              })
-                            }
-                            className="w-20 px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-right"
+                            min={0}
+                            value={rule[key] ?? ''}
+                            onChange={(e) => update({ [key]: num(e.target.value) })}
+                            placeholder="–"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm"
                           />
-                          <span>cm</span>
-                        </>
-                      )}
-                    </div>
-
+                        </label>
+                      );
+                      return (
+                        <div key={rule.id} className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <input
+                              value={rule.label || ''}
+                              onChange={(e) => update({ label: e.target.value })}
+                              placeholder="Magyarázat az árazóban (pl. szabadon álló kivitel)"
+                              className="min-w-0 flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setTplSizeRules((prev) => prev.filter((_, i) => i !== idx))}
+                              className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                              title="Korlát törlése"
+                              aria-label="Korlát törlése"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="text-xs font-semibold text-slate-600">Ha…</div>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label className="block">
+                              <span className="block text-xs font-semibold text-slate-500">Beépítés</span>
+                              <select
+                                value={rule.mountType || ''}
+                                onChange={(e) => update({ mountType: (e.target.value || undefined) as MountType | undefined })}
+                                className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm"
+                              >
+                                <option value="">bármelyik</option>
+                                {MOUNT_TYPES.map((mt) => (
+                                  <option key={mt.id} value={mt.id}>
+                                    {mt.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            {field('ifWidthOverCm', 'Szélesség nagyobb, mint')}
+                            {field('ifProjectionOverCm', 'Kinyúlás nagyobb, mint')}
+                          </div>
+                          <div className="text-xs font-semibold text-slate-600">…akkor legfeljebb</div>
+                          <div className="grid grid-cols-3 gap-2">
+                            {field('maxWidthCm', 'Szélesség')}
+                            {field('maxProjectionCm', 'Kinyúlás')}
+                            {field('maxHeightCm', 'Magasság')}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTplSizeRules((prev) => [
+                          ...prev,
+                          { id: `rule_${Date.now()}_${Math.random().toString(36).slice(2, 6)}` },
+                        ])
+                      }
+                      className="inline-flex items-center gap-1 text-[13px] text-slate-600 hover:text-slate-950"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Feltételes korlát
+                    </button>
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
@@ -1714,6 +1930,35 @@ export function TemplateBuilderView({
                                 placeholder="max"
                                 className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
                               />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-[13px] text-slate-600">Csak pontosan</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.modulesWidth ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    modulesWidth: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="–"
+                                className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                              <span className="text-[13px] text-slate-600">modul szélességben ×</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.modulesProjection ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    modulesProjection: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="–"
+                                className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                              <span className="text-[13px] text-slate-600">kinyúlásban</span>
                             </div>
                             <label className="flex items-center gap-2 cursor-pointer">
                               <input

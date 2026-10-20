@@ -7,6 +7,7 @@ import {
   CustomMatrixTable,
   DimensionSource,
   M2PriceTier,
+  ModuleSplitRule,
   MountType,
   PriceAdjustment,
   PricingFormulaConfig,
@@ -178,20 +179,77 @@ function lookupCustomMatrixPrice(
     price: Math.max(0, Number(val) || 0),
     matchedRow,
     matchedCol,
-    // A táblázat legnagyobb méreténél nagyobb kérés nem árazható a táblából
+    // A táblázat legnagyobb méreténél nagyobb kérés, vagy a gyártónál üresen hagyott
+    // (nem gyártható) cella nem árazható a táblából
     outOfRange:
       rowCm > sortedRows[sortedRows.length - 1] ||
-      colCm > sortedCols[sortedCols.length - 1],
+      colCm > sortedCols[sortedCols.length - 1] ||
+      !(Number(val) > 0),
   };
 }
 
-/** Modulszám a sablon moduleSplit szabálya szerint (pl. ceil(szélesség ÷ 500)) */
+/** A sablon ebben a kategóriában szerepel-e (saját vagy további kategóriaként) */
+export function isTemplateInCategory(template: QuoteTemplate, categoryId: string): boolean {
+  return template.categoryId === categoryId || Boolean(template.alsoInCategoryIds?.includes(categoryId));
+}
+
+/** A sablon modulszabályai tengelyenként (a régi egytengelyes moduleSplit is) */
+export function getModuleRules(template: QuoteTemplate): ModuleSplitRule[] {
+  const rules = template.moduleSplits?.length
+    ? template.moduleSplits
+    : template.moduleSplit
+    ? [template.moduleSplit]
+    : [];
+  return rules.filter((r) => r && r.maxCm > 0);
+}
+
+function moduleBreakpoints(rule: ModuleSplitRule): number[] {
+  return (rule.breakpointsCm || [])
+    .map((v) => Number(v))
+    .filter((v) => v > 0)
+    .sort((a, b) => a - b);
+}
+
+/** A modulszabály szerinti legnagyobb méret (pl. 2 modul × 700 cm = 1400 cm), ha van felső határ */
+export function moduleRuleMaxCm(rule: ModuleSplitRule): number | undefined {
+  const bps = moduleBreakpoints(rule);
+  if (bps.length) return bps[bps.length - 1];
+  return rule.maxModules ? rule.maxCm * rule.maxModules : undefined;
+}
+
+export interface ModuleCounts {
+  width: number;
+  projection: number;
+  total: number;
+}
+
+/** Modulszám tengelyenként (pl. ceil(szélesség ÷ 700)), az összes modul a kettő szorzata */
+export function getModuleCounts(
+  template: QuoteTemplate,
+  widthCm: number,
+  projectionCm: number
+): ModuleCounts {
+  let width = 1;
+  let projection = 1;
+  for (const rule of getModuleRules(template)) {
+    const dim = Number(rule.axis === 'width' ? widthCm : projectionCm) || 0;
+    const bps = moduleBreakpoints(rule);
+    let n: number;
+    if (bps.length) {
+      const idx = bps.findIndex((bp) => dim <= bp);
+      n = idx === -1 ? bps.length : idx + 1;
+    } else {
+      n = Math.max(1, Math.ceil(dim / rule.maxCm));
+      if (rule.maxModules) n = Math.min(n, rule.maxModules);
+    }
+    if (rule.axis === 'width') width = n;
+    else projection = n;
+  }
+  return { width, projection, total: width * projection };
+}
+
 export function getModuleCount(template: QuoteTemplate, widthCm: number, projectionCm: number): number {
-  const rule = template.moduleSplit;
-  if (!rule || !(rule.maxCm > 0)) return 1;
-  const dim = rule.axis === 'width' ? widthCm : projectionCm;
-  const n = Math.max(1, Math.ceil((Number(dim) || 0) / rule.maxCm));
-  return rule.maxModules ? Math.min(n, rule.maxModules) : n;
+  return getModuleCounts(template, widthCm, projectionCm).total;
 }
 
 /**
@@ -199,8 +257,7 @@ export function getModuleCount(template: QuoteTemplate, widthCm: number, project
  */
 function effectiveDims(
   item: TemplateMaterialItem,
-  template: QuoteTemplate,
-  modules: number,
+  modules: ModuleCounts,
   widthCm: number,
   projectionCm: number,
   heightCm: number
@@ -211,9 +268,9 @@ function effectiveDims(
     projectionCm: Math.max(1, projectionCm + (Number(off.projectionCm) || 0)),
     heightCm: Math.max(1, heightCm + (Number(off.heightCm) || 0)),
   };
-  if (item.splitByModule && template.moduleSplit && modules > 1) {
-    const key = template.moduleSplit.axis === 'width' ? 'widthCm' : 'projectionCm';
-    dims[key] = Math.ceil(dims[key] / modules);
+  if (item.splitByModule) {
+    dims.widthCm = Math.ceil(dims.widthCm / modules.width);
+    dims.projectionCm = Math.ceil(dims.projectionCm / modules.projection);
   }
   return dims;
 }
@@ -228,8 +285,11 @@ const axisValue = (
 };
 
 /** Ez a tétel szerepel-e az adott modulszámnál */
-const fitsModules = (m: TemplateMaterialItem, modules: number) =>
-  (!m.minModules || modules >= m.minModules) && (!m.maxModules || modules <= m.maxModules);
+const fitsModules = (m: TemplateMaterialItem, modules: ModuleCounts) =>
+  (!m.minModules || modules.total >= m.minModules) &&
+  (!m.maxModules || modules.total <= m.maxModules) &&
+  (!m.modulesWidth || modules.width === m.modulesWidth) &&
+  (!m.modulesProjection || modules.projection === m.modulesProjection);
 
 function applyModifiers(rawAmount: number, item: TemplateMaterialItem): number {
   const mult =
@@ -315,16 +375,64 @@ export function checkTemplateFit(
     if (min && value < min) reasons.push(`${label} min. ${min} cm (kért: ${value} cm)`);
     if (max && value > max) reasons.push(`${label} max. ${max} cm (kért: ${value} cm)`);
   };
+  if (mountType && template.mountTypes?.length && !template.mountTypes.includes(mountType)) {
+    reasons.push(`„${mountType}” beépítéssel nem kérhető (csak: ${template.mountTypes.join(', ')})`);
+  }
   check(widthCm, lim.minWidthCm, lim.maxWidthCm, 'Szélesség');
   check(projectionCm, lim.minProjectionCm, lim.maxProjectionCm, 'Kinyúlás');
   check(heightCm, lim.minHeightCm, lim.maxHeightCm, 'Magasság');
 
+  // Modulszabályok: legfeljebb N modul × egy modul max. mérete
+  for (const rule of getModuleRules(template)) {
+    const max = moduleRuleMaxCm(rule);
+    if (!max) continue;
+    const dim = rule.axis === 'width' ? widthCm : projectionCm;
+    if (dim > max) {
+      const bps = moduleBreakpoints(rule);
+      const how = bps.length
+        ? `${bps.length} modulig`
+        : `${rule.maxModules} modul × ${rule.maxCm} cm`;
+      reasons.push(
+        `${rule.axis === 'width' ? 'Szélesség' : 'Kinyúlás'} max. ${max} cm (${how}, kért: ${dim} cm)`
+      );
+    }
+  }
+
+  // Feltételes korlátok (beépítéstől / mérettől függő maximumok)
+  for (const rule of template.sizeRules || []) {
+    if (rule.mountType && rule.mountType !== mountType) continue;
+    if (rule.ifWidthOverCm && !(widthCm > rule.ifWidthOverCm)) continue;
+    if (rule.ifProjectionOverCm && !(projectionCm > rule.ifProjectionOverCm)) continue;
+    const why = rule.label ? ` – ${rule.label}` : '';
+    if (rule.maxWidthCm && widthCm > rule.maxWidthCm)
+      reasons.push(`Szélesség max. ${rule.maxWidthCm} cm (kért: ${widthCm} cm)${why}`);
+    if (rule.maxProjectionCm && projectionCm > rule.maxProjectionCm)
+      reasons.push(`Kinyúlás max. ${rule.maxProjectionCm} cm (kért: ${projectionCm} cm)${why}`);
+    if (rule.maxHeightCm && heightCm > rule.maxHeightCm)
+      reasons.push(`Magasság max. ${rule.maxHeightCm} cm (kért: ${heightCm} cm)${why}`);
+  }
+
+  const modules = getModuleCounts(template, widthCm, projectionCm);
+  // Van ártábla ehhez a beépítéshez, de egyik sem ehhez a modulkiosztáshoz
+  const mountTables = (template.materials || []).filter(
+    (m) =>
+      m.itemRole === 'base' &&
+      m.pricingMode === 'matrix_cm' &&
+      (!mountType || !m.mountTypes?.length || m.mountTypes.includes(mountType))
+  );
+  if (mountTables.length && !mountTables.some((m) => fitsModules(m, modules))) {
+    reasons.push(
+      `Nincs ártábla ${modules.width} × ${modules.projection} modulos kiosztásra${
+        mountType ? ` „${mountType}” beépítésnél` : ''
+      }`
+    );
+  }
   for (const m of template.materials || []) {
     if (m.itemRole !== 'base' || m.pricingMode !== 'matrix_cm') continue;
-    // A másik beépítési mód mérettáblája nem számít
+    // A másik beépítési mód / modulszám mérettáblája nem számít
     if (mountType && m.mountTypes?.length && !m.mountTypes.includes(mountType)) continue;
-    const modules = getModuleCount(template, widthCm, projectionCm);
-    const d = effectiveDims(m, template, modules, widthCm, projectionCm, heightCm);
+    if (!fitsModules(m, modules)) continue;
+    const d = effectiveDims(m, modules, widthCm, projectionCm, heightCm);
     const lookup = lookupCustomMatrixPrice(
       m.matrixTable,
       axisValue(m.matrixRowAxis, 'projection', d),
@@ -338,7 +446,10 @@ export function checkTemplateFit(
   }
 
   if (reasons.length > 0) return { status: 'out_of_range', reasons };
-  const hasAnyLimit = Object.values(lim).some((v) => Number(v) > 0);
+  const hasAnyLimit =
+    Object.values(lim).some((v) => Number(v) > 0) ||
+    Boolean(template.sizeRules?.length) ||
+    getModuleRules(template).some((r) => moduleRuleMaxCm(r));
   return { status: hasAnyLimit ? 'ok' : 'no_limits', reasons: [] };
 }
 
@@ -473,7 +584,7 @@ export function calculateTemplateRows(
 
   // A más beépítési módhoz / modulszámhoz tartozó tételek (pl. szabadon álló mérettábla,
   // 2 modulos felár) kimaradnak
-  const modules = getModuleCount(template, widthCm, projectionCm);
+  const modules = getModuleCounts(template, widthCm, projectionCm);
   const mountMaterials = template.materials.filter(
     (m) =>
       (!m.mountTypes?.length || m.mountTypes.includes(ctx.mountType)) &&
@@ -510,10 +621,9 @@ export function calculateTemplateRows(
       : item.defaultSelected !== false;
 
     const moduleMult =
-      (item.splitByModule && template.moduleSplit ? modules : 1) *
-      (item.perModule ? modules : 1);
+      (item.splitByModule ? modules.total : 1) * (item.perModule ? modules.total : 1);
     const qty = Math.max(1, Number(item.defaultQuantity) || 1) * moduleMult;
-    const ed = effectiveDims(item, template, modules, widthCm, projectionCm, heightCm);
+    const ed = effectiveDims(item, modules, widthCm, projectionCm, heightCm);
     const dim = computeDimensionValue(
       item.dimensionSource || 'roof',
       ed.widthCm,
@@ -597,9 +707,11 @@ export function calculateTemplateRows(
           matrixLookup.price > 0 ? matrixLookup.price : fallbackM2Price;
         rawPrice = effectiveMatrixPrice * qty;
         quantityLabel =
-          item.splitByModule && modules > 1
-            ? `${modules} modul × ${ed.widthCm}×${ed.projectionCm} cm`
-            : `${ed.widthCm}×${ed.projectionCm} cm${qty > 1 ? ` (${qty} db)` : ''}`;
+          item.splitByModule && modules.total > 1
+            ? `${modules.total} modul × ${ed.widthCm}×${ed.projectionCm} cm`
+            : `${ed.widthCm}×${ed.projectionCm} cm${
+                modules.total > 1 ? ` (${modules.total} modul)` : ''
+              }${qty > 1 ? ` (${qty} db)` : ''}`;
         formulaSummary = `Mérettábla algoritmus (${matrixLookup.matchedCol}×${matrixLookup.matchedRow} cm): ${effectiveMatrixPrice} ${curr} × ${qty} db${
           matrixLookup.outOfRange
             ? ' ⚠ A kért méret nagyobb, mint a táblázat – kézi ellenőrzés szükséges!'
@@ -1139,6 +1251,8 @@ export function recalculateBlockWithAlgorithms(
       mountTypes: undefined,
       minModules: undefined,
       maxModules: undefined,
+      modulesWidth: undefined,
+      modulesProjection: undefined,
       id: r.materialId || baseAlg.id || `mat_row_${idx}`,
       name: r.name,
       description: r.description || '',
@@ -1166,6 +1280,7 @@ export function recalculateBlockWithAlgorithms(
     materials: materialsFromRows,
     pricingOverride: sourceTpl?.pricingOverride,
     moduleSplit: sourceTpl?.moduleSplit,
+    moduleSplits: sourceTpl?.moduleSplits,
     createdAt: '',
     updatedAt: '',
   };

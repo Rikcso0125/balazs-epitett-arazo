@@ -35,6 +35,11 @@ export const MOUNT_TYPES: {
     imageUrl: '/uploads/legacy/beepites/szabadon_allo.png',
   },
   {
+    id: 'Lábak nélkül',
+    label: 'Lábak nélkül',
+    description: 'Falak közé vagy meglévő szerkezetre, oszlopok nélkül',
+  },
+  {
     id: 'Meglévő szerkezetre',
     label: 'Meglévő szerkezetre',
     description: 'Meglévő pergola, tető vagy nyílászáró fölé/alá',

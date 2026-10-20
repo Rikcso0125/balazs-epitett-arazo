@@ -1,6 +1,7 @@
 'use client';
 
 import { thumbUrl } from '@/lib/thumb';
+import { isTemplateInCategory } from '@/lib/pricing-engine';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
@@ -537,7 +538,7 @@ export function CatalogManagerView({
   const categoryTemplates = useMemo(
     () =>
       draftTemplates
-        .filter((t) => t.categoryId === selectedCategoryId)
+        .filter((t) => isTemplateInCategory(t, selectedCategoryId))
         .sort(byOrder),
     [draftTemplates, selectedCategoryId]
   );
@@ -1009,7 +1010,7 @@ export function CatalogManagerView({
                 {menuCategories.map((cat, idx) => {
                   const isSelected = cat.id === selectedCategoryId;
                   const tplCount = draftTemplates.filter(
-                    (t) => t.categoryId === cat.id
+                    (t) => isTemplateInCategory(t, cat.id)
                   ).length;
                   return (
                     <div

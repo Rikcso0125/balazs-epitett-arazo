@@ -68,6 +68,12 @@ function normalizeTemplate(tpl: QuoteTemplate, idx: number): QuoteTemplate {
     order: typeof tpl.order === 'number' ? tpl.order : idx + 1,
     sizeLimits: tpl.sizeLimits || {},
     catalogRef: tpl.catalogRef || {},
+    // A régi egytengelyes modulszabály a tengelyenkénti listába kerül
+    moduleSplits: tpl.moduleSplits?.length ? tpl.moduleSplits : tpl.moduleSplit ? [tpl.moduleSplit] : [],
+    moduleSplit: undefined,
+    mountTypes: tpl.mountTypes || [],
+    alsoInCategoryIds: tpl.alsoInCategoryIds || [],
+    sizeRules: tpl.sizeRules || [],
   };
 }
 
