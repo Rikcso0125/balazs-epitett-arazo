@@ -17,6 +17,7 @@ import {
   buildFullQuoteDocumentBlocks,
   calculateTemplateRows,
   checkTemplateFit,
+  getModuleCounts,
   isTemplateInCategory,
   computeBlockBreakdown,
 } from '@/lib/pricing-engine';
@@ -194,25 +195,37 @@ export function GuidedQuoteWizardView({
     return (idx > 0 ? words.slice(0, idx) : words).join(' ');
   };
 
-  // A kategória termékeinél választható beépítések (ha egy termék nem korlátoz, mind választható)
+  // Választható beépítések: a kiválasztott termékek alapján (ha még nincs, a kategóriáé),
+  // annyi termékkel, ahányan az adott beépítéssel kérhetők (a legjobb elöl)
+  const mountBase = (() => {
+    const picked = selectedTemplateIds
+      .map((id) => templates.find((t) => t.id === id))
+      .filter((t): t is QuoteTemplate => Boolean(t));
+    return picked.length ? picked : categoryTemplates;
+  })();
+  const supports = (t: QuoteTemplate, m: MountType) => !t.mountTypes?.length || t.mountTypes.includes(m);
   const mountOptions = (() => {
-    const unrestricted =
-      categoryTemplates.length === 0 || categoryTemplates.some((t) => !t.mountTypes?.length);
-    const used = new Set(categoryTemplates.flatMap((t) => t.mountTypes || []));
-    return MOUNT_TYPES.filter((mt) => unrestricted || used.has(mt.id)).map((mt) => ({
-      ...mt,
-      products: categoryTemplates
-        .filter((t) => t.mountTypes?.length && t.mountTypes.includes(mt.id))
-        .map((t) => shortProductName(t.name)),
-    }));
+    const unrestricted = mountBase.length === 0 || mountBase.some((t) => !t.mountTypes?.length);
+    const used = new Set(mountBase.flatMap((t) => t.mountTypes || []));
+    return MOUNT_TYPES.filter((mt) => unrestricted || used.has(mt.id))
+      .map((mt) => ({
+        ...mt,
+        support: mountBase.filter((t) => supports(t, mt.id)).length,
+        products: mountBase
+          .filter((t) => t.mountTypes?.length && t.mountTypes.includes(mt.id))
+          .map((t) => shortProductName(t.name)),
+      }))
+      .filter((mt) => unrestricted || mt.support > 0);
   })();
 
+  // Ha a kiválasztás változik, arra a beépítésre vált, amellyel a legtöbb termék kérhető
   useEffect(() => {
-    if (mountOptions.length && !mountOptions.some((mt) => mt.id === mountType)) {
-      setMountType(mountOptions[0].id);
-    }
+    if (!mountOptions.length) return;
+    const best = [...mountOptions].sort((a, b) => b.support - a.support)[0];
+    const current = mountOptions.find((mt) => mt.id === mountType);
+    if (!current || current.support < best.support) setMountType(best.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategoryId, mountOptions.map((m) => m.id).join('|')]);
+  }, [selectedCategoryId, selectedTemplateIds.join('|')]);
 
   const calcCtx = {
     widthCm,
@@ -399,21 +412,6 @@ export function GuidedQuoteWizardView({
     );
   }
 
-  // Egy modul méretkorlátai röviden, pl. "Szél. 300-600 · Kiny. 250-400 cm"
-  const limitsText = (tpl: QuoteTemplate): string => {
-    const l = tpl.sizeLimits || {};
-    const part = (label: string, min?: number, max?: number) =>
-      min || max ? `${label} ${min || 0}-${max || '∞'}` : '';
-    const text = [
-      part('Szél.', l.minWidthCm, l.maxWidthCm),
-      part('Kiny.', l.minProjectionCm, l.maxProjectionCm),
-      part('Mag.', l.minHeightCm, l.maxHeightCm),
-    ]
-      .filter(Boolean)
-      .join(' · ');
-    return text ? `${text} cm` : '';
-  };
-
   const fitOf = (tpl: QuoteTemplate) =>
     checkTemplateFit(tpl, widthCm, projectionCm, heightCm, mountType);
 
@@ -469,11 +467,21 @@ export function GuidedQuoteWizardView({
               {tpl.subtitle && (
                 <div className="hidden sm:block text-[13px] text-slate-600 mt-1.5 leading-snug">{tpl.subtitle}</div>
               )}
-              {(l.maxWidthCm || l.maxProjectionCm) && (
-                <div className="mt-2 inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-600 whitespace-nowrap">
-                  max. {l.maxWidthCm || '?'} × {l.maxProjectionCm || '?'} cm
-                </div>
-              )}
+              <div className="mt-2 flex flex-wrap gap-1">
+                {(l.maxWidthCm || l.maxProjectionCm) && (
+                  <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-600 whitespace-nowrap">
+                    max. {l.maxWidthCm || '?'} × {l.maxProjectionCm || '?'} cm
+                  </span>
+                )}
+                {(tpl.mountTypes || []).map((m) => (
+                  <span
+                    key={m}
+                    className="hidden sm:inline-flex items-center rounded-md border border-slate-200 px-2 py-0.5 text-xs text-slate-500 whitespace-nowrap"
+                  >
+                    {MOUNT_TYPES.find((x) => x.id === m)?.label || m}
+                  </span>
+                ))}
+              </div>
             </div>
           </button>
         );
@@ -481,130 +489,138 @@ export function GuidedQuoteWizardView({
     </div>
   );
 
-  const renderTemplateList = (withFit: boolean) => (
-    <div className="divide-y divide-slate-200 border border-slate-200 rounded-xl overflow-hidden">
-      {categoryTemplates.length === 0 && (
-        <div className="px-4 py-6 text-sm text-slate-500 text-center">
-          Nincs aktív sablon ebben a kategóriában.
-        </div>
-      )}
-      {categoryTemplates.map((tpl) => {
-        const fit = fitOf(tpl);
-        const isOut = withFit && fit.status === 'out_of_range';
-        const isForced = forcedTemplateIds.includes(tpl.id);
-        const isSelected = selectedTemplateIds.includes(tpl.id);
-        const canToggle = !isOut || isForced || isSelected;
-        const calc = withFit
-          ? calculateTemplateRows(
-              effectiveTemplate(tpl),
-              calcCtx,
-              getSelectedMaterialsForTemplate(tpl)
-            )
-          : null;
-        const subtitle = !withFit
-          ? [tpl.subtitle, limitsText(tpl)].filter(Boolean).join(' · ')
-          : isOut
-          ? fit.reasons.join(' · ')
-          : fit.status === 'no_limits'
-          ? 'Nincs megadva méretkorlát - ellenőrizd'
-          : 'Ebben a méretben gyártható';
-        return (
-          <div
-            key={tpl.id}
-            className={isOut ? 'bg-rose-50/70' : isSelected ? 'bg-slate-50' : ''}
-          >
-            <label
-              className={`flex items-center gap-3 px-4 py-3 ${
-                canToggle ? 'cursor-pointer' : 'cursor-not-allowed'
-              }`}
-            >
-              <input
-                type="checkbox"
-                checked={isSelected}
-                disabled={!canToggle}
-                onChange={() => handleToggleTemplate(tpl)}
+  // 4. lépés: a kategória termékei + a máshonnan kiválasztottak, rendezve (megfelel → méret → beépítés)
+  const mountLabel = (m: MountType) => MOUNT_TYPES.find((x) => x.id === m)?.label || m;
+  const renderTemplateList = () => {
+    const others = activeTemplatesToInclude.filter((t) => !categoryTemplates.some((c) => c.id === t.id));
+    const rank = (tpl: QuoteTemplate) => {
+      if (tpl.mountTypes?.length && !tpl.mountTypes.includes(mountType)) return 2;
+      return fitOf(tpl).status === 'out_of_range' ? 1 : 0;
+    };
+    const sorted = [...categoryTemplates].sort((a, b) => rank(a) - rank(b));
+
+    const row = (tpl: QuoteTemplate) => {
+      const fit = fitOf(tpl);
+      const wrongMount = Boolean(tpl.mountTypes?.length && !tpl.mountTypes.includes(mountType));
+      const isOut = !wrongMount && fit.status === 'out_of_range';
+      const isForced = forcedTemplateIds.includes(tpl.id);
+      const isSelected = selectedTemplateIds.includes(tpl.id);
+      const canToggle = isSelected || (!wrongMount && (!isOut || isForced));
+      const calc = !wrongMount
+        ? calculateTemplateRows(effectiveTemplate(tpl), calcCtx, getSelectedMaterialsForTemplate(tpl))
+        : null;
+      const modules = getModuleCounts(tpl, widthCm, projectionCm);
+      const photo = tpl.photos?.find((ph) => ph.imageUrl)?.imageUrl;
+      const status = wrongMount
+        ? { text: `Csak ${tpl.mountTypes!.map((m) => mountLabel(m).toLowerCase()).join(' / ')} kérhető`, cls: 'text-slate-500' }
+        : isOut
+        ? { text: fit.reasons.join(' · '), cls: 'text-amber-700' }
+        : fit.status === 'no_limits'
+        ? { text: 'Nincs megadva méretkorlát - ellenőrizd', cls: 'text-amber-700' }
+        : {
+            text: `Ebben a méretben gyártható${modules.total > 1 ? ` · ${modules.total} modul` : ''}`,
+            cls: 'text-green-700',
+          };
+      return (
+        <div key={tpl.id} className={`${isSelected ? 'bg-slate-50' : ''} ${wrongMount ? 'opacity-70' : ''}`}>
+          <label className={`flex items-center gap-3 px-4 py-3 ${canToggle ? 'cursor-pointer' : 'cursor-default'}`}>
+            <input
+              type="checkbox"
+              checked={isSelected}
+              disabled={!canToggle}
+              onChange={() => handleToggleTemplate(tpl)}
+            />
+            {photo && (
+              <img
+                src={thumbUrl(photo)}
+                loading="lazy"
+                decoding="async"
+                alt=""
+                className="w-16 h-12 rounded-lg object-cover border border-slate-200 shrink-0"
               />
-              {tpl.photos?.[0]?.imageUrl && (
-                <img
-                  src={thumbUrl(tpl.photos[0].imageUrl)}
-                  loading="lazy"
-                  decoding="async"
-                  alt=""
-                  className={`w-16 h-12 rounded-lg object-cover border border-slate-200 shrink-0 ${
-                    isOut ? 'opacity-50' : ''
-                  }`}
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <div
-                  className={`text-sm font-medium ${
-                    isOut ? 'text-rose-700' : 'text-slate-950'
-                  }`}
-                >
-                  {tpl.name}
-                  {tpl.status === 'seasonal' && (
-                    <span className="ml-2 text-xs font-normal text-amber-700">
-                      időszakos
-                    </span>
-                  )}
-                  {tpl.status === 'test' && (
-                    <span className="ml-2 text-xs font-normal text-violet-700">
-                      teszt
-                    </span>
-                  )}
-                </div>
-                {subtitle && (
-                  <div
-                    className={`text-xs break-words ${
-                      isOut
-                        ? 'text-rose-700'
-                        : withFit && fit.status === 'ok'
-                        ? 'text-green-700'
-                        : withFit && fit.status === 'no_limits'
-                        ? 'text-amber-700'
-                        : 'text-slate-500'
-                    }`}
-                  >
-                    {subtitle}
-                  </div>
-                )}
+            )}
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-medium text-slate-950">
+                {tpl.name}
+                {tpl.status === 'seasonal' && <span className="ml-2 text-xs font-normal text-amber-700">időszakos</span>}
+                {tpl.status === 'test' && <span className="ml-2 text-xs font-normal text-violet-700">teszt</span>}
               </div>
-              {calc && (
-                <div className="text-right shrink-0">
-                  <div
-                    className={`text-sm font-semibold tabular-nums ${
-                      isOut ? 'text-rose-400 line-through' : 'text-slate-950'
-                    }`}
-                  >
-                    {formatDotNumber(calc.totalBaseEur)} EUR
-                  </div>
-                  <div className="text-xs text-slate-500 tabular-nums">
-                    {formatDotNumber(calc.totalBaseHuf)} Ft
-                  </div>
+              <div className={`text-xs break-words ${status.cls}`}>{status.text}</div>
+            </div>
+            {calc && (
+              <div className="text-right shrink-0">
+                <div className={`text-sm font-semibold tabular-nums ${isOut && !isForced ? 'text-slate-400' : 'text-slate-950'}`}>
+                  {formatDotNumber(calc.totalBaseEur)} EUR
                 </div>
+                <div className="text-xs text-slate-500 tabular-nums">{formatDotNumber(calc.totalBaseHuf)} Ft</div>
+              </div>
+            )}
+          </label>
+          {wrongMount && (
+            <div className="px-4 pb-3 -mt-1 pl-11 flex flex-wrap gap-2">
+              {tpl.mountTypes!.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setMountType(m)}
+                  className="px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-xs text-slate-700 hover:border-slate-500"
+                >
+                  Váltás: {mountLabel(m)}
+                </button>
+              ))}
+              {isSelected && (
+                <button type="button" onClick={() => handleToggleTemplate(tpl)} className="text-xs text-slate-500 underline">
+                  Kiveszem
+                </button>
               )}
-            </label>
-            {isOut && !isForced && (
+            </div>
+          )}
+          {isOut && !isForced && (
+            <div className="px-4 pb-3 -mt-1 pl-11 flex flex-wrap gap-3 text-xs">
               <button
                 type="button"
                 onClick={() => setForcedTemplateIds((prev) => [...prev, tpl.id])}
-                className="ml-11 mb-3 -mt-1 text-xs text-rose-700 underline"
+                className="text-amber-800 underline"
               >
                 {isSelected ? 'Mégis megtartom (kézi ellenőrzés)' : 'Mégis kiválasztom'}
               </button>
-            )}
+              {isSelected && (
+                <button type="button" onClick={() => handleToggleTemplate(tpl)} className="text-slate-500 underline">
+                  Kiveszem
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    return (
+      <div className="space-y-3">
+        <div className="divide-y divide-slate-200 border border-slate-200 rounded-xl overflow-hidden">
+          {sorted.length === 0 && (
+            <div className="px-4 py-6 text-sm text-slate-500 text-center">Nincs aktív termék ebben a kategóriában.</div>
+          )}
+          {sorted.map(row)}
+        </div>
+        {others.length > 0 && (
+          <div>
+            <div className="text-xs font-medium text-slate-500 mb-1.5">Más kategóriából kiválasztva</div>
+            <div className="divide-y divide-slate-200 border border-slate-200 rounded-xl overflow-hidden">
+              {others.map(row)}
+            </div>
           </div>
-        );
-      })}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   const footer = (
     back: WizardStep | null,
     next: React.ReactNode,
     extra?: React.ReactNode
   ) => (
-    <div className="flex items-center justify-between gap-3 pt-5 mt-5 border-t border-slate-200">
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-5 mt-5 border-t border-slate-200">
       {back ? (
         <button type="button" onClick={() => setStep(back)} className={btn.ghost}>
           <ArrowLeft className="w-4 h-4" />
@@ -613,7 +629,7 @@ export function GuidedQuoteWizardView({
       ) : (
         <span />
       )}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-end gap-2 ml-auto">
         {extra}
         {next}
       </div>
@@ -967,9 +983,9 @@ export function GuidedQuoteWizardView({
                   Mely sablonok jöhetnek szóba ebben a méretben?
                 </div>
                 <div className="text-[13px] text-slate-500 mb-3">
-                  {selectedCategory.name} - ami nem gyártható egy modulban, pirossal jelölve.
+                  {selectedCategory.name} · ami nem fér bele a méretbe vagy a beépítésbe, a lista végén, indoklással.
                 </div>
-                {renderTemplateList(true)}
+                {renderTemplateList()}
               </div>
             )}
 

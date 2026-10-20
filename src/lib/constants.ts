@@ -39,6 +39,7 @@ export const MOUNT_TYPES: {
     id: 'Lábak nélkül',
     label: 'Lábak nélkül',
     description: 'Falak közé vagy meglévő szerkezetre, oszlopok nélkül',
+    imageUrl: '/uploads/catalog-2026/isola-2/photo-3.jpg',
   },
   {
     id: 'Meglévő szerkezetre',

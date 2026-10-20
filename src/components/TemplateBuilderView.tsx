@@ -85,6 +85,34 @@ function createDefaultMaterial(): TemplateMaterialItem {
   return createDefaultMaterialAlgorithm();
 }
 
+/** Kis szegmentált fülsor a hosszú lapok tagolásához */
+function SubTabs<T extends string>({
+  value,
+  onChange,
+  tabs,
+}: {
+  value: T;
+  onChange: (v: T) => void;
+  tabs: [T, string][];
+}) {
+  return (
+    <div className="flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200 overflow-x-auto whitespace-nowrap">
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => onChange(id)}
+          className={`shrink-0 px-3 py-1.5 rounded-lg text-sm transition ${
+            value === id ? 'bg-white text-slate-950 font-semibold shadow-sm' : 'text-slate-600 hover:text-slate-950'
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function TemplateBuilderView({
   config,
   menus,
@@ -146,6 +174,12 @@ export function TemplateBuilderView({
 
   // Active material being edited inside Step 2
   const [activeMaterialIdx, setActiveMaterialIdx] = useState<number>(0);
+  const [basicTab, setBasicTab] = useState<'general' | 'size' | 'pricing'>('general');
+  const [itemTab, setItemTab] = useState<'basic' | 'pricing' | 'rules' | 'media'>('basic');
+  const [addMenuOpen, setAddMenuOpen] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatMenuId, setNewCatMenuId] = useState('');
   const [newMatrixRowInput, setNewMatrixRowInput] = useState('');
   const [newMatrixColInput, setNewMatrixColInput] = useState('');
   const [matrixPasteText, setMatrixPasteText] = useState('');
@@ -190,6 +224,27 @@ export function TemplateBuilderView({
     setCatAllowMultiple(cat.allowMultipleTemplates);
     setCatMenuId(cat.menuId || menus[0]?.id || '');
     setCategoryModalOpen(true);
+  };
+
+  // Új kategória közvetlenül a sablonszerkesztőből
+  const createCategoryInline = async () => {
+    const name = newCatName.trim();
+    if (!name) return;
+    const cat: ProductCategory = {
+      id: `cat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      name,
+      shortName: name,
+      description: '',
+      questionPrompt: `Kér az ügyfél ${name.toLowerCase()}t?`,
+      categoryType: 'main_structure',
+      allowMultipleTemplates: true,
+      order: categories.length + 1,
+      menuId: newCatMenuId || menus[0]?.id,
+    };
+    await onSaveCategory(cat);
+    setTplCategoryId(cat.id);
+    setNewCatName('');
+    setAddingCategory(false);
   };
 
   const handleSaveCategorySubmit = async (e: React.FormEvent) => {
@@ -350,8 +405,18 @@ export function TemplateBuilderView({
     );
   };
 
-  const handleAddMaterial = () => {
-    const nextMat = createDefaultMaterial();
+  const handleAddMaterial = (role: TemplateMaterialItem['itemRole'] = 'base') => {
+    const base = createDefaultMaterial();
+    const nextMat: TemplateMaterialItem = {
+      ...base,
+      itemRole: role,
+      defaultSelected: role !== 'optional',
+      name:
+        role === 'optional' ? 'Új extra' : role === 'gift' ? 'Új ajándék' : base.name,
+      pricingMode: role === 'base' ? base.pricingMode : 'fixed',
+      excludeFromPercentBase: role !== 'base' || undefined,
+    };
+    setItemTab('basic');
     setTplMaterials((prev) => {
       const updated = [...prev, nextMat];
       setActiveMaterialIdx(updated.length - 1);
@@ -1004,11 +1069,11 @@ export function TemplateBuilderView({
       {/* 5-STEP TEMPLATE & PRODUCT BUILDER WIZARD MODAL                        */}
       {/* ===================================================================== */}
       {wizardOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-stretch sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
+          <div className="bg-white sm:rounded-2xl max-w-6xl w-full h-[100dvh] sm:h-auto sm:max-h-[94vh] flex flex-col shadow-2xl sm:border border-slate-200 overflow-hidden">
             {/* Wizard Top Header */}
-            <div className="px-6 pt-5 pb-3 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-slate-950">
+            <div className="px-4 sm:px-6 pt-3 sm:pt-5 pb-2 sm:pb-3 flex items-center justify-between gap-2">
+              <h2 className="min-w-0 text-base sm:text-xl font-semibold text-slate-950 break-words">
                 {editingTemplateId ? tplName || 'Sablon' : 'Új sablon'}
               </h2>
               <button
@@ -1022,7 +1087,7 @@ export function TemplateBuilderView({
             </div>
 
             {/* Step Tabs */}
-            <div className="border-b border-slate-200 px-6 flex flex-wrap gap-5">
+            <div className="border-b border-slate-200 px-4 sm:px-6 flex gap-5 overflow-x-auto whitespace-nowrap">
               {[
                 { s: 1 as const, label: 'Alapadatok' },
                 { s: 2 as const, label: 'Tételek & árazás' },
@@ -1034,7 +1099,7 @@ export function TemplateBuilderView({
                   key={tab.s}
                   type="button"
                   onClick={() => setWizardStep(tab.s)}
-                  className={`py-2.5 -mb-px border-b-2 text-sm transition ${
+                  className={`shrink-0 py-2.5 -mb-px border-b-2 text-sm transition ${
                     wizardStep === tab.s
                       ? 'border-slate-950 text-slate-950 font-semibold'
                       : 'border-transparent text-slate-500 hover:text-slate-950'
@@ -1046,63 +1111,114 @@ export function TemplateBuilderView({
             </div>
 
             {/* Wizard Body */}
-            <div className="p-6 overflow-y-auto flex-1 space-y-6">
+            <div className="p-3 sm:p-6 overflow-y-auto flex-1 space-y-6">
               {/* STEP 1: KATEGÓRIA & NÉV */}
               {wizardStep === 1 && (
                 <div className="max-w-2xl mx-auto space-y-5">
-                  <div>
-                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
-                      Melyik kategóriába tartozik ez a sablon? *
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                      {categories.map((cat) => (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          onClick={() => setTplCategoryId(cat.id)}
-                          className={`p-3 rounded-xl border text-left transition ${
-                            tplCategoryId === cat.id
-                              ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20'
-                              : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                          }`}
+                  <SubTabs<'general' | 'size' | 'pricing'>
+                    value={basicTab}
+                    onChange={setBasicTab}
+                    tabs={[
+                      ['general', 'Általános'],
+                      ['size', 'Méretek és modulok'],
+                      ['pricing', 'Katalógus és árképzés'],
+                    ]}
+                  />
+                  {basicTab === 'general' && (<>
+                  <div className="space-y-3">
+                    <label className="block">
+                      <span className="block text-[13px] font-medium text-slate-700 mb-1.5">Kategória *</span>
+                      <div className="flex flex-wrap gap-2">
+                        <select
+                          value={tplCategoryId}
+                          onChange={(e) => {
+                            if (e.target.value === '__new') setAddingCategory(true);
+                            else setTplCategoryId(e.target.value);
+                          }}
+                          className="min-w-0 flex-1 px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm"
                         >
-                          <div className="text-sm font-bold">{cat.name}</div>
-                          <div className="text-xs text-slate-500 mt-0.5">
-                            {cat.categoryType === 'main_structure'
-                              ? 'Fő szerkezet'
-                              : 'Kiegészítő / Extra'}
-                          </div>
+                          {[...menus, { id: '', name: 'Menü nélkül' } as ProductMenu].map((m) => {
+                            const cats = categories.filter((c) => (c.menuId || '') === m.id);
+                            if (!cats.length) return null;
+                            return (
+                              <optgroup key={m.id || 'none'} label={m.name}>
+                                {cats.map((c) => (
+                                  <option key={c.id} value={c.id}>
+                                    {c.name}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            );
+                          })}
+                          <option value="__new">+ Új kategória…</option>
+                        </select>
+                        {!addingCategory && (
+                          <button type="button" onClick={() => setAddingCategory(true)} className={btn.secondary}>
+                            <Plus className="w-4 h-4" />
+                            Új kategória
+                          </button>
+                        )}
+                      </div>
+                    </label>
+                    {addingCategory && (
+                      <div className="flex flex-wrap items-end gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50">
+                        <label className="block min-w-0 flex-1 basis-48">
+                          <span className="block text-xs font-semibold text-slate-500">Új kategória neve</span>
+                          <input
+                            autoFocus
+                            value={newCatName}
+                            onChange={(e) => setNewCatName(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && createCategoryInline()}
+                            placeholder="pl. Kocsibeálló"
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+                          />
+                        </label>
+                        <label className="block basis-40">
+                          <span className="block text-xs font-semibold text-slate-500">Menü</span>
+                          <select
+                            value={newCatMenuId || menus[0]?.id || ''}
+                            onChange={(e) => setNewCatMenuId(e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+                          >
+                            {menus.map((m) => (
+                              <option key={m.id} value={m.id}>
+                                {m.name}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button type="button" onClick={createCategoryInline} className={btn.primary}>
+                          Létrehozás
                         </button>
-                      ))}
-                    </div>
+                        <button type="button" onClick={() => setAddingCategory(false)} className={btn.ghost}>
+                          Mégse
+                        </button>
+                      </div>
+                    )}
                     {categories.length > 1 && (
-                      <div className="mt-3">
-                        <div className="text-[13px] font-medium text-slate-700 mb-1.5">
-                          Megjelenik ezekben a kategóriákban is
-                        </div>
-                        <div className="flex flex-wrap gap-2">
+                      <div>
+                        <div className="text-[13px] font-medium text-slate-700 mb-1.5">Megjelenik ezekben is</div>
+                        <div className="flex flex-wrap gap-1.5">
                           {categories
                             .filter((cat) => cat.id !== tplCategoryId)
                             .map((cat) => {
                               const on = tplAlsoInCategoryIds.includes(cat.id);
                               return (
-                                <label
+                                <button
                                   key={cat.id}
-                                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer ${
-                                    on ? 'border-slate-900' : 'border-slate-200 text-slate-600'
+                                  type="button"
+                                  aria-pressed={on}
+                                  onClick={() =>
+                                    setTplAlsoInCategoryIds((prev) =>
+                                      on ? prev.filter((x) => x !== cat.id) : [...prev, cat.id]
+                                    )
+                                  }
+                                  className={`px-2.5 py-1 rounded-lg border text-xs transition ${
+                                    on ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 text-slate-600 hover:border-slate-400'
                                   }`}
                                 >
-                                  <input
-                                    type="checkbox"
-                                    checked={on}
-                                    onChange={() =>
-                                      setTplAlsoInCategoryIds((prev) =>
-                                        on ? prev.filter((x) => x !== cat.id) : [...prev, cat.id]
-                                      )
-                                    }
-                                  />
                                   {cat.name}
-                                </label>
+                                </button>
                               );
                             })}
                         </div>
@@ -1158,6 +1274,9 @@ export function TemplateBuilderView({
                     </div>
                   </div>
 
+                  </>)}
+
+                  {basicTab === 'size' && (<>
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <div className="text-sm font-semibold text-slate-950">
                       Beépítési módok
@@ -1408,6 +1527,9 @@ export function TemplateBuilderView({
                     </button>
                   </div>
 
+                  </>)}
+
+                  {basicTab === 'pricing' && (<>
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                     <div className="text-sm font-semibold text-slate-950">
                       Katalógus hivatkozás (hol találjuk az árat)
@@ -1520,6 +1642,7 @@ export function TemplateBuilderView({
                       </div>
                     )}
                   </div>
+                  </>)}
                 </div>
               )}
 
@@ -1532,105 +1655,129 @@ export function TemplateBuilderView({
                       <span className="text-[13px] font-medium text-slate-600">
                         Tételek ({tplMaterials.length})
                       </span>
-                      <button
-                        type="button"
-                        onClick={handleAddMaterial}
-                        className={btn.ghost}
-                      >
-                        <Plus className="w-4 h-4" />
-                        Új tétel
-                      </button>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setAddMenuOpen((v) => !v)}
+                          className={btn.ghost}
+                          aria-expanded={addMenuOpen}
+                        >
+                          <Plus className="w-4 h-4" />
+                          Új tétel
+                        </button>
+                        {addMenuOpen && (
+                          <div className="absolute right-0 top-full mt-1 z-30 w-48 bg-white border border-slate-200 rounded-xl shadow-lg p-1">
+                            {(
+                              [
+                                ['base', 'Alaptétel (az árban)'],
+                                ['optional', 'Extra (választható)'],
+                                ['gift', 'Ajándék'],
+                              ] as const
+                            ).map(([role, label]) => (
+                              <button
+                                key={role}
+                                type="button"
+                                onClick={() => {
+                                  setAddMenuOpen(false);
+                                  handleAddMaterial(role);
+                                }}
+                                className="w-full text-left px-3 py-1.5 rounded-lg text-[13px] text-slate-700 hover:bg-slate-100"
+                              >
+                                {label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      {tplMaterials.map((mat, idx) => {
-                        const isSel = idx === activeMaterialIdx;
-                        const modeInfo = PRICING_MODE_OPTIONS.find(
-                          (pm) => pm.id === mat.pricingMode
-                        );
-                        const calcRow = previewCalc.rows[idx];
+                    <div className="space-y-3">
+                      {(
+                        [
+                          ['base', 'Alaptételek'],
+                          ['gift', 'Ajándékok'],
+                          ['optional', 'Extrák'],
+                        ] as const
+                      ).map(([role, label]) => {
+                        const items = tplMaterials
+                          .map((mat, idx) => ({ mat, idx }))
+                          .filter(({ mat }) => (mat.itemRole || 'base') === role);
+                        if (!items.length) return null;
                         return (
-                          <div
-                            key={mat.id}
-                            onClick={() => setActiveMaterialIdx(idx)}
-                            className={`p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between gap-2 ${
-                              isSel
-                                ? 'border-emerald-600 bg-emerald-50/70 ring-2 ring-emerald-500/20'
-                                : 'border-slate-200 bg-white hover:bg-slate-50'
-                            }`}
-                          >
-                            <div className="min-w-0">
-                              <div className="text-sm font-bold text-slate-900 truncate">
-                                {idx + 1}. {mat.name || 'Névtelen termék / anyag'}
-                              </div>
-                              <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                                <span className="px-2 py-0.5 rounded bg-slate-200/80 text-slate-700 text-xs font-semibold">
-                                  {modeInfo?.shortLabel || mat.pricingMode}
-                                </span>
-                                <span
-                                  className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                                    mat.itemRole === 'base'
-                                      ? 'bg-emerald-100 text-emerald-800'
-                                      : mat.itemRole === 'optional'
-                                      ? 'bg-blue-100 text-blue-800'
-                                      : 'bg-amber-100 text-amber-800'
-                                  }`}
-                                >
-                                  {mat.itemRole === 'base'
-                                    ? 'Alaptétel'
-                                    : mat.itemRole === 'optional'
-                                    ? 'Opcionális'
-                                    : 'Ajándék'}
-                                </span>
-                                {calcRow && (calcRow.costEur ?? 0) <= 1 && mat.itemRole !== 'gift' && (
-                                  <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-700 text-xs font-semibold">
-                                    Ár hiányzik
-                                  </span>
-                                )}
-                                {mat.perSide && (
-                                  <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-xs font-semibold">
-                                    oldalanként
-                                  </span>
-                                )}
-                                {calcRow && (
-                                  <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-950 text-xs font-semibold tabular-nums">
-                                    {mat.itemRole === 'gift'
-                                      ? `0 EUR (Lista: ${formatDotNumber(
-                                          calcRow.listPriceEur
-                                        )} EUR)`
-                                      : `${formatDotNumber(
-                                          calcRow.discountPriceEur
-                                        )} EUR`}
-                                  </span>
-                                )}
-                                {mat.photos?.length > 0 && (
-                                  <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-xs font-semibold">
-                                    {mat.photos.length} fotó
-                                  </span>
-                                )}
-                              </div>
+                          <div key={role}>
+                            <div className="px-1 pb-1 text-xs font-medium text-slate-500">
+                              {label} ({items.length})
                             </div>
-                            {tplMaterials.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemoveMaterial(idx);
-                                }}
-                                className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-100"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
+                            <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100 overflow-hidden">
+                              {items.map(({ mat, idx }) => {
+                                const isSel = idx === activeMaterialIdx;
+                                const calcRow = previewCalc.rows.find((r) => r.materialId === mat.id);
+                                const missingPrice =
+                                  calcRow && (calcRow.costEur ?? 0) <= 1 && mat.itemRole !== 'gift';
+                                return (
+                                  <div
+                                    key={mat.id}
+                                    onClick={() => setActiveMaterialIdx(idx)}
+                                    className={`group flex items-center gap-2 px-3 py-2 cursor-pointer transition ${
+                                      isSel ? 'bg-slate-900 text-white' : 'hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="min-w-0 flex-1">
+                                      <div className={`text-[13px] leading-snug break-words ${isSel ? 'text-white' : 'text-slate-900'}`}>
+                                        {mat.name || 'Névtelen tétel'}
+                                      </div>
+                                      {(missingPrice || mat.perSide || mat.mountTypes?.length) && (
+                                        <div className={`text-[11px] ${isSel ? 'text-white/70' : 'text-slate-500'}`}>
+                                          {[
+                                            missingPrice ? 'ár hiányzik' : '',
+                                            mat.perSide ? 'oldalanként' : '',
+                                            mat.mountTypes?.length ? mat.mountTypes.join(', ').toLowerCase() : '',
+                                          ]
+                                            .filter(Boolean)
+                                            .join(' · ')}
+                                        </div>
+                                      )}
+                                    </div>
+                                    <span
+                                      className={`text-xs tabular-nums whitespace-nowrap ${
+                                        missingPrice ? 'text-rose-500' : isSel ? 'text-white/90' : 'text-slate-600'
+                                      }`}
+                                    >
+                                      {mat.itemRole === 'gift'
+                                        ? 'ajándék'
+                                        : calcRow
+                                        ? `${formatDotNumber(calcRow.discountPriceEur)} EUR`
+                                        : '-'}
+                                    </span>
+                                    {tplMaterials.length > 1 && (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          if (window.confirm(`Törlöd: „${mat.name}”?`)) handleRemoveMaterial(idx);
+                                        }}
+                                        className={`p-1 rounded-md lg:opacity-0 lg:group-hover:opacity-100 ${
+                                          isSel ? 'text-white/70 hover:text-white' : 'text-slate-400 hover:text-rose-600'
+                                        }`}
+                                        title="Tétel törlése"
+                                        aria-label="Tétel törlése"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         );
                       })}
                     </div>
 
                     {/* Quick extras from the meeting list */}
-                    <div className="space-y-1.5">
-                      <div className="text-[13px] text-slate-600">Gyors extra</div>
-                      <div className="flex flex-wrap gap-1.5">
+                    <details className="rounded-xl border border-slate-200 bg-white px-3 py-2">
+                      <summary className="cursor-pointer text-[13px] text-slate-600 select-none">Gyors extra hozzáadása</summary>
+                      <div className="flex flex-wrap gap-1.5 pt-2">
                         {(config.extraPresets || []).map((preset) => (
                           <button
                             key={preset.id}
@@ -1642,14 +1789,14 @@ export function TemplateBuilderView({
                           </button>
                         ))}
                       </div>
-                    </div>
+                    </details>
 
                     {/* Template Total Summary Box in Step 2 */}
                     <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
                       <div className="text-[13px] text-slate-500">
                         Sablon ára ({testWidthCm}×{testProjCm} cm):
                       </div>
-                      <div className="text-lg font-semibold text-slate-950 tabular-nums">
+                      <div className="text-base sm:text-lg font-semibold text-slate-950 tabular-nums">
                         {formatDotNumber(previewCalc.totalBaseEur)} EUR{' '}
                         <span className="text-xs font-normal text-slate-500">
                           ({formatDotNumber(previewCalc.totalBaseHuf)} Ft)
@@ -1661,7 +1808,7 @@ export function TemplateBuilderView({
                   {/* Right detail editor for selected product/material */}
                   <div className="lg:col-span-8">
                     {currentMaterial ? (
-                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-5">
+                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-3 sm:p-5 space-y-5">
                         {/* LIVE ALGORITHM CALCULATION BANNER FOR CURRENT PRODUCT */}
                         {previewCalc.rows[activeMaterialIdx] && (
                           <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1683,7 +1830,7 @@ export function TemplateBuilderView({
                                   EUR
                                 </span>
                               </div>
-                              <div className="text-lg font-semibold text-slate-950 tabular-nums">
+                              <div className="text-base sm:text-lg font-semibold text-slate-950 tabular-nums">
                                 Kedvezményes ár:{' '}
                                 {formatDotNumber(
                                   previewCalc.rows[activeMaterialIdx].discountPriceEur
@@ -1694,6 +1841,17 @@ export function TemplateBuilderView({
                           </div>
                         )}
 
+                        <SubTabs<'basic' | 'pricing' | 'rules' | 'media'>
+                          value={itemTab}
+                          onChange={setItemTab}
+                          tabs={[
+                            ['basic', 'Alap'],
+                            ['pricing', 'Árazás'],
+                            ['rules', 'Szabályok'],
+                            ['media', 'Képek és színek'],
+                          ]}
+                        />
+                        {itemTab === 'basic' && (<>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
@@ -1805,7 +1963,9 @@ export function TemplateBuilderView({
                           Oldalanként árazott (az árazóban 1-4 oldal választható)
                         </label>
 
-                        <details className="rounded-xl border border-slate-200 bg-white px-4 py-3">
+                        </>)}
+                        {itemTab === 'rules' && (
+                        <details open className="rounded-xl border border-slate-200 bg-white px-4 py-3">
                           <summary className="cursor-pointer text-sm font-medium text-slate-800 select-none">
                             Haladó szabályok (modulok, nettó méret, kerekítés)
                           </summary>
@@ -2032,65 +2192,43 @@ export function TemplateBuilderView({
                         </details>
 
 
+                        )}
+                        {itemTab === 'pricing' && (<>
                         {/* Pricing Mode Selector */}
                         <div>
                           <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                             Árazás módja
                           </label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {PRICING_MODE_OPTIONS.map((pm) => {
-                              const hasOtherNonPctBase = tplMaterials.some(
-                                (m, i) =>
-                                  i !== activeMaterialIdx &&
-                                  m.pricingMode !== 'percentage' &&
-                                  m.itemRole === 'base'
-                              );
-                              const isPctBlocked =
-                                pm.id === 'percentage' && !hasOtherNonPctBase;
-
-                              return (
-                                <button
-                                  key={pm.id}
-                                  type="button"
-                                  disabled={isPctBlocked}
-                                  onClick={() => {
-                                    if (isPctBlocked) return;
+                          {(() => {
+                            const hasOtherNonPctBase = tplMaterials.some(
+                              (m, i) => i !== activeMaterialIdx && m.pricingMode !== 'percentage' && m.itemRole === 'base'
+                            );
+                            const current = PRICING_MODE_OPTIONS.find((pm) => pm.id === currentMaterial.pricingMode);
+                            return (
+                              <>
+                                <select
+                                  value={currentMaterial.pricingMode}
+                                  onChange={(e) =>
                                     updateMaterial(activeMaterialIdx, {
-                                      pricingMode: pm.id as ProductPricingMode,
-                                      basePrice:
-                                        Math.max(
-                                          1,
-                                          Number(currentMaterial.basePrice) ||
-                                            1500
-                                        ),
-                                      unitPrice:
-                                        Math.max(
-                                          1,
-                                          Number(currentMaterial.unitPrice) ||
-                                            350
-                                        ),
-                                    });
-                                  }}
-                                  className={`p-3 rounded-xl border text-left transition ${
-                                    currentMaterial.pricingMode === pm.id
-                                      ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20'
-                                      : isPctBlocked
-                                      ? 'border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed opacity-60'
-                                      : 'border-slate-200 bg-white hover:bg-slate-100 text-slate-700'
-                                  }`}
+                                      pricingMode: e.target.value as ProductPricingMode,
+                                      basePrice: Math.max(1, Number(currentMaterial.basePrice) || 1500),
+                                      unitPrice: Math.max(1, Number(currentMaterial.unitPrice) || 350),
+                                    })
+                                  }
+                                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-medium"
                                 >
-                                  <div className="text-xs font-bold">
-                                    {pm.label}
-                                  </div>
-                                  <div className="text-xs text-slate-500 mt-0.5">
-                                    {isPctBlocked
-                                      ? 'Csak 2. tételként választható (pl. szerelés), ha már van fő alaptétel!'
-                                      : pm.description}
-                                  </div>
-                                </button>
-                              );
-                            })}
-                          </div>
+                                  {PRICING_MODE_OPTIONS.map((pm) => (
+                                    <option key={pm.id} value={pm.id} disabled={pm.id === 'percentage' && !hasOtherNonPctBase}>
+                                      {pm.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                {current?.description && (
+                                  <p className="text-xs text-slate-500 mt-1.5">{current.description}</p>
+                                )}
+                              </>
+                            );
+                          })()}
                         </div>
 
                         {/* Dimension Source selector for m² and fm modes */}
@@ -2773,6 +2911,8 @@ export function TemplateBuilderView({
                           </div>
                         </div>
 
+                        </>)}
+                        {itemTab === 'media' && (<>
                         {/* Színválaszték (pl. alapszínek, RAL színek) - a PDF-ben színmintaként */}
                         <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
                           <div className="text-sm font-semibold text-slate-950">Színek</div>
@@ -2911,6 +3051,7 @@ export function TemplateBuilderView({
                             </div>
                           ))}
                         </div>
+                        </>)}
                       </div>
                     ) : null}
                   </div>
@@ -3416,7 +3557,7 @@ export function TemplateBuilderView({
             </div>
 
             {/* Wizard Footer */}
-            <div className="border-t border-slate-200 px-6 py-3 flex items-center justify-between">
+            <div className="border-t border-slate-200 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
               <button
                 type="button"
                 onClick={() =>
