@@ -22,6 +22,7 @@ Futtatás: python3 scripts/import-2026-pricelists.py
 import copy
 import json
 import os
+import re
 from datetime import datetime, timezone
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -330,6 +331,8 @@ set_category(C8, 'Eltolható üvegfal', 'menu_arnyekolo', 3, 'Meglévő terasz b
 set_category(C5A, 'Kazettás karos napellenző', 'menu_napellenzo', 1)
 set_category(C5B, 'Kazetta nélküli karos napellenző', 'menu_napellenzo', 2)
 
+KE_TPLS_ALL = {'tpl_legacy_kedry_skylife', 'tpl_kedry_neos', 'tpl_legacy_hydra', 'tpl_xtesa', 'tpl_legacy_keplan',
+               'tpl_legacy_a100_lux', 'tpl_legacy_isola_2a', 'tpl_isola_3'}
 KE_NOTE = 'Árképző: KE gyári listaár × 0,65 + fix felár (a régi árképző szerint).'
 AL_NOTE = 'Árképző: Aluprof gyári listaár × 0,66 + fix felár (a régi árképző szerint).'
 LIST_NOTE = 'Árképző: gyári listaár × 1,0 (nincs megadott árképző – ellenőrizd, és állítsd be a szorzót / felárat).'
@@ -409,7 +412,7 @@ template(tid, categoryId=C1, name='KEDRY NEOS bioklimatikus pergola', order=3,
          introText='A KEDRY NEOS ({{meret}}, {{beepites}}) letisztult, minimalista bioklimatikus pergola forgatható alumínium lamellákkal. '
                    'A lamellák dőlésszögével a bejutó fény és a szellőzés szabályozható, zárt állásban a tető vízzáró, az esővíz a rejtett ereszcsatornán és az oszlopokon át távozik. '
                    'Később üvegfallal és oldalsó árnyékolóval télikertté bővíthető.',
-         closingText=sky.get('closingText', ''),
+         closingText=re.sub(r'\s*\([^)]*SKYLIFE[^)]*\)', '', sky.get('closingText', '')),
          catalogRef={'productAlias': 'KE Kedry Neos', 'note': KE_NOTE + ' Motor: Somfy Sunea Screen IO gyári listaáron. A gyártó szerint a max. magasság 270 cm (a docx 300 cm-t írt).'})
 neos_desc = 'Alumínium váz, 0–135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).'
 nw, nf, nn = ('KEDRY NEOS – forgatható lamellákkal, falhoz rögzítve', 'KEDRY NEOS – forgatható lamellákkal, szabadon álló',
@@ -662,6 +665,185 @@ put(tid, [], [*common_extras('zip', infra=False, sensors=False),
               fixed_extra('x_zip_wind', 'Szélérzékelő', 200)], prefix='zip')
 add_note(tid, '2026: a régi mérettábla maradt – az új Aluprof R ZIIIP 120 tábla (69. o.) motor nélküli, más alapú, ellenőrizd. Egyedi szövet katalógusból: ár nincs megadva.')
 
+# ================================================================ TELJES EGYEZÉS A 2026-OS LISTÁKKAL
+# A korábban megtartott régi táblák is a gyári táblára cserélődnek (a régi árképzővel), a motorok és
+# távirányítók gyári listaáron, a ZIP árnyékolók táblájába a szükséges motor be van építve.
+
+# A100 LUX: 2 / 3 / 4 vezetősín = 1 / 2 / 3 modul
+tid = 'tpl_legacy_a100_lux'
+old = items(tid)
+a100_desc = old['mat_a100_base']['description'] if 'mat_a100_base' in old else ''
+drop(tid, ['mat_a100_base', 'mat_a100_base_2', 'mat_a100_base_3', 'mat_a100_motor'])
+if not any(m['id'] == 'mat_a100_motor_box' for m in tpls[tid]['materials']):
+    tpls[tid]['materials'].insert(0, material(id='mat_a100_motor_box', name='Motor – Somfy Sunilus IO 30/17 motoros doboz (modulonként 1 db)',
+                                              basePrice=910, unitPrice=910, perModule=True))
+put(tid, [
+    matrix_item('mat_a100_base', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 1 modul (2 vezetősín)', table('a100lux_wall_1'), W, 0.65, 2470, a100_desc, disc=10),
+    matrix_item('mat_a100_base_2', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 2 modul (3 vezetősín)', table('a100lux_wall_2'), W, 0.65, 2470, a100_desc, disc=10),
+    matrix_item('mat_a100_base_3', 'GENIUS A100 LUX elhúzható PVC ponyvás pergola – 3 modul (4 vezetősín)', table('a100lux_wall_3'), W, 0.65, 2470, a100_desc, disc=10),
+], [m for m in tpls[tid]['materials'] if m['id'].startswith('x_') and not m['id'].endswith('_ral')], prefix='a100')
+tpls[tid]['catalogRef']['note'] = KE_NOTE + ' Motor: Sunilus IO 30/17 motoros doboz gyári listaáron, modulonként.'
+
+# Pergola V ZIIIP (motorral)
+tid = 'tpl_legacy_pergola_v_ziip'
+old = items(tid)
+drop(tid, ['mat_pvziip_base'])
+put(tid, [matrix_item('mat_pvziip_base', old['mat_pvziip_base']['name'], table('vziip_wall'), W, 0.66, 2100,
+                      old['mat_pvziip_base']['description'], modules=False, split=True)],
+    [m for m in tpls[tid]['materials'] if m['id'].startswith('x_') and not m['id'].endswith('_ral')], prefix='pvziip')
+tpls[tid]['catalogRef']['note'] = AL_NOTE + ' A gyári ár a motort tartalmazza (Somfy Pergola io).'
+
+# Veranda (Tens): a gyári táblában a „magasság” a kinyúlás; a motor külön, kötelező
+VARIANTS['veranda_motor_excl']['rowAxis'] = 'projection'
+tid = 'tpl_legacy_veranda_tens'
+old = items(tid)
+drop(tid, ['mat_veranda_tens_base'])
+put(tid, [matrix_item('mat_veranda_tens_base', old['mat_veranda_tens_base']['name'], table('veranda_motor_excl'), None, 1, 125,
+                      old['mat_veranda_tens_base']['description'], modules=False, split=True)],
+    [m for m in tpls[tid]['materials'] if m['id'].startswith('x_') and not m['id'].endswith('_ral')], prefix='veranda_tens')
+tpls[tid]['catalogRef']['note'] = 'Árképző: Aluprof gyári listaár × 1 + fix felár (a régi árképző szerint). Motor: Somfy Sunilus 50 IO 40/17 gyári listaáron.'
+
+# Veranda V ZIIIP (motorral)
+tid = 'tpl_legacy_veranda_v_zip'
+old = items(tid)
+drop(tid, ['mat_veranda_vzip_base', 'mat_veranda_vzip_base_multi'])
+vb = matrix_item('mat_veranda_vzip_base', old['mat_veranda_vzip_base']['name'], table('veranda_vziip'), None, 0.66, 1125,
+                 old['mat_veranda_vzip_base']['description'], modules=False, split=True)
+vb['maxModules'] = 1
+vm = matrix_item('mat_veranda_vzip_base_multi', old['mat_veranda_vzip_base_multi']['name'], table('veranda_vziip'), None, 0.66, 1625,
+                 old['mat_veranda_vzip_base_multi']['description'], modules=False, split=True)
+vm['minModules'] = 2
+put(tid, [vb, vm], [m for m in tpls[tid]['materials'] if m['id'].startswith('x_') and not m['id'].endswith('_ral')], prefix='veranda_vzip')
+tpls[tid]['catalogRef']['note'] = AL_NOTE + ' A gyári ár a motort tartalmazza (Somfy Pergola io).'
+
+# R ZIIIP 120 (Refleksol 120 ZIP): gyári tábla + Somfy io motor (262 EUR, nagy méretnél 25 Nm: 332 EUR)
+zip_t = table('rziip120_motor_excl')
+zt = zip_t['matrixTable']
+w_axis_rows = zip_t['matrixRowAxis'] == 'width'
+for r, row in zt['values'].items():
+    for c, price in list(row.items()):
+        width = float(r) if w_axis_rows else float(c)
+        height = float(c) if w_axis_rows else float(r)
+        big = width >= 525 or (width >= 425 and height >= 325)
+        row[c] = price + (332 if big else 262)
+ZIP_NOTE = 'Aluprof R ZIIIP 120 gyári ár + Somfy Sunilus SCR IO 10/17 motor (nagy méretnél Maestria+ io 25/17).'
+for t in db['templates']:
+    for m in t['materials']:
+        if m['pricingMode'] == 'matrix_cm' and 'Refleksol 120' in m['name'] + m.get('description', ''):
+            # az árnyékoló szélessége az eredeti tétel szerinti oldal (szélesség vagy kinyúlás)
+            side = m.get('_zipSide') or next(
+                (ax for ax in (m.get('matrixRowAxis') or 'projection', m.get('matrixColAxis') or 'width') if ax != 'height'), 'width')
+            m['_zipSide'] = side
+            m['matrixTable'] = copy.deepcopy(zt)
+            m['matrixRowAxis'] = zip_t['matrixRowAxis'] if zip_t['matrixRowAxis'] == 'height' else side
+            m['matrixColAxis'] = zip_t['matrixColAxis'] if zip_t['matrixColAxis'] == 'height' else side
+            m.pop('matrixRowSnap', None)
+            m.pop('matrixColSnap', None)
+            if 'motor' not in m.get('description', '').lower():
+                m['description'] = (m.get('description', '') + ' Az ár a Somfy IO motort tartalmazza.').strip()
+add_note('tpl_legacy_refleksol_zip', ZIP_NOTE)
+
+# Motorok és távirányítók gyári listaáron
+MOTORS = {
+    'mat_kedry_motor': ('Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
+    'mat_hydra_motor': ('Motor – Somfy Sunilus IO 55/17 (modulonként 1 db)', 588),
+    'mat_keplan_motor': ('Motor – Somfy Sunilus IO 30/17 motoros doboz', 910),
+    'mat_isola_motor': ('Motor – Somfy Sunilus IO 30/17 motoros doboz', 910),
+    'mat_veranda_tens_motor': ('Motor – Somfy Sunilus 50 IO 40/17 (modulonként 1 db)', 383),
+}
+KE_REMOTE = ('Távirányító – Somfy Situo 1 Pure II io', 79)
+AL_REMOTE = ('Távirányító – Somfy Situo 1 io Pure', 61)
+for t in db['templates']:
+    for m in t['materials']:
+        if m['id'] in MOTORS:
+            m['name'], price = MOTORS[m['id']]
+            m['basePrice'] = m['unitPrice'] = price
+        elif m['id'].endswith('_remote') and m['pricingMode'] == 'fixed' and t['id'] != 'tpl_legacy_seesky_bio':
+            m['name'], price = KE_REMOTE if t['id'] in KE_TPLS_ALL else AL_REMOTE
+            m['basePrice'] = m['unitPrice'] = price
+
+# Méretkorlátok a gyári táblák szerint (ahol szigorúbb, mint a docx)
+tpls['tpl_legacy_kedry_skylife']['sizeLimits'].update({'maxWidthCm': 1206, 'maxProjectionCm': 884})
+tpls['tpl_legacy_veranda_tens']['sizeLimits'].update({'maxProjectionCm': 500})
+
+# ---------------------------------------------------------------- színek a gyári színkártyákból
+RAL_HEX = {
+    '1013': '#e3d9c6', '1015': '#e6d2b5', '1019': '#a48f7a', '1023': '#f7b500', '3002': '#9b2423', '3007': '#412227',
+    '5000': '#3b5068', '5002': '#00387b', '6003': '#424632', '6007': '#343b29', '6025': '#53753c', '7001': '#8c969d',
+    '7006': '#75695e', '7012': '#4e5754', '7015': '#51565c', '7016': '#383e42', '7021': '#2e3234', '7022': '#4b4d46',
+    '7024': '#474a50', '7030': '#8f8f8c', '7035': '#cbd0cc', '7037': '#7a7b7a', '7038': '#b4b8b0', '7039': '#6c6960',
+    '7042': '#8f9695', '7043': '#4e5451', '7044': '#bdbdb2', '7048': '#7e7b70', '8003': '#80542f', '8014': '#4a3526',
+    '8016': '#4c2b20', '8017': '#44322d', '8019': '#3f3a3a', '9001': '#efebdc', '9002': '#dddedd', '9003': '#f4f8f4',
+    '9005': '#0a0a0d', '9006': '#a5a8a6', '9007': '#8f8f8c', '9010': '#f7f9ef', '9016': '#f7fbf5',
+}
+OTHER_HEX = {
+    'CARBON': '#2b2b2b', 'CORTEN': '#8a4b2a', 'S1515-R80B': '#a9c2d9', '1050-B30G': '#4fa9b8', 'VSR 240': '#d8c7a6',
+    'VSR 780': '#5a4636', 'FSM 71319': '#3c3f42', 'DB 703': '#5f6264', 'Wood 26': '#6b2e1f', 'Wood 27': '#7b3a2a',
+    'Wood 28': '#5a3a26', 'Wood 30': '#a86b32', 'Wood 49': '#8c6a47', 'Wood 52': '#7a5536',
+}
+
+
+def colour_hex(code):
+    for k, v in OTHER_HEX.items():
+        if k.lower() in code.lower():
+            return v
+    digits = ''.join(ch for ch in code if ch.isdigit())[:4]
+    return RAL_HEX.get(digits)
+
+
+def colour_option(c, i, prefix):
+    code = c['code'].replace(' MAT', '').replace(' STR', '').replace(' ROUGH', '').strip()
+    finish = 'struktúrált' if ' STR' in c['code'] else ''
+    return {'id': f'col_{prefix}_{i}', 'code': code.title() if code.isupper() and not code.startswith(('RAL', 'NCS', 'VSR', 'FSM', 'DB')) else code,
+            'name': (c.get('name', '').title() + (f', {finish}' if finish else '')).strip(', '), 'hex': colour_hex(c['code'])}
+
+
+def colour_lists(source, product_key=None):
+    std, extra, seen = [], [], set()
+    for c in src[source]['colors']:
+        hexv = colour_hex(c['code'])
+        if not hexv or (c['code'] + c.get('name', '')) in seen:
+            continue
+        seen.add(c['code'] + c.get('name', ''))
+        note = c.get('surchargeNote', '')
+        if product_key:
+            seg = next((x for x in note.split(';') if x.strip().lower().startswith(product_key.lower())), '')
+            free = 'included' in seg or 'no surcharge' in seg
+        else:
+            free = 'no surcharge' in note.lower()
+        (std if free else extra).append(c)
+    return std, extra
+
+
+COLOURS = {
+    'tpl_legacy_kedry_skylife': ('ke_bioclimatica', None), 'tpl_kedry_neos': ('ke_bioclimatica', None),
+    'tpl_legacy_hydra': ('ke_gennius', None), 'tpl_xtesa': ('ke_gennius', None), 'tpl_legacy_keplan': ('ke_gennius', None),
+    'tpl_legacy_a100_lux': ('ke_gennius', None), 'tpl_legacy_isola_2a': ('ke_gennius', None), 'tpl_isola_3': ('ke_gennius', None),
+    'tpl_legacy_sb400': ('aluprof', 'SB400'), 'tpl_legacy_pergola_v_ziip': ('aluprof', 'Pergola V ZIIIP'),
+    'tpl_legacy_veranda_tens': ('aluprof', 'R ZIIIP 120 & VERANDA'), 'tpl_legacy_refleksol_zip': ('aluprof', 'R ZIIIP 120 & VERANDA'),
+    'tpl_legacy_veranda_v_zip': ('aluprof', 'VERANDA V ZIIIP'),
+    'tpl_madeira': ('aluprof', 'Australia/Jamaica/Madeira'), 'tpl_jamaica': ('aluprof', 'Australia/Jamaica/Madeira'),
+    'tpl_australia': ('aluprof', 'Australia/Jamaica/Madeira'), 'tpl_corsica': ('aluprof', 'Corsica'),
+}
+for tid, (source, key_) in COLOURS.items():
+    t = tpls[tid]
+    std, extra = colour_lists(source, key_)
+    prefix = tid.replace('tpl_legacy_', '').replace('tpl_', '')
+    if prefix in AW and not any(m['id'].endswith('_ral') for m in t['materials']):
+        r = ral_extra(prefix)
+        r['name'] = 'Egyedi szín a gyári színkártyáról (+20% felár)'
+        first_pct = next((i for i, m in enumerate(t['materials']) if m['pricingMode'] == 'percentage'), len(t['materials']))
+        t['materials'].insert(first_pct, r)
+    struct = [m for m in t['materials'] if m['itemRole'] == 'base' and m['pricingMode'] == 'matrix_cm'
+              and 'Szerelés' not in m['name'] and not (tid == 'tpl_legacy_refleksol_zip' and m['id'] != 'mat_zip_a')]
+    for m in struct:
+        m['colorOptions'] = [colour_option(c, i, f'{prefix}_std') for i, c in enumerate(std)]
+        m['colorTitle'] = 'Alapszínek (felár nélkül)'
+    for m in t['materials']:
+        if m['id'].endswith('_ral') and extra:
+            m['colorOptions'] = [colour_option(c, i, f'{prefix}_x') for i, c in enumerate(extra)]
+            m['colorTitle'] = 'Felárral választható színek'
+
 # ================================================================ KÉPEK
 # Új termékek: katalógusfotók + a 2 legfontosabb kiosztásrajz a sablon fotói közé.
 # Meglévő termékek: a saját (valódi) fotóik maradnak. Extrák: illő kép, ami csak akkor kerül
@@ -730,6 +912,7 @@ for t in db['templates']:
         m.pop('_import2026', None)
         m.pop('_source', None)
         m.pop('_files', None)
+        m.pop('_zipSide', None)
 
 json.dump(db, open(DB, 'w'), ensure_ascii=False, indent=2)
 print('\n'.join(report))
