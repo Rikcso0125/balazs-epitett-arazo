@@ -63,12 +63,12 @@ interface ManualSectionDraft {
   categoryId: string;
 }
 
-const STEPS: { num: WizardStep; label: string }[] = [
-  { num: 1, label: 'Ügyfél' },
-  { num: 2, label: 'Termék' },
-  { num: 3, label: 'Sablon' },
-  { num: 4, label: 'Méret & szűrő' },
-  { num: 5, label: 'Extrák & ár' },
+const STEPS: { num: WizardStep; label: string; short: string }[] = [
+  { num: 1, label: 'Ügyfél', short: 'Ügyfél' },
+  { num: 2, label: 'Termék', short: 'Termék' },
+  { num: 3, label: 'Sablon', short: 'Sablon' },
+  { num: 4, label: 'Méret & szűrő', short: 'Méret' },
+  { num: 5, label: 'Extrák & ár', short: 'Extrák' },
 ];
 
 const byOrder = <T extends { order?: number }>(a: T, b: T) =>
@@ -661,7 +661,7 @@ export function GuidedQuoteWizardView({
         <Stepper steps={STEPS} current={step} onSelect={(n) => setStep(n as WizardStep)} />
       </PageHeader>
 
-      <div className={`${card} p-6`}>
+      <div className={`${card} p-4 sm:p-6`}>
         {/* 1. ÜGYFÉL */}
         {step === 1 && (
           <>

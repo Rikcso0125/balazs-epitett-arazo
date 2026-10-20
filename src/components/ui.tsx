@@ -40,22 +40,30 @@ export function Stepper<T extends number>({
   steps,
   current,
   onSelect,
+  className = 'mt-4',
 }: {
-  steps: { num: T; label: string }[];
+  steps: { num: T; label: string; short?: string }[];
   current: T;
   onSelect: (num: T) => void;
+  className?: string;
 }) {
+  // Telefonon egy sorban, egyenlő oszlopokban (szám fölött rövid címke), nagyobb kijelzőn sorban
   return (
-    <ol className="flex flex-wrap items-center gap-x-1 gap-y-2 mt-4 text-sm">
+    <ol
+      className={`grid gap-1 sm:flex sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-2 text-sm ${className}`}
+      style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
+    >
       {steps.map((s, idx) => {
         const done = s.num < current;
         const active = s.num === current;
         return (
-          <li key={s.num} className="flex items-center gap-1">
+          <li key={s.num} className="min-w-0 sm:flex sm:items-center sm:gap-1">
             <button
               type="button"
               onClick={() => onSelect(s.num)}
-              className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md transition ${
+              aria-current={active ? 'step' : undefined}
+              aria-label={`${s.num}. ${s.label}`}
+              className={`w-full sm:w-auto flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 px-1 sm:px-2 py-1 rounded-md transition ${
                 active
                   ? 'text-slate-950 font-semibold'
                   : done
@@ -64,7 +72,7 @@ export function Stepper<T extends number>({
               }`}
             >
               <span
-                className={`w-5 h-5 rounded-full grid place-items-center text-xs font-semibold ${
+                className={`w-6 h-6 sm:w-5 sm:h-5 rounded-full grid place-items-center text-xs font-semibold shrink-0 ${
                   active
                     ? 'bg-slate-900 text-white'
                     : done
@@ -74,10 +82,11 @@ export function Stepper<T extends number>({
               >
                 {done ? <Check className="w-3 h-3" /> : s.num}
               </span>
-              {s.label}
+              <span className="sm:hidden text-[11px] leading-tight text-center break-words">{s.short || s.label}</span>
+              <span className="hidden sm:inline">{s.label}</span>
             </button>
             {idx < steps.length - 1 && (
-              <span className="w-6 h-px bg-slate-300" aria-hidden />
+              <span className="hidden sm:block w-6 h-px bg-slate-300" aria-hidden />
             )}
           </li>
         );
@@ -146,4 +155,36 @@ export function insertAtCursor(
   const start = el?.selectionStart ?? value.length;
   const end = el?.selectionEnd ?? value.length;
   return { value: value.slice(0, start) + token + value.slice(end), caret: start + token.length };
+}
+
+/**
+ * Hosszabb szöveghez: egy sorral indul, és a tartalomhoz igazodva nő (nem vágja le a szöveget,
+ * Enterre sem tör sort).
+ */
+export function AutoTextarea({
+  value,
+  onChange,
+  className = '',
+  ...rest
+}: Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'rows'> & { value: string }) {
+  const ref = React.useRef<HTMLTextAreaElement>(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight + 2}px`;
+  }, [value]);
+  return (
+    <textarea
+      ref={ref}
+      rows={1}
+      value={value}
+      onChange={onChange}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') e.preventDefault();
+      }}
+      className={`resize-none overflow-hidden leading-snug ${className}`}
+      {...rest}
+    />
+  );
 }

@@ -60,7 +60,7 @@ import {
   TemplateStatus,
   UploadedMediaItem,
 } from '@/lib/types';
-import { btn, PageHeader } from '@/components/ui';
+import { AutoTextarea, btn, PageHeader, Stepper } from '@/components/ui';
 import { ColorOptionsEditor } from '@/components/ColorOptions';
 import { EXTRA_GROUP_ORDER, presentExtra } from '@/lib/extra-groups';
 
@@ -1086,28 +1086,20 @@ export function TemplateBuilderView({
               </button>
             </div>
 
-            {/* Step Tabs */}
-            <div className="border-b border-slate-200 px-4 sm:px-6 flex gap-5 overflow-x-auto whitespace-nowrap">
-              {[
-                { s: 1 as const, label: 'Alapadatok' },
-                { s: 2 as const, label: 'Tételek & árazás' },
-                { s: 3 as const, label: 'Fotók' },
-                { s: 4 as const, label: 'Szövegek' },
-                { s: 5 as const, label: 'Teszt & mentés' },
-              ].map((tab) => (
-                <button
-                  key={tab.s}
-                  type="button"
-                  onClick={() => setWizardStep(tab.s)}
-                  className={`shrink-0 py-2.5 -mb-px border-b-2 text-sm transition ${
-                    wizardStep === tab.s
-                      ? 'border-slate-950 text-slate-950 font-semibold'
-                      : 'border-transparent text-slate-500 hover:text-slate-950'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            {/* Lépések: mindig mind az öt látszik (telefonon rövid címkével) */}
+            <div className="border-b border-slate-200 px-3 sm:px-6 pb-2">
+              <Stepper
+                className="mt-0"
+                current={wizardStep}
+                onSelect={(n) => setWizardStep(n)}
+                steps={[
+                  { num: 1 as const, label: 'Alapadatok', short: 'Alap' },
+                  { num: 2 as const, label: 'Tételek & árazás', short: 'Tételek' },
+                  { num: 3 as const, label: 'Fotók', short: 'Fotók' },
+                  { num: 4 as const, label: 'Szövegek', short: 'Szövegek' },
+                  { num: 5 as const, label: 'Teszt & mentés', short: 'Mentés' },
+                ]}
+              />
             </div>
 
             {/* Wizard Body */}
@@ -1196,8 +1188,13 @@ export function TemplateBuilderView({
                       </div>
                     )}
                     {categories.length > 1 && (
-                      <div>
-                        <div className="text-[13px] font-medium text-slate-700 mb-1.5">Megjelenik ezekben is</div>
+                      <details open={tplAlsoInCategoryIds.length > 0} className="group">
+                        <summary className="cursor-pointer select-none text-[13px] font-medium text-slate-700 mb-1.5">
+                          Megjelenik más kategóriákban is
+                          {tplAlsoInCategoryIds.length > 0 && (
+                            <span className="ml-1 text-slate-500 font-normal">({tplAlsoInCategoryIds.length})</span>
+                          )}
+                        </summary>
                         <div className="flex flex-wrap gap-1.5">
                           {categories
                             .filter((cat) => cat.id !== tplCategoryId)
@@ -1222,7 +1219,7 @@ export function TemplateBuilderView({
                               );
                             })}
                         </div>
-                      </div>
+                      </details>
                     )}
                   </div>
 
@@ -1230,8 +1227,7 @@ export function TemplateBuilderView({
                     <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Sablon megnevezése *
                     </label>
-                    <input
-                      type="text"
+                    <AutoTextarea
                       value={tplName}
                       onChange={(e) => setTplName(e.target.value)}
                       placeholder="pl. 1. Sablon - Prémium Bioklimatikus Pergola / Kazettás Napellenző..."
@@ -1243,8 +1239,7 @@ export function TemplateBuilderView({
                     <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Rövid alcím / Műszaki összefoglaló (Szövegdoboz a cím alatt)
                     </label>
-                    <input
-                      type="text"
+                    <AutoTextarea
                       value={tplSubtitle}
                       onChange={(e) => setTplSubtitle(e.target.value)}
                       placeholder="pl. Extrudált alumínium vázszerkezet, motoros vezérléssel, 10 év garanciával"
@@ -1852,13 +1847,12 @@ export function TemplateBuilderView({
                           ]}
                         />
                         {itemTab === 'basic' && (<>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
                           <div>
                             <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Tétel neve
                             </label>
-                            <input
-                              type="text"
+                            <AutoTextarea
                               value={currentMaterial.name}
                               onChange={(e) =>
                                 updateMaterial(activeMaterialIdx, {
@@ -1873,8 +1867,7 @@ export function TemplateBuilderView({
                             <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Műszaki leírás / Anyag megjegyzés
                             </label>
-                            <input
-                              type="text"
+                            <AutoTextarea
                               value={currentMaterial.description}
                               onChange={(e) =>
                                 updateMaterial(activeMaterialIdx, {

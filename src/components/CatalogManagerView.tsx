@@ -26,7 +26,7 @@ import {
   TemplateStatus,
   PhotoCaptionBlock,
 } from '@/lib/types';
-import { btn, PageHeader } from '@/components/ui';
+import { AutoTextarea, btn, PageHeader } from '@/components/ui';
 import { ColorOptionsEditor } from '@/components/ColorOptions';
 
 interface CatalogManagerViewProps {
@@ -688,6 +688,7 @@ export function CatalogManagerView({
   };
 
   const [renameMenuId, setRenameMenuId] = useState<string | null>(null);
+  const [editingRefId, setEditingRefId] = useState<string | null>(null);
   const [renameCategoryId, setRenameCategoryId] = useState<string | null>(null);
   const [addingMenu, setAddingMenu] = useState(false);
   const [addingCategory, setAddingCategory] = useState(false);
@@ -748,6 +749,112 @@ export function CatalogManagerView({
     setDirty(false);
     onEditTemplate(tplId);
   };
+  // Táblázat nézet mezői (asztali táblázat és telefonos kártyák közösen)
+  const sizeInput = (tpl: QuoteTemplate, key: keyof TemplateSizeLimits, ph: string) => {
+    const limits = tpl.sizeLimits || {};
+    return (
+      <input
+        type="number"
+        inputMode="numeric"
+        min={0}
+        value={limits[key] || ''}
+        onChange={(e) =>
+          updateTemplate(tpl.id, { sizeLimits: { ...limits, [key]: Math.max(0, Number(e.target.value) || 0) } })
+        }
+        placeholder={ph}
+        aria-label={`${tpl.name} ${ph}`}
+        className={`w-16 px-2 py-1 rounded-lg border text-right tabular-nums text-[13px] ${
+          getMissing(tpl).includes('size') ? 'border-amber-400 bg-amber-50/60' : 'border-slate-200'
+        }`}
+      />
+    );
+  };
+  const catalogCell = (tpl: QuoteTemplate) => {
+    const ref: CatalogReference = tpl.catalogRef || {};
+    if (editingRefId === tpl.id) {
+      return (
+        <div className="space-y-1.5">
+          <AutoTextarea
+            autoFocus
+            value={ref.pdfFile || ''}
+            onChange={(e) => updateTemplate(tpl.id, { catalogRef: { ...ref, pdfFile: e.target.value } })}
+            placeholder="Ár PDF fájl neve"
+            className="w-full px-2 py-1 rounded-lg border border-slate-300 text-[13px]"
+          />
+          <AutoTextarea
+            value={ref.pages || ''}
+            onChange={(e) => updateTemplate(tpl.id, { catalogRef: { ...ref, pages: e.target.value } })}
+            placeholder="Oldal(ak), pl. 47-49"
+            className="w-full px-2 py-1 rounded-lg border border-slate-300 text-[13px]"
+          />
+          <button type="button" onClick={() => setEditingRefId(null)} className="text-xs text-slate-600 underline">
+            Kész
+          </button>
+        </div>
+      );
+    }
+    return (
+      <button
+        type="button"
+        onClick={() => setEditingRefId(tpl.id)}
+        className={`w-full text-left rounded-lg px-2 py-1 -mx-2 hover:bg-slate-50 ${
+          getMissing(tpl).includes('catalog') ? 'ring-1 ring-amber-300 bg-amber-50/50' : ''
+        }`}
+        title="Katalógus szerkesztése"
+      >
+        {ref.pdfFile || ref.pages ? (
+          <>
+            <span className="block text-[13px] text-slate-900 break-words">{ref.pdfFile || '-'}</span>
+            {ref.pages && <span className="block text-xs text-slate-500 break-words">{ref.pages}</span>}
+          </>
+        ) : (
+          <span className="text-[13px] text-slate-400">+ Katalógus megadása</span>
+        )}
+      </button>
+    );
+  };
+  const aliasCell = (tpl: QuoteTemplate) => {
+    const ref: CatalogReference = tpl.catalogRef || {};
+    return (
+      <AutoTextarea
+        value={ref.productAlias || ''}
+        onChange={(e) => updateTemplate(tpl.id, { catalogRef: { ...ref, productAlias: e.target.value } })}
+        placeholder="pl. Aluprof SB400"
+        aria-label={`${tpl.name} gyártói neve`}
+        className="w-full min-w-[10rem] px-2 py-1 rounded-lg border border-slate-200 text-[13px]"
+      />
+    );
+  };
+  const productHead = (tpl: QuoteTemplate) => {
+    const statusOpt = TEMPLATE_STATUS_OPTIONS.find((o) => o.id === (tpl.status || 'active'));
+    return (
+      <div className="flex items-start gap-2.5">
+        <Thumb tpl={tpl} />
+        <div className="min-w-0">
+          <div className="text-[13px] font-semibold text-slate-950 break-words">{tpl.name}</div>
+          <div className="flex flex-wrap items-center gap-2 mt-1">
+            <span className={`px-1.5 py-0.5 rounded-md border text-[11px] font-medium ${statusOpt?.badgeClass}`}>
+              {statusOpt?.label}
+            </span>
+            <button
+              type="button"
+              onClick={() => openTemplate(tpl.id)}
+              className="text-[12px] font-medium text-slate-700 underline underline-offset-2 hover:text-slate-950"
+            >
+              Szerkesztés
+            </button>
+          </div>
+          <MissingNote missing={getMissing(tpl)} />
+        </div>
+      </div>
+    );
+  };
+  const visibleTableRows = tableRows.filter(({ tpl }) => !onlyIncomplete || getMissing(tpl).length > 0);
+  const groupStart = (i: number) =>
+    i === 0 ||
+    `${visibleTableRows[i - 1].menu?.id}|${visibleTableRows[i - 1].cat?.id}` !==
+      `${visibleTableRows[i].menu?.id}|${visibleTableRows[i].cat?.id}`;
+
   const openNewTemplate = (catId: string) => {
     if (!confirmLeave()) return;
     setDirty(false);
@@ -827,128 +934,95 @@ export function CatalogManagerView({
       </div>
 
       {viewMode === 'table' && (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="bg-slate-100 text-slate-500 text-xs uppercase tracking-wide border-b border-slate-200">
-                <th className="text-left font-semibold px-3 py-2">Sablon</th>
-                <th className="text-left font-semibold px-3 py-2">Fotó</th>
-                <th className="text-left font-semibold px-3 py-2">Állapot</th>
-                <th className="text-left font-semibold px-3 py-2">Szélesség (cm)</th>
-                <th className="text-left font-semibold px-3 py-2">Kinyúlás (cm)</th>
-                <th className="text-left font-semibold px-3 py-2">Magasság (cm)</th>
-                <th className="text-left font-semibold px-3 py-2">Ár PDF</th>
-                <th className="text-left font-semibold px-3 py-2">Oldal</th>
-                <th className="text-left font-semibold px-3 py-2">Gyártói név</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {tableRows.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="px-3 py-6 text-center text-slate-500">
-                    Még nincs sablon.
-                  </td>
+        <>
+          {/* Asztali táblázat */}
+          <div className="hidden md:block bg-white rounded-2xl border border-slate-200 overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-50 text-slate-500 text-xs border-b border-slate-200">
+                  <th className="sticky left-0 z-[1] bg-slate-50 text-left font-medium px-3 py-2 min-w-[15rem]">Termék</th>
+                  {SIZE_ROWS.map(([label]) => (
+                    <th key={label} className="text-left font-medium px-3 py-2 whitespace-nowrap">
+                      {label} (cm)
+                    </th>
+                  ))}
+                  <th className="text-left font-medium px-3 py-2 min-w-[14rem]">Katalógus (ár PDF, oldal)</th>
+                  <th className="text-left font-medium px-3 py-2 min-w-[10rem]">Gyártói név</th>
                 </tr>
-              )}
-              {tableRows
-                .filter(({ tpl }) => !onlyIncomplete || getMissing(tpl).length > 0)
-                .map(({ tpl, menu, cat }) => {
-                const limits = tpl.sizeLimits || {};
-                const ref: CatalogReference = tpl.catalogRef || {};
-                const missing = getMissing(tpl);
-                const warn = (k: MissingKey) =>
-                  missing.includes(k) ? 'border-amber-400 bg-amber-50/60' : 'border-slate-300';
-                const numInput = (key: keyof TemplateSizeLimits, ph: string) => (
-                  <input
-                    type="number"
-                    min={0}
-                    value={limits[key] || ''}
-                    onChange={(e) =>
-                      updateTemplate(tpl.id, {
-                        sizeLimits: {
-                          ...limits,
-                          [key]: Math.max(0, Number(e.target.value) || 0),
-                        },
-                      })
-                    }
-                    placeholder={ph}
-                    className={`w-16 px-2 py-1 rounded-lg border text-right tabular-nums ${warn('size')}`}
-                  />
-                );
-                const textInput = (key: keyof CatalogReference, cls: string) => (
-                  <input
-                    type="text"
-                    value={ref[key] || ''}
-                    onChange={(e) =>
-                      updateTemplate(tpl.id, {
-                        catalogRef: { ...ref, [key]: e.target.value },
-                      })
-                    }
-                    className={`${cls} px-2 py-1 rounded-lg border ${
-                      key === 'pdfFile' || key === 'pages' ? warn('catalog') : 'border-slate-300'
-                    }`}
-                  />
-                );
-                return (
-                  <tr key={tpl.id} className={tpl.status === 'inactive' ? 'opacity-60' : ''}>
-                    <td className="px-3 py-2 min-w-[180px]">
-                      <div className="font-medium text-slate-950">{tpl.name}</div>
-                      <div className="text-xs text-slate-500">
-                        {menu?.name || '-'} / {cat?.name || '-'}
-                      </div>
-                      <MissingNote missing={missing} />
+              </thead>
+              <tbody>
+                {visibleTableRows.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-3 py-6 text-center text-slate-500">
+                      Nincs megjeleníthető termék.
                     </td>
-                    <td className="px-3 py-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          // A fotók szerkesztése a fa nézetben, kinyitott sablonnál
-                          setViewMode('tree');
-                          const catMenu = draftCategories.find((c) => c.id === tpl.categoryId)?.menuId;
-                          if (catMenu) setSelectedMenuId(catMenu);
-                          setSelectedCategoryId(tpl.categoryId);
-                          setExpandedTemplateId(tpl.id);
-                        }}
-                        className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-950 whitespace-nowrap"
-                        title="Fotók szerkesztése"
-                      >
-                        <Thumb tpl={tpl} />
-                        {(tpl.photos || []).length} db
-                      </button>
-                    </td>
-                    <td className="px-3 py-2">
-                      <select
-                        value={tpl.status || 'active'}
-                        onChange={(e) =>
-                          updateTemplate(tpl.id, {
-                            status: e.target.value as TemplateStatus,
-                          })
-                        }
-                        className="px-2 py-1 rounded-lg border border-slate-300"
-                      >
-                        {TEMPLATE_STATUS_OPTIONS.map((o) => (
-                          <option key={o.id} value={o.id}>
-                            {o.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    {SIZE_ROWS.map(([label, minKey, maxKey]) => (
-                      <td key={label} className="px-3 py-2 whitespace-nowrap">
-                        {numInput(minKey, 'min')}
-                        <span className="mx-1 text-slate-400">-</span>
-                        {numInput(maxKey, 'max')}
-                      </td>
-                    ))}
-                    <td className="px-3 py-2">{textInput('pdfFile', 'w-36')}</td>
-                    <td className="px-3 py-2">{textInput('pages', 'w-16')}</td>
-                    <td className="px-3 py-2">{textInput('productAlias', 'w-32')}</td>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                )}
+                {visibleTableRows.map(({ tpl, menu, cat }, i) => (
+                  <React.Fragment key={tpl.id}>
+                    {groupStart(i) && (
+                      <tr className="bg-slate-50/70 border-y border-slate-200">
+                        <td colSpan={6} className="sticky left-0 px-3 py-1.5 text-xs font-medium text-slate-600">
+                          {menu?.name || 'Menü nélkül'} <span className="text-slate-400">/</span> {cat?.name || 'Kategória nélkül'}
+                        </td>
+                      </tr>
+                    )}
+                    <tr className={`border-b border-slate-100 align-top ${tpl.status === 'inactive' ? 'opacity-60' : ''}`}>
+                      <td className="sticky left-0 z-[1] bg-white px-3 py-2.5">{productHead(tpl)}</td>
+                      {SIZE_ROWS.map(([label, minKey, maxKey]) => (
+                        <td key={label} className="px-3 py-2.5 whitespace-nowrap">
+                          {sizeInput(tpl, minKey, 'min')}
+                          <span className="mx-1 text-slate-400">-</span>
+                          {sizeInput(tpl, maxKey, 'max')}
+                        </td>
+                      ))}
+                      <td className="px-3 py-2.5">{catalogCell(tpl)}</td>
+                      <td className="px-3 py-2.5">{aliasCell(tpl)}</td>
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Telefon: termékenként egy kártya */}
+          <div className="md:hidden space-y-3">
+            {visibleTableRows.length === 0 && (
+              <div className="px-3 py-6 text-center text-sm text-slate-500">Nincs megjeleníthető termék.</div>
+            )}
+            {visibleTableRows.map(({ tpl, menu, cat }, i) => (
+              <React.Fragment key={tpl.id}>
+                {groupStart(i) && (
+                  <div className="pt-2 px-1 text-xs font-medium text-slate-500">
+                    {menu?.name || 'Menü nélkül'} / {cat?.name || 'Kategória nélkül'}
+                  </div>
+                )}
+                <div className={`bg-white rounded-2xl border border-slate-200 p-3 space-y-3 ${tpl.status === 'inactive' ? 'opacity-60' : ''}`}>
+                  {productHead(tpl)}
+                  <div className="space-y-1.5">
+                    {SIZE_ROWS.map(([label, minKey, maxKey]) => (
+                      <div key={label} className="flex items-center gap-2">
+                        <span className="w-20 shrink-0 text-xs text-slate-500">{label}</span>
+                        {sizeInput(tpl, minKey, 'min')}
+                        <span className="text-slate-400">-</span>
+                        {sizeInput(tpl, maxKey, 'max')}
+                        <span className="text-xs text-slate-400">cm</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-500 mb-0.5">Katalógus</div>
+                    {catalogCell(tpl)}
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">Gyártói név</div>
+                    {aliasCell(tpl)}
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </>
       )}
 
       {viewMode === 'tree' && (

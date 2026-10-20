@@ -45,7 +45,7 @@ import {
   roundHuf,
 } from '@/lib/pricing-engine';
 import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
-import { btn, labelCls, PageHeader } from '@/components/ui';
+import { AutoTextarea, btn, labelCls, PageHeader } from '@/components/ui';
 import {
   DimensionSource,
   MountType,
@@ -194,7 +194,11 @@ export function PdfBlockEditorView({
   const [dragHandleId, setDragHandleId] = useState<string | null>(null);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
   const [dropAt, setDropAt] = useState<number | null>(null);
-  const [collapsedBlocks, setCollapsedBlocks] = useState<Record<string, boolean>>({});
+  // Alapból minden szakasz össze van csukva; a nyitottakat tartjuk számon
+  const [openBlocks, setOpenBlocks] = useState<Record<string, boolean>>({});
+  const [outlineDrag, setOutlineDrag] = useState<number | null>(null);
+  const [outlineDrop, setOutlineDrop] = useState<number | null>(null);
+  const [outlineMenuOpen, setOutlineMenuOpen] = useState(false);
   const [insertMenuAt, setInsertMenuAt] = useState<number | null>(null);
 
   const blockLabel = (blk: QuoteDocumentBlock) =>
@@ -216,31 +220,14 @@ export function PdfBlockEditorView({
       ? blk.sectionTitle || ''
       : '';
 
-  // „+” sáv két blokk között: ide szúrja be az új szakaszt
-  const renderInsertBar = (at: number) => {
-    const open = insertMenuAt === at;
+  const renderInsertMenu = (at: number, close: () => void, placement = 'absolute top-full mt-1') => {
     const item = 'px-3 py-1.5 rounded-lg text-[13px] text-slate-700 hover:bg-slate-100 text-left';
     const run = (fn: () => void) => {
       fn();
-      setInsertMenuAt(null);
+      close();
     };
     return (
-      <div className="relative flex items-center justify-center h-4 group" key={`ins_${at}`}>
-        <div className={`absolute inset-x-0 top-1/2 border-t ${open ? 'border-slate-400' : 'border-transparent group-hover:border-slate-200'}`} />
-        <button
-          type="button"
-          onClick={() => setInsertMenuAt(open ? null : at)}
-          className={`relative z-[1] w-6 h-6 grid place-items-center rounded-full border bg-white text-slate-500 hover:text-slate-950 hover:border-slate-400 ${
-            open ? 'border-slate-400 text-slate-950' : 'border-slate-200 opacity-60 group-hover:opacity-100'
-          }`}
-          title="Új szakasz beszúrása ide"
-          aria-label="Új szakasz beszúrása ide"
-          aria-expanded={open}
-        >
-          <Plus className="w-3.5 h-3.5" />
-        </button>
-        {open && (
-          <div className="absolute top-full mt-1 z-20 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg p-1.5 flex flex-col">
+<div className={`${placement} z-20 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg p-1.5 flex flex-col`}>
             <button type="button" className={item} onClick={() => run(() => handleAddStandaloneTextBox(at - 1))}>
               Szöveg
             </button>
@@ -268,7 +255,105 @@ export function PdfBlockEditorView({
               </div>
             )}
           </div>
-        )}
+    );
+  };
+
+  // Bal oldali szerkezet: a szakaszok sorrendje, kattintásra ugrás, húzással átrendezés
+  const blockIcon = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box' ? Type : blk.type === 'photo_box' ? ImageIcon : blk.type === 'template_section' ? PackagePlus : Scissors;
+  const focusBlock = (id: string) => {
+    setOpenBlocks({ [id]: true });
+    setTimeout(() => document.getElementById(`blk-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  };
+  const renderOutline = () => (
+    <nav aria-label="Ajánlat szerkezete" className="bg-white rounded-2xl border border-slate-200 p-2">
+      <div className="px-2 pt-1 pb-2 text-xs font-medium text-slate-500 uppercase tracking-wide">Szerkezet</div>
+      <ol className="space-y-0.5">
+        {blocks.map((blk, idx) => {
+          const Icon = blockIcon(blk);
+          const open = Boolean(openBlocks[blk.id]);
+          return (
+            <li
+              key={blk.id}
+              draggable
+              onDragStart={(e) => {
+                setOutlineDrag(idx);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', blk.id);
+              }}
+              onDragOver={(e) => {
+                if (outlineDrag === null) return;
+                e.preventDefault();
+                const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                setOutlineDrop(e.clientY < r.top + r.height / 2 ? idx : idx + 1);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (outlineDrag !== null && outlineDrop !== null) moveBlockTo(outlineDrag, outlineDrop);
+                setOutlineDrag(null);
+                setOutlineDrop(null);
+              }}
+              onDragEnd={() => {
+                setOutlineDrag(null);
+                setOutlineDrop(null);
+              }}
+              className={`relative ${outlineDrag === idx ? 'opacity-40' : ''}`}
+            >
+              {outlineDrag !== null && outlineDrop === idx && <div className="absolute inset-x-1 -top-px h-0.5 bg-slate-900" />}
+              {outlineDrag !== null && outlineDrop === idx + 1 && idx === blocks.length - 1 && (
+                <div className="absolute inset-x-1 -bottom-px h-0.5 bg-slate-900" />
+              )}
+              <button
+                type="button"
+                onClick={() => focusBlock(blk.id)}
+                className={`w-full flex items-start gap-2 px-2 py-1.5 rounded-lg text-left cursor-grab active:cursor-grabbing ${
+                  open ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-700'
+                }`}
+                title="Kattints a megnyitáshoz, húzd az átrendezéshez"
+              >
+                <Icon className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${open ? 'text-white/80' : 'text-slate-400'}`} />
+                <span className="min-w-0 text-[13px] leading-snug break-words">
+                  {blockSummary(blk) || blockLabel(blk)}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="relative mt-1 pt-1 border-t border-slate-100">
+        <button
+          type="button"
+          onClick={() => setOutlineMenuOpen((v) => !v)}
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:bg-slate-100"
+          aria-expanded={outlineMenuOpen}
+        >
+          <Plus className="w-3.5 h-3.5" />
+          Új szakasz a végére
+        </button>
+        {outlineMenuOpen && renderInsertMenu(blocks.length, () => setOutlineMenuOpen(false), 'absolute left-0 top-full mt-1')}
+      </div>
+    </nav>
+  );
+
+  // „+” sáv két blokk között: ide szúrja be az új szakaszt
+  const renderInsertBar = (at: number) => {
+    const open = insertMenuAt === at;
+    return (
+      <div className="relative flex items-center justify-center h-4 group" key={`ins_${at}`}>
+        <div className={`absolute inset-x-0 top-1/2 border-t ${open ? 'border-slate-400' : 'border-transparent group-hover:border-slate-200'}`} />
+        <button
+          type="button"
+          onClick={() => setInsertMenuAt(open ? null : at)}
+          className={`relative z-[1] w-6 h-6 grid place-items-center rounded-full border bg-white text-slate-500 hover:text-slate-950 hover:border-slate-400 ${
+            open ? 'border-slate-400 text-slate-950' : 'border-slate-200 opacity-60 group-hover:opacity-100'
+          }`}
+          title="Új szakasz beszúrása ide"
+          aria-label="Új szakasz beszúrása ide"
+          aria-expanded={open}
+        >
+          <Plus className="w-3.5 h-3.5" />
+        </button>
+        {open && renderInsertMenu(at, () => setInsertMenuAt(null))}
       </div>
     );
   };
@@ -288,6 +373,7 @@ export function PdfBlockEditorView({
 
   // Új blokk beszúrása a megadott helyre (index nélkül a végére)
   const insertBlockAt = (block: QuoteDocumentBlock, at?: number) => {
+    setOpenBlocks((prev) => ({ ...prev, [block.id]: true }));
     setBlocks((prev) => {
       if (at === undefined || at >= prev.length) return [...prev, block];
       const copy = [...prev];
@@ -866,19 +952,25 @@ export function PdfBlockEditorView({
       </div>
 
       {/* Main Split Layout: Left = Editable Blocks, Right = Live PDF Viewer */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-[12rem_minmax(0,1.15fr)_minmax(0,1fr)] gap-5 items-start">
+        {/* Szerkezet (csak széles képernyőn) */}
+        <div className="hidden xl:block xl:sticky xl:top-4">{renderOutline()}</div>
         {/* LEFT COLUMN: Editable Document Blocks */}
-        <div className="xl:col-span-7 space-y-4">
+        <div className="min-w-0 space-y-4">
           {blocks.length > 1 && (
             <div className="flex justify-end gap-3 text-[13px] text-slate-500 -mb-2">
               <button
                 type="button"
                 className="hover:text-slate-950"
-                onClick={() => setCollapsedBlocks(Object.fromEntries(blocks.map((b) => [b.id, true])))}
+                onClick={() => setOpenBlocks({})}
               >
                 Összecsuk mind
               </button>
-              <button type="button" className="hover:text-slate-950" onClick={() => setCollapsedBlocks({})}>
+              <button
+                type="button"
+                className="hover:text-slate-950"
+                onClick={() => setOpenBlocks(Object.fromEntries(blocks.map((b) => [b.id, true])))}
+              >
                 Kinyit mind
               </button>
             </div>
@@ -887,6 +979,7 @@ export function PdfBlockEditorView({
             <React.Fragment key={blk.id}>
             {renderInsertBar(bIdx)}
             <div
+              id={`blk-${blk.id}`}
               draggable={dragHandleId === blk.id}
               onDragStart={(e) => {
                 setDragFrom(bIdx);
@@ -936,17 +1029,17 @@ export function PdfBlockEditorView({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setCollapsedBlocks((prev) => ({ ...prev, [blk.id]: !prev[blk.id] }))}
+                  onClick={() => setOpenBlocks((prev) => ({ ...prev, [blk.id]: !prev[blk.id] }))}
                   className="min-w-0 flex-1 flex items-center gap-2 text-left"
-                  aria-expanded={!collapsedBlocks[blk.id]}
+                  aria-expanded={Boolean(openBlocks[blk.id])}
                 >
                   <ChevronRight
                     className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${
-                      collapsedBlocks[blk.id] ? '' : 'rotate-90'
+                      openBlocks[blk.id] ? 'rotate-90' : ''
                     }`}
                   />
                   <span className="text-[13px] font-medium text-slate-600 shrink-0">{blockLabel(blk)}</span>
-                  {collapsedBlocks[blk.id] && blockSummary(blk) && (
+                  {!openBlocks[blk.id] && blockSummary(blk) && (
                     <span className="min-w-0 truncate text-[13px] text-slate-950">{blockSummary(blk)}</span>
                   )}
                 </button>
@@ -981,7 +1074,7 @@ export function PdfBlockEditorView({
                 </div>
               </div>
 
-              {!collapsedBlocks[blk.id] && (<>
+              {openBlocks[blk.id] && (<>
               {/* BLOCK TYPE 1: STANDALONE TEXT BOX */}
               {blk.type === 'text_box' && (
                 <div className="p-4 space-y-3">
@@ -1141,8 +1234,7 @@ export function PdfBlockEditorView({
                       <label className={labelCls}>
                         Cím
                       </label>
-                      <input
-                        type="text"
+                      <AutoTextarea
                         value={blk.sectionTitle || ''}
                         onChange={(e) =>
                           updateBlock(blk.id, (b) => ({
@@ -1157,8 +1249,7 @@ export function PdfBlockEditorView({
                       <label className={labelCls}>
                         Alcím
                       </label>
-                      <input
-                        type="text"
+                      <AutoTextarea
                         value={blk.sectionSubtitle || ''}
                         onChange={(e) =>
                           updateBlock(blk.id, (b) => ({
@@ -2194,7 +2285,7 @@ export function PdfBlockEditorView({
         </div>
 
         {/* RIGHT COLUMN: Sticky Live A4 PDF Preview */}
-        <div className="xl:col-span-5 xl:sticky xl:top-4 space-y-3">
+        <div className="min-w-0 xl:sticky xl:top-4 space-y-3">
           <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
             <div className="px-4 py-2 border-b border-slate-200 flex items-center justify-between">
               <span className="text-[13px] font-medium text-slate-600 inline-flex items-center gap-2">
