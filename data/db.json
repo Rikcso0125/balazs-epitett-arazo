@@ -12533,7 +12533,7 @@
         },
         {
           "id": "mat_hydra_motor",
-          "name": "Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)",
+          "name": "Motor - Somfy Sunilus IO 55/17",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -12554,7 +12554,7 @@
           "defaultNote": "",
           "photos": [],
           "excludeFromPercentBase": true,
-          "perModule": true
+          "perModule": false
         },
         {
           "id": "mat_hydra_remote",
@@ -13963,7 +13963,7 @@
         "maxWidthCm": 1300,
         "minProjectionCm": 250,
         "maxProjectionCm": 600,
-        "maxHeightCm": 260
+        "maxHeightCm": 300
       },
       "catalogRef": {
         "pdfFile": "LISTINO GENNIUS 17_EN.pdf",
@@ -35045,6 +35045,65 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
+          "id": "mat_neos_motor_1w",
+          "name": "Motor - Somfy Sunea Screen IO",
+          "description": "",
+          "itemRole": "base",
+          "defaultSelected": true,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 513,
+          "unitPrice": 531,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "",
+          "photos": [],
+          "excludeFromPercentBase": true,
+          "perModule": false,
+          "maxModules": 1,
+          "mountTypes": [
+            "Épülethez rögzített"
+          ]
+        },
+        {
+          "id": "mat_neos_motor_1o",
+          "name": "Motor - Somfy Sunea Screen IO",
+          "description": "",
+          "itemRole": "base",
+          "defaultSelected": true,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 531,
+          "unitPrice": 531,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "",
+          "photos": [],
+          "excludeFromPercentBase": true,
+          "perModule": false,
+          "maxModules": 1,
+          "mountTypes": [
+            "Szabadon álló",
+            "Lábak nélkül"
+          ]
+        },
+        {
           "id": "mat_neos_motor",
           "name": "Motor - Somfy Sunea Screen IO (modulonként 1 db)",
           "description": "",
@@ -35067,7 +35126,8 @@
           "defaultNote": "",
           "photos": [],
           "excludeFromPercentBase": true,
-          "perModule": true
+          "perModule": true,
+          "minModules": 2
         },
         {
           "id": "mat_neos_remote",
@@ -36327,7 +36387,7 @@
         "maxWidthCm": 1200,
         "minProjectionCm": 200,
         "maxProjectionCm": 900,
-        "maxHeightCm": 270
+        "maxHeightCm": 300
       },
       "sizeRules": [
         {
