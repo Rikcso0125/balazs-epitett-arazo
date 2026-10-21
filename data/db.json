@@ -35053,7 +35053,7 @@
           "pricingMode": "fixed",
           "currency": "EUR",
           "dimensionSource": "roof",
-          "basePrice": 513,
+          "basePrice": 531,
           "unitPrice": 531,
           "defaultQuantity": 1,
           "unitLabel": "db",
