@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Egyedi Árazó, Sablon Varázsló & Blokkos PDF Generátor',
+  title: 'OpenSky Pergola - Árazó',
   description:
-    'Pergolák, előtetők, napellenzők, üvegtetők és árnyékolók végigvezetett árazó és utólag is szerkeszthető PDF árajánlat-készítő rendszere.',
+    'OpenSky Pergola Kft. árazó rendszer: végigvezetett árazás és szerkeszthető PDF árajánlatok.',
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hu">
-      <body className="min-h-screen bg-slate-100 text-slate-900 antialiased">
+      <body>
         {children}
       </body>
     </html>

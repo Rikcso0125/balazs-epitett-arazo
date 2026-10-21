@@ -1,10 +1,18 @@
-import { replaceTemplateVariables, VariableReplacementContext } from './constants';
+import {
+  DEFAULT_PRICING_FORMULA,
+  replaceTemplateVariables,
+  VariableReplacementContext,
+} from './constants';
 import {
   CustomMatrixTable,
   DimensionSource,
   M2PriceTier,
+  ModuleSplitRule,
   MountType,
+  PriceAdjustment,
+  PricingFormulaConfig,
   QuoteDocumentBlock,
+  SizeAxis,
   QuoteTableRow,
   QuoteTemplate,
   SystemConfig,
@@ -134,40 +142,154 @@ function lookupTieredM2Price(
   return { total: m2 * fallbackRate, rateUsed: fallbackRate };
 }
 
+// A táblázat méreteihez illesztés: 'up' = a következő nagyobb méret, 'nearest' = a legközelebbi
+function snapToList(value: number, sorted: number[], mode: 'up' | 'nearest'): number {
+  if (mode === 'nearest') {
+    return sorted.reduce((best, v) =>
+      Math.abs(v - value) < Math.abs(best - value) ||
+      (Math.abs(v - value) === Math.abs(best - value) && v > best)
+        ? v
+        : best
+    );
+  }
+  return sorted.find((v) => value <= v) ?? sorted[sorted.length - 1];
+}
+
 function lookupCustomMatrixPrice(
   table: CustomMatrixTable | undefined,
   rowCm: number,
-  colCm: number
-): { price: number; matchedRow: number; matchedCol: number } {
+  colCm: number,
+  rowSnap: 'up' | 'nearest' = 'up',
+  colSnap: 'up' | 'nearest' = 'up'
+): {
+  price: number;
+  matchedRow: number;
+  matchedCol: number;
+  outOfRange: boolean;
+} {
   if (!table || !table.rows?.length || !table.cols?.length) {
-    return { price: 0, matchedRow: rowCm, matchedCol: colCm };
+    return { price: 0, matchedRow: rowCm, matchedCol: colCm, outOfRange: false };
   }
   const sortedRows = [...table.rows].sort((a, b) => a - b);
   const sortedCols = [...table.cols].sort((a, b) => a - b);
-
-  let matchedRow = sortedRows[sortedRows.length - 1];
-  for (const r of sortedRows) {
-    if (rowCm <= r) {
-      matchedRow = r;
-      break;
-    }
-  }
-
-  let matchedCol = sortedCols[sortedCols.length - 1];
-  for (const c of sortedCols) {
-    if (colCm <= c) {
-      matchedCol = c;
-      break;
-    }
-  }
-
+  const matchedRow = snapToList(rowCm, sortedRows, rowSnap);
+  const matchedCol = snapToList(colCm, sortedCols, colSnap);
   const val = table.values?.[String(matchedRow)]?.[String(matchedCol)];
   return {
     price: Math.max(0, Number(val) || 0),
     matchedRow,
     matchedCol,
+    // A táblázat legnagyobb méreténél nagyobb kérés, vagy a gyártónál üresen hagyott
+    // (nem gyártható) cella nem árazható a táblából
+    outOfRange:
+      rowCm > sortedRows[sortedRows.length - 1] ||
+      colCm > sortedCols[sortedCols.length - 1] ||
+      !(Number(val) > 0),
   };
 }
+
+/** A sablon ebben a kategóriában szerepel-e (saját vagy további kategóriaként) */
+export function isTemplateInCategory(template: QuoteTemplate, categoryId: string): boolean {
+  return template.categoryId === categoryId || Boolean(template.alsoInCategoryIds?.includes(categoryId));
+}
+
+/** A sablon modulszabályai tengelyenként (a régi egytengelyes moduleSplit is) */
+export function getModuleRules(template: QuoteTemplate): ModuleSplitRule[] {
+  const rules = template.moduleSplits?.length
+    ? template.moduleSplits
+    : template.moduleSplit
+    ? [template.moduleSplit]
+    : [];
+  return rules.filter((r) => r && r.maxCm > 0);
+}
+
+function moduleBreakpoints(rule: ModuleSplitRule): number[] {
+  return (rule.breakpointsCm || [])
+    .map((v) => Number(v))
+    .filter((v) => v > 0)
+    .sort((a, b) => a - b);
+}
+
+/** A modulszabály szerinti legnagyobb méret (pl. 2 modul × 700 cm = 1400 cm), ha van felső határ */
+export function moduleRuleMaxCm(rule: ModuleSplitRule): number | undefined {
+  const bps = moduleBreakpoints(rule);
+  if (bps.length) return bps[bps.length - 1];
+  return rule.maxModules ? rule.maxCm * rule.maxModules : undefined;
+}
+
+export interface ModuleCounts {
+  width: number;
+  projection: number;
+  total: number;
+}
+
+/** Modulszám tengelyenként (pl. ceil(szélesség ÷ 700)), az összes modul a kettő szorzata */
+export function getModuleCounts(
+  template: QuoteTemplate,
+  widthCm: number,
+  projectionCm: number
+): ModuleCounts {
+  let width = 1;
+  let projection = 1;
+  for (const rule of getModuleRules(template)) {
+    const dim = Number(rule.axis === 'width' ? widthCm : projectionCm) || 0;
+    const bps = moduleBreakpoints(rule);
+    let n: number;
+    if (bps.length) {
+      const idx = bps.findIndex((bp) => dim <= bp);
+      n = idx === -1 ? bps.length : idx + 1;
+    } else {
+      n = Math.max(1, Math.ceil(dim / rule.maxCm));
+      if (rule.maxModules) n = Math.min(n, rule.maxModules);
+    }
+    if (rule.axis === 'width') width = n;
+    else projection = n;
+  }
+  return { width, projection, total: width * projection };
+}
+
+export function getModuleCount(template: QuoteTemplate, widthCm: number, projectionCm: number): number {
+  return getModuleCounts(template, widthCm, projectionCm).total;
+}
+
+/**
+ * Egy tétel saját (nettó, modulonkénti) méretei: profillevonások és modulokra bontás után
+ */
+function effectiveDims(
+  item: TemplateMaterialItem,
+  modules: ModuleCounts,
+  widthCm: number,
+  projectionCm: number,
+  heightCm: number
+): { widthCm: number; projectionCm: number; heightCm: number } {
+  const off = item.dimOffsets || {};
+  const dims = {
+    widthCm: Math.max(1, widthCm + (Number(off.widthCm) || 0)),
+    projectionCm: Math.max(1, projectionCm + (Number(off.projectionCm) || 0)),
+    heightCm: Math.max(1, heightCm + (Number(off.heightCm) || 0)),
+  };
+  if (item.splitByModule) {
+    dims.widthCm = Math.ceil(dims.widthCm / modules.width);
+    dims.projectionCm = Math.ceil(dims.projectionCm / modules.projection);
+  }
+  return dims;
+}
+
+const axisValue = (
+  axis: SizeAxis | undefined,
+  fallback: SizeAxis,
+  dims: { widthCm: number; projectionCm: number; heightCm: number }
+) => {
+  const a = axis || fallback;
+  return a === 'width' ? dims.widthCm : a === 'projection' ? dims.projectionCm : dims.heightCm;
+};
+
+/** Ez a tétel szerepel-e az adott modulszámnál */
+const fitsModules = (m: TemplateMaterialItem, modules: ModuleCounts) =>
+  (!m.minModules || modules.total >= m.minModules) &&
+  (!m.maxModules || modules.total <= m.maxModules) &&
+  (!m.modulesWidth || modules.width === m.modulesWidth) &&
+  (!m.modulesProjection || modules.projection === m.modulesProjection);
 
 function applyModifiers(rawAmount: number, item: TemplateMaterialItem): number {
   const mult =
@@ -187,6 +309,254 @@ export interface CalculationContext {
   heightCm: number;
   mountType: MountType;
   eurHufRate: number;
+  formula?: PricingFormulaConfig;
+}
+
+export function resolvePricingFormula(
+  global: PricingFormulaConfig | undefined,
+  override?: Partial<PricingFormulaConfig>
+): PricingFormulaConfig {
+  return {
+    ...DEFAULT_PRICING_FORMULA,
+    ...(global || {}),
+    ...(override || {}),
+  };
+}
+
+/**
+ * Haszon ráépítése egy katalógusárra (százalékos módoknál). Fix módban 0-t ad vissza,
+ * azt a sablon szintjén osztjuk el.
+ */
+function applyPercentProfit(costEur: number, formula: PricingFormulaConfig): number {
+  const x = Math.max(0, Number(formula.profitValue) || 0);
+  if (formula.profitMode === 'markup_percent') {
+    return Math.round(costEur * (1 + x / 100));
+  }
+  if (formula.profitMode === 'margin_percent') {
+    const pct = Math.min(90, x);
+    return Math.round(costEur / (1 - pct / 100));
+  }
+  return costEur;
+}
+
+export function computeAssemblyEur(
+  formula: PricingFormulaConfig,
+  widthCm: number,
+  projectionCm: number
+): { amount: number; formulaSummary: string } {
+  const x = Math.max(0, Number(formula.assemblyFixedEur) || 0);
+  const y = Math.max(0, Number(formula.assemblyPerM2Eur) || 0);
+  const m2 = ((Number(widthCm) || 0) / 100) * ((Number(projectionCm) || 0) / 100);
+  return {
+    amount: Math.round(x + y * m2),
+    formulaSummary: `Szerelés képlet: ${x} EUR + ${y} EUR/m² × ${m2.toFixed(1)} m²`,
+  };
+}
+
+/**
+ * Okos szűrő: belefér-e a kért méret a sablon (egy modul) méretkorlátaiba és mérettábláiba.
+ * status: 'ok' | 'no_limits' (nincs megadva korlát) | 'out_of_range'
+ */
+export function checkTemplateFit(
+  template: QuoteTemplate,
+  widthCm: number,
+  projectionCm: number,
+  heightCm: number,
+  mountType?: MountType
+): { status: 'ok' | 'no_limits' | 'out_of_range'; reasons: string[] } {
+  const lim = template.sizeLimits || {};
+  const reasons: string[] = [];
+  const check = (
+    value: number,
+    min: number | undefined,
+    max: number | undefined,
+    label: string
+  ) => {
+    if (min && value < min) reasons.push(`${label} min. ${min} cm (kért: ${value} cm)`);
+    if (max && value > max) reasons.push(`${label} max. ${max} cm (kért: ${value} cm)`);
+  };
+  if (mountType && template.mountTypes?.length && !template.mountTypes.includes(mountType)) {
+    reasons.push(`„${mountType}” beépítéssel nem kérhető (csak: ${template.mountTypes.join(', ')})`);
+  }
+  check(widthCm, lim.minWidthCm, lim.maxWidthCm, 'Szélesség');
+  check(projectionCm, lim.minProjectionCm, lim.maxProjectionCm, 'Kinyúlás');
+  check(heightCm, lim.minHeightCm, lim.maxHeightCm, 'Magasság');
+
+  // Modulszabályok: legfeljebb N modul × egy modul max. mérete
+  for (const rule of getModuleRules(template)) {
+    const max = moduleRuleMaxCm(rule);
+    if (!max) continue;
+    const dim = rule.axis === 'width' ? widthCm : projectionCm;
+    if (dim > max) {
+      const bps = moduleBreakpoints(rule);
+      const how = bps.length
+        ? `${bps.length} modulig`
+        : `${rule.maxModules} modul × ${rule.maxCm} cm`;
+      reasons.push(
+        `${rule.axis === 'width' ? 'Szélesség' : 'Kinyúlás'} max. ${max} cm (${how}, kért: ${dim} cm)`
+      );
+    }
+  }
+
+  // Feltételes korlátok (beépítéstől / mérettől függő maximumok)
+  for (const rule of template.sizeRules || []) {
+    if (rule.mountType && rule.mountType !== mountType) continue;
+    if (rule.ifWidthOverCm && !(widthCm > rule.ifWidthOverCm)) continue;
+    if (rule.ifProjectionOverCm && !(projectionCm > rule.ifProjectionOverCm)) continue;
+    const why = rule.label ? ` - ${rule.label}` : '';
+    if (rule.maxWidthCm && widthCm > rule.maxWidthCm)
+      reasons.push(`Szélesség max. ${rule.maxWidthCm} cm (kért: ${widthCm} cm)${why}`);
+    if (rule.maxProjectionCm && projectionCm > rule.maxProjectionCm)
+      reasons.push(`Kinyúlás max. ${rule.maxProjectionCm} cm (kért: ${projectionCm} cm)${why}`);
+    if (rule.maxHeightCm && heightCm > rule.maxHeightCm)
+      reasons.push(`Magasság max. ${rule.maxHeightCm} cm (kért: ${heightCm} cm)${why}`);
+  }
+
+  const modules = getModuleCounts(template, widthCm, projectionCm);
+  // Van ártábla ehhez a beépítéshez, de egyik sem ehhez a modulkiosztáshoz
+  const mountTables = (template.materials || []).filter(
+    (m) =>
+      m.itemRole === 'base' &&
+      m.pricingMode === 'matrix_cm' &&
+      (!mountType || !m.mountTypes?.length || m.mountTypes.includes(mountType))
+  );
+  if (mountTables.length && !mountTables.some((m) => fitsModules(m, modules))) {
+    reasons.push(
+      `Nincs ártábla ${modules.width} × ${modules.projection} modulos kiosztásra${
+        mountType ? ` „${mountType}” beépítésnél` : ''
+      }`
+    );
+  }
+  for (const m of template.materials || []) {
+    if (m.itemRole !== 'base' || m.pricingMode !== 'matrix_cm') continue;
+    // A másik beépítési mód / modulszám mérettáblája nem számít
+    if (mountType && m.mountTypes?.length && !m.mountTypes.includes(mountType)) continue;
+    if (!fitsModules(m, modules)) continue;
+    const d = effectiveDims(m, modules, widthCm, projectionCm, heightCm);
+    const lookup = lookupCustomMatrixPrice(
+      m.matrixTable,
+      axisValue(m.matrixRowAxis, 'projection', d),
+      axisValue(m.matrixColAxis, 'width', d),
+      m.matrixRowSnap,
+      m.matrixColSnap
+    );
+    if (lookup.outOfRange) {
+      reasons.push(`„${m.name}” mérettáblája nem fedi le ezt a méretet`);
+    }
+  }
+
+  if (reasons.length > 0) return { status: 'out_of_range', reasons };
+  const hasAnyLimit =
+    Object.values(lim).some((v) => Number(v) > 0) ||
+    Boolean(template.sizeRules?.length) ||
+    getModuleRules(template).some((r) => moduleRuleMaxCm(r));
+  return { status: hasAnyLimit ? 'ok' : 'no_limits', reasons: [] };
+}
+
+/**
+ * Egy szekció végösszege: bekapcsolt alaptételek + árkorrekciók, vagy a kézi végösszeg.
+ */
+export function computeBlockTotals(
+  block: Pick<QuoteDocumentBlock, 'rows' | 'adjustments' | 'manualTotalEur' | 'manualTotalHuf'>,
+  eurHufRate: number
+): {
+  rowsTotalEur: number;
+  adjustmentsEur: number;
+  hiddenAdjustmentsEur: number;
+  totalEur: number;
+  totalHuf: number;
+} {
+  const rate = Math.max(1, Number(eurHufRate) || 400);
+  const rowsTotalEur = (block.rows || [])
+    .filter((r) => r.included && r.itemRole === 'base')
+    .reduce((sum, r) => sum + (Number(r.discountPriceEur) || 0), 0);
+  const adjustments = block.adjustments || [];
+  const adjustmentsEur = adjustments.reduce(
+    (sum, a) => sum + (Number(a.amountEur) || 0),
+    0
+  );
+  const hiddenAdjustmentsEur = adjustments
+    .filter((a) => !a.visibleToCustomer)
+    .reduce((sum, a) => sum + (Number(a.amountEur) || 0), 0);
+  const isSet = (v: number | null | undefined) =>
+    v !== null && v !== undefined && !Number.isNaN(Number(v));
+  // Forintban megadott kézi végösszeg: a Ft pontosan ennyi, az EUR ebből számolódik
+  if (isSet(block.manualTotalHuf)) {
+    const totalHuf = Math.round(Number(block.manualTotalHuf));
+    return {
+      rowsTotalEur,
+      adjustmentsEur,
+      hiddenAdjustmentsEur,
+      totalEur: Math.round(totalHuf / rate),
+      totalHuf,
+    };
+  }
+  const totalEur = isSet(block.manualTotalEur)
+    ? Math.round(Number(block.manualTotalEur))
+    : rowsTotalEur + adjustmentsEur;
+  return {
+    rowsTotalEur,
+    adjustmentsEur,
+    hiddenAdjustmentsEur,
+    totalEur,
+    totalHuf: roundHuf(totalEur, rate),
+  };
+}
+
+/**
+ * Belső (csak nekünk látható) bontás: katalógusár, haszon, szerelés, korrekciók.
+ */
+export function computeBlockBreakdown(
+  block: QuoteDocumentBlock,
+  eurHufRate: number
+): {
+  catalogEur: number;
+  profitEur: number;
+  assemblyEur: number;
+  manualRowsEur: number;
+  adjustmentsEur: number;
+  totalEur: number;
+  totalHuf: number;
+} {
+  let catalogEur = 0;
+  let profitEur = 0;
+  let assemblyEur = 0;
+  let manualRowsEur = 0;
+  for (const r of block.rows || []) {
+    if (!r.included || r.itemRole !== 'base') continue;
+    const price = Number(r.discountPriceEur) || 0;
+    if (r.systemRole === 'assembly') {
+      assemblyEur += price;
+    } else if (r.costEur === undefined) {
+      manualRowsEur += price;
+    } else {
+      catalogEur += r.costEur;
+      profitEur += price - r.costEur;
+    }
+  }
+  const totals = computeBlockTotals(block, eurHufRate);
+  return {
+    catalogEur,
+    profitEur,
+    assemblyEur,
+    manualRowsEur,
+    adjustmentsEur: totals.adjustmentsEur,
+    totalEur: totals.totalEur,
+    totalHuf: totals.totalHuf,
+  };
+}
+
+export function createPriceAdjustment(
+  overrides?: Partial<PriceAdjustment>
+): PriceAdjustment {
+  return {
+    id: `adj_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    label: 'Egyedi árkorrekció',
+    amountEur: 0,
+    reason: '',
+    visibleToCustomer: false,
+    ...overrides,
+  };
 }
 
 /**
@@ -204,6 +574,7 @@ export function calculateTemplateRows(
 } {
   const { widthCm, projectionCm, heightCm, eurHufRate } = ctx;
   const rate = Math.max(1, Number(eurHufRate) || 400);
+  const formula = resolvePricingFormula(ctx.formula, template.pricingOverride);
 
   // Ha egy sablonban véletlenül csak 'percentage' tétel lenne alaptétel nélkül,
   // az első tételt automatikusan m² alapú algoritmusként kezeljük, hogy mindig legyen valódi alapár!
@@ -211,7 +582,16 @@ export function calculateTemplateRows(
     (m) => m.pricingMode !== 'percentage' && m.itemRole === 'base'
   );
 
-  const normalizedMaterials: TemplateMaterialItem[] = template.materials.map(
+  // A más beépítési módhoz / modulszámhoz tartozó tételek (pl. szabadon álló mérettábla,
+  // 2 modulos felár) kimaradnak
+  const modules = getModuleCounts(template, widthCm, projectionCm);
+  const mountMaterials = template.materials.filter(
+    (m) =>
+      (!m.mountTypes?.length || m.mountTypes.includes(ctx.mountType)) &&
+      fitsModules(m, modules)
+  );
+
+  const normalizedMaterials: TemplateMaterialItem[] = mountMaterials.map(
     (m, idx) => {
       if (!hasNonPercentageBase && idx === 0 && m.pricingMode === 'percentage') {
         return {
@@ -240,18 +620,22 @@ export function calculateTemplateRows(
       ? selectedMaterialIds.includes(item.id)
       : item.defaultSelected !== false;
 
-    const qty = Math.max(1, Number(item.defaultQuantity) || 1);
+    const moduleMult =
+      (item.splitByModule ? modules.total : 1) * (item.perModule ? modules.total : 1);
+    const qty = Math.max(1, Number(item.defaultQuantity) || 1) * moduleMult;
+    const ed = effectiveDims(item, modules, widthCm, projectionCm, heightCm);
     const dim = computeDimensionValue(
       item.dimensionSource || 'roof',
-      widthCm,
-      projectionCm,
-      heightCm
+      ed.widthCm,
+      ed.projectionCm,
+      ed.heightCm
     );
     const curr = item.currency || 'EUR';
 
     let rawPrice = 0;
     let quantityLabel = `${qty} ${item.unitLabel || 'db'}`;
     let formulaSummary = '';
+    let outOfRange = false;
 
     switch (item.pricingMode) {
       case 'fixed': {
@@ -311,8 +695,10 @@ export function calculateTemplateRows(
       case 'matrix_cm': {
         const matrixLookup = lookupCustomMatrixPrice(
           item.matrixTable,
-          projectionCm,
-          widthCm
+          axisValue(item.matrixRowAxis, 'projection', ed),
+          axisValue(item.matrixColAxis, 'width', ed),
+          item.matrixRowSnap,
+          item.matrixColSnap
         );
         const fallbackM2Price = Math.round(
           dim.value * Math.max(1, Number(item.unitPrice) || 350)
@@ -320,8 +706,18 @@ export function calculateTemplateRows(
         const effectiveMatrixPrice =
           matrixLookup.price > 0 ? matrixLookup.price : fallbackM2Price;
         rawPrice = effectiveMatrixPrice * qty;
-        quantityLabel = `${widthCm}×${projectionCm} cm (${qty} db)`;
-        formulaSummary = `Mérettábla algoritmus (${matrixLookup.matchedCol}×${matrixLookup.matchedRow} cm): ${effectiveMatrixPrice} ${curr} × ${qty} db`;
+        quantityLabel =
+          item.splitByModule && modules.total > 1
+            ? `${modules.total} modul × ${ed.widthCm}×${ed.projectionCm} cm`
+            : `${ed.widthCm}×${ed.projectionCm} cm${
+                modules.total > 1 ? ` (${modules.total} modul)` : ''
+              }${qty > 1 ? ` (${qty} db)` : ''}`;
+        formulaSummary = `Mérettábla algoritmus (${matrixLookup.matchedCol}×${matrixLookup.matchedRow} cm): ${effectiveMatrixPrice} ${curr} × ${qty} db${
+          matrixLookup.outOfRange
+            ? ' ⚠ A kért méret nagyobb, mint a táblázat - kézi ellenőrzés szükséges!'
+            : ''
+        }`;
+        outOfRange = matrixLookup.outOfRange;
         break;
       }
       default: {
@@ -333,10 +729,11 @@ export function calculateTemplateRows(
     }
 
     const modifiedPrice = applyModifiers(rawPrice, item);
-    const priceInEur =
+    const costInEur =
       item.currency === 'HUF'
         ? Math.max(1, Math.round(modifiedPrice / rate))
         : Math.max(1, modifiedPrice);
+    const priceInEur = applyPercentProfit(costInEur, formula);
 
     const listMult =
       item.listPriceMultiplier && item.listPriceMultiplier > 0
@@ -349,8 +746,9 @@ export function calculateTemplateRows(
 
     const discountPriceEur = item.itemRole === 'gift' ? 0 : priceInEur;
 
-    if (isIncluded && item.itemRole === 'base') {
-      runningBaseSubtotalEur += discountPriceEur;
+    if (isIncluded && item.itemRole === 'base' && !item.excludeFromPercentBase) {
+      // A százalékos tételek (pl. szerelési %) a katalógusárakból számolnak
+      runningBaseSubtotalEur += costInEur;
     }
 
     rowsById[item.id] = {
@@ -375,6 +773,8 @@ export function calculateTemplateRows(
           : '',
       photos: (item.photos || []).map((p) => ({ ...p })),
       algorithm: JSON.parse(JSON.stringify(item)),
+      costEur: item.itemRole === 'gift' ? 0 : costInEur,
+      outOfRange,
     };
   }
 
@@ -416,10 +816,11 @@ export function calculateTemplateRows(
       minEur,
       rawEur + (Number(item.fixedSurcharge) || 0)
     );
-    const discountPriceEur = item.itemRole === 'gift' ? 0 : finalEur;
+    const pricedEur = applyPercentProfit(finalEur, formula);
+    const discountPriceEur = item.itemRole === 'gift' ? 0 : pricedEur;
 
-    if (isIncluded && item.itemRole === 'base') {
-      runningBaseSubtotalEur += discountPriceEur;
+    if (isIncluded && item.itemRole === 'base' && !item.excludeFromPercentBase) {
+      runningBaseSubtotalEur += finalEur;
     }
 
     const listMult =
@@ -433,8 +834,9 @@ export function calculateTemplateRows(
       name: item.name,
       description: item.description || '',
       quantityLabel: `${pct}%`,
-      listPriceEur: Math.max(finalEur, Math.round(finalEur * listMult)),
+      listPriceEur: Math.max(pricedEur, Math.round(pricedEur * listMult)),
       discountPriceEur,
+      costEur: item.itemRole === 'gift' ? 0 : finalEur,
       formulaSummary: `Százalékos algoritmus: alaptételek ${pct}%-a (min. ${minEur} EUR)`,
       currency: 'EUR',
       itemRole: item.itemRole || 'base',
@@ -449,6 +851,46 @@ export function calculateTemplateRows(
   const orderedRows: QuoteTableRow[] = normalizedMaterials
     .map((m) => rowsById[m.id])
     .filter(Boolean);
+
+  // 3. Fix összegű haszon: arányosan elosztva a bekapcsolt alaptételeken
+  if (formula.profitMode === 'fixed' && Number(formula.profitValue) > 0) {
+    const targets = orderedRows.filter(
+      (r) => r.included && r.itemRole === 'base' && (r.costEur || 0) > 0
+    );
+    const costSum = targets.reduce((sum, r) => sum + (r.costEur || 0), 0);
+    let remaining = Math.round(Number(formula.profitValue));
+    targets.forEach((r, idx) => {
+      const share =
+        idx === targets.length - 1
+          ? remaining
+          : Math.round((Number(formula.profitValue) * (r.costEur || 0)) / costSum);
+      remaining -= share;
+      const listRatio = r.discountPriceEur > 0 ? r.listPriceEur / r.discountPriceEur : 1.25;
+      r.discountPriceEur += share;
+      r.listPriceEur = Math.round(r.discountPriceEur * listRatio);
+    });
+  }
+
+  // 4. Szerelés a képletből (X + Y × m²) külön sorként
+  const assembly = computeAssemblyEur(formula, widthCm, projectionCm);
+  if (assembly.amount > 0) {
+    orderedRows.push({
+      id: `row_assembly_${template.id}_${Math.random().toString(36).slice(2, 6)}`,
+      name: formula.assemblyLabel || 'Helyszíni összeszerelés',
+      description: '',
+      quantityLabel: computeDimensionValue('roof', widthCm, projectionCm, heightCm)
+        .formatted,
+      listPriceEur: assembly.amount,
+      discountPriceEur: assembly.amount,
+      formulaSummary: assembly.formulaSummary,
+      currency: 'EUR',
+      itemRole: 'base',
+      included: true,
+      note: '',
+      photos: [],
+      systemRole: 'assembly',
+    });
+  }
 
   const totalBaseEur = orderedRows
     .filter((r) => r.included && r.itemRole === 'base')
@@ -471,9 +913,19 @@ export function buildEditableBlockFromTemplate(
   indexNumber: number,
   ctx: CalculationContext & VariableReplacementContext,
   config: SystemConfig,
-  selectedMaterialIds?: string[]
+  selectedMaterialIds?: string[],
+  adjustments?: PriceAdjustment[]
 ): QuoteDocumentBlock {
-  const calc = calculateTemplateRows(template, ctx, selectedMaterialIds);
+  const calc = calculateTemplateRows(
+    template,
+    { ...ctx, formula: ctx.formula || config.pricingFormula },
+    selectedMaterialIds
+  );
+  const blockAdjustments = (adjustments || []).map((a) => ({ ...a }));
+  const totals = computeBlockTotals(
+    { rows: calc.rows, adjustments: blockAdjustments },
+    ctx.eurHufRate
+  );
 
   const varCtx: VariableReplacementContext = {
     customerName: ctx.customerName,
@@ -535,11 +987,11 @@ export function buildEditableBlockFromTemplate(
     type: 'template_section',
     templateId: template.id,
     categoryId: template.categoryId,
-    sectionTitle: `${indexNumber}. ${template.name} (${ctx.widthCm}×${ctx.projectionCm}×${ctx.heightCm} cm — ${ctx.mountType})`,
+    sectionTitle: `${indexNumber}. ${template.name} (${ctx.widthCm}×${ctx.projectionCm}×${ctx.heightCm} cm - ${ctx.mountType})`,
     sectionSubtitle: replaceTemplateVariables(template.subtitle || '', varCtx),
     sectionIntroText: introCombined,
     sectionPhotos: resolvedPhotos,
-    tableTitle: `${template.name} — Részletes árkalkuláció (${ctx.widthCm}×${ctx.projectionCm} cm)`,
+    tableTitle: `${template.name} - Részletes árkalkuláció (${ctx.widthCm}×${ctx.projectionCm} cm)`,
     tableHeaders: [
       'Megnevezés / Anyag / Műszaki tartalom',
       'Mennyiség / Méret',
@@ -556,9 +1008,64 @@ export function buildEditableBlockFromTemplate(
       })),
     })),
     autoCalculateTotals: true,
-    customTotalBaseEur: calc.totalBaseEur,
-    customTotalBaseHuf: calc.totalBaseHuf,
+    customTotalBaseEur: totals.totalEur,
+    customTotalBaseHuf: totals.totalHuf,
     sectionClosingText: closingCombined,
+    adjustments: blockAdjustments,
+    manualTotalEur: null,
+  };
+}
+
+/**
+ * Egyedi (pl. több modulos, nagyon széles) ajánlat: üres, kézzel árazható szekció.
+ * Az ajánlatok ~97%-a egy modulra szól, ezért ezt nem automatizáljuk.
+ */
+export function buildManualSectionBlock(
+  title: string,
+  indexNumber: number,
+  ctx: { widthCm: number; projectionCm: number; heightCm: number },
+  categoryId?: string
+): QuoteDocumentBlock {
+  const now = Date.now();
+  const manualRow = (name: string, i: number): QuoteTableRow => ({
+    id: `row_manual_${now}_${i}`,
+    name,
+    description: '',
+    quantityLabel: i === 0 ? `${ctx.widthCm}×${ctx.projectionCm} cm` : '1 db',
+    listPriceEur: 0,
+    discountPriceEur: 0,
+    formulaSummary: 'Kézi ár (egyedi kalkuláció)',
+    currency: 'EUR',
+    itemRole: 'base',
+    included: true,
+    note: '',
+    photos: [],
+    priceOverridden: true,
+    quantityOverridden: true,
+  });
+  return {
+    id: `blk_manual_${now}_${Math.random().toString(36).slice(2, 6)}`,
+    type: 'template_section',
+    categoryId,
+    isManualSection: true,
+    sectionTitle: `${indexNumber}. ${title} (${ctx.widthCm}×${ctx.projectionCm}×${ctx.heightCm} cm)`,
+    sectionSubtitle: 'Egyedi, több modulos kialakítás',
+    sectionIntroText: '',
+    sectionPhotos: [],
+    tableTitle: `${title} - Egyedi árkalkuláció`,
+    tableHeaders: [
+      'Megnevezés / Anyag / Műszaki tartalom',
+      'Mennyiség / Méret',
+      'Listaár (EUR)',
+      'Kedvezményes ár (EUR)',
+    ],
+    rows: [manualRow('1. modul', 0), manualRow('2. modul', 1)],
+    autoCalculateTotals: true,
+    customTotalBaseEur: 0,
+    customTotalBaseHuf: 0,
+    sectionClosingText: '',
+    adjustments: [],
+    manualTotalEur: null,
   };
 }
 
@@ -579,6 +1086,8 @@ export function buildFullQuoteDocumentBlocks(params: {
   deliveryFeeHuf: number;
   selectedTemplates: QuoteTemplate[];
   selectedMaterialsByTemplate?: Record<string, string[]>;
+  adjustmentsByTemplate?: Record<string, PriceAdjustment[]>;
+  manualSections?: { title: string; categoryId?: string }[];
   config: SystemConfig;
 }): {
   blocks: QuoteDocumentBlock[];
@@ -597,6 +1106,8 @@ export function buildFullQuoteDocumentBlocks(params: {
     deliveryFeeHuf,
     selectedTemplates,
     selectedMaterialsByTemplate,
+    adjustmentsByTemplate,
+    manualSections,
     config,
   } = params;
 
@@ -656,7 +1167,8 @@ export function buildFullQuoteDocumentBlocks(params: {
         deliveryFeeHuf,
       },
       config,
-      selectedMatIds
+      selectedMatIds,
+      adjustmentsByTemplate?.[tpl.id]
     );
     blocks.push(tplBlock);
 
@@ -664,6 +1176,17 @@ export function buildFullQuoteDocumentBlocks(params: {
       primaryTotalEur = tplBlock.customTotalBaseEur || 0;
       primaryTotalHuf = tplBlock.customTotalBaseHuf || 0;
     }
+  });
+
+  (manualSections || []).forEach((ms, idx) => {
+    blocks.push(
+      buildManualSectionBlock(
+        ms.title,
+        selectedTemplates.length + idx + 1,
+        { widthCm, projectionCm, heightCm },
+        ms.categoryId
+      )
+    );
   });
 
   // 3. Záró Információs Szövegdoboz Blokk
@@ -691,8 +1214,8 @@ export function buildFullQuoteDocumentBlocks(params: {
 }
 
 /**
- * Újraszámolja egy template_section blokk összes sorát és főösszegét kizárólag a sorok mögötti
- * árazási algoritmusok (és az aktuális méretek/árfolyam) alapján.
+ * Újraszámolja egy template_section blokk sorait a mögöttük lévő árazási algoritmusokból
+ * (és az aktuális méretekből/árfolyamból). A kézzel átírt árak megmaradnak.
  */
 export function recalculateBlockWithAlgorithms(
   block: QuoteDocumentBlock,
@@ -703,7 +1226,15 @@ export function recalculateBlockWithAlgorithms(
 
   const sourceTpl = templates?.find((t) => t.id === block.templateId);
 
-  const materialsFromRows: TemplateMaterialItem[] = block.rows.map((r, idx) => {
+  // A kézzel árazott (egyedi) szekció sorai nem mennek át az algoritmuson
+  if (block.isManualSection) {
+    return recalculateBlockTotals(block, ctx.eurHufRate);
+  }
+
+  const materialRows = block.rows.filter((r) => !r.systemRole);
+  const origAssemblyRow = block.rows.find((r) => r.systemRole === 'assembly');
+
+  const materialsFromRows: TemplateMaterialItem[] = materialRows.map((r, idx) => {
     const tplMat = sourceTpl?.materials?.find((m) => m.id === r.materialId);
     const baseAlg =
       r.algorithm ||
@@ -716,6 +1247,12 @@ export function recalculateBlockWithAlgorithms(
 
     return {
       ...baseAlg,
+      // A sor már a választott beépítési módhoz / modulszámhoz készült, újraszámoláskor nem szűrünk újra
+      mountTypes: undefined,
+      minModules: undefined,
+      maxModules: undefined,
+      modulesWidth: undefined,
+      modulesProjection: undefined,
       id: r.materialId || baseAlg.id || `mat_row_${idx}`,
       name: r.name,
       description: r.description || '',
@@ -727,7 +1264,7 @@ export function recalculateBlockWithAlgorithms(
   });
 
   const includedIds = materialsFromRows
-    .filter((_, idx) => block.rows![idx].included !== false)
+    .filter((_, idx) => materialRows[idx].included !== false)
     .map((m) => m.id);
 
   const virtualTemplate: QuoteTemplate = {
@@ -741,36 +1278,55 @@ export function recalculateBlockWithAlgorithms(
     textBlocks: [],
     photos: block.sectionPhotos || [],
     materials: materialsFromRows,
+    pricingOverride: sourceTpl?.pricingOverride,
+    moduleSplit: sourceTpl?.moduleSplit,
+    moduleSplits: sourceTpl?.moduleSplits,
     createdAt: '',
     updatedAt: '',
   };
 
   const calc = calculateTemplateRows(virtualTemplate, ctx, includedIds);
 
-  const updatedRows: QuoteTableRow[] = calc.rows.map((calcRow, idx) => {
-    const origRow = block.rows![idx];
-    return {
-      ...calcRow,
-      id: origRow?.id || calcRow.id,
-      name: origRow?.name ?? calcRow.name,
-      description: origRow?.description ?? calcRow.description,
-      note: origRow?.note !== undefined ? origRow.note : calcRow.note,
-      photos: origRow?.photos || calcRow.photos,
-    };
+  // Kézzel átírt ár / mennyiség megmarad, csak a többi számolódik újra
+  const keepManual = (calcRow: QuoteTableRow, origRow?: QuoteTableRow) => ({
+    ...calcRow,
+    id: origRow?.id || calcRow.id,
+    name: origRow?.name ?? calcRow.name,
+    description: origRow?.description ?? calcRow.description,
+    note: origRow?.note !== undefined ? origRow.note : calcRow.note,
+    photos: origRow?.photos || calcRow.photos,
+    included: origRow ? origRow.included : calcRow.included,
+    ...(origRow?.priceOverridden
+      ? {
+          priceOverridden: true,
+          listPriceEur: origRow.listPriceEur,
+          discountPriceEur: origRow.discountPriceEur,
+        }
+      : {}),
+    ...(origRow?.quantityOverridden
+      ? { quantityOverridden: true, quantityLabel: origRow.quantityLabel }
+      : {}),
   });
 
-  return {
-    ...block,
-    rows: updatedRows,
-    autoCalculateTotals: true,
-    customTotalBaseEur: calc.totalBaseEur,
-    customTotalBaseHuf: calc.totalBaseHuf,
-  };
+  const updatedRows: QuoteTableRow[] = calc.rows.map((calcRow, idx) =>
+    calcRow.systemRole === 'assembly'
+      ? keepManual(calcRow, origAssemblyRow)
+      : keepManual(calcRow, materialRows[idx])
+  );
+  // Ha a képlet szerint már nincs szerelés, de kézzel be volt árazva, megtartjuk
+  if (
+    origAssemblyRow?.priceOverridden &&
+    !updatedRows.some((r) => r.systemRole === 'assembly')
+  ) {
+    updatedRows.push(origAssemblyRow);
+  }
+
+  return recalculateBlockTotals({ ...block, rows: updatedRows }, ctx.eurHufRate);
 }
 
 /**
- * Újraszámolja egy template_section blokk összesített EUR és HUF alapárát a sorai alapján.
- * Mindig kötelezően az algoritmus által számolt sorokból összegzi.
+ * Újraszámolja egy template_section blokk összesített EUR és HUF árát a sorai
+ * (algoritmus vagy kézi ár), az árkorrekciók és az esetleges kézi végösszeg alapján.
  */
 export function recalculateBlockTotals(
   block: QuoteDocumentBlock,
@@ -778,15 +1334,110 @@ export function recalculateBlockTotals(
 ): QuoteDocumentBlock {
   if (block.type !== 'template_section' || !block.rows) return block;
 
-  const rate = Math.max(1, Number(eurHufRate) || 400);
-  const totalEur = block.rows
-    .filter((r) => r.included && r.itemRole === 'base')
-    .reduce((sum, r) => sum + (Number(r.discountPriceEur) || 0), 0);
+  const totals = computeBlockTotals(block, eurHufRate);
 
   return {
     ...block,
     autoCalculateTotals: true,
-    customTotalBaseEur: totalEur,
-    customTotalBaseHuf: roundHuf(totalEur, rate),
+    customTotalBaseEur: totals.totalEur,
+    customTotalBaseHuf: totals.totalHuf,
+  };
+}
+
+/**
+ * Szám beolvasása árlistából: "2.200", "2 200", "2,200.00", "2200 €" → 2200
+ */
+function parsePriceNumber(raw: string): number | null {
+  let t = raw.replace(/[^0-9.,-]/g, '');
+  if (!t || !/[0-9]/.test(t)) return null;
+  const lastDot = t.lastIndexOf('.');
+  const lastComma = t.lastIndexOf(',');
+  if (lastDot >= 0 && lastComma >= 0) {
+    // A később álló jel a tizedesjel
+    const dec = lastDot > lastComma ? '.' : ',';
+    const thou = dec === '.' ? ',' : '.';
+    t = t.split(thou).join('').replace(dec, '.');
+  } else if (lastDot >= 0 || lastComma >= 0) {
+    const sep = lastDot >= 0 ? '.' : ',';
+    const after = t.length - t.lastIndexOf(sep) - 1;
+    // Pontosan 3 számjegy utána → ezres tagolás, különben tizedes
+    t = after === 3 ? t.split(sep).join('') : t.replace(sep, '.');
+  }
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+
+/**
+ * Ár PDF-ből / Excelből kimásolt mérettábla beolvasása.
+ * Első sor: szélességek (cm), a többi sor: kinyúlás (cm), majd az árak.
+ * Elválasztó: tabulátor, pontosvessző vagy több szóköz.
+ */
+export function parseMatrixPaste(
+  text: string,
+  labels?: { rowLabel?: string; colLabel?: string }
+): CustomMatrixTable | null {
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (lines.length < 2) return null;
+  const splitLine = (line: string) =>
+    line
+      .split(/[\t;]|\s+/)
+      .map((c) => c.trim())
+      .filter(Boolean);
+
+  let header = splitLine(lines[0])
+    .map(parsePriceNumber)
+    .filter((n): n is number => n !== null);
+  // "2 200" szóközös ezres tagolás: a sor addig vonódik össze, amíg a cellák száma
+  // meg nem egyezik a fejléccel (+1 a sor címkéjének)
+  const expected = header.length + 1;
+  const dataRows = lines.slice(1).map((line) => {
+    // A pénznem / mértékegység cellák (€, EUR, cm) nem számítanak oszlopnak
+    const cells = splitLine(line).filter((c) => /\d/.test(c));
+    while (cells.length > expected) {
+      let i = cells.findIndex(
+        (c, idx) =>
+          idx >= 1 &&
+          /^\d{1,2}$/.test(c) &&
+          /^\d{3}([.,]\d+)?$/.test(cells[idx + 1] || '')
+      );
+      if (i < 0) {
+        i = cells.findIndex(
+          (c, idx) =>
+            idx >= 1 && /^\d{1,3}$/.test(c) && /^\d{3}([.,]\d+)?$/.test(cells[idx + 1] || '')
+        );
+      }
+      if (i < 0) break;
+      cells.splice(i, 2, cells[i] + cells[i + 1]);
+    }
+    return cells;
+  });
+  const dataWidth = Math.max(...dataRows.map((r) => r.length));
+  // Ha a fejlécben is van "sarok" szám (pl. 0), azt eldobjuk
+  if (header.length === dataWidth) header = header.slice(1);
+  const cols = header.filter((c): c is number => c !== null && c > 0);
+  if (cols.length === 0) return null;
+
+  const rows: number[] = [];
+  const values: Record<string, Record<string, number>> = {};
+  for (const cells of dataRows) {
+    const rowCm = parsePriceNumber(cells[0]);
+    if (!rowCm || rowCm <= 0) continue;
+    rows.push(rowCm);
+    values[String(rowCm)] = {};
+    cols.forEach((colCm, idx) => {
+      const price = parsePriceNumber(cells[idx + 1] || '');
+      if (price !== null) values[String(rowCm)][String(colCm)] = price;
+    });
+  }
+  if (rows.length === 0) return null;
+  return {
+    rowLabel: labels?.rowLabel || 'Kinyúlás (cm)',
+    colLabel: labels?.colLabel || 'Szélesség (cm)',
+    rows,
+    cols,
+    values,
   };
 }

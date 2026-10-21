@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { nextQuoteNumber } from '@/lib/constants';
 import { getDb, saveDb } from '@/lib/db';
 import { generateAndSaveQuotePdf } from '@/lib/pdf-generator';
 import { QuoteRecord } from '@/lib/types';
@@ -19,9 +20,10 @@ export async function POST(req: NextRequest) {
     const db = getDb();
 
     const now = new Date();
-    const year = now.getFullYear();
-    const seq = String((db.quotes?.length || 0) + 1).padStart(3, '0');
-    const quoteNumber = body.quoteNumber || `AJ-${year}-${seq}`;
+    // A Beállításokban megadott előtag és formátum szerint (alapból OSP-ÉÉÉÉ-NNN)
+    const quoteNumber =
+      body.quoteNumber ||
+      nextQuoteNumber(db.config, (db.quotes || []).map((q) => q.quoteNumber), now);
     const id = body.id || `quote_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
 
     const blocks = Array.isArray(body.blocks) ? body.blocks : [];
@@ -65,6 +67,9 @@ export async function POST(req: NextRequest) {
       primaryTotalEur,
       primaryTotalHuf,
       isEditedAfterGeneration: Boolean(body.isEditedAfterGeneration),
+      trackingId: `trk-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+      sentCount: 0,
+      openCount: 0,
     };
 
     const { filename, bytes } = await generateAndSaveQuotePdf(newQuote);

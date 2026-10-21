@@ -9,8 +9,15 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const db = getDb();
     const pdfBytes = await renderEditableQuotePdfBytes(body, db.config);
-    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
 
+    // A szerkesztő bináris PDF-et kér (harmadával kisebb, mint a base64 JSON)
+    if ((req.headers.get('accept') || '').includes('application/pdf')) {
+      return new NextResponse(Buffer.from(pdfBytes), {
+        headers: { 'Content-Type': 'application/pdf', 'Cache-Control': 'no-store' },
+      });
+    }
+
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
     return NextResponse.json({
       ok: true,
       pdfBase64,

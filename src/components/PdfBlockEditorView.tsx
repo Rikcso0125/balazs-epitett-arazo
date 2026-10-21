@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import { thumbUrl } from '@/lib/thumb';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowLeft,
+  ArrowRight,
   ArrowUp,
   Check,
   Download,
@@ -14,10 +16,15 @@ import {
   Layers,
   Maximize2,
   PackagePlus,
+  ChevronRight,
+  GripVertical,
   Plus,
   RefreshCw,
+  RotateCcw,
   Save,
   Scissors,
+  Send,
+  SlidersHorizontal,
   Sparkles,
   Trash2,
   Type,
@@ -32,10 +39,14 @@ import {
 import {
   buildEditableBlockFromTemplate,
   CalculationContext,
+  computeBlockBreakdown,
   createDefaultMaterialAlgorithm,
+  recalculateBlockTotals,
   recalculateBlockWithAlgorithms,
   roundHuf,
 } from '@/lib/pricing-engine';
+import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
+import { AutoTextarea, btn, labelCls, PageHeader, Stepper } from '@/components/ui';
 import {
   DimensionSource,
   MountType,
@@ -49,9 +60,11 @@ import {
   SystemConfig,
   TemplateMaterialItem,
   UploadedMediaItem,
+  KnownCustomer,
 } from '@/lib/types';
 
 interface PdfBlockEditorViewProps {
+  knownCustomers: KnownCustomer[];
   config: SystemConfig;
   categories: ProductCategory[];
   templates: QuoteTemplate[];
@@ -63,9 +76,12 @@ interface PdfBlockEditorViewProps {
     downloadAfterSave: boolean
   ) => Promise<QuoteRecord | null>;
   onBackToWizard?: () => void;
+  // Mentés után a kiküldő ablak megnyitása
+  onSendQuote?: (saved: QuoteRecord) => void;
 }
 
 export function PdfBlockEditorView({
+  knownCustomers,
   config,
   templates,
   mediaLibrary,
@@ -73,6 +89,7 @@ export function PdfBlockEditorView({
   onUploadImage,
   onSaveQuoteAndGeneratePdf,
   onBackToWizard,
+  onSendQuote,
 }: PdfBlockEditorViewProps) {
   const isExistingSavedQuote = Boolean(initialQuote.id);
 
@@ -110,6 +127,7 @@ export function PdfBlockEditorView({
     heightCm,
     mountType,
     eurHufRate,
+    formula: config.pricingFormula,
   };
 
   const [blocks, setBlocks] = useState<QuoteDocumentBlock[]>(() => {
@@ -121,6 +139,7 @@ export function PdfBlockEditorView({
       eurHufRate: Number(
         initialQuote.eurHufRate || config.defaultEurHufRate || 400
       ),
+      formula: config.pricingFormula,
     };
     if (Array.isArray(initialQuote.blocks) && initialQuote.blocks.length > 0) {
       const cloned: QuoteDocumentBlock[] = JSON.parse(
@@ -153,11 +172,14 @@ export function PdfBlockEditorView({
   );
 
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const previewRequestRef = useRef(0);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [needsPreviewRefresh, setNeedsPreviewRefresh] = useState(false);
   const [savingPdf, setSavingPdf] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
   const [fullscreenPreview, setFullscreenPreview] = useState(false);
+  // Tételsoronként lenyitható részletek (képlet, leírás, szerep, fotó)
+  const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
 
   const updateBlock = (
     blockId: string,
@@ -169,6 +191,175 @@ export function PdfBlockEditorView({
     setNeedsPreviewRefresh(true);
   };
 
+  // Húzd és ejtsd: a fogantyú lenyomásakor válik húzhatóvá a blokk (a mezők így szerkeszthetők maradnak)
+  const [dragHandleId, setDragHandleId] = useState<string | null>(null);
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const [dropAt, setDropAt] = useState<number | null>(null);
+  // Alapból minden szakasz össze van csukva; a nyitottakat tartjuk számon
+  const [openBlocks, setOpenBlocks] = useState<Record<string, boolean>>({});
+  const [editorStep, setEditorStep] = useState<1 | 2 | 3>(2);
+  const [outlineDrag, setOutlineDrag] = useState<number | null>(null);
+  const [outlineDrop, setOutlineDrop] = useState<number | null>(null);
+  const [outlineMenuOpen, setOutlineMenuOpen] = useState(false);
+  const [insertMenuAt, setInsertMenuAt] = useState<number | null>(null);
+
+  const blockLabel = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box'
+      ? 'Szöveg'
+      : blk.type === 'photo_box'
+      ? 'Fotó'
+      : blk.type === 'template_section'
+      ? blk.isManualSection
+        ? 'Termék (kézi ár)'
+        : 'Termék'
+      : 'Oldaltörés';
+  const blockSummary = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box'
+      ? blk.title || (blk.content || '').slice(0, 80)
+      : blk.type === 'photo_box'
+      ? blk.photo?.titleAbove || blk.photo?.captionBelow || ''
+      : blk.type === 'template_section'
+      ? blk.sectionTitle || ''
+      : '';
+
+  const renderInsertMenu = (at: number, close: () => void, placement = 'absolute top-full mt-1') => {
+    const item = 'px-3 py-1.5 rounded-lg text-[13px] text-slate-700 hover:bg-slate-100 text-left';
+    const run = (fn: () => void) => {
+      fn();
+      close();
+    };
+    return (
+<div className={`${placement} z-20 w-64 max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg p-1.5 flex flex-col`}>
+            <button type="button" className={item} onClick={() => run(() => handleAddStandaloneTextBox(at - 1))}>
+              Szöveg
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddStandalonePhotoBox(at - 1))}>
+              Fotó
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddCustomBlankTemplateSection(at))}>
+              Üres termékszekció
+            </button>
+            <button type="button" className={item} onClick={() => run(() => handleAddPageBreak(at))}>
+              Oldaltörés
+            </button>
+            {templates.length > 0 && (
+              <div className="border-t border-slate-100 mt-1 pt-1">
+                <div className="px-3 py-1 text-xs text-slate-500">Termék sablonból</div>
+                <div className="max-h-56 overflow-y-auto flex flex-col">
+                  {templates
+                    .filter((t) => t.status !== 'inactive')
+                    .map((t) => (
+                      <button key={t.id} type="button" className={item} onClick={() => run(() => handleInsertSavedTemplateBlock(at, t.id))}>
+                        {t.name}
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+    );
+  };
+
+  // Bal oldali szerkezet: a szakaszok sorrendje, kattintásra ugrás, húzással átrendezés
+  const blockIcon = (blk: QuoteDocumentBlock) =>
+    blk.type === 'text_box' ? Type : blk.type === 'photo_box' ? ImageIcon : blk.type === 'template_section' ? PackagePlus : Scissors;
+  const focusBlock = (id: string) => {
+    setOpenBlocks({ [id]: true });
+    setTimeout(() => document.getElementById(`blk-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  };
+  const renderOutline = () => (
+    <nav aria-label="Ajánlat szerkezete" className="bg-white rounded-2xl border border-slate-200 p-2">
+      <div className="px-2 pt-1 pb-2 text-xs font-medium text-slate-500 uppercase tracking-wide">Szerkezet</div>
+      <ol className="space-y-0.5">
+        {blocks.map((blk, idx) => {
+          const Icon = blockIcon(blk);
+          const open = Boolean(openBlocks[blk.id]);
+          return (
+            <li
+              key={blk.id}
+              draggable
+              onDragStart={(e) => {
+                setOutlineDrag(idx);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', blk.id);
+              }}
+              onDragOver={(e) => {
+                if (outlineDrag === null) return;
+                e.preventDefault();
+                const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                setOutlineDrop(e.clientY < r.top + r.height / 2 ? idx : idx + 1);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (outlineDrag !== null && outlineDrop !== null) moveBlockTo(outlineDrag, outlineDrop);
+                setOutlineDrag(null);
+                setOutlineDrop(null);
+              }}
+              onDragEnd={() => {
+                setOutlineDrag(null);
+                setOutlineDrop(null);
+              }}
+              className={`relative ${outlineDrag === idx ? 'opacity-40' : ''}`}
+            >
+              {outlineDrag !== null && outlineDrop === idx && <div className="absolute inset-x-1 -top-px h-0.5 bg-slate-900" />}
+              {outlineDrag !== null && outlineDrop === idx + 1 && idx === blocks.length - 1 && (
+                <div className="absolute inset-x-1 -bottom-px h-0.5 bg-slate-900" />
+              )}
+              <button
+                type="button"
+                onClick={() => focusBlock(blk.id)}
+                className={`w-full flex items-start gap-2 px-2 py-1.5 rounded-lg text-left cursor-grab active:cursor-grabbing ${
+                  open ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-700'
+                }`}
+                title="Kattints a megnyitáshoz, húzd az átrendezéshez"
+              >
+                <Icon className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${open ? 'text-white/80' : 'text-slate-400'}`} />
+                <span className="min-w-0 text-[13px] leading-snug break-words">
+                  {blockSummary(blk) || blockLabel(blk)}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="relative mt-1 pt-1 border-t border-slate-100">
+        <button
+          type="button"
+          onClick={() => setOutlineMenuOpen((v) => !v)}
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:bg-slate-100"
+          aria-expanded={outlineMenuOpen}
+        >
+          <Plus className="w-3.5 h-3.5" />
+          Új szakasz a végére
+        </button>
+        {outlineMenuOpen && renderInsertMenu(blocks.length, () => setOutlineMenuOpen(false), 'absolute left-0 top-full mt-1')}
+      </div>
+    </nav>
+  );
+
+  // „+” sáv két blokk között: ide szúrja be az új szakaszt
+  const renderInsertBar = (at: number) => {
+    const open = insertMenuAt === at;
+    return (
+      <div className="relative flex items-center justify-center h-4 group" key={`ins_${at}`}>
+        <div className={`absolute inset-x-0 top-1/2 border-t ${open ? 'border-slate-400' : 'border-transparent group-hover:border-slate-200'}`} />
+        <button
+          type="button"
+          onClick={() => setInsertMenuAt(open ? null : at)}
+          className={`relative z-[1] w-6 h-6 grid place-items-center rounded-full border bg-white text-slate-500 hover:text-slate-950 hover:border-slate-400 ${
+            open ? 'border-slate-400 text-slate-950' : 'border-slate-200 opacity-60 group-hover:opacity-100'
+          }`}
+          title="Új szakasz beszúrása ide"
+          aria-label="Új szakasz beszúrása ide"
+          aria-expanded={open}
+        >
+          <Plus className="w-3.5 h-3.5" />
+        </button>
+        {open && renderInsertMenu(at, () => setInsertMenuAt(null))}
+      </div>
+    );
+  };
+
   const moveBlock = (idx: number, direction: -1 | 1) => {
     setBlocks((prev) => {
       const target = idx + direction;
@@ -177,6 +368,30 @@ export function PdfBlockEditorView({
       const temp = copy[idx];
       copy[idx] = copy[target];
       copy[target] = temp;
+      return copy;
+    });
+    setNeedsPreviewRefresh(true);
+  };
+
+  // Új blokk beszúrása a megadott helyre (index nélkül a végére)
+  const insertBlockAt = (block: QuoteDocumentBlock, at?: number) => {
+    setOpenBlocks((prev) => ({ ...prev, [block.id]: true }));
+    setBlocks((prev) => {
+      if (at === undefined || at >= prev.length) return [...prev, block];
+      const copy = [...prev];
+      copy.splice(Math.max(0, at), 0, block);
+      return copy;
+    });
+    setNeedsPreviewRefresh(true);
+  };
+
+  // Húzással áthelyezés: a blokk a `to` pozíció elé kerül
+  const moveBlockTo = (from: number, to: number) => {
+    setBlocks((prev) => {
+      if (from === to || from + 1 === to) return prev;
+      const copy = [...prev];
+      const [item] = copy.splice(from, 1);
+      copy.splice(to > from ? to - 1 : to, 0, item);
       return copy;
     });
     setNeedsPreviewRefresh(true);
@@ -218,13 +433,7 @@ export function PdfBlockEditorView({
       textStyle: 'normal',
       align: 'left',
     };
-    setBlocks((prev) => {
-      if (afterIndex === undefined) return [...prev, newBlock];
-      const copy = [...prev];
-      copy.splice(afterIndex + 1, 0, newBlock);
-      return copy;
-    });
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, afterIndex === undefined ? undefined : afterIndex + 1);
   };
 
   // Add standalone photo + caption box block
@@ -241,18 +450,12 @@ export function PdfBlockEditorView({
         align: 'center',
       },
     };
-    setBlocks((prev) => {
-      if (afterIndex === undefined) return [...prev, newBlock];
-      const copy = [...prev];
-      copy.splice(afterIndex + 1, 0, newBlock);
-      return copy;
-    });
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, afterIndex === undefined ? undefined : afterIndex + 1);
   };
 
   // Insert existing saved template as a new block
-  const handleInsertSavedTemplateBlock = () => {
-    const tpl = templates.find((t) => t.id === templateToInsertId);
+  const handleInsertSavedTemplateBlock = (at?: number, templateId = templateToInsertId) => {
+    const tpl = templates.find((t) => t.id === templateId);
     if (!tpl) return;
     const sectionCount =
       blocks.filter((b) => b.type === 'template_section').length + 1;
@@ -272,12 +475,11 @@ export function PdfBlockEditorView({
       },
       config
     );
-    setBlocks((prev) => [...prev, newBlock]);
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(newBlock, at);
   };
 
   // Insert a brand-new blank custom template/product section directly in the editor
-  const handleAddCustomBlankTemplateSection = () => {
+  const handleAddCustomBlankTemplateSection = (at?: number) => {
     const sectionCount =
       blocks.filter((b) => b.type === 'template_section').length + 1;
     const defaultAlg = createDefaultMaterialAlgorithm({
@@ -327,28 +529,21 @@ export function PdfBlockEditorView({
       calcCtx,
       templates
     );
-    setBlocks((prev) => [...prev, calculatedBlock]);
-    setNeedsPreviewRefresh(true);
+    insertBlockAt(calculatedBlock, at);
   };
 
   // Add page break
-  const handleAddPageBreak = () => {
-    setBlocks((prev) => [
-      ...prev,
-      {
-        id: `blk_brk_${Date.now()}`,
-        type: 'page_break',
-      },
-    ]);
-    setNeedsPreviewRefresh(true);
+  const handleAddPageBreak = (at?: number) => {
+    insertBlockAt({ id: `blk_brk_${Date.now()}`, type: 'page_break' }, at);
   };
 
   const refreshLivePdfPreview = useCallback(async () => {
     setPreviewLoading(true);
     try {
+      const requestId = ++previewRequestRef.current;
       const res = await fetch('/api/quotes/preview-pdf', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/pdf' },
         body: JSON.stringify({
           quoteNumber: initialQuote.quoteNumber || 'ELŐNÉZET',
           customerName,
@@ -365,16 +560,14 @@ export function PdfBlockEditorView({
           blocks,
         }),
       });
-      const data = await res.json();
-      if (data?.ok && data.pdfBase64) {
-        const binStr = window.atob(data.pdfBase64);
-        const bytes = new Uint8Array(binStr.length);
-        for (let i = 0; i < binStr.length; i++) {
-          bytes[i] = binStr.charCodeAt(i);
-        }
-        const blob = new Blob([bytes], { type: 'application/pdf' });
+      // Csak a legutolsó kérés eredményét mutatjuk (gyors gépelésnél a régebbiek elavultak)
+      if (res.ok && requestId === previewRequestRef.current) {
+        const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        setPdfPreviewUrl(url);
+        setPdfPreviewUrl((prev) => {
+          if (prev) URL.revokeObjectURL(prev);
+          return url;
+        });
         setNeedsPreviewRefresh(false);
       }
     } catch (e) {
@@ -403,7 +596,60 @@ export function PdfBlockEditorView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSaveAndDownload = async (downloadImmediately: boolean) => {
+  // Az előnézet magától frissül, ha egy ideje nem változott semmi
+  useEffect(() => {
+    if (!needsPreviewRefresh) return;
+    const timer = setTimeout(() => {
+      refreshLivePdfPreview();
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [needsPreviewRefresh, refreshLivePdfPreview]);
+
+  // Árfolyam váltás: minden termékszekció forintos összege újraszámolódik
+  const applyRate = (newRate: number) => {
+    setEurHufRate(newRate);
+    const nextCtx: CalculationContext = { ...calcCtx, eurHufRate: newRate };
+    setBlocks((prev) =>
+      prev.map((b) =>
+        b.type === 'template_section'
+          ? recalculateBlockWithAlgorithms(b, nextCtx, templates)
+          : b
+      )
+    );
+    setNeedsPreviewRefresh(true);
+  };
+
+  // Aktuális MNB árfolyam: új, még alapértelmezett árfolyamú ajánlatnál automatikusan átvesszük,
+  // mentett ajánlatnál csak felajánljuk (az ajánlat a kiállításkori árfolyamot őrzi)
+  const [liveRate, setLiveRate] = useState<{
+    rate: number;
+    exact: number;
+    source: string;
+    rateDate: string | null;
+  } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/exchange-rate')
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled || !d?.rate) return;
+        setLiveRate(d);
+        const usingDefault =
+          !initialQuote.eurHufRate ||
+          Number(initialQuote.eurHufRate) === Number(config.defaultEurHufRate);
+        if (!isExistingSavedQuote && usingDefault && d.rate !== eurHufRate) {
+          applyRate(d.rate);
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSaveAndDownload = async (mode: 'save' | 'download' | 'send') => {
+    const downloadImmediately = mode !== 'save';
     setSavingPdf(true);
     try {
       const firstTpl = blocks.find((b) => b.type === 'template_section');
@@ -434,8 +680,11 @@ export function PdfBlockEditorView({
         downloadImmediately
       );
 
-      if (saved && downloadImmediately) {
+      if (saved && mode === 'download') {
         window.open(`/api/quotes/${saved.id}/pdf?download=1`, '_blank');
+      }
+      if (saved && mode === 'send') {
+        onSendQuote?.(saved);
       }
       await refreshLivePdfPreview();
     } finally {
@@ -443,110 +692,139 @@ export function PdfBlockEditorView({
     }
   };
 
+  const renderPreviewCard = (heightCls: string) => (
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="px-4 py-2 border-b border-slate-200 flex items-center justify-between">
+              <span className="text-[13px] font-medium text-slate-600 inline-flex items-center gap-2">
+                Előnézet
+                {(previewLoading || needsPreviewRefresh) && (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
+                )}
+              </span>
+              {pdfPreviewUrl && (
+                <button
+                  type="button"
+                  onClick={() => setFullscreenPreview(true)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100"
+                  title="Teljes képernyő"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className={`${heightCls} bg-slate-100 flex items-center justify-center`}>
+              {pdfPreviewUrl ? (
+                <iframe
+                  src={pdfPreviewUrl}
+                  title="PDF Előnézet"
+                  className="w-full h-full border-0"
+                />
+              ) : (
+                <div className="text-xs text-slate-500">
+                  PDF előnézet készítése...
+                </div>
+              )}
+            </div>
+          </div>
+  );
+
+  // Lépések: ügyfél és méret → tartalom → előnézet és küldés
+  const EDITOR_STEPS = [
+    { num: 1 as const, label: 'Ügyfél és méret', short: 'Ügyfél' },
+    { num: 2 as const, label: 'Tartalom', short: 'Tartalom' },
+    { num: 3 as const, label: 'Előnézet és küldés', short: 'Küldés' },
+  ];
+  const stepNav = (
+    <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-slate-200">
+      {editorStep > 1 ? (
+        <button type="button" onClick={() => setEditorStep((st) => (st - 1) as 1 | 2 | 3)} className={btn.ghost}>
+          <ArrowLeft className="w-4 h-4" />
+          Vissza
+        </button>
+      ) : (
+        <span />
+      )}
+      {editorStep < 3 && (
+        <button type="button" onClick={() => setEditorStep((st) => (st + 1) as 1 | 2 | 3)} className={btn.primary}>
+          Tovább: {EDITOR_STEPS[editorStep].label}
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <div className="space-y-5">
-      {/* Top Action Header */}
-      <div className="bg-slate-900 text-white rounded-2xl p-5 shadow-lg flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
-              <Sparkles className="w-3.5 h-3.5" />
-              3. LÉPÉS: BLOKKOS PDF ÉPÍTŐ & UTÓLAGOS SZERKESZTŐ
-            </span>
-            {isExistingSavedQuote && (
-              <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30">
-                ✏️ Már legenerált PDF utólagos szerkesztése (
-                {initialQuote.quoteNumber})
-              </span>
+      <PageHeader
+        title={
+          isExistingSavedQuote
+            ? `Ajánlat ${initialQuote.quoteNumber || ''}`
+            : 'Ajánlat szerkesztése'
+        }
+        subtitle="Három lépés: ügyfél és méret, tartalom, végül előnézet és küldés. Minden szöveg és ár átírható."
+        actions={
+          <>
+            {onBackToWizard && (
+              <button type="button" onClick={onBackToWizard} className={btn.ghost}>
+                <ArrowLeft className="w-4 h-4" />
+                Vissza
+              </button>
             )}
-          </div>
-          <h1 className="text-xl font-bold">
-            Minden elemében szabadon átírható PDF Árajánlat Szerkesztő
-          </h1>
-          <p className="text-xs text-slate-300">
-            Itt minden szövegdobozba belenyúlhatsz, bármelyik sablonhoz adhatsz
-            új terméket, a termékhez csatolhatsz fotót, a fotó alá írhatsz
-            szöveget, vagy beszúrhatsz külön szövegrészt — mentés előtt és
-            utólag is!
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {onBackToWizard && (
             <button
               type="button"
-              onClick={onBackToWizard}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold"
+              disabled={savingPdf}
+              onClick={() => handleSaveAndDownload('save')}
+              className={btn.secondary}
             >
-              <ArrowLeft className="w-4 h-4" />
-              Vissza
+              <Save className="w-4 h-4" />
+              Mentés
             </button>
-          )}
+          </>
+        }
+      >
+        <Stepper steps={EDITOR_STEPS} current={editorStep} onSelect={(n) => setEditorStep(n)} />
+      </PageHeader>
 
-          <button
-            type="button"
-            onClick={refreshLivePdfPreview}
-            disabled={previewLoading}
-            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition ${
-              needsPreviewRefresh
-                ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 animate-pulse'
-                : 'bg-white/15 hover:bg-white/25 text-white'
-            }`}
-          >
-            <RefreshCw
-              className={`w-4 h-4 ${previewLoading ? 'animate-spin' : ''}`}
-            />
-            {previewLoading ? 'PDF Frissítése...' : 'PDF Előnézet Frissítése'}
-          </button>
-
-          <button
-            type="button"
-            disabled={savingPdf}
-            onClick={() => handleSaveAndDownload(false)}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold"
-          >
-            <Save className="w-4 h-4" />
-            Mentés a listába
-          </button>
-
-          <button
-            type="button"
-            disabled={savingPdf}
-            onClick={() => handleSaveAndDownload(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold shadow-md"
-          >
-            <Download className="w-4 h-4" />
-            {savingPdf
-              ? 'Generálás...'
-              : isExistingSavedQuote
-              ? 'Szerkesztett PDF Mentése & Letöltése'
-              : 'PDF Legenerálása & Letöltése'}
-          </button>
-        </div>
-      </div>
-
+      {editorStep === 1 && (<>
       {/* Customer Name Automation & Dimensions Quick Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-start">
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-              Ügyfél neve (Automatizáció)
+            <label className={labelCls}>
+              Ügyfél
             </label>
             <input
               type="text"
               value={customerName}
-              onChange={(e) =>
-                handleUpdateCustomerGreetingInBlocks(
-                  e.target.value,
-                  e.target.value
-                )
-              }
+              list="editor-known-customers"
+              autoComplete="off"
+              onChange={(e) => {
+                const val = e.target.value;
+                // Korábbi ügyfél kiválasztása: megszólítás, település, elérhetőség is átjön
+                const known = knownCustomers.find(
+                  (c) => c.name.toLowerCase() === val.trim().toLowerCase()
+                );
+                handleUpdateCustomerGreetingInBlocks(val, known ? known.greetingName : val);
+                if (known) {
+                  if (known.city) setCity(known.city);
+                  if (known.email) setEmail(known.email);
+                  if (known.phone) setPhone(known.phone);
+                }
+              }}
               className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold"
             />
+            <datalist id="editor-known-customers">
+              {knownCustomers.map((c) => (
+                <option key={c.name} value={c.name}>
+                  {[c.city, c.email || c.phone].filter(Boolean).join(' · ')}
+                </option>
+              ))}
+            </datalist>
           </div>
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-              Megszólítás („Kedves ...!”)
+            <label className={labelCls}>
+              Megszólítás
             </label>
             <input
               type="text"
@@ -561,7 +839,7 @@ export function PdfBlockEditorView({
             />
           </div>
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
+            <label className={labelCls}>
               Település
             </label>
             <input
@@ -575,8 +853,8 @@ export function PdfBlockEditorView({
             />
           </div>
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-              Szélesség × Kinyúlás (cm)
+            <label className={labelCls}>
+              Méret (cm)
             </label>
             <div className="flex items-center gap-1">
               <input
@@ -627,8 +905,8 @@ export function PdfBlockEditorView({
             </div>
           </div>
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-              Beépítés módja
+            <label className={labelCls}>
+              Beépítés
             </label>
             <select
               value={mountType}
@@ -647,85 +925,67 @@ export function PdfBlockEditorView({
             </select>
           </div>
           <div>
-            <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-              EUR / HUF Árfolyam
+            <label className={labelCls}>
+              Árfolyam (Ft/EUR)
             </label>
             <input
               type="number"
               min={1}
               value={eurHufRate}
-              onChange={(e) => {
-                const newRate = Math.max(1, Number(e.target.value) || 400);
-                setEurHufRate(newRate);
-                const nextCtx: CalculationContext = {
-                  ...calcCtx,
-                  eurHufRate: newRate,
-                };
-                setBlocks((prev) =>
-                  prev.map((b) =>
-                    b.type === 'template_section'
-                      ? recalculateBlockWithAlgorithms(b, nextCtx, templates)
-                      : b
-                  )
-                );
-                setNeedsPreviewRefresh(true);
-              }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold"
+              onChange={(e) =>
+                applyRate(Math.max(1, Number(e.target.value) || 400))
+              }
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold tabular-nums"
             />
+            {liveRate && (
+              liveRate.rate === eurHufRate ? (
+                <div className="text-xs text-slate-500 mt-1" title={liveRate.source}>
+                  MNB {liveRate.rateDate || 'ma'} · {liveRate.exact.toFixed(2).replace('.', ',')}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => applyRate(liveRate.rate)}
+                  className="text-xs text-slate-600 hover:text-slate-950 underline mt-1"
+                  title="Átállítja az ajánlatot az aktuális MNB árfolyamra és újraszámolja az árakat"
+                >
+                  MNB ma: {liveRate.exact.toFixed(2).replace('.', ',')} - frissítés
+                </button>
+              )
+            )}
           </div>
         </div>
       </div>
 
+      {stepNav}
+      </>)}
+
+      {editorStep === 2 && (<>
       {/* Add Block Toolbar */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-extrabold uppercase text-emerald-950 mr-1">
-            + Új elem beszúrása a PDF-be:
-          </span>
-
-          <button
-            type="button"
-            onClick={() => handleAddStandaloneTextBox()}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-100 text-slate-800 border border-emerald-300 text-xs font-bold shadow-sm transition"
-          >
-            <Type className="w-3.5 h-3.5 text-emerald-600" />
-            + Külön Szövegdoboz
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleAddStandalonePhotoBox()}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-100 text-slate-800 border border-emerald-300 text-xs font-bold shadow-sm transition"
-          >
-            <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
-            + Fotó + Fotó alatti szövegdoboz
-          </button>
-
-          <button
-            type="button"
-            onClick={handleAddCustomBlankTemplateSection}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-100 text-slate-800 border border-emerald-300 text-xs font-bold shadow-sm transition"
-          >
-            <PackagePlus className="w-3.5 h-3.5 text-emerald-600" />
-            + Egyedi Sablon / Termék Szekció
-          </button>
-
-          <button
-            type="button"
-            onClick={handleAddPageBreak}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold transition"
-          >
-            <Scissors className="w-3.5 h-3.5 text-slate-500" />
-            + Új A4 Oldaltörés
-          </button>
-        </div>
-
+      <div className="flex flex-wrap items-center gap-1">
+        <span className="text-[13px] text-slate-500 mr-1">Hozzáadás:</span>
+        <button type="button" onClick={() => handleAddStandaloneTextBox()} className={btn.ghost}>
+          <Type className="w-4 h-4" />
+          Szöveg
+        </button>
+        <button type="button" onClick={() => handleAddStandalonePhotoBox()} className={btn.ghost}>
+          <ImageIcon className="w-4 h-4" />
+          Fotó
+        </button>
+        <button type="button" onClick={() => handleAddCustomBlankTemplateSection()} className={btn.ghost}>
+          <PackagePlus className="w-4 h-4" />
+          Üres termékszekció
+        </button>
+        <button type="button" onClick={() => handleAddPageBreak()} className={btn.ghost}>
+          <Scissors className="w-4 h-4" />
+          Oldaltörés
+        </button>
         {templates.length > 0 && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 w-full sm:w-auto sm:ml-auto min-w-0">
             <select
               value={templateToInsertId}
               onChange={(e) => setTemplateToInsertId(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-emerald-300 bg-white text-xs font-semibold"
+              className="min-w-0 flex-1 sm:flex-none sm:max-w-[18rem] px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-[13px]"
             >
               {templates.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -733,51 +993,114 @@ export function PdfBlockEditorView({
                 </option>
               ))}
             </select>
-            <button
-              type="button"
-              onClick={handleInsertSavedTemplateBlock}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Mentett Sablon Felrakása
+            <button type="button" onClick={() => handleInsertSavedTemplateBlock()} className={btn.secondary}>
+              <Plus className="w-4 h-4" />
+              Sablon
             </button>
           </div>
         )}
       </div>
 
       {/* Main Split Layout: Left = Editable Blocks, Right = Live PDF Viewer */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-[12rem_minmax(0,1.15fr)_minmax(0,1fr)] gap-5 items-start">
+        {/* Szerkezet (csak széles képernyőn) */}
+        <div className="hidden xl:block xl:sticky xl:top-4">{renderOutline()}</div>
         {/* LEFT COLUMN: Editable Document Blocks */}
-        <div className="xl:col-span-7 space-y-4">
+        <div className="min-w-0 space-y-4">
+          {blocks.length > 1 && (
+            <div className="flex justify-end gap-3 text-[13px] text-slate-500 -mb-2">
+              <button
+                type="button"
+                className="hover:text-slate-950"
+                onClick={() => setOpenBlocks({})}
+              >
+                Összecsuk mind
+              </button>
+              <button
+                type="button"
+                className="hover:text-slate-950"
+                onClick={() => setOpenBlocks(Object.fromEntries(blocks.map((b) => [b.id, true])))}
+              >
+                Kinyit mind
+              </button>
+            </div>
+          )}
           {blocks.map((blk, bIdx) => (
+            <React.Fragment key={blk.id}>
+            {renderInsertBar(bIdx)}
             <div
-              key={blk.id}
-              className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+              id={`blk-${blk.id}`}
+              draggable={dragHandleId === blk.id}
+              onDragStart={(e) => {
+                setDragFrom(bIdx);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', blk.id);
+              }}
+              onDragOver={(e) => {
+                if (dragFrom === null) return;
+                e.preventDefault();
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                setDropAt(e.clientY < rect.top + rect.height / 2 ? bIdx : bIdx + 1);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (dragFrom !== null && dropAt !== null) moveBlockTo(dragFrom, dropAt);
+                setDragFrom(null);
+                setDropAt(null);
+                setDragHandleId(null);
+              }}
+              onDragEnd={() => {
+                setDragFrom(null);
+                setDropAt(null);
+                setDragHandleId(null);
+              }}
+              className={`relative bg-white rounded-2xl border overflow-hidden transition ${
+                dragFrom === bIdx ? 'opacity-40 border-slate-300' : 'border-slate-200'
+              }`}
             >
+              {dragFrom !== null && dropAt === bIdx && (
+                <div className="absolute inset-x-0 top-0 h-1 bg-slate-900 z-10" />
+              )}
+              {dragFrom !== null && dropAt === bIdx + 1 && bIdx === blocks.length - 1 && (
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-slate-900 z-10" />
+              )}
               {/* Block Top Bar */}
-              <div className="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-slate-800 text-white text-[11px] font-bold">
-                    #{bIdx + 1}
-                  </span>
-                  <span className="text-xs font-bold uppercase text-slate-700">
-                    {blk.type === 'text_box'
-                      ? '📝 Különálló Szövegdoboz Blokk'
-                      : blk.type === 'photo_box'
-                      ? '🖼️ Fotó + Fotó alatti Szövegdoboz Blokk'
-                      : blk.type === 'template_section'
-                      ? '📦 Sablon, Termékek, Fotók & Ártáblázat Blokk'
-                      : '📄 Új A4 Oldaltörés'}
-                  </span>
-                </div>
+              <div className="px-2 sm:px-3 py-2 border-b border-slate-200 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onMouseDown={() => setDragHandleId(blk.id)}
+                  onMouseUp={() => setDragHandleId(null)}
+                  onTouchStart={() => setDragHandleId(blk.id)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 cursor-grab active:cursor-grabbing"
+                  title="Húzd az áthelyezéshez"
+                  aria-label="Áthelyezés húzással"
+                >
+                  <GripVertical className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpenBlocks((prev) => ({ ...prev, [blk.id]: !prev[blk.id] }))}
+                  className="min-w-0 flex-1 flex items-center gap-2 text-left"
+                  aria-expanded={Boolean(openBlocks[blk.id])}
+                >
+                  <ChevronRight
+                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${
+                      openBlocks[blk.id] ? 'rotate-90' : ''
+                    }`}
+                  />
+                  <span className="text-[13px] font-medium text-slate-600 shrink-0">{blockLabel(blk)}</span>
+                  {!openBlocks[blk.id] && blockSummary(blk) && (
+                    <span className="min-w-0 truncate text-[13px] text-slate-950">{blockSummary(blk)}</span>
+                  )}
+                </button>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => moveBlock(bIdx, -1)}
                     disabled={bIdx === 0}
                     title="Mozgatás fel"
-                    className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-200 disabled:opacity-30"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ArrowUp className="w-4 h-4" />
                   </button>
@@ -786,7 +1109,7 @@ export function PdfBlockEditorView({
                     onClick={() => moveBlock(bIdx, 1)}
                     disabled={bIdx === blocks.length - 1}
                     title="Mozgatás le"
-                    className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-200 disabled:opacity-30"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30"
                   >
                     <ArrowDown className="w-4 h-4" />
                   </button>
@@ -794,20 +1117,21 @@ export function PdfBlockEditorView({
                     type="button"
                     onClick={() => removeBlock(blk.id)}
                     title="Blokk törlése a PDF-ből"
-                    className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-100"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
+              {openBlocks[blk.id] && (<>
               {/* BLOCK TYPE 1: STANDALONE TEXT BOX */}
               {blk.type === 'text_box' && (
                 <div className="p-4 space-y-3">
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="flex-1">
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Szövegdoboz címe / Megszólítás (ha üres, nem jelenik meg cím)
+                      <label className="block text-xs font-bold text-slate-600 mb-1">
+                        Cím
                       </label>
                       <input
                         type="text"
@@ -823,8 +1147,8 @@ export function PdfBlockEditorView({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Stílus a PDF-ben
+                      <label className="block text-xs font-bold text-slate-600 mb-1">
+                        Stílus
                       </label>
                       <select
                         value={blk.textStyle || 'normal'}
@@ -845,8 +1169,8 @@ export function PdfBlockEditorView({
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                      Szövegdoboz tartalma (szabadon átírható, többsoros)
+                    <label className="block text-xs font-bold text-slate-600 mb-1">
+                      Szöveg
                     </label>
                     <textarea
                       rows={4}
@@ -870,7 +1194,9 @@ export function PdfBlockEditorView({
                   <div className="w-full md:w-52 shrink-0 space-y-2">
                     {blk.photo.imageUrl ? (
                       <img
-                        src={blk.photo.imageUrl}
+                        src={thumbUrl(blk.photo.imageUrl)}
+                        loading="lazy"
+                        decoding="async"
                         alt=""
                         className="w-full h-36 object-cover rounded-xl border border-slate-200"
                       />
@@ -909,8 +1235,8 @@ export function PdfBlockEditorView({
 
                   <div className="flex-1 space-y-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Fotó feletti szövegdoboz / Cím
+                      <label className="block text-xs font-bold text-slate-600 mb-1">
+                        Fotó feletti cím
                       </label>
                       <input
                         type="text"
@@ -926,8 +1252,8 @@ export function PdfBlockEditorView({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                        Fotó alatti szövegdoboz (Képaláírás / Leírás a fotó alatt)
+                      <label className="block text-xs font-bold text-slate-600 mb-1">
+                        Képaláírás
                       </label>
                       <textarea
                         rows={3}
@@ -955,11 +1281,10 @@ export function PdfBlockEditorView({
                   {/* Section Title & Subtitle text boxes */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-                        Sablon Szekció Főcíme (Szövegdoboz)
+                      <label className={labelCls}>
+                        Cím
                       </label>
-                      <input
-                        type="text"
+                      <AutoTextarea
                         value={blk.sectionTitle || ''}
                         onChange={(e) =>
                           updateBlock(blk.id, (b) => ({
@@ -971,11 +1296,10 @@ export function PdfBlockEditorView({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-                        Sablon Alcíme (Szövegdoboz)
+                      <label className={labelCls}>
+                        Alcím
                       </label>
-                      <input
-                        type="text"
+                      <AutoTextarea
                         value={blk.sectionSubtitle || ''}
                         onChange={(e) =>
                           updateBlock(blk.id, (b) => ({
@@ -990,8 +1314,8 @@ export function PdfBlockEditorView({
 
                   {/* Intro Text Box */}
                   <div>
-                    <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-                      Sablon Bevezető Szövegdoboza (szabadon szerkeszthető)
+                    <label className={labelCls}>
+                      Bevezető szöveg
                     </label>
                     <textarea
                       rows={3}
@@ -1011,7 +1335,7 @@ export function PdfBlockEditorView({
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div className="flex items-center justify-between flex-wrap gap-2">
                       <span className="text-xs font-bold text-slate-800">
-                        📷 Sablon Fotók & Fotó alatti szövegdobozok (
+                        Fotók (
                         {blk.sectionPhotos?.length || 0} db)
                       </span>
                       <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold cursor-pointer">
@@ -1060,12 +1384,14 @@ export function PdfBlockEditorView({
                         <div className="w-full sm:w-36 shrink-0 space-y-1.5">
                           {ph.imageUrl && (
                             <img
-                              src={ph.imageUrl}
+                              src={thumbUrl(ph.imageUrl)}
+                              loading="lazy"
+                              decoding="async"
                               alt=""
                               className="w-full h-24 object-cover rounded-lg border border-slate-200"
                             />
                           )}
-                          <label className="block text-center px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                          <label className="block text-center px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 cursor-pointer">
                             Kép cseréje
                             <input
                               type="file"
@@ -1104,7 +1430,7 @@ export function PdfBlockEditorView({
                                 return { ...b, sectionPhotos: next };
                               })
                             }
-                            placeholder="Fotó feletti szövegdoboz / Cím (opcionális)"
+                            placeholder="Fotó feletti cím (opcionális)"
                             className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold"
                           />
                           <textarea
@@ -1183,7 +1509,13 @@ export function PdfBlockEditorView({
                               included: true,
                               note: '',
                               photos: [],
-                              algorithm: newAlg,
+                              ...(b.isManualSection
+                                ? {
+                                    priceOverridden: true,
+                                    quantityOverridden: true,
+                                    quantityLabel: '1 db',
+                                  }
+                                : { algorithm: newAlg }),
                             };
                             const updated = {
                               ...b,
@@ -1196,10 +1528,10 @@ export function PdfBlockEditorView({
                             );
                           })
                         }
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold"
+                        className={btn.ghost}
                       >
-                        <Plus className="w-3.5 h-3.5" />
-                        Új Termék / Anyag felrakása a sablonhoz
+                        <Plus className="w-4 h-4" />
+                        Tétel
                       </button>
                     </div>
 
@@ -1246,6 +1578,27 @@ export function PdfBlockEditorView({
                           });
                         };
 
+                        const isRowExpanded = expandedRowIds.includes(row.id);
+                        // Kézi ár: megjelöljük, hogy újraszámoláskor megmaradjon
+                        const setRowPrices = (
+                          patch: Partial<
+                            Pick<QuoteTableRow, 'listPriceEur' | 'discountPriceEur'>
+                          >
+                        ) => {
+                          updateBlock(blk.id, (b) => {
+                            const nextRows = [...(b.rows || [])];
+                            nextRows[rIdx] = {
+                              ...nextRows[rIdx],
+                              ...patch,
+                              priceOverridden: true,
+                            };
+                            return recalculateBlockTotals(
+                              { ...b, rows: nextRows },
+                              eurHufRate
+                            );
+                          });
+                        };
+
                         return (
                           <div
                             key={row.id}
@@ -1256,8 +1609,8 @@ export function PdfBlockEditorView({
                             }`}
                           >
                             {/* Top Row: Checkbox + Name + Read-Only Algorithm Calculated Badges */}
-                            <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
-                              <div className="sm:col-span-5 flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <div className="flex items-center gap-2 basis-full">
                                 <input
                                   type="checkbox"
                                   checked={row.included}
@@ -1290,39 +1643,132 @@ export function PdfBlockEditorView({
                                       return { ...b, rows: nextRows };
                                     })
                                   }
-                                  placeholder="Termék / Anyag megnevezése"
-                                  className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold"
+                                  placeholder="Tétel neve"
+                                  className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-medium"
                                 />
                               </div>
 
-                              {/* Read-only Quantity/Size computed by algorithm */}
-                              <div
-                                className="sm:col-span-2 px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 text-center select-none"
-                                title="Algoritmus által számított méret / mennyiség"
-                              >
-                                {row.quantityLabel}
+                              {/* Quantity / prices: algorithm-calculated, but every value can be overridden by hand */}
+                              <input
+                                type="text"
+                                value={row.quantityLabel}
+                                onChange={(e) =>
+                                  updateBlock(blk.id, (b) => {
+                                    const nextRows = [...(b.rows || [])];
+                                    nextRows[rIdx] = {
+                                      ...nextRows[rIdx],
+                                      quantityLabel: e.target.value,
+                                      quantityOverridden: true,
+                                    };
+                                    return { ...b, rows: nextRows };
+                                  })
+                                }
+                                title="Mennyiség / méret (kézzel átírható)"
+                                className={`ml-6 w-28 px-2.5 py-1.5 rounded-lg border text-center ${
+                                  row.quantityOverridden
+                                    ? 'bg-amber-50 border-amber-300 text-amber-900'
+                                    : 'bg-slate-50 border-slate-200 text-slate-700'
+                                }`}
+                              />
+
+                              <div className="w-32 relative">
+                                <input
+                                  type="number"
+                                  value={row.listPriceEur}
+                                  onChange={(e) =>
+                                    setRowPrices({
+                                      listPriceEur: Math.max(
+                                        0,
+                                        Number(e.target.value) || 0
+                                      ),
+                                    })
+                                  }
+                                  title="Listaár (EUR) - kézzel átírható"
+                                  className={`w-full pl-2.5 pr-9 py-1.5 rounded-lg border text-right line-through tabular-nums ${
+                                    row.priceOverridden
+                                      ? 'bg-amber-50 border-amber-300 text-amber-900'
+                                      : 'bg-slate-50 border-slate-200 text-slate-500'
+                                  }`}
+                                />
+                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                                  EUR
+                                </span>
                               </div>
 
-                              {/* Read-only List Price computed by algorithm */}
-                              <div
-                                className="sm:col-span-2 px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-500 text-right line-through select-none"
-                                title="Algoritmus által számított Listaár (EUR)"
-                              >
-                                {formatDotNumber(row.listPriceEur)} EUR
+                              <div className="w-36 relative">
+                                <input
+                                  type="number"
+                                  value={row.itemRole === 'gift' ? 0 : row.discountPriceEur}
+                                  disabled={row.itemRole === 'gift'}
+                                  onChange={(e) =>
+                                    setRowPrices({
+                                      discountPriceEur: Math.max(
+                                        0,
+                                        Number(e.target.value) || 0
+                                      ),
+                                    })
+                                  }
+                                  title="Kedvezményes ár (EUR) - kézzel átírható"
+                                  className={`w-full pl-2.5 pr-9 py-1.5 rounded-lg border font-semibold text-right tabular-nums ${
+                                    row.priceOverridden
+                                      ? 'bg-amber-100 border-amber-400 text-amber-950'
+                                      : 'bg-white border-slate-300 text-slate-950'
+                                  }`}
+                                />
+                                <span
+                                  className={`absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold ${
+                                    row.priceOverridden ? 'text-amber-700' : 'text-slate-400'
+                                  }`}
+                                >
+                                  EUR
+                                </span>
                               </div>
 
-                              {/* Read-only Discount Price computed by algorithm */}
-                              <div
-                                className="sm:col-span-2 px-2.5 py-1.5 rounded-lg bg-emerald-900 text-emerald-300 border border-emerald-700 text-xs font-extrabold text-right select-none"
-                                title="Algoritmus által számított Kedvezményes ár (EUR)"
-                              >
-                                {row.itemRole === 'gift'
-                                  ? '0 EUR (Ajándék)'
-                                  : `${formatDotNumber(row.discountPriceEur)} EUR`}
-                              </div>
-
-                              <div className="sm:col-span-1 flex justify-end">
-                                {(blk.rows || []).length > 1 && (
+                              <div className="flex items-center ml-auto">
+                                {!row.systemRole && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setExpandedRowIds((prev) =>
+                                        prev.includes(row.id)
+                                          ? prev.filter((id) => id !== row.id)
+                                          : [...prev, row.id]
+                                      )
+                                    }
+                                    title="Részletek: képlet, leírás, fotó"
+                                    className={`p-1.5 rounded-lg hover:bg-slate-100 ${
+                                      isRowExpanded ? 'text-slate-950' : 'text-slate-400'
+                                    }`}
+                                  >
+                                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                                  </button>
+                                )}
+                                {(row.priceOverridden || row.quantityOverridden) &&
+                                  !blk.isManualSection && (
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        updateBlock(blk.id, (b) => {
+                                          const nextRows = [...(b.rows || [])];
+                                          nextRows[rIdx] = {
+                                            ...nextRows[rIdx],
+                                            priceOverridden: false,
+                                            quantityOverridden: false,
+                                          };
+                                          return recalculateBlockWithAlgorithms(
+                                            { ...b, rows: nextRows },
+                                            calcCtx,
+                                            templates
+                                          );
+                                        })
+                                      }
+                                      title="Vissza az algoritmus által számolt árra"
+                                      className="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg"
+                                    >
+                                      <RotateCcw className="w-3.5 h-3.5" />
+                                    </button>
+                                  )}
+                                {(blk.rows || []).length > 1 && !row.systemRole && (
                                   <button
                                     type="button"
                                     onClick={() =>
@@ -1346,20 +1792,18 @@ export function PdfBlockEditorView({
                             </div>
 
                             {/* Algorithm Configuration Bar for this Product Row */}
+                            {isRowExpanded && !row.systemRole && !blk.isManualSection && (
                             <div className="ml-6 p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                              <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-[11px] font-bold text-emerald-800">
-                                  🧮 {row.formulaSummary || 'Algoritmus alapú árképzés'}
-                                </span>
-                                <span className="text-[10px] font-semibold text-slate-500">
-                                  Az ár kizárólag az alábbi algoritmusból számolódik:
-                                </span>
+                              <div className="text-xs text-slate-600">
+                                {row.formulaSummary || 'Árképlet'}
+                                {row.priceOverridden &&
+                                  ' · kézi ár van beállítva, a képlet nem írja felül'}
                               </div>
 
                               <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
                                 <div>
-                                  <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
-                                    Árazási Algoritmus
+                                  <label className={labelCls}>
+                                    Árazás módja
                                   </label>
                                   <select
                                     value={rowAlg.pricingMode}
@@ -1384,7 +1828,7 @@ export function PdfBlockEditorView({
                                         ),
                                       });
                                     }}
-                                    className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                    className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                   >
                                     {PRICING_MODE_OPTIONS.map((pm) => {
                                       const disabled =
@@ -1414,7 +1858,7 @@ export function PdfBlockEditorView({
                                   'base_plus_lm',
                                 ].includes(rowAlg.pricingMode) && (
                                   <div>
-                                    <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                    <label className={labelCls}>
                                       Méretforrás
                                     </label>
                                     <select
@@ -1425,7 +1869,7 @@ export function PdfBlockEditorView({
                                             .value as DimensionSource,
                                         })
                                       }
-                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px]"
+                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs"
                                     >
                                       {DIMENSION_SOURCE_OPTIONS.map((ds) => (
                                         <option key={ds.id} value={ds.id}>
@@ -1439,7 +1883,7 @@ export function PdfBlockEditorView({
                                 {(rowAlg.pricingMode === 'per_m2' ||
                                   rowAlg.pricingMode === 'per_lm') && (
                                   <div>
-                                    <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                    <label className={labelCls}>
                                       {rowAlg.pricingMode === 'per_m2'
                                         ? 'Egységár (EUR / m²)'
                                         : 'Egységár (EUR / fm)'}
@@ -1456,14 +1900,14 @@ export function PdfBlockEditorView({
                                           ),
                                         })
                                       }
-                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                     />
                                   </div>
                                 )}
 
                                 {rowAlg.pricingMode === 'fixed' && (
                                   <div>
-                                    <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                    <label className={labelCls}>
                                       Fix Egységár (EUR / db)
                                     </label>
                                     <input
@@ -1478,7 +1922,7 @@ export function PdfBlockEditorView({
                                           ),
                                         })
                                       }
-                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                     />
                                   </div>
                                 )}
@@ -1487,7 +1931,7 @@ export function PdfBlockEditorView({
                                   rowAlg.pricingMode === 'base_plus_lm') && (
                                   <>
                                     <div>
-                                      <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                      <label className={labelCls}>
                                         Alapár (EUR)
                                       </label>
                                       <input
@@ -1502,11 +1946,11 @@ export function PdfBlockEditorView({
                                             ),
                                           })
                                         }
-                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                       />
                                     </div>
                                     <div>
-                                      <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                      <label className={labelCls}>
                                         + Egységár (EUR/{rowAlg.pricingMode === 'base_plus_m2' ? 'm²' : 'fm'})
                                       </label>
                                       <input
@@ -1521,7 +1965,7 @@ export function PdfBlockEditorView({
                                             ),
                                           })
                                         }
-                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                       />
                                     </div>
                                   </>
@@ -1529,7 +1973,7 @@ export function PdfBlockEditorView({
 
                                 {rowAlg.pricingMode === 'percentage' && (
                                   <div>
-                                    <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                    <label className={labelCls}>
                                       Százalékos kulcs (%)
                                     </label>
                                     <input
@@ -1544,7 +1988,7 @@ export function PdfBlockEditorView({
                                           ),
                                         })
                                       }
-                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px] font-bold"
+                                      className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold"
                                     />
                                   </div>
                                 )}
@@ -1553,7 +1997,7 @@ export function PdfBlockEditorView({
                                   rowAlg.pricingMode !== 'base_plus_m2' &&
                                   rowAlg.pricingMode !== 'base_plus_lm' && (
                                     <div>
-                                      <label className="block text-[10px] font-bold uppercase text-slate-600 mb-0.5">
+                                      <label className={labelCls}>
                                         Darabszám szorzó (db)
                                       </label>
                                       <input
@@ -1568,13 +2012,16 @@ export function PdfBlockEditorView({
                                             ),
                                           })
                                         }
-                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-[11px]"
+                                        className="w-full px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-xs"
                                       />
                                     </div>
                                   )}
                               </div>
                             </div>
+                            )}
 
+                            {isRowExpanded && (
+                            <>
                             {/* Row extra controls: Description, Role, Note, and Attach Photo to Product */}
                             <div className="flex flex-wrap items-center gap-2 pl-6">
                               <input
@@ -1591,7 +2038,7 @@ export function PdfBlockEditorView({
                                   })
                                 }
                                 placeholder="Kiegészítő termék-szövegdoboz / műszaki leírás..."
-                                className="flex-1 min-w-[180px] px-2.5 py-1 rounded-lg border border-slate-200 text-[11px]"
+                                className="flex-1 min-w-[180px] px-2.5 py-1 rounded-lg border border-slate-200 text-xs"
                               />
 
                               <select
@@ -1610,7 +2057,7 @@ export function PdfBlockEditorView({
                                     );
                                   })
                                 }
-                                className="px-2 py-1 rounded-lg border border-slate-200 text-[11px] font-semibold"
+                                className="px-2 py-1 rounded-lg border border-slate-200 text-xs font-semibold"
                               >
                                 <option value="base">Alaptétel</option>
                                 <option value="optional">Opció</option>
@@ -1631,12 +2078,12 @@ export function PdfBlockEditorView({
                                   })
                                 }
                                 placeholder="Opcionális felirat (pl. Ajándék)"
-                                className="w-40 px-2 py-1 rounded-lg border border-slate-200 text-[11px]"
+                                className="w-40 px-2 py-1 rounded-lg border border-slate-200 text-xs"
                               />
 
-                              <label className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold cursor-pointer">
+                              <label className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
                                 <ImageIcon className="w-3 h-3 text-emerald-600" />
-                                + Fotó csatolása a termékhez
+                                Fotó
                                 <input
                                   type="file"
                                   accept="image/*"
@@ -1671,6 +2118,8 @@ export function PdfBlockEditorView({
                                 />
                               </label>
                             </div>
+                            </>
+                            )}
 
                             {/* Product-level attached photos + caption text boxes */}
                             {row.photos && row.photos.length > 0 && (
@@ -1681,12 +2130,14 @@ export function PdfBlockEditorView({
                                     className="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-200 flex items-start gap-3"
                                   >
                                     <img
-                                      src={rp.imageUrl}
+                                      src={thumbUrl(rp.imageUrl)}
+                                      loading="lazy"
+                                      decoding="async"
                                       alt=""
                                       className="w-20 h-16 object-cover rounded-lg border border-slate-200 shrink-0"
                                     />
                                     <div className="flex-1 space-y-1">
-                                      <div className="text-[11px] font-bold text-emerald-950">
+                                      <div className="text-xs font-bold text-emerald-950">
                                         Termékfotó alatti szövegdoboz ({row.name}):
                                       </div>
                                       <textarea
@@ -1742,42 +2193,117 @@ export function PdfBlockEditorView({
                       })}
                     </div>
 
-                    {/* Locked Algorithm-Computed Section Total Box (No manual override) */}
-                    <div className="bg-slate-900 text-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-bold text-emerald-400">
-                          🔒 Algoritmus alapján számított alaptételek összesítése
-                        </div>
-                        <div className="text-[11px] text-slate-300">
-                          Az árak automatikusan számolódnak a megadott méretekből ({widthCm}×{projectionCm}×{heightCm} cm) és a termékek algoritmusából.
-                        </div>
-                      </div>
+                    {/* Price adjustments with reason + visibility toggle */}
+                    <AdjustmentsEditor
+                      adjustments={blk.adjustments || []}
+                      onChange={(next) =>
+                        updateBlock(blk.id, (b) =>
+                          recalculateBlockTotals({ ...b, adjustments: next }, eurHufRate)
+                        )
+                      }
+                    />
 
-                      <div className="flex items-center gap-4">
-                        <div className="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-right">
-                          <div className="text-[10px] font-bold uppercase text-slate-400">
-                            Összesen (EUR)
-                          </div>
-                          <div className="text-sm font-extrabold text-emerald-400">
-                            {formatDotNumber(blk.customTotalBaseEur ?? 0)} EUR
-                          </div>
-                        </div>
-                        <div className="px-3.5 py-2 rounded-xl bg-emerald-600 text-right">
-                          <div className="text-[10px] font-bold uppercase text-emerald-100">
-                            Összesen (Ft)
-                          </div>
-                          <div className="text-sm font-extrabold text-white">
-                            {formatDotNumber(blk.customTotalBaseHuf ?? 0)} Ft
-                          </div>
-                        </div>
+                    {/* Section total: internal breakdown (never in the PDF) + optional manual total */}
+                    <div className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 space-y-2">
+                      <PriceSummaryLine
+                        breakdown={computeBlockBreakdown(blk, eurHufRate)}
+                        eurHufRate={eurHufRate}
+                        manualTotal={
+                          (blk.manualTotalEur ?? null) !== null || (blk.manualTotalHuf ?? null) !== null
+                        }
+                      />
+                      <div className="flex items-center justify-end gap-2 text-[13px] text-slate-600">
+                        Végösszeg kézzel
+                        {(() => {
+                          const cur = blk.manualTotalCurrency || 'EUR';
+                          const value = cur === 'HUF' ? blk.manualTotalHuf : blk.manualTotalEur;
+                          const hasManual =
+                            (blk.manualTotalEur ?? null) !== null || (blk.manualTotalHuf ?? null) !== null;
+                          // Pénznem váltáskor a már beírt összeget átszámoljuk
+                          const switchTo = (next: 'EUR' | 'HUF') =>
+                            updateBlock(blk.id, (b) => {
+                              const curVal = cur === 'HUF' ? b.manualTotalHuf : b.manualTotalEur;
+                              const converted =
+                                curVal === null || curVal === undefined
+                                  ? null
+                                  : next === 'HUF'
+                                  ? roundHuf(Number(curVal), eurHufRate)
+                                  : Math.round(Number(curVal) / Math.max(1, eurHufRate));
+                              return recalculateBlockTotals(
+                                {
+                                  ...b,
+                                  manualTotalCurrency: next,
+                                  manualTotalEur: next === 'EUR' ? converted : null,
+                                  manualTotalHuf: next === 'HUF' ? converted : null,
+                                },
+                                eurHufRate
+                              );
+                            });
+                          return (
+                            <>
+                              <input
+                                type="number"
+                                value={value ?? ''}
+                                onChange={(e) =>
+                                  updateBlock(blk.id, (b) => {
+                                    const v = e.target.value === '' ? null : Number(e.target.value);
+                                    return recalculateBlockTotals(
+                                      {
+                                        ...b,
+                                        manualTotalEur: cur === 'EUR' ? v : null,
+                                        manualTotalHuf: cur === 'HUF' ? v : null,
+                                      },
+                                      eurHufRate
+                                    );
+                                  })
+                                }
+                                placeholder="automatikus"
+                                className="w-32 px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-[13px] text-right tabular-nums"
+                              />
+                              <div className="inline-flex p-0.5 rounded-lg bg-slate-200/70">
+                                {(['EUR', 'HUF'] as const).map((c) => (
+                                  <button
+                                    key={c}
+                                    type="button"
+                                    onClick={() => c !== cur && switchTo(c)}
+                                    className={`px-2 py-0.5 rounded-md text-xs ${
+                                      c === cur
+                                        ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                                        : 'text-slate-600 hover:text-slate-950'
+                                    }`}
+                                  >
+                                    {c === 'HUF' ? 'Ft' : 'EUR'}
+                                  </button>
+                                ))}
+                              </div>
+                              {hasManual && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateBlock(blk.id, (b) =>
+                                      recalculateBlockTotals(
+                                        { ...b, manualTotalEur: null, manualTotalHuf: null },
+                                        eurHufRate
+                                      )
+                                    )
+                                  }
+                                  title="Vissza az automatikus végösszegre"
+                                  className="p-1 rounded-lg text-slate-500 hover:bg-slate-200"
+                                >
+                                  <RotateCcw className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                   </div>
 
                   {/* Section Closing Text Box */}
                   <div>
-                    <label className="block text-[11px] font-bold uppercase text-slate-600 mb-1">
-                      Sablon Záró Szövegdoboza (a táblázat alatt)
+                    <label className={labelCls}>
+                      Záró szöveg (a táblázat alatt)
                     </label>
                     <textarea
                       rows={2}
@@ -1801,85 +2327,63 @@ export function PdfBlockEditorView({
                   --- Itt új A4-es oldal kezdődik a PDF-ben ---
                 </div>
               )}
+              </>)}
             </div>
+            </React.Fragment>
           ))}
+          {renderInsertBar(blocks.length)}
         </div>
 
-        {/* RIGHT COLUMN: Sticky Live A4 PDF Preview */}
-        <div className="xl:col-span-5 xl:sticky xl:top-4 space-y-3">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-bold uppercase tracking-wider">
-                  Valódi A4 PDF Előnézet
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={refreshLivePdfPreview}
-                  disabled={previewLoading}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
-                    needsPreviewRefresh
-                      ? 'bg-amber-400 text-slate-950'
-                      : 'bg-white/15 hover:bg-white/25 text-white'
-                  }`}
-                >
-                  {previewLoading ? 'Frissítés...' : '🔄 Előnézet frissítése'}
-                </button>
-                {pdfPreviewUrl && (
-                  <button
-                    type="button"
-                    onClick={() => setFullscreenPreview(true)}
-                    className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white"
-                    title="Teljes képernyős PDF"
-                  >
-                    <Maximize2 className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+        {/* RIGHT COLUMN: élő PDF előnézet (széles képernyőn a tartalom mellett) */}
+        <div className="hidden xl:block min-w-0 xl:sticky xl:top-4">{renderPreviewCard('h-[720px]')}</div>
+      </div>
+      {stepNav}
+      </>)}
+
+      {editorStep === 3 && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-slate-950">Kész az ajánlat?</div>
+              <p className="text-[13px] text-slate-600">
+                Nézd át az előnézetet, majd töltsd le a PDF-et vagy küldd el e-mailben. Letöltés és küldés előtt automatikusan ment.
+              </p>
             </div>
-
-            {needsPreviewRefresh && (
-              <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 flex items-center justify-between text-xs text-amber-900">
-                <span>
-                  A szövegdobozok módosultak. Kattints a frissítésre a PDF
-                  újrarajzolásához!
-                </span>
-                <button
-                  type="button"
-                  onClick={refreshLivePdfPreview}
-                  className="font-bold underline"
-                >
-                  Frissítés most
-                </button>
-              </div>
+            <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={savingPdf}
+              onClick={() => handleSaveAndDownload('download')}
+              className={btn.secondary}
+            >
+              <Download className="w-4 h-4" />
+              PDF
+            </button>
+            {onSendQuote && (
+              <button
+                type="button"
+                disabled={savingPdf}
+                onClick={() => handleSaveAndDownload('send')}
+                className={btn.primary}
+                title="Mentés, majd küldés e-mailben PDF melléklettel"
+              >
+                <Send className="w-4 h-4" />
+                {savingPdf ? 'Mentés…' : 'Küldés'}
+              </button>
             )}
-
-            <div className="h-[720px] bg-slate-100 flex items-center justify-center">
-              {pdfPreviewUrl ? (
-                <iframe
-                  src={pdfPreviewUrl}
-                  title="PDF Előnézet"
-                  className="w-full h-full border-0"
-                />
-              ) : (
-                <div className="text-xs text-slate-500">
-                  PDF előnézet készítése...
-                </div>
-              )}
             </div>
           </div>
+          {renderPreviewCard('h-[75vh] min-h-[480px]')}
+          {stepNav}
         </div>
-      </div>
+      )}
 
       {/* Fullscreen PDF Modal */}
       {fullscreenPreview && pdfPreviewUrl && (
         <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex flex-col p-4">
           <div className="flex items-center justify-between text-white pb-3">
             <h3 className="text-sm font-bold">
-              Teljes képernyős A4 PDF előnézet — {customerName}
+              Teljes képernyős A4 PDF előnézet - {customerName}
             </h3>
             <button
               type="button"

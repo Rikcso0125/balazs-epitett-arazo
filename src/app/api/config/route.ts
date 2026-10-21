@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb } from '@/lib/db';
-import { ProductCategory, QuoteTemplate, SystemConfig } from '@/lib/types';
+import {
+  ProductCategory,
+  ProductMenu,
+  QuoteTemplate,
+  SystemConfig,
+} from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +14,7 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     config: db.config,
+    menus: db.menus,
     categories: db.categories,
     templates: db.templates,
   });
@@ -24,6 +30,10 @@ export async function PUT(req: NextRequest) {
         ...db.config,
         ...(body.config as Partial<SystemConfig>),
       };
+    }
+
+    if (Array.isArray(body.menus)) {
+      db.menus = body.menus as ProductMenu[];
     }
 
     if (Array.isArray(body.categories)) {
@@ -74,6 +84,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       config: db.config,
+      menus: db.menus,
       categories: db.categories,
       templates: db.templates,
     });

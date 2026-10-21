@@ -29,3 +29,7 @@ yarn-error.log*
 /data/_pdf_assets_cache/
 
 .vercel
+
+# python
+__pycache__/
+*.pyc

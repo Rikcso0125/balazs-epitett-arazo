@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import { thumbUrl } from '@/lib/thumb';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -21,33 +23,51 @@ import {
 } from 'lucide-react';
 import {
   DIMENSION_SOURCE_OPTIONS,
+  extraPresetToMaterial,
   formatDotNumber,
   MOUNT_TYPES,
   PRICING_MODE_OPTIONS,
+  PROFIT_MODE_OPTIONS,
   QUICK_CATEGORY_SUGGESTIONS,
   replaceTemplateVariables,
+  TEMPLATE_STATUS_OPTIONS,
   TEMPLATE_VARIABLES_HELP,
 } from '@/lib/constants';
 import {
   calculateTemplateRows,
   createDefaultMaterialAlgorithm,
+  parseMatrixPaste,
 } from '@/lib/pricing-engine';
 import {
+  CatalogReference,
+  ConditionalSizeRule,
   CustomMatrixTable,
   CustomTextBlock,
   DimensionSource,
   M2PriceTier,
   PhotoCaptionBlock,
+  PricingFormulaConfig,
   ProductCategory,
+  ProductMenu,
   ProductPricingMode,
+  ProfitMode,
   QuoteTemplate,
   SystemConfig,
   TemplateMaterialItem,
+  ModuleSplitRule,
+  MountType,
+  SizeAxis,
+  TemplateSizeLimits,
+  TemplateStatus,
   UploadedMediaItem,
 } from '@/lib/types';
+import { AutoTextarea, btn, PageHeader, Stepper } from '@/components/ui';
+import { ColorOptionsEditor } from '@/components/ColorOptions';
+import { EXTRA_GROUP_ORDER, presentExtra } from '@/lib/extra-groups';
 
 interface TemplateBuilderViewProps {
   config: SystemConfig;
+  menus: ProductMenu[];
   categories: ProductCategory[];
   templates: QuoteTemplate[];
   mediaLibrary: UploadedMediaItem[];
@@ -57,14 +77,49 @@ interface TemplateBuilderViewProps {
   onDeleteTemplate: (templateId: string) => Promise<void>;
   onUploadImage: (file: File) => Promise<string | null>;
   onStartGuidedPricing?: () => void;
+  openTemplateId?: string | null;
+  onOpenTemplateHandled?: () => void;
+  onWizardClosed?: () => void;
 }
 
 function createDefaultMaterial(): TemplateMaterialItem {
   return createDefaultMaterialAlgorithm();
 }
 
+/** Kis szegmentált fülsor a hosszú lapok tagolásához */
+function SubTabs<T extends string>({
+  value,
+  onChange,
+  tabs,
+}: {
+  value: T;
+  onChange: (v: T) => void;
+  tabs: [T, string][];
+}) {
+  return (
+    <div
+      className="grid sm:flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200"
+      style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+    >
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => onChange(id)}
+          className={`min-w-0 px-1.5 sm:px-3 py-1.5 rounded-lg text-[13px] sm:text-sm leading-tight text-center break-words transition ${
+            value === id ? 'bg-white text-slate-950 font-semibold shadow-sm' : 'text-slate-600 hover:text-slate-950'
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function TemplateBuilderView({
   config,
+  menus,
   categories,
   templates,
   mediaLibrary,
@@ -74,6 +129,9 @@ export function TemplateBuilderView({
   onDeleteTemplate,
   onUploadImage,
   onStartGuidedPricing,
+  openTemplateId,
+  onOpenTemplateHandled,
+  onWizardClosed,
 }: TemplateBuilderViewProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
     categories[0]?.id || 'ALL'
@@ -90,6 +148,7 @@ export function TemplateBuilderView({
     'main_structure'
   );
   const [catAllowMultiple, setCatAllowMultiple] = useState(true);
+  const [catMenuId, setCatMenuId] = useState<string>('');
 
   // Template Wizard state
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -105,11 +164,30 @@ export function TemplateBuilderView({
   const [tplTextBlocks, setTplTextBlocks] = useState<CustomTextBlock[]>([]);
   const [tplPhotos, setTplPhotos] = useState<PhotoCaptionBlock[]>([]);
   const [tplMaterials, setTplMaterials] = useState<TemplateMaterialItem[]>([]);
+  const [tplStatus, setTplStatus] = useState<TemplateStatus>('active');
+  const [tplOrder, setTplOrder] = useState<number | undefined>(undefined);
+  const [tplSizeLimits, setTplSizeLimits] = useState<TemplateSizeLimits>({});
+  const [tplModuleSplits, setTplModuleSplits] = useState<ModuleSplitRule[]>([]);
+  const [tplMountTypes, setTplMountTypes] = useState<MountType[]>([]);
+  const [tplAlsoInCategoryIds, setTplAlsoInCategoryIds] = useState<string[]>([]);
+  const [tplSizeRules, setTplSizeRules] = useState<ConditionalSizeRule[]>([]);
+  const [tplCatalogRef, setTplCatalogRef] = useState<CatalogReference>({});
+  const [tplPricingOverride, setTplPricingOverride] = useState<
+    Partial<PricingFormulaConfig> | undefined
+  >(undefined);
 
   // Active material being edited inside Step 2
   const [activeMaterialIdx, setActiveMaterialIdx] = useState<number>(0);
+  const [basicTab, setBasicTab] = useState<'general' | 'size' | 'pricing'>('general');
+  const [itemTab, setItemTab] = useState<'basic' | 'pricing' | 'rules' | 'media'>('basic');
+  const [addMenuOpen, setAddMenuOpen] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatMenuId, setNewCatMenuId] = useState('');
   const [newMatrixRowInput, setNewMatrixRowInput] = useState('');
   const [newMatrixColInput, setNewMatrixColInput] = useState('');
+  const [matrixPasteText, setMatrixPasteText] = useState('');
+  const [matrixPasteError, setMatrixPasteError] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [savingTemplate, setSavingTemplate] = useState(false);
 
@@ -137,6 +215,7 @@ export function TemplateBuilderView({
     );
     setCatType(preset?.categoryType || 'main_structure');
     setCatAllowMultiple(true);
+    setCatMenuId(menus[0]?.id || '');
     setCategoryModalOpen(true);
   };
 
@@ -147,7 +226,29 @@ export function TemplateBuilderView({
     setCatQuestion(cat.questionPrompt);
     setCatType(cat.categoryType);
     setCatAllowMultiple(cat.allowMultipleTemplates);
+    setCatMenuId(cat.menuId || menus[0]?.id || '');
     setCategoryModalOpen(true);
+  };
+
+  // Új kategória közvetlenül a sablonszerkesztőből
+  const createCategoryInline = async () => {
+    const name = newCatName.trim();
+    if (!name) return;
+    const cat: ProductCategory = {
+      id: `cat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      name,
+      shortName: name,
+      description: '',
+      questionPrompt: `Kér az ügyfél ${name.toLowerCase()}t?`,
+      categoryType: 'main_structure',
+      allowMultipleTemplates: true,
+      order: categories.length + 1,
+      menuId: newCatMenuId || menus[0]?.id,
+    };
+    await onSaveCategory(cat);
+    setTplCategoryId(cat.id);
+    setNewCatName('');
+    setAddingCategory(false);
   };
 
   const handleSaveCategorySubmit = async (e: React.FormEvent) => {
@@ -166,6 +267,7 @@ export function TemplateBuilderView({
       categoryType: catType,
       allowMultipleTemplates: catAllowMultiple,
       order: editingCategory?.order ?? categories.length + 1,
+      menuId: catMenuId || menus[0]?.id,
     };
     await onSaveCategory(newCat);
     setSelectedCategoryId(newCat.id);
@@ -190,6 +292,15 @@ export function TemplateBuilderView({
     );
     setTplTextBlocks([]);
     setTplPhotos([]);
+    setTplStatus('active');
+    setTplOrder(undefined);
+    setTplSizeLimits({});
+    setTplModuleSplits([]);
+    setTplMountTypes([]);
+    setTplAlsoInCategoryIds([]);
+    setTplSizeRules([]);
+    setTplCatalogRef({});
+    setTplPricingOverride(undefined);
     setTplMaterials([
       {
         ...createDefaultMaterial(),
@@ -213,6 +324,21 @@ export function TemplateBuilderView({
       (tpl.textBlocks || []).map((tb) => ({ ...tb }))
     );
     setTplPhotos((tpl.photos || []).map((p) => ({ ...p })));
+    setTplStatus(tpl.status || (tpl.enabled === false ? 'inactive' : 'active'));
+    setTplOrder(tpl.order);
+    setTplSizeLimits({ ...(tpl.sizeLimits || {}) });
+    setTplModuleSplits(
+      (tpl.moduleSplits?.length ? tpl.moduleSplits : tpl.moduleSplit ? [tpl.moduleSplit] : []).map(
+        (r) => ({ ...r })
+      )
+    );
+    setTplMountTypes([...(tpl.mountTypes || [])]);
+    setTplAlsoInCategoryIds([...(tpl.alsoInCategoryIds || [])]);
+    setTplSizeRules((tpl.sizeRules || []).map((r) => ({ ...r })));
+    setTplCatalogRef({ ...(tpl.catalogRef || {}) });
+    setTplPricingOverride(
+      tpl.pricingOverride ? { ...tpl.pricingOverride } : undefined
+    );
 
     const rawMats =
       tpl.materials && tpl.materials.length > 0
@@ -244,6 +370,24 @@ export function TemplateBuilderView({
     setWizardOpen(true);
   };
 
+  const closeWizard = () => {
+    setWizardOpen(false);
+    onWizardClosed?.();
+  };
+
+  // A sablonkezelőből érkező "szerkesztés" kérés
+  useEffect(() => {
+    if (!openTemplateId) return;
+    if (openTemplateId.startsWith('new:')) {
+      openNewTemplateWizard(openTemplateId.slice(4));
+    } else {
+      const tpl = templates.find((t) => t.id === openTemplateId);
+      if (tpl) openEditTemplateWizard(tpl);
+    }
+    onOpenTemplateHandled?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openTemplateId]);
+
   const handleDuplicateTemplate = async (tpl: QuoteTemplate) => {
     const now = new Date().toISOString();
     const copy: QuoteTemplate = {
@@ -265,8 +409,35 @@ export function TemplateBuilderView({
     );
   };
 
-  const handleAddMaterial = () => {
-    const nextMat = createDefaultMaterial();
+  const handleAddMaterial = (role: TemplateMaterialItem['itemRole'] = 'base') => {
+    const base = createDefaultMaterial();
+    const nextMat: TemplateMaterialItem = {
+      ...base,
+      itemRole: role,
+      defaultSelected: role !== 'optional',
+      name:
+        role === 'optional' ? 'Új extra' : role === 'gift' ? 'Új ajándék' : base.name,
+      pricingMode: role === 'base' ? base.pricingMode : 'fixed',
+      excludeFromPercentBase: role !== 'base' || undefined,
+    };
+    setItemTab('basic');
+    setTplMaterials((prev) => {
+      const updated = [...prev, nextMat];
+      setActiveMaterialIdx(updated.length - 1);
+      return updated;
+    });
+  };
+
+  // Gyors extra a megbeszélt listából: opcionális tétel, ár nélkül (1 EUR), amíg Balázs meg nem adja
+  const handleAddPresetMaterial = (overrides: Partial<TemplateMaterialItem>) => {
+    const nextMat = createDefaultMaterialAlgorithm({
+      itemRole: 'optional',
+      defaultSelected: false,
+      minPrice: 1,
+      listPriceMultiplier: config.defaultListPriceMultiplier || 1.25,
+      description: '',
+      ...overrides,
+    });
     setTplMaterials((prev) => {
       const updated = [...prev, nextMat];
       setActiveMaterialIdx(updated.length - 1);
@@ -299,7 +470,18 @@ export function TemplateBuilderView({
         categoryId: tplCategoryId,
         name: tplName.trim(),
         subtitle: tplSubtitle.trim(),
-        enabled: true,
+        enabled: tplStatus !== 'inactive',
+        status: tplStatus,
+        order:
+          tplOrder ??
+          templates.filter((t) => t.categoryId === tplCategoryId).length + 1,
+        sizeLimits: tplSizeLimits,
+        moduleSplits: tplModuleSplits,
+        mountTypes: tplMountTypes,
+        sizeRules: tplSizeRules,
+        alsoInCategoryIds: tplAlsoInCategoryIds.filter((id) => id !== tplCategoryId),
+        catalogRef: tplCatalogRef,
+        pricingOverride: tplPricingOverride,
         introText: tplIntroText,
         closingText: tplClosingText,
         textBlocks: tplTextBlocks,
@@ -319,7 +501,7 @@ export function TemplateBuilderView({
         updatedAt: now,
       };
       await onSaveTemplate(tpl);
-      setWizardOpen(false);
+      closeWizard();
     } finally {
       setSavingTemplate(false);
     }
@@ -327,10 +509,13 @@ export function TemplateBuilderView({
 
   const currentMaterial = tplMaterials[activeMaterialIdx] || null;
 
-  const filteredTemplates =
+  const filteredTemplates = (
     selectedCategoryId === 'ALL'
       ? templates
-      : templates.filter((t) => t.categoryId === selectedCategoryId);
+      : templates.filter((t) => t.categoryId === selectedCategoryId)
+  )
+    .slice()
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   // Live preview calculation for Step 5
   const previewDraftTemplate: QuoteTemplate = {
@@ -344,6 +529,10 @@ export function TemplateBuilderView({
     textBlocks: tplTextBlocks,
     photos: tplPhotos,
     materials: tplMaterials,
+    pricingOverride: tplPricingOverride,
+    moduleSplits: tplModuleSplits,
+    mountTypes: tplMountTypes,
+    sizeRules: tplSizeRules,
     createdAt: '',
     updatedAt: '',
   };
@@ -354,47 +543,32 @@ export function TemplateBuilderView({
     heightCm: testHeightCm,
     mountType: 'Épülethez rögzített',
     eurHufRate: config.defaultEurHufRate || 400,
+    formula: config.pricingFormula,
   });
 
   return (
     <div className="space-y-6">
-      {/* Header Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200 mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            1. LÉPÉS: EGYEDI SABLON & TERMÉK VARÁZSLÓ
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900">
-            Sablonok, Termékek, Anyagok és Fotók Építője
-          </h1>
-          <p className="text-sm text-slate-600 mt-1">
-            Itt veheted fel a fő kategóriákat (pl. Pergola, Előtető, Napellenző,
-            Üvegtető, Üvegfal, LED), azokba a sablonokat (akár 3–4 sablont
-            kategóriánként), minden sablonhoz saját termékekkel, anyagokkal,
-            fotókkal és szövegdobozokkal.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={() => openNewCategoryModal()}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm transition"
-          >
-            <FolderPlus className="w-4 h-4" />
-            + Új Kategória (pl. Napellenző, Pergola)
-          </button>
-          <button
-            type="button"
-            onClick={() => openNewTemplateWizard(selectedCategoryId)}
-            disabled={categories.length === 0}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 text-white text-sm font-semibold shadow-sm transition"
-          >
-            <Plus className="w-4 h-4" />
-            + Új Sablon & Termék Varázsló
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title="Sablonok"
+        subtitle="Sablononként a termékek, árazási képletek, fotók és szövegek."
+        actions={
+          <>
+            <button type="button" onClick={() => openNewCategoryModal()} className={btn.secondary}>
+              <FolderPlus className="w-4 h-4" />
+              Kategória
+            </button>
+            <button
+              type="button"
+              onClick={() => openNewTemplateWizard(selectedCategoryId)}
+              disabled={categories.length === 0}
+              className={btn.primary}
+            >
+              <Plus className="w-4 h-4" />
+              Sablon
+            </button>
+          </>
+        }
+      />
 
       {/* Quick Start Empty State if 0 categories */}
       {categories.length === 0 ? (
@@ -439,7 +613,7 @@ export function TemplateBuilderView({
           {/* Category Filter Bar + Quick Add Chips */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <span className="text-[13px] font-medium text-slate-600">
                 Felvett Kategóriák ({categories.length} db)
               </span>
               <div className="flex flex-wrap items-center gap-1.5">
@@ -559,7 +733,11 @@ export function TemplateBuilderView({
                   heightCm: 250,
                   mountType: 'Épülethez rögzített',
                   eurHufRate: config.defaultEurHufRate || 400,
+                  formula: config.pricingFormula,
                 });
+                const statusOpt = TEMPLATE_STATUS_OPTIONS.find(
+                  (o) => o.id === (tpl.status || 'active')
+                );
 
                 return (
                   <div
@@ -570,7 +748,9 @@ export function TemplateBuilderView({
                       {coverPhoto ? (
                         <div className="h-44 bg-slate-100 relative overflow-hidden border-b border-slate-100">
                           <img
-                            src={coverPhoto}
+                            src={thumbUrl(coverPhoto)}
+                            loading="lazy"
+                            decoding="async"
                             alt={tpl.name}
                             className="w-full h-full object-cover"
                           />
@@ -591,9 +771,18 @@ export function TemplateBuilderView({
                       )}
 
                       <div className="p-5">
-                        <h3 className="text-lg font-bold text-slate-900">
-                          {tpl.name}
-                        </h3>
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="text-lg font-bold text-slate-900">
+                            {tpl.name}
+                          </h3>
+                          {statusOpt && (
+                            <span
+                              className={`shrink-0 px-2 py-0.5 rounded-md border text-xs font-bold ${statusOpt.badgeClass}`}
+                            >
+                              {statusOpt.label}
+                            </span>
+                          )}
+                        </div>
                         {tpl.subtitle && (
                           <p className="text-xs text-slate-500 mt-1 line-clamp-2">
                             {tpl.subtitle}
@@ -601,8 +790,8 @@ export function TemplateBuilderView({
                         )}
 
                         <div className="mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
-                          <span className="text-[11px] font-bold text-emerald-900">
-                            🧮 Algoritmus ár (6×4 m példa):
+                          <span className="text-xs text-slate-600">
+                            Példa ár (6 × 4 m)
                           </span>
                           <span className="text-xs font-extrabold text-emerald-950">
                             {formatDotNumber(sampleCalc.totalBaseEur)} EUR (
@@ -709,7 +898,7 @@ export function TemplateBuilderView({
       {/* ===================================================================== */}
       {/* CATEGORY MODAL                                                        */}
       {/* ===================================================================== */}
-      {categoryModalOpen && (
+      {categoryModalOpen && createPortal(
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -729,7 +918,7 @@ export function TemplateBuilderView({
 
             <form onSubmit={handleSaveCategorySubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                   Kategória megnevezése *
                 </label>
                 <input
@@ -750,7 +939,26 @@ export function TemplateBuilderView({
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
+                  Melyik menüponthoz tartozik?
+                </label>
+                <select
+                  value={catMenuId}
+                  onChange={(e) => setCatMenuId(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold"
+                >
+                  {[...menus]
+                    .sort((a, b) => a.order - b.order)
+                    .map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                   Kérdés a végigvezetett árazóban
                 </label>
                 <input
@@ -767,7 +975,7 @@ export function TemplateBuilderView({
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                   Kategória típusa
                 </label>
                 <div className="grid grid-cols-2 gap-2.5">
@@ -781,7 +989,7 @@ export function TemplateBuilderView({
                     }`}
                   >
                     <div className="text-xs font-bold">Fő szerkezet</div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">
+                    <div className="text-xs text-slate-500 mt-0.5">
                       pl. Pergola, Előtető, Üvegtető
                     </div>
                   </button>
@@ -797,7 +1005,7 @@ export function TemplateBuilderView({
                     <div className="text-xs font-bold">
                       Kiegészítő / Árnyékoló / Extra
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">
+                    <div className="text-xs text-slate-500 mt-0.5">
                       pl. Napellenző, Üvegfal, LED, ZIP
                     </div>
                   </button>
@@ -805,7 +1013,7 @@ export function TemplateBuilderView({
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                   Rövid leírás (opcionális)
                 </label>
                 <input
@@ -858,98 +1066,188 @@ export function TemplateBuilderView({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ===================================================================== */}
       {/* 5-STEP TEMPLATE & PRODUCT BUILDER WIZARD MODAL                        */}
       {/* ===================================================================== */}
-      {wizardOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      {wizardOpen && createPortal(
+        <div className="fixed inset-0 z-[150] bg-slate-900/70 backdrop-blur-sm flex items-stretch sm:items-center justify-center p-0 sm:p-4 overscroll-contain">
+          <div className="bg-white sm:rounded-2xl max-w-6xl w-full h-full sm:h-auto sm:max-h-[94vh] flex flex-col shadow-2xl sm:border border-slate-200 overflow-hidden">
             {/* Wizard Top Header */}
-            <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  SABLON & TERMÉK ÉPÍTŐ VARÁZSLÓ
-                </div>
-                <h2 className="text-lg font-bold">
-                  {editingTemplateId
-                    ? `Sablon szerkesztése: ${tplName || 'Sablon'}`
-                    : 'Új Egyedi Sablon és Termékek Felvétele'}
-                </h2>
-              </div>
+            <div className="px-4 sm:px-6 pt-3 sm:pt-5 pb-2 sm:pb-3 flex items-center justify-between gap-2">
+              <h2 className="min-w-0 text-base sm:text-xl font-semibold text-slate-950 break-words">
+                {editingTemplateId ? tplName || 'Sablon' : 'Új sablon'}
+              </h2>
+              <div className="flex items-center gap-1 shrink-0">
               <button
                 type="button"
-                onClick={() => setWizardOpen(false)}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white"
+                disabled={!tplName.trim() || !tplCategoryId || savingTemplate}
+                onClick={handleSaveTemplateFinal}
+                className="sm:hidden px-3 py-1.5 rounded-lg bg-slate-900 text-white text-sm font-semibold disabled:opacity-50"
+              >
+                {savingTemplate ? 'Mentés…' : 'Mentés'}
+              </button>
+              <button
+                type="button"
+                onClick={() => closeWizard()}
+                className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
+                title="Bezárás"
               >
                 <X className="w-5 h-5" />
               </button>
+              </div>
             </div>
 
-            {/* Step Tabs */}
-            <div className="bg-slate-50 border-b border-slate-200 px-6 py-3 flex flex-wrap gap-2">
-              {[
-                { s: 1 as const, label: '1. Kategória & Sablon Neve' },
-                { s: 2 as const, label: '2. Termékek, Anyagok & Árazás' },
-                { s: 3 as const, label: '3. Sablon Fotók & Képaláírások' },
-                { s: 4 as const, label: '4. Szövegdobozok & Automatizáció' },
-                { s: 5 as const, label: '5. Élő Teszt & Mentés' },
-              ].map((tab) => (
-                <button
-                  key={tab.s}
-                  type="button"
-                  onClick={() => setWizardStep(tab.s)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                    wizardStep === tab.s
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            {/* Lépések: mindig mind az öt látszik (telefonon rövid címkével) */}
+            <div className="border-b border-slate-200 px-3 sm:px-6 pb-2">
+              <Stepper
+                className="mt-0"
+                current={wizardStep}
+                onSelect={(n) => setWizardStep(n)}
+                steps={[
+                  { num: 1 as const, label: 'Alapadatok', short: 'Alap' },
+                  { num: 2 as const, label: 'Tételek & árazás', short: 'Tételek' },
+                  { num: 3 as const, label: 'Fotók', short: 'Fotók' },
+                  { num: 4 as const, label: 'Szövegek', short: 'Szövegek' },
+                  { num: 5 as const, label: 'Teszt & mentés', short: 'Mentés' },
+                ]}
+              />
             </div>
 
             {/* Wizard Body */}
-            <div className="p-6 overflow-y-auto flex-1 space-y-6">
+            <div className="p-3 sm:p-6 overflow-y-auto flex-1 space-y-6">
               {/* STEP 1: KATEGÓRIA & NÉV */}
               {wizardStep === 1 && (
                 <div className="max-w-2xl mx-auto space-y-5">
-                  <div>
-                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                      Melyik kategóriába tartozik ez a sablon? *
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                      {categories.map((cat) => (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          onClick={() => setTplCategoryId(cat.id)}
-                          className={`p-3 rounded-xl border text-left transition ${
-                            tplCategoryId === cat.id
-                              ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20'
-                              : 'border-slate-200 hover:bg-slate-50 text-slate-700'
-                          }`}
+                  <SubTabs<'general' | 'size' | 'pricing'>
+                    value={basicTab}
+                    onChange={setBasicTab}
+                    tabs={[
+                      ['general', 'Általános'],
+                      ['size', 'Méretek és modulok'],
+                      ['pricing', 'Katalógus és árképzés'],
+                    ]}
+                  />
+                  {basicTab === 'general' && (<>
+                  <div className="space-y-3">
+                    <label className="block">
+                      <span className="block text-[13px] font-medium text-slate-700 mb-1.5">Kategória *</span>
+                      <div className="flex flex-wrap gap-2">
+                        <select
+                          value={tplCategoryId}
+                          onChange={(e) => {
+                            if (e.target.value === '__new') setAddingCategory(true);
+                            else setTplCategoryId(e.target.value);
+                          }}
+                          className="min-w-0 flex-1 px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm"
                         >
-                          <div className="text-sm font-bold">{cat.name}</div>
-                          <div className="text-[11px] text-slate-500 mt-0.5">
-                            {cat.categoryType === 'main_structure'
-                              ? 'Fő szerkezet'
-                              : 'Kiegészítő / Extra'}
-                          </div>
+                          {[...menus, { id: '', name: 'Menü nélkül' } as ProductMenu].map((m) => {
+                            const cats = categories.filter((c) => (c.menuId || '') === m.id);
+                            if (!cats.length) return null;
+                            return (
+                              <optgroup key={m.id || 'none'} label={m.name}>
+                                {cats.map((c) => (
+                                  <option key={c.id} value={c.id}>
+                                    {c.name}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            );
+                          })}
+                          <option value="__new">+ Új kategória…</option>
+                        </select>
+                        {!addingCategory && (
+                          <button type="button" onClick={() => setAddingCategory(true)} className={btn.secondary}>
+                            <Plus className="w-4 h-4" />
+                            Új kategória
+                          </button>
+                        )}
+                      </div>
+                    </label>
+                    {addingCategory && (
+                      <div className="flex flex-wrap items-end gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50">
+                        <label className="block min-w-0 flex-1 basis-48">
+                          <span className="block text-xs font-semibold text-slate-500">Új kategória neve</span>
+                          <input
+                            autoFocus
+                            value={newCatName}
+                            onChange={(e) => setNewCatName(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && createCategoryInline()}
+                            placeholder="pl. Kocsibeálló"
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+                          />
+                        </label>
+                        <label className="block basis-40">
+                          <span className="block text-xs font-semibold text-slate-500">Menü</span>
+                          <select
+                            value={newCatMenuId || menus[0]?.id || ''}
+                            onChange={(e) => setNewCatMenuId(e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+                          >
+                            {menus.map((m) => (
+                              <option key={m.id} value={m.id}>
+                                {m.name}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button type="button" onClick={createCategoryInline} className={btn.primary}>
+                          Létrehozás
                         </button>
-                      ))}
-                    </div>
+                        <button type="button" onClick={() => setAddingCategory(false)} className={btn.ghost}>
+                          Mégse
+                        </button>
+                      </div>
+                    )}
+                    {categories.length > 1 && (
+                      <details className="group">
+                        <summary className="cursor-pointer select-none text-[13px] font-medium text-slate-700 mb-1.5">
+                          Megjelenik más kategóriákban is
+                          <span className="ml-1 text-slate-500 font-normal">
+                            {tplAlsoInCategoryIds.length
+                              ? `: ${categories
+                                  .filter((c) => tplAlsoInCategoryIds.includes(c.id))
+                                  .map((c) => c.name)
+                                  .join(', ')}`
+                              : '(nincs)'}
+                          </span>
+                        </summary>
+                        <div className="flex flex-wrap gap-1.5">
+                          {categories
+                            .filter((cat) => cat.id !== tplCategoryId)
+                            .map((cat) => {
+                              const on = tplAlsoInCategoryIds.includes(cat.id);
+                              return (
+                                <button
+                                  key={cat.id}
+                                  type="button"
+                                  aria-pressed={on}
+                                  onClick={() =>
+                                    setTplAlsoInCategoryIds((prev) =>
+                                      on ? prev.filter((x) => x !== cat.id) : [...prev, cat.id]
+                                    )
+                                  }
+                                  className={`px-2.5 py-1 rounded-lg border text-xs transition ${
+                                    on ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 text-slate-600 hover:border-slate-400'
+                                  }`}
+                                >
+                                  {cat.name}
+                                </button>
+                              );
+                            })}
+                        </div>
+                      </details>
+                    )}
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Sablon megnevezése *
                     </label>
-                    <input
-                      type="text"
+                    <AutoTextarea
                       value={tplName}
                       onChange={(e) => setTplName(e.target.value)}
                       placeholder="pl. 1. Sablon - Prémium Bioklimatikus Pergola / Kazettás Napellenző..."
@@ -958,17 +1256,408 @@ export function TemplateBuilderView({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Rövid alcím / Műszaki összefoglaló (Szövegdoboz a cím alatt)
                     </label>
-                    <input
-                      type="text"
+                    <AutoTextarea
                       value={tplSubtitle}
                       onChange={(e) => setTplSubtitle(e.target.value)}
                       placeholder="pl. Extrudált alumínium vázszerkezet, motoros vezérléssel, 10 év garanciával"
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
+                      Sablon állapota
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {TEMPLATE_STATUS_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setTplStatus(opt.id)}
+                          className={`px-3 py-2 rounded-xl border text-xs font-bold transition ${
+                            tplStatus === opt.id
+                              ? `${opt.badgeClass} ring-2 ring-emerald-500/30`
+                              : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  </>)}
+
+                  {basicTab === 'size' && (<>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Beépítési módok
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {MOUNT_TYPES.map((mt) => {
+                        const on = tplMountTypes.includes(mt.id);
+                        return (
+                          <label
+                            key={mt.id}
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer ${
+                              on ? 'border-slate-900 bg-white' : 'border-slate-200 bg-white text-slate-600'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={on}
+                              onChange={() =>
+                                setTplMountTypes((prev) =>
+                                  on ? prev.filter((x) => x !== mt.id) : [...prev, mt.id]
+                                )
+                              }
+                            />
+                            {mt.label}
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Ha egyik sincs bejelölve, bármelyik beépítéssel kérhető. Más beépítésnél az
+                      árazóban pirossal, indoklással jelenik meg.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Mérethatárok a teljes kért méretre (cm) - okos szűrő
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+                      {(
+                        [
+                          ['minWidthCm', 'Szélesség min'],
+                          ['maxWidthCm', 'Szélesség max'],
+                          ['minProjectionCm', 'Kinyúlás min'],
+                          ['maxProjectionCm', 'Kinyúlás max'],
+                          ['minHeightCm', 'Magasság min'],
+                          ['maxHeightCm', 'Magasság max'],
+                        ] as [keyof TemplateSizeLimits, string][]
+                      ).map(([key, label]) => (
+                        <label key={key} className="block">
+                          <span className="block text-xs font-semibold text-slate-500">
+                            {label}
+                          </span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={tplSizeLimits[key] || ''}
+                            onChange={(e) =>
+                              setTplSizeLimits((prev) => ({
+                                ...prev,
+                                [key]: Math.max(0, Number(e.target.value) || 0),
+                              }))
+                            }
+                            placeholder="nincs korlát"
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold"
+                          />
+                        </label>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Ha a kért méret ezen kívül esik, az árazóban a sablon
+                      pirossal jelenik meg.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Modulokra bontás
+                    </div>
+                    {(['width', 'projection'] as const).map((axis) => {
+                      const rule = tplModuleSplits.find((r) => r.axis === axis);
+                      const setRule = (next: ModuleSplitRule | undefined) =>
+                        setTplModuleSplits((prev) => [
+                          ...prev.filter((r) => r.axis !== axis),
+                          ...(next ? [next] : []),
+                        ]);
+                      return (
+                        <div key={axis} className="flex flex-wrap items-center gap-2 text-sm text-slate-700">
+                          <label className="inline-flex items-center gap-2 cursor-pointer min-w-[9rem]">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(rule)}
+                              onChange={(e) =>
+                                setRule(e.target.checked ? { axis, maxCm: 500, maxModules: 2 } : undefined)
+                              }
+                            />
+                            {axis === 'width' ? 'Szélesség szerint' : 'Kinyúlás szerint'}
+                          </label>
+                          {rule && (
+                            <>
+                              <span>egy modul max.</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={rule.maxCm}
+                                onChange={(e) =>
+                                  setRule({ ...rule, maxCm: Math.max(1, Number(e.target.value) || 1) })
+                                }
+                                className="w-20 px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-right"
+                              />
+                              <span>cm, legfeljebb</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={rule.maxModules ?? ''}
+                                placeholder="∞"
+                                onChange={(e) =>
+                                  setRule({
+                                    ...rule,
+                                    maxModules: e.target.value === '' ? undefined : Math.max(1, Number(e.target.value) || 1),
+                                  })
+                                }
+                                className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 bg-white text-right"
+                              />
+                              <span>modul</span>
+                              <label className="flex items-center gap-2 w-full sm:w-auto sm:ml-2">
+                                <span className="text-slate-500">vagy határok:</span>
+                                <input
+                                  type="text"
+                                  inputMode="numeric"
+                                  defaultValue={(rule.breakpointsCm || []).join(', ')}
+                                  onBlur={(e) => {
+                                    const bps = e.target.value
+                                      .split(/[,; ]+/)
+                                      .map((v) => Number(v))
+                                      .filter((v) => v > 0)
+                                      .sort((a, b) => a - b);
+                                    setRule({ ...rule, breakpointsCm: bps.length ? bps : undefined });
+                                  }}
+                                  placeholder="pl. 500, 900, 1300"
+                                  className="min-w-0 flex-1 sm:w-40 px-2 py-1.5 rounded-lg border border-slate-300 bg-white"
+                                />
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                    <p className="text-xs text-slate-500">
+                      Pl. egy modul max. 700 cm széles: 701-1400 cm között 2 modul. Egyenetlen
+                      lépcsőknél a határokat add meg (pl. 500, 900, 1300: 500-ig 1, 900-ig 2, 1300-ig 3
+                      modul). Két tengelynél a
+                      modulszám a kettő szorzata. A tételeknél megadható, melyik modulszámnál
+                      szerepeljenek (pl. a gyártó 2 modulos ártáblája).
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Feltételes méretkorlátok
+                    </div>
+                    {tplSizeRules.length === 0 && (
+                      <p className="text-xs text-slate-500">
+                        Pl. „Szabadon állóként max. 450 × 500 cm” vagy „800 cm szélesség felett max.
+                        400 cm kinyúlás”.
+                      </p>
+                    )}
+                    {tplSizeRules.map((rule, idx) => {
+                      const update = (patch: Partial<ConditionalSizeRule>) =>
+                        setTplSizeRules((prev) => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
+                      const num = (v: string) => (v === '' ? undefined : Math.max(0, Number(v) || 0));
+                      const field = (
+                        key: 'ifWidthOverCm' | 'ifProjectionOverCm' | 'maxWidthCm' | 'maxProjectionCm' | 'maxHeightCm',
+                        label: string
+                      ) => (
+                        <label className="block">
+                          <span className="block text-xs font-semibold text-slate-500">{label}</span>
+                          <input
+                            type="number"
+                            min={0}
+                            value={rule[key] ?? ''}
+                            onChange={(e) => update({ [key]: num(e.target.value) })}
+                            placeholder="-"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm"
+                          />
+                        </label>
+                      );
+                      return (
+                        <div key={rule.id} className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <input
+                              value={rule.label || ''}
+                              onChange={(e) => update({ label: e.target.value })}
+                              placeholder="Magyarázat az árazóban (pl. szabadon álló kivitel)"
+                              className="min-w-0 flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setTplSizeRules((prev) => prev.filter((_, i) => i !== idx))}
+                              className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                              title="Korlát törlése"
+                              aria-label="Korlát törlése"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="text-xs font-semibold text-slate-600">Ha…</div>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <label className="block">
+                              <span className="block text-xs font-semibold text-slate-500">Beépítés</span>
+                              <select
+                                value={rule.mountType || ''}
+                                onChange={(e) => update({ mountType: (e.target.value || undefined) as MountType | undefined })}
+                                className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-sm"
+                              >
+                                <option value="">bármelyik</option>
+                                {MOUNT_TYPES.map((mt) => (
+                                  <option key={mt.id} value={mt.id}>
+                                    {mt.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            {field('ifWidthOverCm', 'Szélesség nagyobb, mint')}
+                            {field('ifProjectionOverCm', 'Kinyúlás nagyobb, mint')}
+                          </div>
+                          <div className="text-xs font-semibold text-slate-600">…akkor legfeljebb</div>
+                          <div className="grid grid-cols-3 gap-2">
+                            {field('maxWidthCm', 'Szélesség')}
+                            {field('maxProjectionCm', 'Kinyúlás')}
+                            {field('maxHeightCm', 'Magasság')}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTplSizeRules((prev) => [
+                          ...prev,
+                          { id: `rule_${Date.now()}_${Math.random().toString(36).slice(2, 6)}` },
+                        ])
+                      }
+                      className="inline-flex items-center gap-1 text-[13px] text-slate-600 hover:text-slate-950"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Feltételes korlát
+                    </button>
+                  </div>
+
+                  </>)}
+
+                  {basicTab === 'pricing' && (<>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-sm font-semibold text-slate-950">
+                      Katalógus hivatkozás (hol találjuk az árat)
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {(
+                        [
+                          ['pdfFile', 'Ár PDF fájl neve', 'pl. Pergola_arlista_2026.pdf'],
+                          ['pages', 'Oldal(ak)', 'pl. 47-49'],
+                          ['productAlias', 'Gyártói / fantázianév', 'pl. Algarve Classic'],
+                          ['note', 'Megjegyzés', ''],
+                        ] as [keyof CatalogReference, string, string][]
+                      ).map(([key, label, placeholder]) => (
+                        <label key={key} className="block">
+                          <span className="block text-xs font-semibold text-slate-500">
+                            {label}
+                          </span>
+                          <input
+                            type="text"
+                            value={tplCatalogRef[key] || ''}
+                            onChange={(e) =>
+                              setTplCatalogRef((prev) => ({
+                                ...prev,
+                                [key]: e.target.value,
+                              }))
+                            }
+                            placeholder={placeholder}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm"
+                          />
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-950 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(tplPricingOverride)}
+                        onChange={(e) =>
+                          setTplPricingOverride(
+                            e.target.checked
+                              ? {
+                                  profitMode: config.pricingFormula.profitMode,
+                                  profitValue: config.pricingFormula.profitValue,
+                                  assemblyFixedEur:
+                                    config.pricingFormula.assemblyFixedEur,
+                                  assemblyPerM2Eur:
+                                    config.pricingFormula.assemblyPerM2Eur,
+                                }
+                              : undefined
+                          )
+                        }
+                        className="rounded text-emerald-600"
+                      />
+                      Egyedi haszon / szerelés ennél a sablonnál
+                    </label>
+                    {!tplPricingOverride ? (
+                      <p className="text-xs text-slate-500">
+                        A Beállításokban megadott globális képlettel számol.
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <label className="block col-span-2">
+                          <span className="block text-xs font-semibold text-slate-500">
+                            Haszon módja
+                          </span>
+                          <select
+                            value={tplPricingOverride.profitMode}
+                            onChange={(e) =>
+                              setTplPricingOverride((prev) => ({
+                                ...prev,
+                                profitMode: e.target.value as ProfitMode,
+                              }))
+                            }
+                            className="w-full px-2 py-2 rounded-lg border border-slate-300 bg-white text-xs font-semibold"
+                          >
+                            {PROFIT_MODE_OPTIONS.map((o) => (
+                              <option key={o.id} value={o.id}>
+                                {o.label}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        {(
+                          [
+                            ['profitValue', tplPricingOverride.profitMode === 'fixed' ? 'Haszon X (EUR)' : 'Haszon X (%)'],
+                            ['assemblyFixedEur', 'Szerelés X (EUR)'],
+                            ['assemblyPerM2Eur', 'Szerelés Y (EUR/m²)'],
+                          ] as [keyof PricingFormulaConfig, string][]
+                        ).map(([key, label]) => (
+                          <label key={key} className="block">
+                            <span className="block text-xs font-semibold text-slate-500">
+                              {label}
+                            </span>
+                            <input
+                              type="number"
+                              min={0}
+                              value={Number(tplPricingOverride[key]) || 0}
+                              onChange={(e) =>
+                                setTplPricingOverride((prev) => ({
+                                  ...prev,
+                                  [key]: Math.max(0, Number(e.target.value) || 0),
+                                }))
+                              }
+                              className="w-full px-2 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold"
+                            />
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  </>)}
                 </div>
               )}
 
@@ -978,102 +1667,153 @@ export function TemplateBuilderView({
                   {/* Left list of materials/products in this template */}
                   <div className="lg:col-span-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold uppercase text-slate-600">
-                        Sablon Termékei & Anyagai ({tplMaterials.length} db)
+                      <span className="text-[13px] font-medium text-slate-600">
+                        Tételek ({tplMaterials.length})
                       </span>
-                      <button
-                        type="button"
-                        onClick={handleAddMaterial}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        Új Termék / Anyag
-                      </button>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setAddMenuOpen((v) => !v)}
+                          className={btn.ghost}
+                          aria-expanded={addMenuOpen}
+                        >
+                          <Plus className="w-4 h-4" />
+                          Új tétel
+                        </button>
+                        {addMenuOpen && (
+                          <div className="absolute right-0 top-full mt-1 z-30 w-48 bg-white border border-slate-200 rounded-xl shadow-lg p-1">
+                            {(
+                              [
+                                ['base', 'Alaptétel (az árban)'],
+                                ['optional', 'Extra (választható)'],
+                                ['gift', 'Ajándék'],
+                              ] as const
+                            ).map(([role, label]) => (
+                              <button
+                                key={role}
+                                type="button"
+                                onClick={() => {
+                                  setAddMenuOpen(false);
+                                  handleAddMaterial(role);
+                                }}
+                                className="w-full text-left px-3 py-1.5 rounded-lg text-[13px] text-slate-700 hover:bg-slate-100"
+                              >
+                                {label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      {tplMaterials.map((mat, idx) => {
-                        const isSel = idx === activeMaterialIdx;
-                        const modeInfo = PRICING_MODE_OPTIONS.find(
-                          (pm) => pm.id === mat.pricingMode
-                        );
-                        const calcRow = previewCalc.rows[idx];
+                    <div className="space-y-3">
+                      {(
+                        [
+                          ['base', 'Alaptételek'],
+                          ['gift', 'Ajándékok'],
+                          ['optional', 'Extrák'],
+                        ] as const
+                      ).map(([role, label]) => {
+                        const items = tplMaterials
+                          .map((mat, idx) => ({ mat, idx }))
+                          .filter(({ mat }) => (mat.itemRole || 'base') === role);
+                        if (!items.length) return null;
                         return (
-                          <div
-                            key={mat.id}
-                            onClick={() => setActiveMaterialIdx(idx)}
-                            className={`p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between gap-2 ${
-                              isSel
-                                ? 'border-emerald-600 bg-emerald-50/70 ring-2 ring-emerald-500/20'
-                                : 'border-slate-200 bg-white hover:bg-slate-50'
-                            }`}
-                          >
-                            <div className="min-w-0">
-                              <div className="text-sm font-bold text-slate-900 truncate">
-                                {idx + 1}. {mat.name || 'Névtelen termék / anyag'}
-                              </div>
-                              <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                                <span className="px-2 py-0.5 rounded bg-slate-200/80 text-slate-700 text-[11px] font-semibold">
-                                  {modeInfo?.shortLabel || mat.pricingMode}
-                                </span>
-                                <span
-                                  className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                                    mat.itemRole === 'base'
-                                      ? 'bg-emerald-100 text-emerald-800'
-                                      : mat.itemRole === 'optional'
-                                      ? 'bg-blue-100 text-blue-800'
-                                      : 'bg-amber-100 text-amber-800'
-                                  }`}
-                                >
-                                  {mat.itemRole === 'base'
-                                    ? 'Alaptétel'
-                                    : mat.itemRole === 'optional'
-                                    ? 'Opcionális'
-                                    : 'Ajándék'}
-                                </span>
-                                {calcRow && (
-                                  <span className="px-2 py-0.5 rounded bg-slate-900 text-emerald-300 text-[11px] font-extrabold">
-                                    {mat.itemRole === 'gift'
-                                      ? `0 EUR (Lista: ${formatDotNumber(
-                                          calcRow.listPriceEur
-                                        )} EUR)`
-                                      : `${formatDotNumber(
-                                          calcRow.discountPriceEur
-                                        )} EUR`}
-                                  </span>
-                                )}
-                                {mat.photos?.length > 0 && (
-                                  <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[11px] font-semibold">
-                                    📷 {mat.photos.length} fotó
-                                  </span>
-                                )}
-                              </div>
+                          <div key={role}>
+                            <div className="px-1 pb-1 text-xs font-medium text-slate-500">
+                              {label} ({items.length})
                             </div>
-                            {tplMaterials.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemoveMaterial(idx);
-                                }}
-                                className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-100"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
+                            <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100 overflow-hidden">
+                              {items.map(({ mat, idx }) => {
+                                const isSel = idx === activeMaterialIdx;
+                                const calcRow = previewCalc.rows.find((r) => r.materialId === mat.id);
+                                const missingPrice =
+                                  calcRow && (calcRow.costEur ?? 0) <= 1 && mat.itemRole !== 'gift';
+                                return (
+                                  <div
+                                    key={mat.id}
+                                    onClick={() => setActiveMaterialIdx(idx)}
+                                    className={`group flex items-center gap-2 px-3 py-2 cursor-pointer transition ${
+                                      isSel ? 'bg-slate-900 text-white' : 'hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="min-w-0 flex-1">
+                                      <div className={`text-[13px] leading-snug break-words ${isSel ? 'text-white' : 'text-slate-900'}`}>
+                                        {mat.name || 'Névtelen tétel'}
+                                      </div>
+                                      {(missingPrice || mat.perSide || mat.mountTypes?.length) && (
+                                        <div className={`text-[11px] ${isSel ? 'text-white/70' : 'text-slate-500'}`}>
+                                          {[
+                                            missingPrice ? 'ár hiányzik' : '',
+                                            mat.perSide ? 'oldalanként' : '',
+                                            mat.mountTypes?.length ? mat.mountTypes.join(', ').toLowerCase() : '',
+                                          ]
+                                            .filter(Boolean)
+                                            .join(' · ')}
+                                        </div>
+                                      )}
+                                    </div>
+                                    <span
+                                      className={`text-xs tabular-nums whitespace-nowrap ${
+                                        missingPrice ? 'text-rose-500' : isSel ? 'text-white/90' : 'text-slate-600'
+                                      }`}
+                                    >
+                                      {mat.itemRole === 'gift'
+                                        ? 'ajándék'
+                                        : calcRow
+                                        ? `${formatDotNumber(calcRow.discountPriceEur)} EUR`
+                                        : '-'}
+                                    </span>
+                                    {tplMaterials.length > 1 && (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          if (window.confirm(`Törlöd: „${mat.name}”?`)) handleRemoveMaterial(idx);
+                                        }}
+                                        className={`p-1 rounded-md lg:opacity-0 lg:group-hover:opacity-100 ${
+                                          isSel ? 'text-white/70 hover:text-white' : 'text-slate-400 hover:text-rose-600'
+                                        }`}
+                                        title="Tétel törlése"
+                                        aria-label="Tétel törlése"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         );
                       })}
                     </div>
 
-                    {/* Template Total Summary Box in Step 2 */}
-                    <div className="p-3.5 rounded-xl bg-slate-900 text-white space-y-1">
-                      <div className="text-[11px] font-bold uppercase text-emerald-400">
-                        🧮 Sablon Összesített Algoritmus Ár ({testWidthCm}×{testProjCm} cm):
+                    {/* Quick extras from the meeting list */}
+                    <details className="rounded-xl border border-slate-200 bg-white px-3 py-2">
+                      <summary className="cursor-pointer text-[13px] text-slate-600 select-none">Gyors extra hozzáadása</summary>
+                      <div className="flex flex-wrap gap-1.5 pt-2">
+                        {(config.extraPresets || []).map((preset) => (
+                          <button
+                            key={preset.id}
+                            type="button"
+                            onClick={() => handleAddPresetMaterial(extraPresetToMaterial(preset))}
+                            className="px-2.5 py-1 rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-xs text-slate-700"
+                          >
+                            + {preset.name}
+                          </button>
+                        ))}
                       </div>
-                      <div className="text-base font-extrabold">
+                    </details>
+
+                    {/* Template Total Summary Box in Step 2 */}
+                    <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
+                      <div className="text-[13px] text-slate-500">
+                        Sablon ára ({testWidthCm}×{testProjCm} cm):
+                      </div>
+                      <div className="text-base sm:text-lg font-semibold text-slate-950 tabular-nums">
                         {formatDotNumber(previewCalc.totalBaseEur)} EUR{' '}
-                        <span className="text-xs font-semibold text-slate-300">
+                        <span className="text-xs font-normal text-slate-500">
                           ({formatDotNumber(previewCalc.totalBaseHuf)} Ft)
                         </span>
                       </div>
@@ -1083,20 +1823,20 @@ export function TemplateBuilderView({
                   {/* Right detail editor for selected product/material */}
                   <div className="lg:col-span-8">
                     {currentMaterial ? (
-                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-5">
+                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-3 sm:p-5 space-y-5">
                         {/* LIVE ALGORITHM CALCULATION BANNER FOR CURRENT PRODUCT */}
                         {previewCalc.rows[activeMaterialIdx] && (
-                          <div className="bg-emerald-900 text-white rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                          <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
-                              <div className="text-[11px] font-bold uppercase text-emerald-300">
-                                🔒 Kötelező Algoritmus Árkalkuláció ({testWidthCm}×{testProjCm}×{testHeightCm} cm példa méretnél)
+                              <div className="text-[13px] text-slate-500">
+                                Ár {testWidthCm}×{testProjCm}×{testHeightCm} cm példa méretnél
                               </div>
-                              <div className="text-xs text-emerald-100 mt-0.5 font-medium">
+                              <div className="text-sm text-slate-800 mt-0.5">
                                 {previewCalc.rows[activeMaterialIdx].formulaSummary}
                               </div>
                             </div>
                             <div className="text-right shrink-0">
-                              <div className="text-[11px] text-emerald-200">
+                              <div className="text-xs text-slate-500">
                                 Listaár:{' '}
                                 <span className="font-bold line-through">
                                   {formatDotNumber(
@@ -1105,7 +1845,7 @@ export function TemplateBuilderView({
                                   EUR
                                 </span>
                               </div>
-                              <div className="text-base font-extrabold text-emerald-300">
+                              <div className="text-base sm:text-lg font-semibold text-slate-950 tabular-nums">
                                 Kedvezményes ár:{' '}
                                 {formatDotNumber(
                                   previewCalc.rows[activeMaterialIdx].discountPriceEur
@@ -1116,13 +1856,23 @@ export function TemplateBuilderView({
                           </div>
                         )}
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <SubTabs<'basic' | 'pricing' | 'rules' | 'media'>
+                          value={itemTab}
+                          onChange={setItemTab}
+                          tabs={[
+                            ['basic', 'Alap'],
+                            ['pricing', 'Árazás'],
+                            ['rules', 'Szabályok'],
+                            ['media', 'Képek és színek'],
+                          ]}
+                        />
+                        {itemTab === 'basic' && (<>
+                        <div className="grid grid-cols-1 gap-4">
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                              Termék / Anyag / Tétel neve *
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
+                              Tétel neve
                             </label>
-                            <input
-                              type="text"
+                            <AutoTextarea
                               value={currentMaterial.name}
                               onChange={(e) =>
                                 updateMaterial(activeMaterialIdx, {
@@ -1134,11 +1884,10 @@ export function TemplateBuilderView({
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Műszaki leírás / Anyag megjegyzés
                             </label>
-                            <input
-                              type="text"
+                            <AutoTextarea
                               value={currentMaterial.description}
                               onChange={(e) =>
                                 updateMaterial(activeMaterialIdx, {
@@ -1154,7 +1903,7 @@ export function TemplateBuilderView({
                         {/* Item Role & Currency */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Tétel szerepe a PDF-ben
                             </label>
                             <select
@@ -1179,7 +1928,7 @@ export function TemplateBuilderView({
                           </div>
 
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Pénznem
                             </label>
                             <select
@@ -1197,7 +1946,7 @@ export function TemplateBuilderView({
                           </div>
 
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Opcionális felirat az ár mellett (ha üres, nincs)
                             </label>
                             <input
@@ -1214,65 +1963,285 @@ export function TemplateBuilderView({
                           </div>
                         </div>
 
+                        <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(currentMaterial.perSide)}
+                            onChange={(e) =>
+                              updateMaterial(activeMaterialIdx, {
+                                perSide: e.target.checked,
+                              })
+                            }
+                          />
+                          Oldalanként árazott (az árazóban 1-4 oldal választható)
+                        </label>
+
+                        </>)}
+                        {itemTab === 'rules' && (
+                        <details open className="rounded-xl border border-slate-200 bg-white px-4 py-3">
+                          <summary className="cursor-pointer text-sm font-medium text-slate-800 select-none">
+                            Haladó szabályok (modulok, nettó méret, kerekítés)
+                          </summary>
+                          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                            <div>
+                              <span className="block text-[13px] text-slate-600 mb-1">
+                                Nettó méret: levonás (cm)
+                              </span>
+                              <div className="flex gap-1.5">
+                                {(
+                                  [
+                                    ['widthCm', 'szél.'],
+                                    ['projectionCm', 'kiny.'],
+                                    ['heightCm', 'mag.'],
+                                  ] as const
+                                ).map(([key, ph]) => (
+                                  <input
+                                    key={key}
+                                    type="number"
+                                    value={currentMaterial.dimOffsets?.[key] ?? ''}
+                                    onChange={(e) =>
+                                      updateMaterial(activeMaterialIdx, {
+                                        dimOffsets: {
+                                          ...(currentMaterial.dimOffsets || {}),
+                                          [key]: e.target.value === '' ? undefined : Number(e.target.value),
+                                        },
+                                      })
+                                    }
+                                    placeholder={ph}
+                                    title="pl. −17 = 17 cm-rel kisebb méretből számol"
+                                    className="w-20 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            {currentMaterial.pricingMode === 'matrix_cm' && (
+                              <div>
+                                <span className="block text-[13px] text-slate-600 mb-1">
+                                  Mérettábla: sor / oszlop méret, kerekítés
+                                </span>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {(
+                                    [
+                                      ['matrixRowAxis', 'projection'],
+                                      ['matrixColAxis', 'width'],
+                                    ] as const
+                                  ).map(([key, def]) => (
+                                    <select
+                                      key={key}
+                                      value={currentMaterial[key] || def}
+                                      onChange={(e) =>
+                                        updateMaterial(activeMaterialIdx, {
+                                          [key]: e.target.value as SizeAxis,
+                                        })
+                                      }
+                                      className="px-2 py-1.5 rounded-lg border border-slate-300"
+                                    >
+                                      <option value="width">szélesség</option>
+                                      <option value="projection">kinyúlás</option>
+                                      <option value="height">magasság</option>
+                                    </select>
+                                  ))}
+                                  <select
+                                    value={currentMaterial.matrixRowSnap || 'up'}
+                                    onChange={(e) =>
+                                      updateMaterial(activeMaterialIdx, {
+                                        matrixRowSnap: e.target.value as 'up' | 'nearest',
+                                        matrixColSnap: e.target.value as 'up' | 'nearest',
+                                      })
+                                    }
+                                    className="px-2 py-1.5 rounded-lg border border-slate-300"
+                                  >
+                                    <option value="up">következő nagyobb méret</option>
+                                    <option value="nearest">legközelebbi méret</option>
+                                  </select>
+                                </div>
+                              </div>
+                            )}
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(currentMaterial.splitByModule)}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, { splitByModule: e.target.checked })
+                                }
+                              />
+                              Modulonként árazva (ár × modulszám)
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(currentMaterial.perModule)}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, { perModule: e.target.checked })
+                                }
+                              />
+                              Darabszám × modulszám (pl. motor modulonként)
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] text-slate-600">Csak ha a modulszám</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.minModules ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    minModules: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="min"
+                                className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                              <span className="text-slate-400">-</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.maxModules ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    maxModules: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="max"
+                                className="w-16 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-[13px] text-slate-600">Csak pontosan</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.modulesWidth ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    modulesWidth: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="-"
+                                className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                              <span className="text-[13px] text-slate-600">modul szélességben ×</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={currentMaterial.modulesProjection ?? ''}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    modulesProjection: e.target.value === '' ? undefined : Number(e.target.value),
+                                  })
+                                }
+                                placeholder="-"
+                                className="w-14 px-2 py-1.5 rounded-lg border border-slate-300 text-right"
+                              />
+                              <span className="text-[13px] text-slate-600">kinyúlásban</span>
+                            </div>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(currentMaterial.excludeFromPercentBase)}
+                                onChange={(e) =>
+                                  updateMaterial(activeMaterialIdx, {
+                                    excludeFromPercentBase: e.target.checked,
+                                  })
+                                }
+                              />
+                              Nem számít a szerelés % alapjába
+                            </label>
+                            {currentMaterial.itemRole === 'optional' && (() => {
+                              const auto = presentExtra({ ...currentMaterial, group: undefined, choiceGroup: undefined }, config.extraGroups);
+                              return (
+                                <div className="pt-2 border-t border-slate-200 space-y-2">
+                                  <div className="text-[13px] font-medium text-slate-700">
+                                    Megjelenés az árazóban
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">Gyűjtemény</span>
+                                      <input
+                                        list="extra-group-options"
+                                        value={currentMaterial.group || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { group: e.target.value || undefined })}
+                                        placeholder={`automatikus: ${auto.group}`}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                      <datalist id="extra-group-options">
+                                        {Array.from(new Set([...(config.extraGroups || []).map((g) => g.name), ...EXTRA_GROUP_ORDER])).map((g) => (
+                                          <option key={g} value={g} />
+                                        ))}
+                                      </datalist>
+                                    </label>
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">
+                                        Opciócsoport (azonos nevűek egy sorban)
+                                      </span>
+                                      <input
+                                        value={currentMaterial.choiceGroup || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceGroup: e.target.value || undefined })}
+                                        placeholder={auto.choiceGroup ? `automatikus: ${auto.choiceGroup}` : 'pl. LED a keresztgerendákban'}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                    </label>
+                                    <label className="block">
+                                      <span className="block text-xs font-semibold text-slate-500">Rövid címke a gombon</span>
+                                      <input
+                                        value={currentMaterial.choiceLabel || ''}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceLabel: e.target.value || undefined })}
+                                        placeholder={auto.choiceLabel ? `automatikus: ${auto.choiceLabel}` : 'pl. 3 db'}
+                                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm"
+                                      />
+                                    </label>
+                                    <label className="flex items-center gap-2 text-sm cursor-pointer sm:pt-5">
+                                      <input
+                                        type="checkbox"
+                                        checked={Boolean(currentMaterial.choiceMulti)}
+                                        onChange={(e) => updateMaterial(activeMaterialIdx, { choiceMulti: e.target.checked })}
+                                      />
+                                      Több is választható a csoportból
+                                    </label>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        </details>
+
+
+                        )}
+                        {itemTab === 'pricing' && (<>
                         {/* Pricing Mode Selector */}
                         <div>
-                          <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
-                            Kötelező Árazási Algoritmus kiválasztása (az ár mindig ebből számolódik)
+                          <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
+                            Árazás módja
                           </label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {PRICING_MODE_OPTIONS.map((pm) => {
-                              const hasOtherNonPctBase = tplMaterials.some(
-                                (m, i) =>
-                                  i !== activeMaterialIdx &&
-                                  m.pricingMode !== 'percentage' &&
-                                  m.itemRole === 'base'
-                              );
-                              const isPctBlocked =
-                                pm.id === 'percentage' && !hasOtherNonPctBase;
-
-                              return (
-                                <button
-                                  key={pm.id}
-                                  type="button"
-                                  disabled={isPctBlocked}
-                                  onClick={() => {
-                                    if (isPctBlocked) return;
+                          {(() => {
+                            const hasOtherNonPctBase = tplMaterials.some(
+                              (m, i) => i !== activeMaterialIdx && m.pricingMode !== 'percentage' && m.itemRole === 'base'
+                            );
+                            const current = PRICING_MODE_OPTIONS.find((pm) => pm.id === currentMaterial.pricingMode);
+                            return (
+                              <>
+                                <select
+                                  value={currentMaterial.pricingMode}
+                                  onChange={(e) =>
                                     updateMaterial(activeMaterialIdx, {
-                                      pricingMode: pm.id as ProductPricingMode,
-                                      basePrice:
-                                        Math.max(
-                                          1,
-                                          Number(currentMaterial.basePrice) ||
-                                            1500
-                                        ),
-                                      unitPrice:
-                                        Math.max(
-                                          1,
-                                          Number(currentMaterial.unitPrice) ||
-                                            350
-                                        ),
-                                    });
-                                  }}
-                                  className={`p-3 rounded-xl border text-left transition ${
-                                    currentMaterial.pricingMode === pm.id
-                                      ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20'
-                                      : isPctBlocked
-                                      ? 'border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed opacity-60'
-                                      : 'border-slate-200 bg-white hover:bg-slate-100 text-slate-700'
-                                  }`}
+                                      pricingMode: e.target.value as ProductPricingMode,
+                                      basePrice: Math.max(1, Number(currentMaterial.basePrice) || 1500),
+                                      unitPrice: Math.max(1, Number(currentMaterial.unitPrice) || 350),
+                                    })
+                                  }
+                                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-medium"
                                 >
-                                  <div className="text-xs font-bold">
-                                    {pm.label}
-                                  </div>
-                                  <div className="text-[11px] text-slate-500 mt-0.5">
-                                    {isPctBlocked
-                                      ? 'Csak 2. tételként választható (pl. szerelés), ha már van fő alaptétel!'
-                                      : pm.description}
-                                  </div>
-                                </button>
-                              );
-                            })}
-                          </div>
+                                  {PRICING_MODE_OPTIONS.map((pm) => (
+                                    <option key={pm.id} value={pm.id} disabled={pm.id === 'percentage' && !hasOtherNonPctBase}>
+                                      {pm.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                {current?.description && (
+                                  <p className="text-xs text-slate-500 mt-1.5">{current.description}</p>
+                                )}
+                              </>
+                            );
+                          })()}
                         </div>
 
                         {/* Dimension Source selector for m² and fm modes */}
@@ -1280,7 +2249,7 @@ export function TemplateBuilderView({
                           currentMaterial.pricingMode
                         ) && (
                           <div>
-                            <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                            <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                               Melyik méretből számolja az algoritmus?
                             </label>
                             <select
@@ -1484,7 +2453,7 @@ export function TemplateBuilderView({
                                     className="flex items-center gap-3"
                                   >
                                     <div className="flex-1">
-                                      <label className="block text-[11px] text-slate-500">
+                                      <label className="block text-xs text-slate-500">
                                         Max felület (m²-ig)
                                       </label>
                                       <input
@@ -1511,7 +2480,7 @@ export function TemplateBuilderView({
                                       />
                                     </div>
                                     <div className="flex-1">
-                                      <label className="block text-[11px] text-slate-500">
+                                      <label className="block text-xs text-slate-500">
                                         Egységár ({currentMaterial.currency}/m²) *
                                       </label>
                                       <input
@@ -1563,9 +2532,61 @@ export function TemplateBuilderView({
 
                         {currentMaterial.pricingMode === 'matrix_cm' && (
                           <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
-                            <div className="text-xs font-bold text-slate-800">
-                              Egyedi Mérettábla / Mátrix (Szélesség cm × Kinyúlás/Magasság cm)
+                            <div className="text-sm font-semibold text-slate-950">
+                              Mérettábla (szélesség × kinyúlás, cm)
                             </div>
+
+                            <details className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                              <summary className="cursor-pointer text-sm text-slate-700 select-none">
+                                Táblázat beillesztése az ár PDF-ből / Excelből
+                              </summary>
+                              <div className="mt-2 space-y-2">
+                                <p className="text-xs text-slate-500">
+                                  Első sor: szélességek (cm). Minden további sor: kinyúlás (cm),
+                                  majd az árak. A meglévő táblát felülírja.
+                                </p>
+                                <textarea
+                                  rows={5}
+                                  value={matrixPasteText}
+                                  onChange={(e) => {
+                                    setMatrixPasteText(e.target.value);
+                                    setMatrixPasteError('');
+                                  }}
+                                  placeholder={'cm\t300\t400\t500\n250\t2.200\t2.600\t3.100\n300\t2.500\t2.950\t3.500'}
+                                  className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-mono text-xs"
+                                />
+                                <div className="flex items-center gap-3">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const parsed = parseMatrixPaste(matrixPasteText, {
+                                        rowLabel: currentMaterial.matrixTable?.rowLabel,
+                                        colLabel: currentMaterial.matrixTable?.colLabel,
+                                      });
+                                      if (!parsed) {
+                                        setMatrixPasteError(
+                                          'Nem sikerült beolvasni. Ellenőrizd, hogy az első sor a szélességeket tartalmazza.'
+                                        );
+                                        return;
+                                      }
+                                      updateMaterial(activeMaterialIdx, { matrixTable: parsed });
+                                      setMatrixPasteText('');
+                                      setMatrixPasteError(
+                                        `Beolvasva: ${parsed.rows.length} sor × ${parsed.cols.length} oszlop`
+                                      );
+                                    }}
+                                    className={btn.secondary}
+                                  >
+                                    Beolvasás
+                                  </button>
+                                  {matrixPasteError && (
+                                    <span className="text-xs text-slate-600">
+                                      {matrixPasteError}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </details>
                             <div className="flex flex-wrap items-center gap-2">
                               <input
                                 type="number"
@@ -1823,7 +2844,7 @@ export function TemplateBuilderView({
                         {/* Multipliers & Surcharges */}
                         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-white p-4 rounded-xl border border-slate-200">
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            <label className="block text-xs font-bold text-slate-600 mb-1">
                               Árszorzó (pl. 1.0 vagy 0.66)
                             </label>
                             <input
@@ -1843,7 +2864,7 @@ export function TemplateBuilderView({
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            <label className="block text-xs font-bold text-slate-600 mb-1">
                               Extra kedvezmény (%)
                             </label>
                             <input
@@ -1863,7 +2884,7 @@ export function TemplateBuilderView({
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            <label className="block text-xs font-bold text-slate-600 mb-1">
                               Fix felár (+ {currentMaterial.currency})
                             </label>
                             <input
@@ -1882,7 +2903,7 @@ export function TemplateBuilderView({
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            <label className="block text-xs font-bold text-slate-600 mb-1">
                               Listaár szorzó (pl. 1.25)
                             </label>
                             <input
@@ -1903,6 +2924,26 @@ export function TemplateBuilderView({
                           </div>
                         </div>
 
+                        </>)}
+                        {itemTab === 'media' && (<>
+                        {/* Színválaszték (pl. alapszínek, RAL színek) - a PDF-ben színmintaként */}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                          <div className="text-sm font-semibold text-slate-950">Színek</div>
+                          <p className="text-xs text-slate-500">
+                            Kód és mintaszín - a PDF-ben színmintaként jelenik meg, ha a tétel az ajánlatban van.
+                          </p>
+                          <ColorOptionsEditor
+                            colors={currentMaterial.colorOptions || []}
+                            onChange={(next) =>
+                              updateMaterial(activeMaterialIdx, { colorOptions: next })
+                            }
+                            title={currentMaterial.colorTitle}
+                            onTitleChange={(t) =>
+                              updateMaterial(activeMaterialIdx, { colorTitle: t })
+                            }
+                          />
+                        </div>
+
                         {/* Product-Specific Photos & Captions below Photo */}
                         <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                           <div className="flex items-center justify-between flex-wrap gap-2">
@@ -1910,7 +2951,7 @@ export function TemplateBuilderView({
                               <div className="text-xs font-bold text-slate-900">
                                 Ehhez a termékhez csatolt fotók és fotó alatti szövegdobozok
                               </div>
-                              <div className="text-[11px] text-slate-500">
+                              <div className="text-xs text-slate-500">
                                 Felcsatolhatsz fotót közvetlenül ehhez a termékhez, és a fotó alá külön szöveget írhatsz!
                               </div>
                             </div>
@@ -1961,9 +3002,11 @@ export function TemplateBuilderView({
                             >
                               {ph.imageUrl && (
                                 <img
-                                  src={ph.imageUrl}
+                                  src={thumbUrl(ph.imageUrl)}
+                                  loading="lazy"
+                                  decoding="async"
                                   alt=""
-                                  className="w-28 h-24 object-cover rounded-lg border border-slate-200 shrink-0"
+                                  className="w-40 h-28 object-contain bg-white rounded-lg border border-slate-200 shrink-0"
                                 />
                               )}
                               <div className="flex-1 space-y-2">
@@ -2021,6 +3064,7 @@ export function TemplateBuilderView({
                             </div>
                           ))}
                         </div>
+                        </>)}
                       </div>
                     ) : null}
                   </div>
@@ -2109,7 +3153,9 @@ export function TemplateBuilderView({
                             className="group relative w-20 h-16 rounded-lg overflow-hidden border border-slate-200 hover:border-emerald-500 shrink-0"
                           >
                             <img
-                              src={m.url}
+                              src={thumbUrl(m.url)}
+                              loading="lazy"
+                              decoding="async"
                               alt={m.originalName}
                               className="w-full h-full object-cover"
                             />
@@ -2133,7 +3179,9 @@ export function TemplateBuilderView({
                         >
                           <div className="w-full md:w-56 shrink-0">
                             <img
-                              src={ph.imageUrl}
+                              src={thumbUrl(ph.imageUrl)}
+                              loading="lazy"
+                              decoding="async"
                               alt=""
                               className="w-full h-36 object-cover rounded-xl border border-slate-200"
                             />
@@ -2236,14 +3284,14 @@ export function TemplateBuilderView({
                           className="px-2 py-1 rounded-lg bg-white text-emerald-900 border border-emerald-300 text-xs font-mono font-semibold"
                           title={v.label}
                         >
-                          {v.token} – {v.label}
+                          {v.token} - {v.label}
                         </span>
                       ))}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Sablon Bevezető Szövegdoboza (a fotók és a táblázat előtt)
                     </label>
                     <textarea
@@ -2354,7 +3402,7 @@ export function TemplateBuilderView({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
                       Sablon Záró Szövegdoboza (az ártáblázat alatt)
                     </label>
                     <textarea
@@ -2371,29 +3419,29 @@ export function TemplateBuilderView({
               {/* STEP 5: ÉLŐ TESZT & MENTÉS */}
               {wizardStep === 5 && (
                 <div className="space-y-5">
-                  <div className="bg-slate-900 text-white p-5 rounded-2xl flex flex-wrap items-end justify-between gap-4">
+                  <div className="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-wrap items-end justify-between gap-4">
                     <div>
-                      <div className="text-xs font-bold text-emerald-400 uppercase">
-                        ÉLŐ SABLON KALKULÁCIÓS PRÓBA
-                      </div>
-                      <h3 className="text-base font-bold mt-0.5">
-                        Nézd meg, hogyan számol a sablon különböző méretekkel és ügyfélnévvel!
+                      <h3 className="text-base font-semibold text-slate-950">
+                        Próba
                       </h3>
+                      <p className="text-[13px] text-slate-500">
+                        Így számol a sablon más méretekkel.
+                      </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                       <div>
-                        <label className="block text-[11px] text-slate-300">
+                        <label className="block text-[13px] font-medium text-slate-700 mb-1">
                           Teszt Ügyfélnév
                         </label>
                         <input
                           type="text"
                           value={testCustomerName}
                           onChange={(e) => setTestCustomerName(e.target.value)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-semibold w-36"
+                          className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-sm w-36"
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] text-slate-300">
+                        <label className="block text-[13px] font-medium text-slate-700 mb-1">
                           Szélesség (cm)
                         </label>
                         <input
@@ -2402,11 +3450,11 @@ export function TemplateBuilderView({
                           onChange={(e) =>
                             setTestWidthCm(Number(e.target.value))
                           }
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-semibold w-24"
+                          className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-sm w-24"
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] text-slate-300">
+                        <label className="block text-[13px] font-medium text-slate-700 mb-1">
                           Kinyúlás (cm)
                         </label>
                         <input
@@ -2415,11 +3463,11 @@ export function TemplateBuilderView({
                           onChange={(e) =>
                             setTestProjCm(Number(e.target.value))
                           }
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-semibold w-24"
+                          className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-sm w-24"
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] text-slate-300">
+                        <label className="block text-[13px] font-medium text-slate-700 mb-1">
                           Magasság (cm)
                         </label>
                         <input
@@ -2428,7 +3476,7 @@ export function TemplateBuilderView({
                           onChange={(e) =>
                             setTestHeightCm(Number(e.target.value))
                           }
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs font-semibold w-24"
+                          className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-sm w-24"
                         />
                       </div>
                     </div>
@@ -2438,7 +3486,7 @@ export function TemplateBuilderView({
                   <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
                     <div className="text-sm font-bold text-slate-900">
                       {replaceTemplateVariables(
-                        `Kedves {{megszolitas}}! — ${
+                        `Kedves {{megszolitas}}! - ${
                           tplName || 'Új Sablon'
                         } ({{meret_m}} / {{meret}})`,
                         {
@@ -2522,18 +3570,18 @@ export function TemplateBuilderView({
             </div>
 
             {/* Wizard Footer */}
-            <div className="bg-slate-50 border-t border-slate-200 px-6 py-4 flex items-center justify-between">
+            <div className="border-t border-slate-200 px-3 sm:px-6 pt-2.5 sm:py-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center justify-between gap-2">
               <button
                 type="button"
                 onClick={() =>
                   wizardStep > 1
                     ? setWizardStep((s) => (s - 1) as any)
-                    : setWizardOpen(false)
+                    : closeWizard()
                 }
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-semibold"
+                className={btn.ghost}
               >
                 <ArrowLeft className="w-4 h-4" />
-                {wizardStep > 1 ? 'Előző lépés' : 'Bezárás'}
+                {wizardStep > 1 ? 'Vissza' : 'Bezárás'}
               </button>
 
               <div className="flex items-center gap-3">
@@ -2541,9 +3589,9 @@ export function TemplateBuilderView({
                   <button
                     type="button"
                     onClick={() => setWizardStep((s) => (s + 1) as any)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold"
+                    className={btn.secondary}
                   >
-                    Következő lépés
+                    Tovább
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 )}
@@ -2551,15 +3599,16 @@ export function TemplateBuilderView({
                   type="button"
                   disabled={!tplName.trim() || !tplCategoryId || savingTemplate}
                   onClick={handleSaveTemplateFinal}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 text-white text-sm font-bold shadow-sm"
+                  className={btn.primary}
                 >
                   <Save className="w-4 h-4" />
-                  {savingTemplate ? 'Mentés...' : 'Sablon Mentése'}
+                  {savingTemplate ? 'Mentés…' : 'Mentés'}
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

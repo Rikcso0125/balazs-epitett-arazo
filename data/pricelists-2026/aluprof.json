@@ -1,0 +1,4045 @@
+{
+ "source": {
+  "file": "Price list 2026_27_Új.pdf",
+  "edition": "ALUPROF Price list for ready-made products, valid from 15 September 2026 (footer code 20260914); 120 pages; printed page number = PDF page + 2"
+ },
+ "currency": "EUR",
+ "priceBasis": "List prices in EUR, VAT not included ('PRICES GIVEN IN €, VAT NOT INCLUDED'), before dealer discount (percentage surcharges are applied to the system price after discount). Motor included for SB400 (pp.12-15), Pergola V ZIIIP and Veranda V ZIIIP; motor NOT included for R ZIIIP 120, VERANDA, MADEIRA and CORSICA (surcharge); AUSTRALIA/JAMAICA priced with manual crank. All dimensions converted to cm; 'page' = PDF page index.",
+ "products": [
+  {
+   "product": "Aluprof Pergola SB 400 (customer name: SOLARE 400)",
+   "pages": "6-7, 12-15, 20",
+   "description": "Bioclimatic aluminium pergola with motorised rotating blades (SB 400). Free-standing, wall-mounted, SB 400 R and a roof-module (blades on guides) version.",
+   "variants": [
+    {
+     "key": "sb400_freestanding",
+     "label": "Pergola SB 400 free-standing (no middle pole)",
+     "config": "PERGOLA SB 400 FREE-STANDING - no middle pole",
+     "mountType": "freestanding",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      340,
+      360,
+      380,
+      400,
+      420,
+      440,
+      460,
+      480,
+      500,
+      520,
+      540,
+      560,
+      580,
+      600,
+      620,
+      640,
+      660,
+      680,
+      700
+     ],
+     "cols": [
+      150,
+      200,
+      250,
+      300,
+      350,
+      400
+     ],
+     "values": {
+      "340": {
+       "150": 5910,
+       "200": 6380,
+       "250": 6850,
+       "300": 7320,
+       "350": 7790,
+       "400": 8265
+      },
+      "360": {
+       "150": 6085,
+       "200": 6580,
+       "250": 7070,
+       "300": 7565,
+       "350": 8060,
+       "400": 8555
+      },
+      "380": {
+       "150": 6260,
+       "200": 6775,
+       "250": 7295,
+       "300": 7810,
+       "350": 8330,
+       "400": 8845
+      },
+      "400": {
+       "150": 6435,
+       "200": 6975,
+       "250": 7515,
+       "300": 8055,
+       "350": 8595,
+       "400": 9135
+      },
+      "420": {
+       "150": 6610,
+       "200": 7175,
+       "250": 7735,
+       "300": 8300,
+       "350": 8865,
+       "400": 9430
+      },
+      "440": {
+       "150": 6780,
+       "200": 7370,
+       "250": 7955,
+       "300": 8545,
+       "350": 9130,
+       "400": 9720
+      },
+      "460": {
+       "150": 6955,
+       "200": 7570,
+       "250": 8175,
+       "300": 8790,
+       "350": 9400,
+       "400": 10010
+      },
+      "480": {
+       "150": 7130,
+       "200": 7770,
+       "250": 8400,
+       "300": 9035,
+       "350": 9665,
+       "400": 10300
+      },
+      "500": {
+       "150": 7305,
+       "200": 7965,
+       "250": 8620,
+       "300": 9275,
+       "350": 9935,
+       "400": 10595
+      },
+      "520": {
+       "150": 7480,
+       "200": 8165,
+       "250": 8840,
+       "300": 9520,
+       "350": 10205,
+       "400": 10885
+      },
+      "540": {
+       "150": 8140,
+       "200": 8850,
+       "250": 9555,
+       "300": 10265,
+       "350": 10975,
+       "400": 11680
+      },
+      "560": {
+       "150": 8315,
+       "200": 9045,
+       "250": 9780,
+       "300": 10510,
+       "350": 11240,
+       "400": 11975
+      },
+      "580": {
+       "150": 8490,
+       "200": 9245,
+       "250": 10000,
+       "300": 10755,
+       "350": 11510,
+       "400": 12265
+      },
+      "600": {
+       "150": 8665,
+       "200": 9440,
+       "250": 10225,
+       "300": 11000,
+       "350": 11780,
+       "400": 12560
+      },
+      "620": {
+       "150": 8840,
+       "200": 9640,
+       "250": 10445,
+       "300": 11245,
+       "350": 12050,
+       "400": 12850
+      },
+      "640": {
+       "150": 9010,
+       "200": 9835,
+       "250": 10670,
+       "300": 11495,
+       "350": 12320,
+       "400": 13145
+      },
+      "660": {
+       "150": 9185,
+       "200": 10035,
+       "250": 10890,
+       "300": 11740,
+       "350": 12585,
+       "400": 13435
+      },
+      "680": {
+       "150": 9360,
+       "200": 10230,
+       "250": 11110,
+       "300": 11985,
+       "350": 12855,
+       "400": 13725
+      },
+      "700": {
+       "150": 9535,
+       "200": 10430,
+       "250": 11335,
+       "300": 12230,
+       "350": 13125,
+       "400": 14020
+      }
+     },
+     "priceIncludes": "structure, louvers (blades), drive transmission mechanism and motor (visible-motor version). Control (receiver/remote) NOT included - see options. Intermediate posts NOT included.",
+     "page": 12,
+     "notes": "Printed table header: 'Width [mm] / no middle pole'. This is the ONLY column group printed on the page (no other column groups such as 'with middle pole' exist in this edition), so one variant per page. Width = blade/beam direction (150-400 cm), projection 340-700 cm in 20 cm steps (projection can be ordered at 20 cm intervals). Minimum dimensions printed: visible motor PICOLO XL 230V width 140 x projection 160 cm; 24V motor width 140 x projection 140 cm; hidden motor Somfy TILT 24V width 140 x projection 240 cm (the table itself starts at projection 340 cm - pricing of projections below 340 cm is not printed). Hidden-motor version: +10% of system price after discount. Gaskets black only. Free-standing → freestanding."
+    },
+    {
+     "key": "sb400_wall",
+     "label": "Pergola SB 400 wall-mounted (no middle pole)",
+     "config": "PERGOLA SB400 WALL-MOUNTED - No middle pole",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      340,
+      360,
+      380,
+      400,
+      420,
+      440,
+      460,
+      480,
+      500,
+      520,
+      540,
+      560,
+      580,
+      600,
+      620,
+      640,
+      660,
+      680,
+      700
+     ],
+     "cols": [
+      150,
+      200,
+      250,
+      300,
+      350,
+      400
+     ],
+     "values": {
+      "340": {
+       "150": 5685,
+       "200": 6155,
+       "250": 6625,
+       "300": 7095,
+       "350": 7565,
+       "400": 8035
+      },
+      "360": {
+       "150": 5860,
+       "200": 6355,
+       "250": 6845,
+       "300": 7340,
+       "350": 7835,
+       "400": 8330
+      },
+      "380": {
+       "150": 6035,
+       "200": 6550,
+       "250": 7070,
+       "300": 7585,
+       "350": 8105,
+       "400": 8620
+      },
+      "400": {
+       "150": 6210,
+       "200": 6750,
+       "250": 7290,
+       "300": 7830,
+       "350": 8370,
+       "400": 8910
+      },
+      "420": {
+       "150": 6385,
+       "200": 6950,
+       "250": 7510,
+       "300": 8075,
+       "350": 8640,
+       "400": 9200
+      },
+      "440": {
+       "150": 6555,
+       "200": 7145,
+       "250": 7730,
+       "300": 8320,
+       "350": 8905,
+       "400": 9495
+      },
+      "460": {
+       "150": 6730,
+       "200": 7345,
+       "250": 7950,
+       "300": 8565,
+       "350": 9175,
+       "400": 9785
+      },
+      "480": {
+       "150": 6905,
+       "200": 7545,
+       "250": 8175,
+       "300": 8805,
+       "350": 9440,
+       "400": 10075
+      },
+      "500": {
+       "150": 7080,
+       "200": 7740,
+       "250": 8395,
+       "300": 9050,
+       "350": 9710,
+       "400": 10370
+      },
+      "520": {
+       "150": 7255,
+       "200": 7940,
+       "250": 8615,
+       "300": 9295,
+       "350": 9980,
+       "400": 10660
+      },
+      "540": {
+       "150": 7915,
+       "200": 8625,
+       "250": 9330,
+       "300": 10040,
+       "350": 10750,
+       "400": 11455
+      },
+      "560": {
+       "150": 8090,
+       "200": 8820,
+       "250": 9555,
+       "300": 10285,
+       "350": 11015,
+       "400": 11750
+      },
+      "580": {
+       "150": 8265,
+       "200": 9020,
+       "250": 9775,
+       "300": 10530,
+       "350": 11285,
+       "400": 12040
+      },
+      "600": {
+       "150": 8440,
+       "200": 9215,
+       "250": 10000,
+       "300": 10775,
+       "350": 11555,
+       "400": 12335
+      },
+      "620": {
+       "150": 8615,
+       "200": 9415,
+       "250": 10220,
+       "300": 11020,
+       "350": 11825,
+       "400": 12625
+      },
+      "640": {
+       "150": 8785,
+       "200": 9610,
+       "250": 10440,
+       "300": 11265,
+       "350": 12090,
+       "400": 12915
+      },
+      "660": {
+       "150": 8960,
+       "200": 9810,
+       "250": 10665,
+       "300": 11515,
+       "350": 12360,
+       "400": 13210
+      },
+      "680": {
+       "150": 9135,
+       "200": 10005,
+       "250": 10885,
+       "300": 11760,
+       "350": 12630,
+       "400": 13500
+      },
+      "700": {
+       "150": 9310,
+       "200": 10205,
+       "250": 11110,
+       "300": 12005,
+       "350": 12900,
+       "400": 13795
+      }
+     },
+     "priceIncludes": "structure, louvers (blades),  wall mounting (appropriate for the selected version), drive transmission mechanism and motor (visible-motor version). Control (receiver/remote) NOT included - see options. Intermediate posts NOT included.",
+     "page": 13,
+     "notes": "Printed table header: 'Width [mm] / no middle pole'. This is the ONLY column group printed on the page (no other column groups such as 'with middle pole' exist in this edition), so one variant per page. Width = blade/beam direction (150-400 cm), projection 340-700 cm in 20 cm steps (projection can be ordered at 20 cm intervals). Minimum dimensions printed: visible motor PICOLO XL 230V width 140 x projection 160 cm; 24V motor width 140 x projection 140 cm; hidden motor Somfy TILT 24V width 140 x projection 240 cm (the table itself starts at projection 340 cm - pricing of projections below 340 cm is not printed). Hidden-motor version: +10% of system price after discount. Gaskets black only. Wall-mounted → wall."
+    },
+    {
+     "key": "sb400r",
+     "label": "Pergola SB 400 R",
+     "config": "PERGOLA SB 400 R",
+     "mountType": "no_legs",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      340,
+      360,
+      380,
+      400,
+      420,
+      440,
+      460,
+      480,
+      500,
+      520,
+      540,
+      560,
+      580,
+      600,
+      620,
+      640,
+      660,
+      680,
+      700
+     ],
+     "cols": [
+      150,
+      200,
+      250,
+      300,
+      350,
+      400
+     ],
+     "values": {
+      "340": {
+       "150": 5425,
+       "200": 5895,
+       "250": 6365,
+       "300": 6835,
+       "350": 7305,
+       "400": 7775
+      },
+      "360": {
+       "150": 5600,
+       "200": 6090,
+       "250": 6585,
+       "300": 7080,
+       "350": 7575,
+       "400": 8070
+      },
+      "380": {
+       "150": 5770,
+       "200": 6290,
+       "250": 6805,
+       "300": 7325,
+       "350": 7840,
+       "400": 8360
+      },
+      "400": {
+       "150": 5945,
+       "200": 6490,
+       "250": 7030,
+       "300": 7570,
+       "350": 8110,
+       "400": 8650
+      },
+      "420": {
+       "150": 6120,
+       "200": 6685,
+       "250": 7250,
+       "300": 7815,
+       "350": 8375,
+       "400": 8940
+      },
+      "440": {
+       "150": 6295,
+       "200": 6885,
+       "250": 7470,
+       "300": 8055,
+       "350": 8645,
+       "400": 9235
+      },
+      "460": {
+       "150": 6470,
+       "200": 7085,
+       "250": 7690,
+       "300": 8300,
+       "350": 8915,
+       "400": 9525
+      },
+      "480": {
+       "150": 6645,
+       "200": 7285,
+       "250": 7910,
+       "300": 8545,
+       "350": 9180,
+       "400": 9815
+      },
+      "500": {
+       "150": 6820,
+       "200": 7480,
+       "250": 8135,
+       "300": 8790,
+       "350": 9450,
+       "400": 10105
+      },
+      "520": {
+       "150": 6990,
+       "200": 7680,
+       "250": 8355,
+       "300": 9035,
+       "350": 9715,
+       "400": 10400
+      },
+      "540": {
+       "150": 7655,
+       "200": 8365,
+       "250": 9070,
+       "300": 9780,
+       "350": 10485,
+       "400": 11195
+      },
+      "560": {
+       "150": 7830,
+       "200": 8560,
+       "250": 9295,
+       "300": 10025,
+       "350": 10755,
+       "400": 11485
+      },
+      "580": {
+       "150": 8005,
+       "200": 8760,
+       "250": 9515,
+       "300": 10270,
+       "350": 11025,
+       "400": 11780
+      },
+      "600": {
+       "150": 8175,
+       "200": 8955,
+       "250": 9735,
+       "300": 10515,
+       "350": 11295,
+       "400": 12070
+      },
+      "620": {
+       "150": 8350,
+       "200": 9155,
+       "250": 9960,
+       "300": 10760,
+       "350": 11560,
+       "400": 12365
+      },
+      "640": {
+       "150": 8525,
+       "200": 9350,
+       "250": 10180,
+       "300": 11005,
+       "350": 11830,
+       "400": 12655
+      },
+      "660": {
+       "150": 8700,
+       "200": 9550,
+       "250": 10405,
+       "300": 11250,
+       "350": 12100,
+       "400": 12950
+      },
+      "680": {
+       "150": 8875,
+       "200": 9745,
+       "250": 10625,
+       "300": 11495,
+       "350": 12370,
+       "400": 13240
+      },
+      "700": {
+       "150": 9050,
+       "200": 9945,
+       "250": 10845,
+       "300": 11740,
+       "350": 12640,
+       "400": 13535
+      }
+     },
+     "priceIncludes": "structure, slats, wall mounts (appropriate for the selected version), drive transmission mechanism and motor; two gutters without water drainage. Control NOT included.",
+     "page": 14,
+     "notes": "Same dimension grid as SB 400 (width 150-400, projection 340-700 cm, 20 cm steps); no column-group label printed. Page 27: 'SB400R - water drainage on the client's side. Dedicated DN50 gutter outlets.' No posts are priced or mentioned on this page and the price includes wall mounts, so mapped to no_legs (fixed to walls / existing structure) - see uncertainties. Hidden motor +10%. Option: 4 gutters with angle overflows 250 EUR (not discountable)."
+    },
+    {
+     "key": "sb400_roof_module",
+     "label": "Pergola SB 400 - roof module (SB400MD, blades on guides, Picolo XL motor)",
+     "config": "PERGOLA SB 400 - ROOF MODULE",
+     "mountType": "existing_structure",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      143,
+      183,
+      223,
+      263,
+      303,
+      343,
+      383,
+      423,
+      463,
+      503,
+      543,
+      583,
+      623,
+      663,
+      703
+     ],
+     "cols": [
+      100,
+      150,
+      200,
+      250,
+      300,
+      350,
+      400
+     ],
+     "values": {
+      "143": {
+       "100": 1875,
+       "150": 2045,
+       "200": 2210,
+       "250": 2380,
+       "300": 2545,
+       "350": 2715,
+       "400": 2880
+      },
+      "183": {
+       "100": 2120,
+       "150": 2335,
+       "200": 2550,
+       "250": 2765,
+       "300": 2980,
+       "350": 3195,
+       "400": 3410
+      },
+      "223": {
+       "100": 2360,
+       "150": 2625,
+       "200": 2885,
+       "250": 3150,
+       "300": 3410,
+       "350": 3670,
+       "400": 3935
+      },
+      "263": {
+       "100": 2605,
+       "150": 2915,
+       "200": 3225,
+       "250": 3535,
+       "300": 3845,
+       "350": 4150,
+       "400": 4460
+      },
+      "303": {
+       "100": 2845,
+       "150": 3205,
+       "200": 3560,
+       "250": 3915,
+       "300": 4275,
+       "350": 4630,
+       "400": 4990
+      },
+      "343": {
+       "100": 3090,
+       "150": 3495,
+       "200": 3895,
+       "250": 4300,
+       "300": 4705,
+       "350": 5110,
+       "400": 5515
+      },
+      "383": {
+       "100": 3330,
+       "150": 3780,
+       "200": 4235,
+       "250": 4685,
+       "300": 5140,
+       "350": 5590,
+       "400": 6045
+      },
+      "423": {
+       "100": 3575,
+       "150": 4070,
+       "200": 4570,
+       "250": 5070,
+       "300": 5570,
+       "350": 6070,
+       "400": 6570
+      },
+      "463": {
+       "100": 3815,
+       "150": 4360,
+       "200": 4905,
+       "250": 5455,
+       "300": 6005,
+       "350": 6550,
+       "400": 7100
+      },
+      "503": {
+       "100": 4060,
+       "150": 4650,
+       "200": 5245,
+       "250": 5840,
+       "300": 6435,
+       "350": 7030,
+       "400": 7625
+      },
+      "543": {
+       "100": 4300,
+       "150": 4940,
+       "200": 5580,
+       "250": 6225,
+       "300": 6870,
+       "350": 7510,
+       "400": 8150
+      },
+      "583": {
+       "100": 4545,
+       "150": 5230,
+       "200": 5920,
+       "250": 6610,
+       "300": 7300,
+       "350": 7990,
+       "400": 8680
+      },
+      "623": {
+       "100": 4785,
+       "150": 5520,
+       "200": 6255,
+       "250": 6995,
+       "300": 7735,
+       "350": 8470,
+       "400": 9205
+      },
+      "663": {
+       "100": 5030,
+       "150": 5810,
+       "200": 6590,
+       "250": 7380,
+       "300": 8165,
+       "350": 8945,
+       "400": 9735
+      },
+      "703": {
+       "100": 5270,
+       "150": 6100,
+       "200": 6930,
+       "250": 7765,
+       "300": 8595,
+       "350": 9425,
+       "400": 10260
+      }
+     },
+     "priceIncludes": "guides, slat system, drive transmission mechanism, motor (Picolo XL only). Receiver and remote NOT included. Sealing slats NOT included.",
+     "page": 15,
+     "notes": "Projection breakpoints printed as 1430, 1830 ... 7030 mm (143-703 cm, 200 mm increments); width 100-400 cm. Minimum dimensions: width 100 cm, projection 123 cm. Motor is not attached to the guides and partially protrudes; page 27 says 'load-bearing substructure required' for SB400MD → mapped to existing_structure."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 400,
+    "maxProjectionCm": 700,
+    "maxHeightCm": 280,
+    "notes": "Per single module as printed: width (blade length) 150-400 cm, projection 340-700 cm (roof module 100-400 x 143-703). Standard clear height up to 2800 mm (intermediate post prices exist for 200-280 cm); heights 2801-3300 mm are an 'above standard' option with partial warranty exclusions (+250 EUR free-standing / +150 EUR wall-mounted). NOTE: the PDF's width axis max is 400 cm and projection max 700 cm, i.e. the opposite orientation to the customer's spec (700 wide x 400 projection). No multi-module / coupled price tables exist on pp. 12-15."
+   },
+   "options": [
+    {
+     "name": "Hidden motor version (motor hidden inside the beam, Somfy TILT 24V)",
+     "price": 10,
+     "unit": "%",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted, SB400 R",
+     "notes": "10% of system price after discounts"
+    },
+    {
+     "name": "Additional intermediate post, height 200 cm (incl. foot and top connection)",
+     "price": 240,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted (also p.13)",
+     "notes": ""
+    },
+    {
+     "name": "Additional intermediate post, height 220 cm",
+     "price": 255,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted",
+     "notes": ""
+    },
+    {
+     "name": "Additional intermediate post, height 240 cm",
+     "price": 265,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted",
+     "notes": ""
+    },
+    {
+     "name": "Additional intermediate post, height 260 cm",
+     "price": 280,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted",
+     "notes": ""
+    },
+    {
+     "name": "Additional intermediate post, height 280 cm",
+     "price": 295,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 free-standing, wall-mounted",
+     "notes": ""
+    },
+    {
+     "name": "Additional revision in the beam behind the motor bracket (first one included)",
+     "price": 54,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 all beam versions",
+     "notes": "Not subject to discount"
+    },
+    {
+     "name": "Universal Wall-Mounted Bracket for pergolas with visible motor (1M)",
+     "price": 48,
+     "unit": "pcs",
+     "page": 13,
+     "appliesTo": "SB400 wall-mounted, SB400 R",
+     "notes": ""
+    },
+    {
+     "name": "Wall Connector (mounted on the beam) for pergolas with hidden motor",
+     "price": 21,
+     "unit": "pcs",
+     "page": 13,
+     "appliesTo": "SB400 wall-mounted, SB400 R",
+     "notes": ""
+    },
+    {
+     "name": "System height above standard 2801-3300 mm - free-standing",
+     "price": 250,
+     "unit": "pcs",
+     "page": 6,
+     "appliesTo": "SB400 free-standing",
+     "notes": "Partial warranty exclusions"
+    },
+    {
+     "name": "System height above standard 2801-3300 mm - wall-mounted",
+     "price": 150,
+     "unit": "pcs",
+     "page": 6,
+     "appliesTo": "SB400 wall-mounted",
+     "notes": "Partial warranty exclusions"
+    },
+    {
+     "name": "Water outflow to 1 post (4 gutters)",
+     "price": 10,
+     "unit": "%",
+     "page": 6,
+     "appliesTo": "Pergolas (not SB350)",
+     "notes": "10% of price after discount"
+    },
+    {
+     "name": "4 gutters with angle overflows",
+     "price": 250,
+     "unit": "pcs",
+     "page": 14,
+     "appliesTo": "SB400 R",
+     "notes": "Not discountable"
+    },
+    {
+     "name": "Painting in RAL colour outside the ALUPROF palette",
+     "price": 15,
+     "unit": "%",
+     "page": 6,
+     "appliesTo": "SB400 (all pergolas except SB350)",
+     "notes": "15% of system price after discount"
+    },
+    {
+     "name": "Wood-effect finish (wrapping technique)",
+     "price": 20,
+     "unit": "%",
+     "page": 6,
+     "appliesTo": "SB400",
+     "notes": "20% of system price after discount; wood decors Mahogany 26, Cherry 27, Walnut 28, Golden Oak 30, Malt oak 49, Winchester 52 (p.7)"
+    },
+    {
+     "name": "BleBox Pergola DC controller set with 1-channel remote (T7) or 6-channel remote (T8) - for Pergola motor 24V BleBox control",
+     "price": 142,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 with 24V BleBox motor",
+     "notes": "6k remote (T8) if order includes LED or ZiiiP"
+    },
+    {
+     "name": "Teleco IOALL868 Pergola Controller (V2) - for hidden motor Tilt 24V",
+     "price": 709,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 hidden-motor version",
+     "notes": ""
+    },
+    {
+     "name": "Teleco 105HK rain and temperature sensor (V1)",
+     "price": 161,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 hidden-motor version (Teleco)",
+     "notes": "optional"
+    },
+    {
+     "name": "Pergola Slim receiver io (WC) - for Picolo XL motor",
+     "price": 174,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 with Picolo XL motor; roof module (p.15)",
+     "notes": ""
+    },
+    {
+     "name": "Elero COMBIO 868 RM receiver (DB) - for Picolo XL motor",
+     "price": 117,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 with Picolo XL motor; roof module (p.15)",
+     "notes": ""
+    },
+    {
+     "name": "BleBox WlightBoxS Pro LED controller (WE)",
+     "price": 77,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 LED, BleBox control",
+     "notes": ""
+    },
+    {
+     "name": "Somfy White LED Receiver io (PL)",
+     "price": 212,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 LED, Picolo XL / io",
+     "notes": ""
+    },
+    {
+     "name": "Elero COMBIO 868 LI LED receiver (UP)",
+     "price": 188,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 LED, Picolo XL / Elero",
+     "notes": ""
+    },
+    {
+     "name": "Smart Screen BleBox for Elero motors (ZIIIP compatible receiver) (T5)",
+     "price": 103,
+     "unit": "pcs",
+     "page": 12,
+     "appliesTo": "SB400 with BleBox control + ZIIIP screens",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 1430 mm",
+     "price": 61,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 1830 mm",
+     "price": 77,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 2230 mm",
+     "price": 93,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 2630 mm",
+     "price": 109,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 3030 mm",
+     "price": 126,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 3430 mm",
+     "price": 142,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 3830 mm",
+     "price": 158,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 4230 mm",
+     "price": 174,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 4630 mm",
+     "price": 191,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 5030 mm",
+     "price": 207,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 5430 mm",
+     "price": 223,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 5830 mm",
+     "price": 240,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 6230 mm",
+     "price": 256,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 6630 mm",
+     "price": 272,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "Gutters (2 pcs) for roof module, projection 7030 mm",
+     "price": 289,
+     "unit": "set",
+     "page": 15,
+     "appliesTo": "SB400 roof module",
+     "notes": ""
+    },
+    {
+     "name": "LED COB on perimeter 3200 K",
+     "price": 869,
+     "unit": "pcs",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED COB on perimeter 4000 K",
+     "price": 869,
+     "unit": "pcs",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED COB on perimeter RGB",
+     "price": 1100,
+     "unit": "pcs",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "RGB* - only available in a version with hidden motor"
+    },
+    {
+     "name": "LED COB RGB in blades - projection 1400-3590 mm (2 blades)",
+     "price": 670,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED COB RGB in blades - projection 3600-5390 mm (3 blades)",
+     "price": 1010,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED COB RGB in blades - projection 5400-7000 mm (4 blades)",
+     "price": 1340,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED COB 3200 K or 4000 K in blades - projection 1400-3590 mm (2 blades)",
+     "price": 550,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED COB 3200 K or 4000 K in blades - projection 3600-5390 mm (3 blades)",
+     "price": 825,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED COB 3200 K or 4000 K in blades - projection 5400-7000 mm (4 blades)",
+     "price": 1100,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "* only with hidden motor"
+    },
+    {
+     "name": "LED points 3300 K - projection 1400-3590 mm, column 1500-2740 (4 points)",
+     "price": 824,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": "column header 1500-2740 / 2750-4000 is not labelled; presumably width in mm"
+    },
+    {
+     "name": "LED points 3300 K - projection 1400-3590 mm, column 2750-4000 (6 points)",
+     "price": 902,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED points 3300 K - projection 3600-5390 mm, column 1500-2740 (6 points)",
+     "price": 902,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED points 3300 K - projection 3600-5390 mm, column 2750-4000 (9 points)",
+     "price": 1098,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED points 3300 K - projection 5400-7000 mm, column 1500-2740 (8 points)",
+     "price": 1020,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    },
+    {
+     "name": "LED points 3300 K - projection 5400-7000 mm, column 2750-4000 (12 points)",
+     "price": 1255,
+     "unit": "set",
+     "page": 20,
+     "appliesTo": "SB400",
+     "notes": ""
+    }
+   ],
+   "uncertainties": [
+    "Task asked to separate 'No middle pole' vs other column groups: pages 12 and 13 print only ONE column group ('no middle pole' / 'No middle pole'); page 14 (SB 400 R) has no group label. No other groups exist in this edition.",
+    "Axis orientation: the PDF puts width (blade/beam length) at max 400 cm and projection at max 700 cm. The customer spec (700 wide x 400 projection) is the opposite orientation - confirm which side the customer calls 'width'.",
+    "Customer spec mentions 2 modules for 701-1400 width / 401-800 projection: the PDF has NO multi-module or coupled tables for SB 400 (pp. 12-15); how coupled systems are priced (e.g. sum of modules) is not stated.",
+    "Minimum dimensions printed (projection 140/160/240 cm) are below the first table row (340 cm); price for projections < 340 cm is not printed (presumably the 340 row applies) (p.12-14).",
+    "SB 400 R mountType: page does not explicitly state free-standing/wall; price includes wall mounts and no posts are mentioned -> mapped to no_legs. Confirm with Aluprof (p.14, p.27).",
+    "Roof module gutters table header says 'Projection [cm]' but the values 1430...7030 are clearly mm (same as the main table) (p.15).",
+    "LED points 3300 K: the sub-columns '1500 - 2740' and '2750 - 4000' have no axis label; assumed width in mm (p.20).",
+    "Single-colour LED control with Teleco controller (hidden motor) has no printed price; p.12 says 'Standard MiLight controller with remote control included in the price' (p.12-14).",
+    "Page 6 RAL rule: 15% for RAL outside the ALUPROF palette; all 35 ALUPROF palette colours are 'option available' (no surcharge) for Pergolas on p.7; wood effects are 'option with surcharge' (20% for SB400 per p.6)."
+   ]
+  },
+  {
+   "product": "Aluprof Pergola V ZIIIP",
+   "pages": "7, 18",
+   "description": "Fabric (ZIP) pergola with pneumatic fabric tensioning, cassette and guides, wall-mounted with 2 posts; Somfy io or Cherubini Nemo Blue WT motor included.",
+   "variants": [
+    {
+     "key": "vziip_wall",
+     "label": "Pergola V ZIIIP (wall-mounted, 2 posts)",
+     "config": "PERGOLA V ZIIIP",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      550,
+      600
+     ],
+     "cols": [
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500
+     ],
+     "values": {
+      "200": {
+       "200": 2965,
+       "250": 3140,
+       "300": 3210,
+       "350": 3395,
+       "400": 3465,
+       "450": 3640,
+       "500": 3720
+      },
+      "250": {
+       "200": 3115,
+       "250": 3305,
+       "300": 3375,
+       "350": 3530,
+       "400": 3650,
+       "450": 3750,
+       "500": 3915
+      },
+      "300": {
+       "200": 3175,
+       "250": 3380,
+       "300": 3630,
+       "350": 3910,
+       "400": 4005,
+       "450": 4295,
+       "500": 4375
+      },
+      "350": {
+       "200": 3240,
+       "250": 3660,
+       "300": 3705,
+       "350": 4005,
+       "400": 4100,
+       "450": 4405,
+       "500": 4485
+      },
+      "400": {
+       "200": 3480,
+       "250": 3735,
+       "300": 3785,
+       "350": 4100,
+       "400": 4195,
+       "450": 4515,
+       "500": 4595
+      },
+      "450": {
+       "200": 3625,
+       "250": 3900,
+       "300": 3995,
+       "350": 4280,
+       "400": 4640,
+       "450": 5060,
+       "500": 5155
+      },
+      "500": {
+       "200": 3685,
+       "250": 3975,
+       "300": 4070,
+       "350": 4615,
+       "400": 4730,
+       "450": 5190,
+       "500": 5265
+      },
+      "550": {
+       "200": 3750,
+       "250": 4055,
+       "300": 4370,
+       "350": 4710,
+       "400": 4825,
+       "450": 5300,
+       "500": 5375
+      },
+      "600": {
+       "200": 3810,
+       "250": 4335,
+       "300": 4450,
+       "350": 4805,
+       "400": 4920,
+       "450": 5430,
+       "500": 5485
+      }
+     },
+     "priceIncludes": "Somfy Pergola io 40/17 motor (io control) OR Cherubini Nemo Blue WT 40/17 (wired control); 2 posts 2.4 m in construction colour; 1 or 2 stabilising beams (stainless steel); structure painted RAL 9010/9006/7016/9005 MAT or FSM 71319. Remote/sensors not mentioned as included.",
+     "page": 18,
+     "notes": "Properties list 'Wall-mounted construction' → wall. Cells including 2 stabilising beams (darker shading): projection 450 x width 400-500; 500 x 350-500; 550 x 300-500; 600 x 250-500. All other cells include 1 beam. Possibility to connect systems with the modular foot of the post (no coupled price table). Fabrics: Serge 600 or Serge 1% (Serge 100). Lead time 3-5 weeks. 7-year warranty extension does not apply (p.6)."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 500,
+    "maxProjectionCm": 600,
+    "maxHeightCm": null,
+    "notes": "Table range width 200-500 cm, projection 200-600 cm (50 cm steps). Post height 2.4 m included. Matches customer spec 500 x 600 per module; no 2-module price table."
+   },
+   "options": [
+    {
+     "name": "Structure in any other ALUPROF palette colour or other RAL colour",
+     "price": 15,
+     "unit": "%",
+     "page": 18,
+     "appliesTo": "Pergola V ZIIIP",
+     "notes": "15% of system price after discount; included colours: RAL 9010 MAT, 9006 MAT, 7016 MAT, 9005 MAT, FSM 71319"
+    }
+   ],
+   "uncertainties": [
+    "Customer spec '501-1000 width = 2 modules': PDF only says systems can be connected with a modular post foot; no coupled pricing printed (p.18).",
+    "Whether a remote control is included with the Somfy io motor is not stated (p.18).",
+    "Minimum dimensions are not printed; table starts at 200 x 200 cm (p.18)."
+   ]
+  },
+  {
+   "product": "Aluprof VERANDA horizontal roller blind (customer name: Veranda Tens)",
+   "pages": "65, 67, 89",
+   "description": "Horizontal (roof) roller blind with built-in fabric tensioning system, electric drive only; price excludes motor.",
+   "variants": [
+    {
+     "key": "veranda_motor_excl",
+     "label": "VERANDA horizontal roller blind - price without motor",
+     "config": "VERANDA",
+     "mountType": "existing_structure",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "height",
+     "colAxis": "width",
+     "rows": [
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300,
+      325,
+      350,
+      375,
+      400,
+      425,
+      450,
+      475,
+      500
+     ],
+     "cols": [
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300,
+      325,
+      350,
+      375,
+      400,
+      425,
+      450
+     ],
+     "values": {
+      "150": {
+       "125": 575,
+       "150": 630,
+       "175": 690,
+       "200": 745,
+       "225": 805,
+       "250": 860,
+       "275": 920,
+       "300": 975,
+       "325": 1030,
+       "350": 1090,
+       "375": 1145,
+       "400": 1205,
+       "425": 1260,
+       "450": 1320
+      },
+      "175": {
+       "125": 600,
+       "150": 660,
+       "175": 720,
+       "200": 780,
+       "225": 840,
+       "250": 900,
+       "275": 960,
+       "300": 1015,
+       "325": 1075,
+       "350": 1135,
+       "375": 1195,
+       "400": 1255,
+       "425": 1315,
+       "450": 1375
+      },
+      "200": {
+       "125": 620,
+       "150": 680,
+       "175": 745,
+       "200": 805,
+       "225": 865,
+       "250": 930,
+       "275": 990,
+       "300": 1050,
+       "325": 1110,
+       "350": 1175,
+       "375": 1235,
+       "400": 1295,
+       "425": 1360,
+       "450": 1420
+      },
+      "225": {
+       "125": 640,
+       "150": 705,
+       "175": 765,
+       "200": 830,
+       "225": 895,
+       "250": 960,
+       "275": 1020,
+       "300": 1085,
+       "325": 1150,
+       "350": 1210,
+       "375": 1275,
+       "400": 1340,
+       "425": 1400,
+       "450": 1465
+      },
+      "250": {
+       "125": 660,
+       "150": 725,
+       "175": 790,
+       "200": 855,
+       "225": 920,
+       "250": 990,
+       "275": 1055,
+       "300": 1120,
+       "325": 1185,
+       "350": 1250,
+       "375": 1315,
+       "400": 1380,
+       "425": 1445,
+       "450": 1510
+      },
+      "275": {
+       "125": 685,
+       "150": 755,
+       "175": 820,
+       "200": 890,
+       "225": 955,
+       "250": 1025,
+       "275": 1095,
+       "300": 1160,
+       "325": 1230,
+       "350": 1295,
+       "375": 1365,
+       "400": 1430,
+       "425": 1500,
+       "450": 1565
+      },
+      "300": {
+       "125": 705,
+       "150": 775,
+       "175": 845,
+       "200": 915,
+       "225": 985,
+       "250": 1055,
+       "275": 1125,
+       "300": 1195,
+       "325": 1265,
+       "350": 1335,
+       "375": 1405,
+       "400": 1470,
+       "425": 1540,
+       "450": 1610
+      },
+      "325": {
+       "125": 725,
+       "150": 800,
+       "175": 870,
+       "200": 940,
+       "225": 1015,
+       "250": 1085,
+       "275": 1155,
+       "300": 1230,
+       "325": 1300,
+       "350": 1370,
+       "375": 1445,
+       "400": 1515,
+       "425": 1585,
+       "450": 1660
+      },
+      "350": {
+       "125": 745,
+       "150": 820,
+       "175": 895,
+       "200": 965,
+       "225": 1040,
+       "250": 1115,
+       "275": 1190,
+       "300": 1260,
+       "325": 1335,
+       "350": 1410,
+       "375": 1485,
+       "400": 1555,
+       "425": 1630,
+       "450": 1705
+      },
+      "375": {
+       "200": 1000,
+       "225": 1075,
+       "250": 1150,
+       "275": 1230,
+       "300": 1305,
+       "325": 1380,
+       "350": 1455,
+       "375": 1530,
+       "400": 1605,
+       "425": 1680,
+       "450": 1760
+      },
+      "400": {
+       "200": 1025,
+       "225": 1105,
+       "250": 1180,
+       "275": 1260,
+       "300": 1335,
+       "325": 1415,
+       "350": 1495,
+       "375": 1570,
+       "400": 1650,
+       "425": 1725,
+       "450": 1805
+      },
+      "425": {
+       "200": 1050,
+       "225": 1130,
+       "250": 1210,
+       "275": 1290,
+       "300": 1370,
+       "325": 1450,
+       "350": 1530,
+       "375": 1610,
+       "400": 1690,
+       "425": 1770,
+       "450": 1850
+      },
+      "450": {
+       "200": 1080,
+       "225": 1160,
+       "250": 1240,
+       "275": 1325,
+       "300": 1405,
+       "325": 1485,
+       "350": 1570,
+       "375": 1650,
+       "400": 1735,
+       "425": 1815,
+       "450": 1895
+      },
+      "475": {
+       "200": 1110,
+       "225": 1195,
+       "250": 1280,
+       "275": 1365,
+       "300": 1445,
+       "325": 1530,
+       "350": 1615,
+       "375": 1700,
+       "400": 1785,
+       "425": 1865,
+       "450": 1950
+      },
+      "500": {
+       "225": 1225,
+       "250": 1310,
+       "275": 1395,
+       "300": 1480,
+       "325": 1565,
+       "350": 1650,
+       "375": 1740,
+       "400": 1825,
+       "425": 1910,
+       "450": 1995
+      }
+     },
+     "priceIncludes": "Blind only. 'The price in table above should be increased by the price of motor' - motor surcharge is mandatory (see options).",
+     "page": 89,
+     "notes": "Printed axes: rows 'Height [mm]' (= fabric run / projection of the horizontal blind) 150-500 cm, columns 'Width [mm]' 125-450 cm. Cells left empty in PDF: heights 375-475 cm only from width 200 cm; height 500 cm only from width 225 cm. Max height vs width: width 80-99.9 → 200 cm; 100-109.9 → 240; 110-119.9 → 300; 120-199.9 → 350; 200-224.9 → 475. Fabric limits: SOLTIS 92 max height 400 / max width 350; acrylic awning fabrics max height 500 / max width 450; min width 80 cm. mountType: a roof blind is mounted on a conservatory / pergola roof → existing_structure (PDF does not state mounting)."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 450,
+    "maxProjectionCm": 500,
+    "maxHeightCm": null,
+    "notes": "Projection here = printed 'Height'. Max 450 x 500 with acrylic fabric; SOLTIS 92 max 350 wide x 400. Min width 80 cm."
+   },
+   "options": [
+    {
+     "name": "Motor ALUPROF DM45S-40/15 (3I), mechanical limit switches, 3m black VVF",
+     "price": 111,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor ALUPROF M45ED/S-40/15 (S3), electronic limit switches + remote control unit, 3m black VVF",
+     "price": 206,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor ELERO VariEco M 40/14 (3K), 2m white RNF",
+     "price": 257,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": "mechanical limit switches row"
+    },
+    {
+     "name": "Motor ELERO SunTop M40/14 SH (41), electronic limit switches, 2m white RNF",
+     "price": 265,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor ELERO SunTop-868 M40/14 SH (43), electronic + radio, 2m white RNF",
+     "price": 333,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY LT 50 Mariner 40/17 (3L), mechanical limit switches, 2.5m white VVF",
+     "price": 316,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY Altus 50 RTS 40/17 (42), electronic + RTS radio, 2.5m white VVF",
+     "price": 374,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY SUNILUS 50 IO 40/17 (44), electronic + io radio, 5m white VVF",
+     "price": 383,
+     "unit": "pcs",
+     "page": 89,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Veranda bracket (1C), length 57-180 mm",
+     "price": 16,
+     "unit": "pcs",
+     "page": 65,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Modular bracket (14), length 57-180 mm",
+     "price": 18,
+     "unit": "pcs",
+     "page": 65,
+     "appliesTo": "VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 1-4 systems",
+     "price": 300,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens and VERANDA (not Veranda V ZiiiP)",
+     "notes": "ALUPROF palette colours included in price"
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 5-9 systems",
+     "price": 400,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens and VERANDA",
+     "notes": ""
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 10-20 systems",
+     "price": 500,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens and VERANDA",
+     "notes": "above 20 systems no surcharge"
+    }
+   ],
+   "uncertainties": [
+    "Row axis printed as 'Height' (vertical-blind wording) although VERANDA is horizontal: treated as projection/fabric run (p.89).",
+    "'Max. height' line for 'Acrylic awning fabrics**' is 500 cm and the footnote marker is '*' - asterisk mismatch in PDF (p.89).",
+    "Remote controls for RTS/io motors are on printed pp. 113-118 (PDF pp. 111-116) - not extracted.",
+    "Width 450 cm column exists in the table but SOLTIS 92 is limited to 350 cm width; widths > 350 require acrylic fabric (p.89)."
+   ]
+  },
+  {
+   "product": "Aluprof VERANDA V ZIIIP",
+   "pages": "65, 67, 90",
+   "description": "Horizontal ZIP roof blind with pneumatic fabric tensioning; Somfy io or Cherubini Nemo Blue WT motor included.",
+   "variants": [
+    {
+     "key": "veranda_vziip",
+     "label": "VERANDA V ZIIIP (motor included)",
+     "config": "VERANDA V ZIIIP",
+     "mountType": "existing_structure",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      550,
+      600
+     ],
+     "cols": [
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500
+     ],
+     "values": {
+      "200": {
+       "200": 2610,
+       "250": 2780,
+       "300": 2855,
+       "350": 3040,
+       "400": 3110,
+       "450": 3280,
+       "500": 3360
+      },
+      "250": {
+       "200": 2760,
+       "250": 2945,
+       "300": 3020,
+       "350": 3175,
+       "400": 3290,
+       "450": 3395,
+       "500": 3560
+      },
+      "300": {
+       "200": 2820,
+       "250": 3025,
+       "300": 3270,
+       "350": 3555,
+       "400": 3650,
+       "450": 3940,
+       "500": 4015
+      },
+      "350": {
+       "200": 2880,
+       "250": 3300,
+       "300": 3350,
+       "350": 3650,
+       "400": 3745,
+       "450": 4050,
+       "500": 4130
+      },
+      "400": {
+       "200": 3120,
+       "250": 3380,
+       "300": 3430,
+       "350": 3745,
+       "400": 3835,
+       "450": 4160,
+       "500": 4240
+      },
+      "450": {
+       "200": 3270,
+       "250": 3540,
+       "300": 3635,
+       "350": 3925,
+       "400": 4280,
+       "450": 4705,
+       "500": 4795
+      },
+      "500": {
+       "200": 3330,
+       "250": 3620,
+       "300": 3715,
+       "350": 4260,
+       "400": 4375,
+       "450": 4835,
+       "500": 4905
+      },
+      "550": {
+       "200": 3395,
+       "250": 3700,
+       "300": 4015,
+       "350": 4355,
+       "400": 4470,
+       "450": 4945,
+       "500": 5020
+      },
+      "600": {
+       "200": 3455,
+       "250": 3975,
+       "300": 4095,
+       "350": 4450,
+       "400": 4565,
+       "450": 5075,
+       "500": 5130
+      }
+     },
+     "priceIncludes": "Somfy Pergola io 40/17 OR Cherubini Nemo Blue WT 40/17 motor; guide rail brackets; optionally cassette brackets; structure in RAL 9010/9006/7016/9005 MAT or FSM 71319.",
+     "page": 90,
+     "notes": "Width 200-500 cm, projection 200-600 cm. Fabrics Serge 600 or Serge 1% (Serge 100). Lead time 3-5 weeks. Systems can be connected with a modular guide rail bracket (no coupled table). mountType: roof blind on an existing structure → existing_structure (not stated in PDF)."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 500,
+    "maxProjectionCm": 600,
+    "maxHeightCm": null,
+    "notes": "Matches customer spec 500 x 600."
+   },
+   "options": [
+    {
+     "name": "Structure in any other ALUPROF palette colour or other RAL colour",
+     "price": 15,
+     "unit": "%",
+     "page": 90,
+     "appliesTo": "VERANDA V ZIIIP",
+     "notes": "15% of system price after discount (p.65 and p.90)"
+    }
+   ],
+   "uncertainties": [
+    "Shading on p.90 alternates grey/white rows only (no 1-beam/2-beam zones as on Pergola V ZIIIP p.18).",
+    "Mounting type not stated; mapped to existing_structure."
+   ]
+  },
+  {
+   "product": "Aluprof R ZIIIP 120 / R ZIIIP 120 for concealed installation (customer name: Refleksol 120 ZIP)",
+   "pages": "65-67, 69",
+   "description": "Vertical ZIP screen (side screen) with 120 cassette and G40Z / G40Z-05 guide rails; electric drive only, motor charged as surcharge.",
+   "variants": [
+    {
+     "key": "rziip120_motor_excl",
+     "label": "R ZIIIP 120 vertical ZIP screen - price without motor",
+     "config": "R ZIIIP 120, R ZIIIP 120 FOR CONCEALED INSTALLATION",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "height",
+     "colAxis": "width",
+     "rows": [
+      100,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300,
+      325,
+      350,
+      375,
+      400
+     ],
+     "cols": [
+      100,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300,
+      325,
+      350,
+      375,
+      400,
+      425,
+      450,
+      475,
+      500,
+      525,
+      550,
+      575,
+      600,
+      625,
+      650,
+      675,
+      700
+     ],
+     "values": {
+      "100": {
+       "100": 325,
+       "125": 355,
+       "150": 390,
+       "175": 425,
+       "200": 455,
+       "225": 490,
+       "250": 520,
+       "275": 555,
+       "300": 590,
+       "325": 620,
+       "350": 655,
+       "375": 690,
+       "400": 720,
+       "425": 905,
+       "450": 945,
+       "475": 980,
+       "500": 1020,
+       "525": 1405,
+       "550": 1465,
+       "575": 1520,
+       "600": 1580,
+       "625": 1640,
+       "650": 1695,
+       "675": 1755,
+       "700": 1810
+      },
+      "125": {
+       "100": 355,
+       "125": 390,
+       "150": 425,
+       "175": 460,
+       "200": 495,
+       "225": 530,
+       "250": 570,
+       "275": 605,
+       "300": 640,
+       "325": 675,
+       "350": 710,
+       "375": 745,
+       "400": 780,
+       "425": 980,
+       "450": 1020,
+       "475": 1060,
+       "500": 1105,
+       "525": 1480,
+       "550": 1540,
+       "575": 1600,
+       "600": 1660,
+       "625": 1720,
+       "650": 1780,
+       "675": 1840,
+       "700": 1900
+      },
+      "150": {
+       "100": 385,
+       "125": 425,
+       "150": 465,
+       "175": 500,
+       "200": 540,
+       "225": 575,
+       "250": 615,
+       "275": 650,
+       "300": 690,
+       "325": 725,
+       "350": 765,
+       "375": 805,
+       "400": 840,
+       "425": 1055,
+       "450": 1100,
+       "475": 1145,
+       "500": 1190,
+       "525": 1550,
+       "550": 1610,
+       "575": 1675,
+       "600": 1735,
+       "625": 1800,
+       "650": 1860,
+       "675": 1925,
+       "700": 1985
+      },
+      "175": {
+       "100": 425,
+       "125": 465,
+       "150": 505,
+       "175": 545,
+       "200": 585,
+       "225": 625,
+       "250": 665,
+       "275": 705,
+       "300": 745,
+       "325": 785,
+       "350": 825,
+       "375": 865,
+       "400": 905,
+       "425": 1130,
+       "450": 1180,
+       "475": 1230,
+       "500": 1280,
+       "525": 1625,
+       "550": 1690,
+       "575": 1755,
+       "600": 1820,
+       "625": 1885,
+       "650": 1950,
+       "675": 2015,
+       "700": 2080
+      },
+      "200": {
+       "100": 455,
+       "125": 495,
+       "150": 540,
+       "175": 580,
+       "200": 625,
+       "225": 665,
+       "250": 710,
+       "275": 750,
+       "300": 795,
+       "325": 840,
+       "350": 880,
+       "375": 925,
+       "400": 965,
+       "425": 1205,
+       "450": 1260,
+       "475": 1310,
+       "500": 1360,
+       "525": 1700,
+       "550": 1765,
+       "575": 1835,
+       "600": 1900,
+       "625": 1965,
+       "650": 2035,
+       "675": 2100,
+       "700": 2170
+      },
+      "225": {
+       "100": 485,
+       "125": 530,
+       "150": 575,
+       "175": 620,
+       "200": 665,
+       "225": 710,
+       "250": 755,
+       "275": 800,
+       "300": 845,
+       "325": 890,
+       "350": 935,
+       "375": 980,
+       "400": 1025,
+       "425": 1280,
+       "450": 1335,
+       "475": 1390,
+       "500": 1445,
+       "525": 1770,
+       "550": 1840,
+       "575": 1910,
+       "600": 1980,
+       "625": 2050,
+       "650": 2120,
+       "675": 2185,
+       "700": 2255
+      },
+      "250": {
+       "100": 520,
+       "125": 565,
+       "150": 615,
+       "175": 660,
+       "200": 710,
+       "225": 755,
+       "250": 800,
+       "275": 850,
+       "300": 895,
+       "325": 945,
+       "350": 990,
+       "375": 1040,
+       "400": 1085,
+       "425": 1360,
+       "450": 1415,
+       "475": 1470,
+       "500": 1530,
+       "525": 1840,
+       "550": 1915,
+       "575": 1985,
+       "600": 2055,
+       "625": 2130,
+       "650": 2200,
+       "675": 2275,
+       "700": 2345
+      },
+      "275": {
+       "100": 555,
+       "125": 605,
+       "150": 655,
+       "175": 705,
+       "200": 750,
+       "225": 800,
+       "250": 850,
+       "275": 900,
+       "300": 950,
+       "325": 1000,
+       "350": 1050,
+       "375": 1100,
+       "400": 1150,
+       "425": 1435,
+       "450": 1495,
+       "475": 1555,
+       "500": 1615,
+       "525": 1915,
+       "550": 1990,
+       "575": 2065,
+       "600": 2140,
+       "625": 2215,
+       "650": 2290,
+       "675": 2360,
+       "700": 2435
+      },
+      "300": {
+       "100": 585,
+       "125": 640,
+       "150": 690,
+       "175": 740,
+       "200": 795,
+       "225": 845,
+       "250": 900,
+       "275": 950,
+       "300": 1000,
+       "325": 1055,
+       "350": 1105,
+       "375": 1155,
+       "400": 1210,
+       "425": 1510,
+       "450": 1575,
+       "475": 1635,
+       "500": 1700,
+       "525": 1990,
+       "550": 2065,
+       "575": 2140,
+       "600": 2220,
+       "625": 2295,
+       "650": 2370,
+       "675": 2445,
+       "700": 2525
+      },
+      "325": {
+       "100": 620,
+       "125": 670,
+       "150": 725,
+       "175": 780,
+       "200": 835,
+       "225": 890,
+       "250": 945,
+       "275": 1000,
+       "300": 1050,
+       "325": 1105,
+       "350": 1160,
+       "375": 1215,
+       "400": 1270,
+       "425": 1585,
+       "450": 1650,
+       "475": 1715,
+       "500": 1780,
+       "525": 2060,
+       "550": 2140,
+       "575": 2215,
+       "600": 2295,
+       "625": 2375,
+       "650": 2455,
+       "675": 2530,
+       "700": 2610
+      },
+      "350": {
+       "100": 650,
+       "125": 705,
+       "150": 765,
+       "175": 820,
+       "200": 875,
+       "225": 935,
+       "250": 990,
+       "275": 1045,
+       "300": 1105,
+       "325": 1160,
+       "350": 1215,
+       "375": 1275,
+       "400": 1330,
+       "425": 1660,
+       "450": 1730,
+       "475": 1800,
+       "500": 1865,
+       "525": 2130,
+       "550": 2215,
+       "575": 2295,
+       "600": 2375,
+       "625": 2460,
+       "650": 2540,
+       "675": 2620,
+       "700": 2705
+      },
+      "375": {
+       "100": 685,
+       "125": 745,
+       "150": 805,
+       "175": 865,
+       "200": 920,
+       "225": 980,
+       "250": 1040,
+       "275": 1100,
+       "300": 1155,
+       "325": 1215,
+       "350": 1275,
+       "375": 1335,
+       "400": 1395,
+       "425": 1740,
+       "450": 1810,
+       "475": 1885,
+       "500": 1955,
+       "525": 2210,
+       "550": 2290,
+       "575": 2375,
+       "600": 2460,
+       "625": 2545,
+       "650": 2625,
+       "675": 2710,
+       "700": 2795
+      },
+      "400": {
+       "100": 715,
+       "125": 780,
+       "150": 840,
+       "175": 900,
+       "200": 965,
+       "225": 1025,
+       "250": 1085,
+       "275": 1145,
+       "300": 1210,
+       "325": 1270,
+       "350": 1330,
+       "375": 1390,
+       "400": 1455,
+       "425": 1815,
+       "450": 1890,
+       "475": 1965,
+       "500": 2035,
+       "525": 2280,
+       "550": 2365,
+       "575": 2450,
+       "600": 2535,
+       "625": 2625,
+       "650": 2710,
+       "675": 2795,
+       "700": 2880
+      }
+     },
+     "priceIncludes": "Screen (cassette, guide rails, fabric, bottom bar). 'Available with electric drive only' - motor price from 'Surcharge for electric drive' table must be added (see options). Same table for standard and concealed installation.",
+     "page": 69,
+     "notes": "Width 100-700 cm, height 100-400 cm (25 cm steps). Fabric groups SERGE 600, SOLTIS VEOZIP, SERGE 1% (SERGE 100) share ONE price table (no fabric price groups). Coloured zones: (a) blue, widths 100-150 cm (all heights) = version with widened bottom bar (standard bottom bar possible only after consultation + warranty exclusions); elsewhere a widened bottom bar is +5%. (b) teal = minimum 20 Nm/25 Nm motor required, always widened bottom bar and ZOOMTECH: widths 525-700 cm at all heights, and widths 425-500 cm at heights 325-400 cm. When ordered for pergolas / in passage on B2B a widened beam is always selected (+5%). Concealed version: back of cassette painted as standard; motors marked orange are not available for the concealed version. Guide rails (p.66): ZIIIP 120 uses G40Z-05 or G40Z (G40Z-05 for concealed/self-supporting only if stated on order). mountType wall (side screen mounted on facade/pergola - not stated in PDF)."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 700,
+    "maxProjectionCm": null,
+    "maxHeightCm": 400,
+    "notes": "Max height 400 cm, max width 700 cm, minimum width per motor (61-78 cm). Matches customer spec 700 x 400."
+   },
+   "options": [
+    {
+     "name": "Motor ALUPROF DM45S-10/26 (36), mech. limit switches, 3m black VVF, min width 61 cm",
+     "price": 102,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "not for concealed version"
+    },
+    {
+     "name": "Motor ELERO VariEasy M10/14 SH (39), mech. limit switches, 2m white RNF, min width 64 cm",
+     "price": 124,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "not for concealed version"
+    },
+    {
+     "name": "Motor SOMFY LT 50 Jet 10/17 (3A), mech. limit switches, 2.5m white VVF, min width 64 cm",
+     "price": 212,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "not for concealed version; producer may use same type with smaller rpm"
+    },
+    {
+     "name": "Motor ELERO SunTop M10/14 SH (2S), electronic limit switches, min width 63 cm",
+     "price": 176,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY Altus 50 WT 10/17 (2T), electronic limit switches, 3m black RRF, min width 75 cm",
+     "price": 226,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY Maestria 50 WT 10/17 (3G), electronic + obstacle detection, min width 70 cm",
+     "price": 245,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor ALUPROF DM45EAF/S-10/26 (PI), electronic + remote control unit, min width 76 cm",
+     "price": 206,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor ELERO SunTop-868 M10/14 SH (3E), electronic + radio, min width 62 cm",
+     "price": 235,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY Altus 50 RTS 10/17 (3D), electronic + RTS radio, min width 70 cm",
+     "price": 262,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "producer may use same type with smaller rpm"
+    },
+    {
+     "name": "Motor SOMFY Sunilus SCR IO 10/17 (3F), electronic + io radio, min width 70 cm",
+     "price": 262,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor SOMFY Maestria+ 50 io 10/17 (3H), electronic + io + obstacle detection, min width 70 cm",
+     "price": 296,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Motor ALUPROF MH45-20/26 (T4) - for widths above 4 m, mech. limit switches, 5m white VVF",
+     "price": 111,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "not for concealed version; 20 Nm class"
+    },
+    {
+     "name": "Motor ELERO VariEasy M20/14 (T1) - for widths above 4 m, RNF 2.0m white",
+     "price": 131,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "not for concealed version; 20 Nm class"
+    },
+    {
+     "name": "Motor SOMFY Maestria 50 WT 25/17 (T2) - for widths above 4 m, electronic + obstacle detection",
+     "price": 269,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "25 Nm"
+    },
+    {
+     "name": "Motor SOMFY Maestria+ 50 io 25/17 (T3) - for widths above 4 m, electronic + io + obstacle detection",
+     "price": 332,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "25 Nm"
+    },
+    {
+     "name": "BleBox set (Elero VariEco motor + Smart Screen Receiver) for zips",
+     "price": 226,
+     "unit": "set",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Widened bottom bar (where not mandatory)",
+     "price": 5,
+     "unit": "%",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "5% of system price"
+    },
+    {
+     "name": "Veranda bracket (1C) for ZIIIP 120 guide rail G40Z",
+     "price": 16,
+     "unit": "pcs",
+     "page": 69,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "p.69: 'For ZiiiP120 systems, Veranda brackets are included in the given price: 16 €' - wording ambiguous, see uncertainties; p.66 says surcharge, price see p.67 (=PDF p.65)"
+    },
+    {
+     "name": "Adjustable bracket (11), length 39-45 or 52-58 mm",
+     "price": 16,
+     "unit": "pcs",
+     "page": 65,
+     "appliesTo": "Guide rails G40, GC30F/GC30FD",
+     "notes": ""
+    },
+    {
+     "name": "Extended guide rails (up to 1000 mm) - Ziiip systems",
+     "price": 17,
+     "unit": "system",
+     "page": 65,
+     "appliesTo": "R ZIIIP 120",
+     "notes": "after consulting representative"
+    },
+    {
+     "name": "Additional antiwind bar in systems with height below 2.5 m",
+     "price": 17,
+     "unit": "system",
+     "page": 65,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Extended cable guides (up to 2000 mm)",
+     "price": 13,
+     "unit": "system",
+     "page": 65,
+     "appliesTo": "R ZIIIP 120",
+     "notes": ""
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 1-4 systems",
+     "price": 300,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens",
+     "notes": "ALUPROF palette colours included"
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 5-9 systems",
+     "price": 400,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens",
+     "notes": ""
+    },
+    {
+     "name": "Construction in RAL colour outside ALUPROF palette - 10-20 systems",
+     "price": 500,
+     "unit": "order",
+     "page": 65,
+     "appliesTo": "Screens",
+     "notes": "above 20 systems no surcharge"
+    }
+   ],
+   "uncertainties": [
+    "Matrix price excludes motor even though the screen is 'electric drive only' - add a motor from the surcharge table (p.69).",
+    "Motor table headings say 'For widths up to 5m*' and 'For widths above 4m' (overlap 4-5 m); the footnote says motor power is chosen according to the coloured (teal) zone of the price table (p.69).",
+    "'For ZiiiP120 systems, Veranda brackets are included in the given price: 16 €' - unclear whether 16 EUR is extra or already included (p.69); p.66 says Veranda bracket for ZIIIP 120 is a surcharge.",
+    "Remote controls (RTS/io) are on printed pp. 113-118 (PDF pp. 111-116) - not extracted.",
+    "mountType not stated; set to wall."
+   ]
+  },
+  {
+   "product": "Aluprof terrace awnings MADEIRA, CORSICA (cassette) and JAMAICA, AUSTRALIA (no cassette)",
+   "pages": "94-109",
+   "description": "Folding-arm terrace awnings. MADEIRA and CORSICA are cassette awnings with LED lighting included, motor-only (motor added separately). AUSTRALIA and JAMAICA are open awnings without cassette, priced with manual crank drive.",
+   "variants": [
+    {
+     "key": "madeira_wall_motor_excl",
+     "label": "MADEIRA cassette awning - wall brackets + LED, price without motor",
+     "config": "MADEIRA",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      160,
+      210,
+      260,
+      310,
+      360
+     ],
+     "cols": [
+      290,
+      350,
+      410,
+      470,
+      530,
+      590,
+      600
+     ],
+     "values": {
+      "160": {
+       "290": 1280,
+       "350": 1395,
+       "410": 1520,
+       "470": 1585,
+       "530": 1730,
+       "590": 1960,
+       "600": 2040
+      },
+      "210": {
+       "290": 1530,
+       "350": 1625,
+       "410": 1800,
+       "470": 1915,
+       "530": 2115,
+       "590": 2385,
+       "600": 2490
+      },
+      "260": {
+       "350": 1655,
+       "410": 1865,
+       "470": 2000,
+       "530": 2210,
+       "590": 2465,
+       "600": 2590
+      },
+      "310": {
+       "410": 1960,
+       "470": 2080,
+       "530": 2310,
+       "590": 2380,
+       "600": 2715
+      },
+      "360": {
+       "470": 2190,
+       "530": 2430,
+       "590": 2545,
+       "600": 2725
+      }
+     },
+     "priceIncludes": "Wall brackets and LED lighting. Motor NOT included ('The price of the motor must be added to the awning price'); not available with manual operation.",
+     "page": 96,
+     "notes": "Columns are width RANGES (cm) printed as 205-290, 291-350, 351-410, 411-470, 471-530, 531-590, 591-600; 'cols' holds the upper bound of each range (a width w uses the first column with w <= col). Minimum width per projection as printed ('from X cm'): proj 160: from 205 cm; proj 210: from 250 cm; proj 260: from 305 cm; proj 310: from 355 cm; proj 360: from 410 cm. Cells with 3 arms (grey) as projection x col: 160x590, 160x600, 210x590, 210x600, 260x590, 260x600, 310x600; all other cells 2 arms. CASSETTE awning. Max width 600 cm (last range 591-600). The Madeira table has no printed axis headings (no 'PROJECTION'/'WIDTH' labels, no colour list) - layout assumed identical to the other tables. Drive selection p.107: only NEMO-H YELLOW IO (Somfy, p.103) is marked usable for MADEIRA. Wall brackets per width not printed for Madeira. Standard colours as p.95 column 'Australia, Jamaica, Dakar, Casablanca, Madeira...' (9010, 1015, 9006, 71319, 8014, 7016 STR, 9005 STR)."
+    },
+    {
+     "key": "corsica_wall_motor_excl",
+     "label": "CORSICA cassette awning - wall brackets + LED, price without motor",
+     "config": "CORSICA CASSETTE",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      160,
+      210,
+      260,
+      310,
+      360
+     ],
+     "cols": [
+      290,
+      350,
+      410,
+      470,
+      530,
+      590,
+      650,
+      700
+     ],
+     "values": {
+      "160": {
+       "290": 1025,
+       "350": 1115,
+       "410": 1215,
+       "470": 1270,
+       "530": 1385,
+       "590": 1570,
+       "650": 1695,
+       "700": 1745
+      },
+      "210": {
+       "290": 1225,
+       "350": 1300,
+       "410": 1435,
+       "470": 1530,
+       "530": 1695,
+       "590": 1905,
+       "650": 2075,
+       "700": 2140
+      },
+      "260": {
+       "350": 1325,
+       "410": 1495,
+       "470": 1600,
+       "530": 1770,
+       "590": 1970,
+       "650": 2165,
+       "700": 2215
+      },
+      "310": {
+       "410": 1570,
+       "470": 1665,
+       "530": 1845,
+       "590": 1905,
+       "650": 2265,
+       "700": 2325
+      },
+      "360": {
+       "470": 1755,
+       "530": 1945,
+       "590": 2035,
+       "650": 2280,
+       "700": 2435
+      }
+     },
+     "priceIncludes": "Wall brackets and LED lighting. Motor NOT included ('The price of the motor must be added to the price'); not available with manual operation.",
+     "page": 96,
+     "notes": "Columns are width RANGES (cm) printed as 205-290, 291-350, 351-410, 411-470, 471-530, 531-590, 591-650, 651-700; 'cols' holds the upper bound of each range (a width w uses the first column with w <= col). Minimum width per projection as printed ('from X cm'): proj 160: from 205 cm; proj 210: from 255 cm; proj 260: from 305 cm; proj 310: from 355 cm; proj 360: from 410 cm. Cells with 3 arms (grey) as projection x col: 160x590, 160x650, 160x700, 210x590, 210x650, 210x700, 260x590, 260x650, 260x700, 310x650, 310x700, 360x700; all other cells 2 arms. CASSETTE awning. Wall brackets included; wall-bracket count by width: 2 (up to 350), 3 (351-470), 4 (471-590), 5 (591-700). mountType wall (wall brackets). Standard colours (no surcharge): White RAL 9010, Beige RAL 1015, Brown RAL 8014, Silver RAL 9006, Structural graphite 71319, Structural black RAL 9005, Structural anthracite RAL 7016. Plus Structural Clay Brown RAL 8003** and Beige VSR 240 SATIN** (longer lead time). Drive selection p.107 for CORSICA: NEMO WT BLUE/YELLOW, NEMO BLUE (recommended), NEMO YELLOW OREA RTS, NEMO YELLOW IO (recommended), NEMO-H RED (usable without crank); AXIS/AXIS-H/ALTUS RTS/NEMO-H YELLOW IO/RATIO-H not for Corsica."
+    },
+    {
+     "key": "australia_wall_manual",
+     "label": "AUSTRALIA terrace awning (no cassette) - manual crank drive",
+     "config": "AUSTRALIA",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      160,
+      210,
+      260,
+      310,
+      360
+     ],
+     "cols": [
+      290,
+      350,
+      410,
+      470,
+      530,
+      590,
+      650,
+      700
+     ],
+     "values": {
+      "160": {
+       "290": 605,
+       "350": 625,
+       "410": 700,
+       "470": 770,
+       "530": 860,
+       "590": 1010,
+       "650": 1110,
+       "700": 1125
+      },
+      "210": {
+       "290": 665,
+       "350": 720,
+       "410": 840,
+       "470": 940,
+       "530": 1130,
+       "590": 1205,
+       "650": 1315,
+       "700": 1345
+      },
+      "260": {
+       "350": 770,
+       "410": 890,
+       "470": 995,
+       "530": 1200,
+       "590": 1250,
+       "650": 1380,
+       "700": 1405
+      },
+      "310": {
+       "350": 830,
+       "410": 930,
+       "470": 1055,
+       "530": 1260,
+       "590": 1295,
+       "650": 1450,
+       "700": 1490
+      },
+      "360": {
+       "410": 1020,
+       "470": 1130,
+       "530": 1350,
+       "590": 1385,
+       "650": 1490,
+       "700": 1540
+      }
+     },
+     "priceIncludes": "Manual drive (crank 150, 180 or 220 cm) and wall brackets.",
+     "page": 96,
+     "notes": "Columns are width RANGES (cm) printed as 195-290, 291-350, 351-410, 411-470, 471-530, 531-590, 591-650, 651-700; 'cols' holds the upper bound of each range (a width w uses the first column with w <= col). Minimum width per projection as printed ('from X cm'): proj 160: from 195 cm; proj 210: from 245 cm; proj 260: from 295 cm; proj 310: from 345 cm; proj 360: from 395 cm. Cells with 3 arms (grey) as projection x col: 160x590, 160x650, 160x700, 210x590, 210x650, 210x700, 260x590, 260x650, 260x700, 310x650, 310x700, 360x700; all other cells 2 arms. NO CASSETTE. Electric drive for AUSTRALIA/JAMAICA: no separate electric table is printed - electric price = this manual-drive table + a motor set from pp. 100-105 (whether the crank/gear included in the manual price is deducted is NOT stated). Wall brackets included; wall-bracket count by width: 2 (up to 350), 3 (351-470), 4 (471-590), 5 (591-700). mountType wall (wall brackets). Standard colours (no surcharge): White RAL 9010, Beige RAL 1015, Brown RAL 8014, Silver RAL 9006, Structural graphite 71319, Structural black RAL 9005, Structural anthracite RAL 7016. Minimum width without overlapping arms = projection + 35 cm."
+    },
+    {
+     "key": "jamaica_wall_manual",
+     "label": "JAMAICA terrace awning (no cassette) - manual crank drive",
+     "config": "JAMAICA*",
+     "mountType": "wall",
+     "modulesWidth": 1,
+     "modulesProjection": 1,
+     "rowAxis": "projection",
+     "colAxis": "width",
+     "rows": [
+      160,
+      210,
+      260,
+      310,
+      360
+     ],
+     "cols": [
+      290,
+      350,
+      410,
+      470,
+      530,
+      590,
+      650,
+      700
+     ],
+     "values": {
+      "160": {
+       "290": 605,
+       "350": 665,
+       "410": 720,
+       "470": 795,
+       "530": 855,
+       "590": 990,
+       "650": 1090,
+       "700": 1115
+      },
+      "210": {
+       "290": 695,
+       "350": 765,
+       "410": 845,
+       "470": 960,
+       "530": 1150,
+       "590": 1285,
+       "650": 1390,
+       "700": 1435
+      },
+      "260": {
+       "350": 795,
+       "410": 920,
+       "470": 1015,
+       "530": 1250,
+       "590": 1370,
+       "650": 1540,
+       "700": 1555
+      },
+      "310": {
+       "410": 955,
+       "470": 1090,
+       "530": 1285,
+       "590": 1340,
+       "650": 1585,
+       "700": 1615
+      },
+      "360": {
+       "470": 1185,
+       "530": 1425,
+       "590": 1445,
+       "650": 1605,
+       "700": 1735
+      }
+     },
+     "priceIncludes": "Manual drive (crank 150, 180 or 220 cm) and wall brackets.",
+     "page": 96,
+     "notes": "Columns are width RANGES (cm) printed as 205-290, 291-350, 351-410, 411-470, 471-530, 531-590, 591-650, 651-700; 'cols' holds the upper bound of each range (a width w uses the first column with w <= col). Minimum width per projection as printed ('from X cm'): proj 160: from 205 cm; proj 210: from 255 cm; proj 260: from 305 cm; proj 310: from 355 cm; proj 360: from 410 cm. Cells with 3 arms (grey) as projection x col: 160x590, 160x650, 160x700, 210x590, 210x650, 210x700, 260x590, 260x650, 260x700, 310x650, 310x700, 360x700; all other cells 2 arms. NO CASSETTE (optional hood available, p.99). Electric drive for AUSTRALIA/JAMAICA: no separate electric table is printed - electric price = this manual-drive table + a motor set from pp. 100-105 (whether the crank/gear included in the manual price is deducted is NOT stated). Wall brackets included; wall-bracket count by width: 2 (up to 350), 3 (351-470), 4 (471-590), 5 (591-700). mountType wall (wall brackets). Standard colours (no surcharge): White RAL 9010, Beige RAL 1015, Brown RAL 8014, Silver RAL 9006, Structural graphite 71319, Structural black RAL 9005, Structural anthracite RAL 7016. Minimum width without overlapping arms = projection + 45 cm."
+    }
+   ],
+   "limits": {
+    "maxWidthCm": 700,
+    "maxProjectionCm": 360,
+    "maxHeightCm": null,
+    "notes": "Projections 160/210/260/310/360 cm (arm lengths). Width up to 700 cm (Madeira 600 cm). Minimum width = projection + 45 cm (Australia + 35 cm); with overlapping arms projection - 40 cm."
+   },
+   "options": [
+    {
+     "name": "Colour from ALUPROF palette other than standard colours",
+     "price": 20,
+     "unit": "%",
+     "page": 94,
+     "appliesTo": "All awnings",
+     "notes": "20% of system price after discount; lead time up to 4 weeks"
+    },
+    {
+     "name": "RAL colour outside ALUPROF palette",
+     "price": 30,
+     "unit": "%",
+     "page": 94,
+     "appliesTo": "All awnings",
+     "notes": "30% of system price after discount"
+    },
+    {
+     "name": "Packaging - double cardboard",
+     "price": 1.6,
+     "unit": "m",
+     "page": 94,
+     "appliesTo": "All awnings",
+     "notes": "per running metre"
+    },
+    {
+     "name": "Packaging - honeycomb cardboard",
+     "price": 2.95,
+     "unit": "m",
+     "page": 94,
+     "appliesTo": "All awnings",
+     "notes": "per running metre"
+    },
+    {
+     "name": "Set of overlapping arms",
+     "price": 79,
+     "unit": "pcs",
+     "page": 96,
+     "appliesTo": "AUSTRALIA, JAMAICA (and Palladio); not for 360 cm projection",
+     "notes": "Price = lowest catalogue price for the awning with the chosen projection + 79 EUR"
+    },
+    {
+     "name": "Additional folding arm 160 cm (KN)",
+     "price": 68,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "Australia, Jamaica, Corsica, Madeira (+Palladio, Dakar, Casablanca)",
+     "notes": ""
+    },
+    {
+     "name": "Additional folding arm 210 cm (KP)",
+     "price": 87,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "same",
+     "notes": ""
+    },
+    {
+     "name": "Additional folding arm 260 cm (KR)",
+     "price": 93,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "same",
+     "notes": ""
+    },
+    {
+     "name": "Additional folding arm 310 cm (KS)",
+     "price": 131,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "same",
+     "notes": ""
+    },
+    {
+     "name": "Additional folding arm 360 cm (KT)",
+     "price": 143,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "same",
+     "notes": ""
+    },
+    {
+     "name": "Folding arm PLUS 310 cm (KS) - third middle arm",
+     "price": 131,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "Palladio, Corsica, Australia, Jamaica, Madeira (310 cm arm only)",
+     "notes": ""
+    },
+    {
+     "name": "Folding arm PLUS 360 cm (KT) - third middle arm",
+     "price": 143,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "Palladio, Corsica, Australia, Jamaica (not Madeira)",
+     "notes": ""
+    },
+    {
+     "name": "Arm support - Australia (L1)",
+     "price": 60,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "AUSTRALIA",
+     "notes": ""
+    },
+    {
+     "name": "Arm support - Jamaica (L2)",
+     "price": 56,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "JAMAICA",
+     "notes": ""
+    },
+    {
+     "name": "Arm support - Corsica (L4)",
+     "price": 64,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "CORSICA",
+     "notes": ""
+    },
+    {
+     "name": "Arm support - Madeira (L4)",
+     "price": 64,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "Front bar connector - Australia (LA)",
+     "price": 12,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "AUSTRALIA",
+     "notes": ""
+    },
+    {
+     "name": "Front bar connector - Jamaica (LB)",
+     "price": 12,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "JAMAICA",
+     "notes": ""
+    },
+    {
+     "name": "Front bar connector - Corsica (LD)",
+     "price": 12,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "CORSICA",
+     "notes": ""
+    },
+    {
+     "name": "Front bar connector - Madeira (LD)",
+     "price": 12,
+     "unit": "pcs",
+     "page": 98,
+     "appliesTo": "MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "Telescopic support STANDARD with foot (JZ), 145-235 cm",
+     "price": 110,
+     "unit": "pair",
+     "page": 99,
+     "appliesTo": "AUSTRALIA, JAMAICA (not Corsica, Madeira)",
+     "notes": ""
+    },
+    {
+     "name": "Telescopic support PLUS with foot (K1), 145-235 cm",
+     "price": 218,
+     "unit": "pair",
+     "page": 99,
+     "appliesTo": "AUSTRALIA, JAMAICA (not Corsica, Madeira)",
+     "notes": ""
+    },
+    {
+     "name": "Footplate for telescopic support (JY)",
+     "price": 22,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "AUSTRALIA, JAMAICA",
+     "notes": ""
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 230 cm (2 supports)",
+     "price": 142,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 290 cm (2 supports)",
+     "price": 167,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 350 cm (2 supports)",
+     "price": 191,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 410 cm (3 supports)",
+     "price": 220,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 470 cm (3 supports)",
+     "price": 244,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 530 cm (4 supports)",
+     "price": 274,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 590 cm (4 supports)",
+     "price": 297,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 650 cm (5 supports)",
+     "price": 327,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Hood for JAMAICA (with supports and side covers), awning width 700 cm (5 supports)",
+     "price": 348,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "JAMAICA",
+     "notes": "wall installation only; hood 20 mm longer than awning"
+    },
+    {
+     "name": "Wall bracket (1D)",
+     "price": 12,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "Terrace awnings (Australia, Jamaica, Corsica, Madeira - not stated per model)",
+     "notes": ""
+    },
+    {
+     "name": "Ceiling bracket (1E) - mounted to the wall bracket",
+     "price": 16,
+     "unit": "pcs",
+     "page": 99,
+     "appliesTo": "Terrace awnings",
+     "notes": ""
+    },
+    {
+     "name": "Rafter bracket (1F) - mounted to the wall bracket",
+     "price": 75,
+     "unit": "pair",
+     "page": 99,
+     "appliesTo": "Terrace awnings",
+     "notes": ""
+    },
+    {
+     "name": "Niche bracket (1L)",
+     "price": 22,
+     "unit": "pair",
+     "page": 99,
+     "appliesTo": "Terrace awnings",
+     "notes": ""
+    },
+    {
+     "name": "Gear box 11:1 (IE) - manual drive",
+     "price": 34,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Manual awnings",
+     "notes": ""
+    },
+    {
+     "name": "Crank 150/180/220 cm (ID)",
+     "price": 22,
+     "unit": "pcs",
+     "page": 101,
+     "appliesTo": "Awnings (used with motors with emergency manual override)",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini NEMO WT BLUE 40 Nm (IS), 3m white VVF",
+     "price": 207,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "total with INIS switch 227 €"
+    },
+    {
+     "name": "Cherubini NEMO BLUE 30 Nm (IT), built-in receiver",
+     "price": 267,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "totals with 1-ch remote 322 €"
+    },
+    {
+     "name": "Cherubini NEMO BLUE 40 Nm (IU), built-in receiver",
+     "price": 270,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "with 1-ch remote 325 €"
+    },
+    {
+     "name": "Cherubini NEMO BLUE 100 Nm (IV) (Ø78 tube only)",
+     "price": 423,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "with 1-ch remote 478 €"
+    },
+    {
+     "name": "Cherubini INIS under-plaster switch (RT)",
+     "price": 20,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "wired motors",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini COMPACT remote control receiver (J1)",
+     "price": 119,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "NEMO WT BLUE",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini 1-channel remote (IX)",
+     "price": 55,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini 1-channel remote with sun sensor switch (IY)",
+     "price": 82,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini wind sensor via radio (J4)",
+     "price": 87,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini wind&sun sensor via radio (J5)",
+     "price": 122,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini wind&shock sensor via radio (J2)",
+     "price": 126,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini TDS GOLD remote control unit (IW)",
+     "price": 121,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Cherubini 7-channel remote with sun sensor switch (IZ)",
+     "price": 85,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "Wired wind sensor for TDS GOLD (J3)",
+     "price": 62,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "Cherubini",
+     "notes": ""
+    },
+    {
+     "name": "POWER ONE II receiver for LED lighting in Corsica or Heliosa heater (J7)",
+     "price": 154,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "CORSICA",
+     "notes": ""
+    },
+    {
+     "name": "Step-by-step switch (IC)",
+     "price": 19,
+     "unit": "pcs",
+     "page": 100,
+     "appliesTo": "NEMO BLUE optional",
+     "notes": ""
+    },
+    {
+     "name": "ALUPROF AXIS RED 40 Nm (IG), mechanical stops",
+     "price": 136,
+     "unit": "pcs",
+     "page": 101,
+     "appliesTo": "Australia, Jamaica (not cassette awnings)",
+     "notes": "total with INIS switch 156 €"
+    },
+    {
+     "name": "ALUPROF AXIS-H RED 40 Nm (IH), emergency manual override",
+     "price": 138,
+     "unit": "pcs",
+     "page": 101,
+     "appliesTo": "Australia, Jamaica",
+     "notes": "total with crank + switch 180 €"
+    },
+    {
+     "name": "ALUPROF NEMO-H RED 40 Nm (S1) for cassette awnings",
+     "price": 216,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "Corsica (p.107: usable without crank); not Madeira",
+     "notes": "total with crank (ID) + LCD RED 15-ch remote 282 €; +wind&shock 358 €; +wind/sun 414 €"
+    },
+    {
+     "name": "ALUPROF RATIO-H RED 40 Nm (U1) for awnings without a cassette",
+     "price": 216,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "Australia, Jamaica",
+     "notes": "totals 282 / 358 / 414 € as above"
+    },
+    {
+     "name": "LCD RED 15-channel remote (PK)",
+     "price": 44,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "ALUPROF RED motors",
+     "notes": ""
+    },
+    {
+     "name": "RED weather sensor wind&shock via radio (S2)",
+     "price": 76,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "ALUPROF RED motors",
+     "notes": ""
+    },
+    {
+     "name": "RED wind/sun sensor (PJ)",
+     "price": 132,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "ALUPROF RED motors",
+     "notes": ""
+    },
+    {
+     "name": "RED power supply for LED 12V with radio receiver (S4)",
+     "price": 117,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "CORSICA / MADEIRA with NEMO-H RED",
+     "notes": ""
+    },
+    {
+     "name": "1-channel remote RED DD1600HE (motor + LED) (S5)",
+     "price": 44,
+     "unit": "pcs",
+     "page": 102,
+     "appliesTo": "CORSICA / MADEIRA with NEMO-H RED",
+     "notes": ""
+    },
+    {
+     "name": "Somfy NEMO IO YELLOW (SUNEA IO) 30 Nm torque A (JJ)",
+     "price": 376,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "total with Situo 1 io remote 437 €"
+    },
+    {
+     "name": "Somfy NEMO IO YELLOW (SUNEA IO) 40 Nm torque B (JK)",
+     "price": 411,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "with Situo 1 io 472 €"
+    },
+    {
+     "name": "Somfy NEMO IO YELLOW (SUNEA IO) 100 Nm torque C (JL), Ø78 tube",
+     "price": 503,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Australia, Jamaica, Corsica",
+     "notes": "with Situo 1 io 564 €"
+    },
+    {
+     "name": "Somfy NEMO-H IO YELLOW (SUNEA CSI io) 40 Nm (SB)",
+     "price": 456,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Australia, Jamaica, MADEIRA (only motor marked for Madeira); not Corsica",
+     "notes": "total with crank + Situo 1 io 539 €"
+    },
+    {
+     "name": "Somfy NEMO-H IO YELLOW (SUNEA CSI io) 50 Nm (QU), 3m black RNF",
+     "price": 730,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Australia, Jamaica, MADEIRA",
+     "notes": "total with crank + Situo 1 io 813 €"
+    },
+    {
+     "name": "Somfy Situo 1 io pure remote (3M)",
+     "price": 61,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Amy 1 A/M modes io with frame (X8)",
+     "price": 86,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Eolis 3D WireFree io shake sensor (CE)",
+     "price": 206,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Eolis WireFree io wind sensor (GP)",
+     "price": 171,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Sunteis WireFree io sun sensor (Q1)",
+     "price": 208,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io",
+     "notes": ""
+    },
+    {
+     "name": "Somfy WHITE LED receiver io with dimmer, 4 channels",
+     "price": 212,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io LED control",
+     "notes": ""
+    },
+    {
+     "name": "Somfy TaHoma Switch (H7)",
+     "price": 337,
+     "unit": "pcs",
+     "page": 103,
+     "appliesTo": "Somfy io / RTS",
+     "notes": ""
+    },
+    {
+     "name": "Somfy AXIS YELLOW (SOLUS) 40 Nm (J8), mechanical stops",
+     "price": 241,
+     "unit": "pcs",
+     "page": 104,
+     "appliesTo": "Australia, Jamaica (not cassette)",
+     "notes": "with INIS switch 261 €"
+    },
+    {
+     "name": "Somfy AXIS-H YELLOW (MARINER NHK) 40 Nm (J9)",
+     "price": 346,
+     "unit": "pcs",
+     "page": 104,
+     "appliesTo": "Australia, Jamaica (not offered for cassette awnings)",
+     "notes": "with crank + INIS 366 €"
+    },
+    {
+     "name": "Somfy NEMO WT YELLOW (OREA WT) 40 Nm (JE)",
+     "price": 366,
+     "unit": "pcs",
+     "page": 104,
+     "appliesTo": "Corsica (not Australia/Jamaica per p.107)",
+     "notes": "with INIS 386 €"
+    },
+    {
+     "name": "Somfy Awning Slim receiver io (RL) + Hirschmann STAS+STAK (N2)",
+     "price": 245,
+     "unit": "set",
+     "page": 104,
+     "appliesTo": "Somfy wired motors",
+     "notes": "225 € + 20 €"
+    },
+    {
+     "name": "Somfy NEMO YELLOW ALTUS RTS 40 Nm (JC) for non-cassette awnings",
+     "price": 373,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Australia, Jamaica",
+     "notes": "with Situo 1 RTS 426 €"
+    },
+    {
+     "name": "Somfy NEMO YELLOW OREA RTS 40 Nm (JD) for cassette awnings",
+     "price": 410,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Corsica",
+     "notes": "with Situo 1 RTS 463 €"
+    },
+    {
+     "name": "Somfy Situo 1 RTS Pure 1-channel (FP)",
+     "price": 53,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Somfy RTS",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Telis 4 Soliris 4-channel with sun switch (G1)",
+     "price": 140,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Somfy RTS",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Eolis 3D RTS shake sensor (JI)",
+     "price": 147,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Somfy RTS",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Soliris wind&sun via radio (GG)",
+     "price": 181,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "Somfy RTS",
+     "notes": ""
+    },
+    {
+     "name": "Somfy Outdoor Lighting Receiver RTS IP55 (LT)",
+     "price": 106,
+     "unit": "pcs",
+     "page": 105,
+     "appliesTo": "CORSICA / MADEIRA LED with RTS remote",
+     "notes": "until stocks last"
+    },
+    {
+     "name": "LED lighting in arms COB 3000K - 2 arms 3100",
+     "price": 535,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "AUSTRALIA, JAMAICA (Palladio)",
+     "notes": "Only with SOMFY control; includes LED strips + power supply with receiver"
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3100",
+     "price": 663,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "AUSTRALIA, JAMAICA",
+     "notes": "3 arms 3100 from 5910 mm width"
+    },
+    {
+     "name": "LED lighting in arms - 2 arms 3600",
+     "price": 568,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "AUSTRALIA, JAMAICA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3600",
+     "price": 711,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "AUSTRALIA, JAMAICA",
+     "notes": "3 arms 3600 from 6510 mm width"
+    },
+    {
+     "name": "LED lighting in arms - 2 arms 3100, width up to 5000 mm",
+     "price": 691,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3100, width up to 5000 mm",
+     "price": 825,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 2 arms 3600, width up to 5000 mm",
+     "price": 723,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3600, width up to 5000 mm",
+     "price": 925,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 2 arms 3100, width from 5001 mm",
+     "price": 749,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3100, width from 5001 mm",
+     "price": 876,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 2 arms 3600, width from 5001 mm",
+     "price": 781,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "LED lighting in arms - 3 arms 3600, width from 5001 mm",
+     "price": 925,
+     "unit": "set",
+     "page": 108,
+     "appliesTo": "CORSICA, MADEIRA",
+     "notes": ""
+    },
+    {
+     "name": "Heater HELIOSA 11 (KC), 1500 W",
+     "price": 311,
+     "unit": "pcs",
+     "page": 108,
+     "appliesTo": "Awnings",
+     "notes": ""
+    },
+    {
+     "name": "Heater HELIOSA 66 (KE), 1500 W",
+     "price": 534,
+     "unit": "pcs",
+     "page": 108,
+     "appliesTo": "Awnings",
+     "notes": ""
+    },
+    {
+     "name": "IO receiver - Heating Slim Receiver io (NZ)",
+     "price": 202,
+     "unit": "pcs",
+     "page": 108,
+     "appliesTo": "Heaters",
+     "notes": "Hirschmann plug/socket extra"
+    },
+    {
+     "name": "Heater bracket (KH) for 40x40 support bar",
+     "price": 12,
+     "unit": "pcs",
+     "page": 108,
+     "appliesTo": "Heaters",
+     "notes": ""
+    },
+    {
+     "name": "Heater bracket (KI) wall",
+     "price": 12,
+     "unit": "pcs",
+     "page": 108,
+     "appliesTo": "Heaters",
+     "notes": ""
+    },
+    {
+     "name": "Valance standard height 21 cm (shapes C, D, E)",
+     "price": 13,
+     "unit": "m",
+     "page": 109,
+     "appliesTo": "All awnings",
+     "notes": ""
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 230 cm",
+     "price": 473,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 290 cm",
+     "price": 506,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 350 cm",
+     "price": 578,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 410 cm",
+     "price": 655,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 470 cm",
+     "price": 727,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 530 cm",
+     "price": 801,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "VOLANT roll-up valance, awning width 590 cm",
+     "price": 897,
+     "unit": "pcs",
+     "page": 109,
+     "appliesTo": "JAMAICA only",
+     "notes": "manual crank; max width 5.9 m, max projection 3.1 m"
+    },
+    {
+     "name": "WATERPROOF acrylic fabric",
+     "price": 5,
+     "unit": "%",
+     "page": 109,
+     "appliesTo": "All awnings",
+     "notes": "surcharge to standard price"
+    }
+   ],
+   "uncertainties": [
+    "AUSTRALIA and JAMAICA have only a manual-drive table (p.96); there is no printed electric-drive price table. Electric = manual price + motor set (pp.100-105); whether the crank/gear included in the manual price is deducted is not stated. Captured manual as the only variant.",
+    "MADEIRA and CORSICA are motor-only and their tables EXCLUDE the motor (p.96). The motor must be chosen from pp.100-105 according to p.107 compatibility (Madeira: only Somfy NEMO-H IO YELLOW, codes SB 456 € / QU 730 €).",
+    "MADEIRA table on p.96 has no printed axis headings or colour list; rows 160-360 / width ranges 205-290 ... 591-600 assumed same meaning as other tables.",
+    "Width columns are ranges; 'cols' are range upper bounds (290, 350, ... 700/600). Lowest range lower bound is 195 (Australia) / 205 (others) cm.",
+    "Motor torque per size (p.106): torque A (30 Nm) for 2-arm sizes up to 531-590 cm width at projections 160-310; torque B (40-50 Nm) for 3-arm cells and all 360 cm projection cells.",
+    "LED lighting in arms (p.108): columns '3100'/'3600' are presumably arm length in mm (i.e. projection 310/360 cm); prices for shorter arms are not printed.",
+    "Page 99 brackets (wall/ceiling/rafter/niche) are listed without per-model applicability.",
+    "Somfy remote controls for RTS/io on printed pp.113-118 (PDF 111-116) are not extracted; the awning drive pages contain their own remote/sensor prices (captured)."
+   ]
+  }
+ ],
+ "colors": [
+  {
+   "code": "RAL 9001 MAT",
+   "name": "CREAM",
+   "colourCode": "15",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9010 MAT",
+   "name": "PURE WHITE",
+   "colourCode": "82",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: included (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: included (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9016 MAT",
+   "name": "TRAFFIC WHITE",
+   "colourCode": "22B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 1013 MAT",
+   "name": "OYSTER WHITE",
+   "colourCode": "29",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 1015 MAT",
+   "name": "LIGHT IVORY",
+   "colourCode": "16",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "VSR 240 SATIN",
+   "name": "BEIGE",
+   "colourCode": "45",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7001 MAT",
+   "name": "SILVER GREY",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7012 MAT",
+   "name": "BASALT GREY",
+   "colourCode": "33",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7015 MAT",
+   "name": "SLATE GREY",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7016 MAT",
+   "name": "ANTHRACITE GREY",
+   "colourCode": "23",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: included (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: included (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7021 MAT",
+   "name": "BLACK GREY",
+   "colourCode": "21",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7024 MAT",
+   "name": "GRAPHITE GREY",
+   "colourCode": "80B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7035 MAT",
+   "name": "LIGHT GREY",
+   "colourCode": "31B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7037 MAT",
+   "name": "DUST GREY",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9006 MAT",
+   "name": "WHITE ALUMINIUM",
+   "colourCode": "01",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: included (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: included (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9007 MAT",
+   "name": "GREY ALUMINIUM",
+   "colourCode": "37B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "FSM 71319 MAT",
+   "name": "STRUCTURAL GRAPHITE",
+   "colourCode": "69",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: included (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: included (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9005 MAT",
+   "name": "JET BLACK",
+   "colourCode": "20",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: included (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: included (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "VSR 780 MAT",
+   "name": "PEARL BROWN",
+   "colourCode": "74B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 8014 MAT",
+   "name": "SEPIA BROWN",
+   "colourCode": "09",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 8016 MAT",
+   "name": "MAHOGANY BROWN",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "DB 703 MAT",
+   "name": "METALLIC GRAY",
+   "colourCode": "75B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7022 MAT",
+   "name": "UMBRA GREY",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7039 MAT",
+   "name": "QUARTZ GREY",
+   "colourCode": "34",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7043 MAT",
+   "name": "TRAFFIC GREY B",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 8003 MAT",
+   "name": "CLAY BROWN",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7016 STR",
+   "name": "ANTHRACITE STRUCTURE",
+   "colourCode": "23LS",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7021 STR",
+   "name": "BLACK GREY STRUCTURE",
+   "colourCode": "21LS",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: not marked on chart (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9005 STR",
+   "name": "JET BLACK STRUCTURE",
+   "colourCode": "20LS",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: standard, no surcharge (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 9010 STR",
+   "name": "PURE WHITE STRUCTURE",
+   "colourCode": "82LS",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7038 MAT",
+   "name": "GREY",
+   "colourCode": "03",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 7048 MAT",
+   "name": "MOUSE GREY",
+   "colourCode": "73B",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: +20% (p.95)",
+   "page": 7
+  },
+  {
+   "code": "RAL 8003 STR",
+   "name": "CLAY BROWN STRUCTURE",
+   "colourCode": "-",
+   "surchargeNote": "SB400: included (p.7); Pergola V ZIIIP: +15% (p.7/18); R ZIIIP 120 & VERANDA: included (p.67); VERANDA V ZIIIP: +15% (p.67/90); Australia/Jamaica/Madeira: +20% (p.94-95); Corsica: standard, no surcharge (p.95)",
+   "page": 7
+  },
+  {
+   "code": "Wood 26",
+   "name": "Mahogany",
+   "colourCode": "26",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "Wood 27",
+   "name": "Cherry",
+   "colourCode": "27",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "Wood 28",
+   "name": "Walnut",
+   "colourCode": "28",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "Wood 30",
+   "name": "Golden Oak",
+   "colourCode": "30",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "Wood 49",
+   "name": "Malt oak",
+   "colourCode": "49",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "Wood 52",
+   "name": "Winchester",
+   "colourCode": "52",
+   "surchargeNote": "Wood-effect: SB400 +20% (wrapping, p.6); not available for Pergola V ZIIIP; not on screen/awning charts",
+   "page": 7
+  },
+  {
+   "code": "RAL outside ALUPROF palette",
+   "name": "Any RAL CLASSIC",
+   "surchargeNote": "SB400/V ZIIIP/Veranda V ZIIIP +15%; R ZIIIP 120 & VERANDA 300/400/500 € per order (1-4/5-9/10-20 systems, free above 20); awnings +30%",
+   "page": 6
+  }
+ ]
+}

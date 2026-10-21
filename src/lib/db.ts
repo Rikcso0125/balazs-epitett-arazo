@@ -1,8 +1,20 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { DEFAULT_SYSTEM_CONFIG } from './constants';
-import { DatabaseSchema } from './types';
+import {
+  DEFAULT_EMAIL_SETTINGS,
+  DEFAULT_MENUS,
+  DEFAULT_PRICING_FORMULA,
+  DEFAULT_SYSTEM_CONFIG,
+} from './constants';
+import {
+  DatabaseSchema,
+  EmailSettings,
+  EmailTemplate,
+  ProductCategory,
+  ProductMenu,
+  QuoteTemplate,
+} from './types';
 
 const BUNDLED_DATA_DIR = path.join(process.cwd(), 'data');
 const BUNDLED_DB_PATH = path.join(BUNDLED_DATA_DIR, 'db.json');
@@ -20,25 +32,110 @@ declare global {
 export function createEmptyDatabase(): DatabaseSchema {
   return {
     config: { ...DEFAULT_SYSTEM_CONFIG },
+    menus: DEFAULT_MENUS.map((m) => ({ ...m })),
     categories: [],
     templates: [],
     quotes: [],
     mediaLibrary: [],
+    trackingEvents: [],
+  };
+}
+
+// Régi (menü nélküli) kategóriák besorolása név alapján, különben az első menübe
+function guessMenuIdForCategory(cat: ProductCategory, menus: ProductMenu[]): string {
+  const name = (cat.name || '').toLowerCase();
+  const rules: [string, string[]][] = [
+    ['menu_ledezes', ['led']],
+    ['menu_napellenzo', ['napellenz']],
+    ['menu_arnyekolo', ['árnyékol', 'arnyekol', 'zip', 'redőny']],
+    ['menu_kocsibeallo', ['kocsibeáll', 'kocsibeall', 'carport']],
+    ['menu_pergola', ['pergola', 'előtető', 'üvegtető', 'üvegfal']],
+  ];
+  for (const [menuId, keys] of rules) {
+    if (keys.some((k) => name.includes(k)) && menus.some((m) => m.id === menuId)) {
+      return menuId;
+    }
+  }
+  return menus[0]?.id || '';
+}
+
+function normalizeTemplate(tpl: QuoteTemplate, idx: number): QuoteTemplate {
+  const status = tpl.status || (tpl.enabled === false ? 'inactive' : 'active');
+  return {
+    ...tpl,
+    status,
+    enabled: status !== 'inactive',
+    order: typeof tpl.order === 'number' ? tpl.order : idx + 1,
+    sizeLimits: tpl.sizeLimits || {},
+    catalogRef: tpl.catalogRef || {},
+    // A régi egytengelyes modulszabály a tengelyenkénti listába kerül
+    moduleSplits: tpl.moduleSplits?.length ? tpl.moduleSplits : tpl.moduleSplit ? [tpl.moduleSplit] : [],
+    moduleSplit: undefined,
+    mountTypes: tpl.mountTypes || [],
+    alsoInCategoryIds: tpl.alsoInCategoryIds || [],
+    sizeRules: tpl.sizeRules || [],
+  };
+}
+
+// Régi (egy tárgy + egy szöveg) beállításból sablonlista; üres listánál a minta sablonok
+function normalizeEmailSettings(raw: any): EmailSettings {
+  const merged = { ...DEFAULT_EMAIL_SETTINGS, ...(raw || {}) };
+  let templates: EmailTemplate[] =
+    Array.isArray(raw?.templates) && raw.templates.length > 0
+      ? raw.templates
+      : DEFAULT_EMAIL_SETTINGS.templates.map((t) => ({ ...t }));
+  if (raw?.subjectTemplate && raw?.bodyTemplate && !Array.isArray(raw?.templates)) {
+    templates = [
+      { id: 'tpl_sajat', name: 'Saját sablon', subject: raw.subjectTemplate, body: raw.bodyTemplate },
+      ...templates,
+    ];
+  }
+  const { subjectTemplate, bodyTemplate, ...rest } = merged;
+  void subjectTemplate;
+  void bodyTemplate;
+  return {
+    ...rest,
+    templates,
+    defaultTemplateId: templates.some((t) => t.id === merged.defaultTemplateId)
+      ? merged.defaultTemplateId
+      : templates[0].id,
   };
 }
 
 function normalizeDatabase(raw: any): DatabaseSchema {
   const empty = createEmptyDatabase();
   if (!raw || typeof raw !== 'object') return empty;
+  const rawConfig =
+    raw.config && typeof raw.config === 'object' ? raw.config : {};
+  const menus: ProductMenu[] =
+    Array.isArray(raw.menus) && raw.menus.length > 0 ? raw.menus : empty.menus;
+  const categories: ProductCategory[] = (
+    Array.isArray(raw.categories) ? raw.categories : []
+  ).map((c: ProductCategory) => ({
+    ...c,
+    menuId:
+      c.menuId && menus.some((m) => m.id === c.menuId)
+        ? c.menuId
+        : guessMenuIdForCategory(c, menus),
+  }));
   return {
     config: {
       ...empty.config,
-      ...(raw.config && typeof raw.config === 'object' ? raw.config : {}),
+      ...rawConfig,
+      pricingFormula: {
+        ...DEFAULT_PRICING_FORMULA,
+        ...(rawConfig.pricingFormula || {}),
+      },
+      emailSettings: normalizeEmailSettings(rawConfig.emailSettings),
     },
-    categories: Array.isArray(raw.categories) ? raw.categories : [],
-    templates: Array.isArray(raw.templates) ? raw.templates : [],
+    menus,
+    categories,
+    templates: (Array.isArray(raw.templates) ? raw.templates : []).map(
+      normalizeTemplate
+    ),
     quotes: Array.isArray(raw.quotes) ? raw.quotes : [],
     mediaLibrary: Array.isArray(raw.mediaLibrary) ? raw.mediaLibrary : [],
+    trackingEvents: Array.isArray(raw.trackingEvents) ? raw.trackingEvents : [],
   };
 }
 

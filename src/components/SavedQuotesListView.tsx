@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import {
   Copy,
   Download,
-  Edit3,
-  Eye,
   FileText,
   Plus,
   Search,
+  Send,
   Trash2,
 } from 'lucide-react';
+import { btn, PageHeader } from '@/components/ui';
 import { formatDotNumber, STATUS_CONFIG } from '@/lib/constants';
 import { QuoteRecord, QuoteStatus } from '@/lib/types';
 
@@ -21,6 +21,7 @@ interface SavedQuotesListViewProps {
   onDeleteQuote: (quoteId: string) => Promise<void>;
   onUpdateStatus: (quoteId: string, status: QuoteStatus) => Promise<void>;
   onStartNewQuote: () => void;
+  onSendQuote: (quote: QuoteRecord) => void;
 }
 
 export function SavedQuotesListView({
@@ -30,10 +31,15 @@ export function SavedQuotesListView({
   onDeleteQuote,
   onUpdateStatus,
   onStartNewQuote,
+  onSendQuote,
 }: SavedQuotesListViewProps) {
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all');
+
+  const countBy = (st: QuoteStatus) => quotes.filter((q) => q.status === st).length;
 
   const filtered = quotes.filter((q) => {
+    if (statusFilter !== 'all' && q.status !== statusFilter) return false;
     if (!search.trim()) return true;
     const s = search.toLowerCase();
     return (
@@ -43,114 +49,15 @@ export function SavedQuotesListView({
     );
   });
 
-  return (
-    <div className="space-y-5">
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">
-            Elmentett és Legenerált PDF Árajánlatok ({quotes.length} db)
-          </h1>
-          <p className="text-xs text-slate-600 mt-1">
-            Minden legenerált PDF árajánlat utólag is bármikor megnyitható,
-            minden szövegdoboza, fotója és ára átírható, majd újra letölthető!
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onStartNewQuote}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-sm shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          + Új Árajánlat Készítése
-        </button>
-      </div>
-
-      {quotes.length === 0 ? (
-        <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-10 text-center space-y-3">
-          <FileText className="w-10 h-10 text-slate-400 mx-auto" />
-          <h3 className="text-base font-bold text-slate-900">
-            Még nincs elmentett árajánlat
-          </h3>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Amint legenerálsz egy árajánlatot a Végigvezetett Árazóban vagy a
-            PDF Szerkesztőben, itt fog megjelenni, és utólag is bármikor
-            szerkesztheted.
-          </p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-slate-100 flex items-center gap-3">
-            <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Keresés ügyfélnév, település vagy sorszám alapján..."
-                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs"
-              />
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase text-[11px]">
-                  <th className="py-3 px-4">Ajánlat / Dátum</th>
-                  <th className="py-3 px-4">Ügyfél & Település</th>
-                  <th className="py-3 px-4">Méret & Kivitel</th>
-                  <th className="py-3 px-4 text-right">Fő Összeg</th>
-                  <th className="py-3 px-4">Státusz</th>
-                  <th className="py-3 px-4 text-right">
-                    Utólagos PDF Szerkesztés & Letöltés
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filtered.map((q) => (
-                  <tr key={q.id} className="hover:bg-slate-50/80 transition">
-                    <td className="py-3.5 px-4">
-                      <div className="font-bold text-slate-900">
-                        {q.quoteNumber}
-                      </div>
-                      <div className="text-[11px] text-slate-500">
-                        {new Date(q.updatedAt || q.createdAt).toLocaleString(
-                          'hu-HU'
-                        )}
-                      </div>
-                      {q.isEditedAfterGeneration && (
-                        <span className="inline-block mt-1 px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
-                          Utólag szerkesztve
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-bold text-slate-900 text-sm">
-                        {q.customerName}
-                      </div>
-                      <div className="text-slate-500">{q.city}</div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-semibold text-slate-800">
-                        {q.widthCm} × {q.projectionCm} × {q.heightCm} cm
-                      </div>
-                      <div className="text-slate-500">{q.mountType}</div>
-                    </td>
-                    <td className="py-3.5 px-4 text-right">
-                      <div className="font-extrabold text-emerald-700 text-sm">
-                        {formatDotNumber(q.primaryTotalEur)} EUR
-                      </div>
-                      <div className="text-slate-500 font-semibold">
-                        {formatDotNumber(q.primaryTotalHuf)} Ft
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4">
+  // Státuszválasztó és műveletek: a táblázat és a telefonos kártyák közösen használják
+  const statusControl = (q: QuoteRecord) => (
+    <>
                       <select
                         value={q.status}
                         onChange={(e) =>
                           onUpdateStatus(q.id, e.target.value as QuoteStatus)
                         }
-                        className={`px-2.5 py-1 rounded-lg border text-xs font-bold ${
+                        className={`px-2 py-1 rounded-full border text-xs font-medium ${
                           STATUS_CONFIG[q.status]?.badgeClass || ''
                         }`}
                       >
@@ -160,39 +67,40 @@ export function SavedQuotesListView({
                           </option>
                         ))}
                       </select>
-                    </td>
-                    <td className="py-3.5 px-4 text-right">
-                      <div className="inline-flex items-center gap-1.5">
+                      {(q.openCount || 0) > 0 ? (
+                        <div className="text-xs text-slate-500 mt-1">
+                          Megnyitva {q.openCount}× · utoljára{' '}
+                          {new Date(q.lastOpenedAt || '').toLocaleDateString('hu-HU')}
+                        </div>
+                      ) : q.sentAt ? (
+                        <div className="text-xs text-slate-500 mt-1">
+                          Kiküldve {new Date(q.sentAt).toLocaleDateString('hu-HU')}
+                        </div>
+                      ) : null}
+    </>
+  );
+  const quoteActions = (q: QuoteRecord) => (
+                      <div className="inline-flex items-center gap-0.5">
                         <button
                           type="button"
-                          onClick={() => onEditQuoteInPdfEditor(q)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm"
+                          onClick={() => onSendQuote(q)}
+                          title="Küldés e-mailben"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          Utólagos Szerkesztés
+                          <Send className="w-4 h-4" />
                         </button>
-                        <a
-                          href={`/api/quotes/${q.id}/pdf`}
-                          target="_blank"
-                          rel="noreferrer"
-                          title="PDF megnyitása új lapon"
-                          className="p-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </a>
                         <a
                           href={`/api/quotes/${q.id}/pdf?download=1`}
                           title="PDF letöltése"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
                         >
-                          <Download className="w-3.5 h-3.5" />
-                          PDF Letöltés
+                          <Download className="w-4 h-4" />
                         </a>
                         <button
                           type="button"
                           onClick={() => onDuplicateQuote(q)}
                           title="Árajánlat duplikálása"
-                          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
                         >
                           <Copy className="w-4 h-4" />
                         </button>
@@ -208,17 +116,173 @@ export function SavedQuotesListView({
                             }
                           }}
                           title="Törlés"
-                          className="p-2 rounded-xl text-rose-500 hover:bg-rose-50"
+                          className="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
+  );
+
+  return (
+    <div className="space-y-5">
+      <PageHeader
+        title="Ajánlatok"
+        subtitle="Kattints egy ajánlatra a szerkesztéshez."
+        actions={
+          <button type="button" onClick={onStartNewQuote} className={btn.primary}>
+            <Plus className="w-4 h-4" />
+            Új ajánlat
+          </button>
+        }
+      />
+
+      {quotes.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-3">
+          <FileText className="w-8 h-8 text-slate-300 mx-auto" />
+          <h3 className="text-sm text-slate-500">
+            Még nincs elmentett árajánlat
+          </h3>
+
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <div className="p-3 border-b border-slate-200 flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Keresés név, település vagy sorszám alapján"
+                className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 bg-slate-50 text-[13px]"
+              />
+            </div>
+            <div className="grid grid-cols-5 sm:inline-flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200">
+              {(
+                [
+                  ['all', 'Összes', quotes.length],
+                  ['piszkozat', 'Piszkozat', countBy('piszkozat')],
+                  ['kikuldve', 'Kiküldve', countBy('kikuldve')],
+                  ['megnyitva', 'Megnyitva', countBy('megnyitva')],
+                  ['elfogadva', 'Elfogadva', countBy('elfogadva')],
+                ] as [QuoteStatus | 'all', string, number][]
+              ).map(([key, label, n]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setStatusFilter(key)}
+                  aria-pressed={statusFilter === key}
+                  className={`min-w-0 flex flex-col sm:flex-row items-center sm:gap-1.5 px-1 sm:px-2.5 py-1 rounded-lg transition ${
+                    statusFilter === key
+                      ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                      : 'text-slate-600 hover:text-slate-950'
+                  }`}
+                >
+                  <span className="text-[11px] sm:text-[13px] leading-tight truncate max-w-full">{label}</span>
+                  <span className="text-sm sm:text-[13px] tabular-nums">{n}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left border-collapse text-[13px]">
+              <thead>
+                <tr className="bg-slate-100 text-slate-400 border-b border-slate-200 uppercase text-xs tracking-wide">
+                  <th className="py-2 px-4 font-semibold">Ajánlat</th>
+                  <th className="py-2 px-4 font-semibold">Ügyfél</th>
+                  <th className="py-2 px-4 font-semibold">Méret</th>
+                  <th className="py-2 px-4 font-semibold text-right">Összeg</th>
+                  <th className="py-2 px-4 font-semibold">Státusz</th>
+                  <th className="py-2 px-4" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {filtered.map((q) => (
+                  <tr
+                    key={q.id}
+                    onClick={() => onEditQuoteInPdfEditor(q)}
+                    className="hover:bg-slate-50 transition cursor-pointer"
+                  >
+                    <td className="py-3.5 px-4">
+                      <div className="font-medium text-slate-950">
+                        {q.quoteNumber}
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        {new Date(q.updatedAt || q.createdAt).toLocaleDateString(
+                          'hu-HU'
+                        )}
+                      </div>
+
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <div className="font-medium text-slate-950">
+                        {q.customerName}
+                      </div>
+                      <div className="text-slate-500">{q.city}</div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <div className="text-slate-700 whitespace-nowrap">
+                        {q.widthCm} × {q.projectionCm} cm
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <div className="font-semibold text-slate-950 tabular-nums whitespace-nowrap">
+                        {formatDotNumber(q.primaryTotalEur)} EUR
+                      </div>
+                      <div className="text-slate-500 tabular-nums whitespace-nowrap">
+                        {formatDotNumber(q.primaryTotalHuf)} Ft
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
+                      {statusControl(q)}
+                    </td>
+                    <td
+                      className="py-3.5 px-4 text-right"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {quoteActions(q)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
+          {/* Telefon: ajánlatonként egy kártya */}
+          <ul className="md:hidden divide-y divide-slate-200 border-t border-slate-200">
+            {filtered.map((q) => (
+              <li key={q.id} className="px-4 py-3">
+                <button
+                  type="button"
+                  onClick={() => onEditQuoteInPdfEditor(q)}
+                  className="w-full text-left flex items-start justify-between gap-3"
+                >
+                  <div className="min-w-0">
+                    <div className="font-semibold text-slate-950 break-words">{q.customerName}</div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {q.quoteNumber} · {q.city} · {q.widthCm} × {q.projectionCm} cm
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      {new Date(q.updatedAt || q.createdAt).toLocaleDateString('hu-HU')}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="font-semibold text-slate-950 tabular-nums whitespace-nowrap">
+                      {formatDotNumber(q.primaryTotalEur)} EUR
+                    </div>
+                    <div className="text-xs text-slate-500 tabular-nums whitespace-nowrap">
+                      {formatDotNumber(q.primaryTotalHuf)} Ft
+                    </div>
+                  </div>
+                </button>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="min-w-0">{statusControl(q)}</div>
+                  {quoteActions(q)}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
