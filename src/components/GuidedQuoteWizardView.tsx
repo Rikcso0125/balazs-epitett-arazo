@@ -1,6 +1,6 @@
 'use client';
 
-import { thumbUrl } from '@/lib/thumb';
+import { templateCoverUrl, thumbUrl } from '@/lib/thumb';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
@@ -99,9 +99,22 @@ export function GuidedQuoteWizardView({
   const [inquiryNotes, setInquiryNotes] = useState('');
 
   // 2. Termék
+  // Csak az a menü jelenik meg, amelyben van árazható termék
   const sortedMenus = useMemo(
-    () => menus.filter((m) => m.enabled).sort(byOrder),
-    [menus]
+    () =>
+      menus
+        .filter((m) => m.enabled)
+        .filter((m) =>
+          categories.some(
+            (c) =>
+              c.menuId === m.id &&
+              templates.some(
+                (t) => isTemplateInCategory(t, c.id) && t.status !== 'inactive' && t.status !== 'test'
+              )
+          )
+        )
+        .sort(byOrder),
+    [menus, categories, templates]
   );
   const [selectedMenuId, setSelectedMenuId] = useState<string>(
     sortedMenus[0]?.id || ''
@@ -433,7 +446,7 @@ export function GuidedQuoteWizardView({
         const l = tpl.sizeLimits || {};
         const short = shortProductName(tpl.name);
         const rest = tpl.name.slice(short.length).trim();
-        const photo = tpl.photos?.find((ph) => ph.imageUrl)?.imageUrl;
+        const photo = templateCoverUrl(tpl);
         return (
           <button
             key={tpl.id}
@@ -510,7 +523,7 @@ export function GuidedQuoteWizardView({
         ? calculateTemplateRows(effectiveTemplate(tpl), calcCtx, getSelectedMaterialsForTemplate(tpl))
         : null;
       const modules = getModuleCounts(tpl, widthCm, projectionCm);
-      const photo = tpl.photos?.find((ph) => ph.imageUrl)?.imageUrl;
+      const photo = templateCoverUrl(tpl);
       const status = wrongMount
         ? { text: `Csak ${tpl.mountTypes!.map((m) => mountLabel(m).toLowerCase()).join(' / ')} kérhető`, cls: 'text-slate-500' }
         : isOut

@@ -1,6 +1,6 @@
 'use client';
 
-import { thumbUrl } from '@/lib/thumb';
+import { templateCoverUrl, thumbUrl } from '@/lib/thumb';
 import { isTemplateInCategory } from '@/lib/pricing-engine';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -109,7 +109,7 @@ function getMissing(tpl: QuoteTemplate): MissingKey[] {
   const out: MissingKey[] = [];
   if (!hasSizeLimits(tpl)) out.push('size');
   if (!hasCatalogRef(tpl)) out.push('catalog');
-  if (!(tpl.photos || []).some((p) => p.imageUrl)) out.push('photo');
+  if (!templateCoverUrl(tpl)) out.push('photo');
   if (hasMissingPrice(tpl)) out.push('price');
   return out;
 }
@@ -392,7 +392,7 @@ function PhotoStrip({
  */
 
 function Thumb({ tpl }: { tpl: QuoteTemplate }) {
-  const url = tpl.photos?.find((p) => p.imageUrl)?.imageUrl;
+  const url = templateCoverUrl(tpl);
   return (
     <div className="w-14 h-10 rounded-md border border-slate-200 bg-slate-50 overflow-hidden shrink-0 grid place-items-center">
       {url ? (

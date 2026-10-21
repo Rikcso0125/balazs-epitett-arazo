@@ -570,7 +570,7 @@
       ],
       "materials": [
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + 142 EUR) × 0,87.",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -987,7 +987,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + 142 EUR) × 0,87.",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -1404,7 +1404,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + 142 EUR) × 0,87.",
+          "description": "Alumínium váz, 0-120° között elforgatható lamellák (21,6 cm), oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 21×8,5 cm, oszlop 15×8,5 cm. Az ár tartalmazza a motort (Somfy IO).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -3632,67 +3632,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_sb400_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_sb400_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_sb400_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_sb400_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -5662,67 +5601,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_seesky_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_seesky_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_seesky_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_seesky_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -5864,7 +5742,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: (katalógusár - 1791 EUR fali levonás) - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6242,7 +6120,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6620,7 +6498,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -6998,7 +6876,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -7376,7 +7254,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -7754,7 +7632,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -8132,7 +8010,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -8510,7 +8388,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Forgatva elhúzható lamellák (0-85°, 24,5 cm), rejtett motorok, csavarok és fali konzolok, oszlopokban rejtett esővíz-elvezetés. Profilok: gerenda 23×16 cm, oszlop 16×16 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -10067,67 +9945,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_kedry_skylife_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_kedry_skylife_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_kedry_skylife_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_kedry_skylife_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -10277,7 +10094,7 @@
       ],
       "materials": [
         {
-          "description": "A motort az ár tartalmazza. Ár: katalógusár + 200 EUR.",
+          "description": "Az ár tartalmazza a motort (Somfy IO, modulonként 1 db).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -11729,43 +11546,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_pvziip_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_pvziip_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_pvziip_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -11872,7 +11652,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: katalógusár + a táblázat 10. sora (a szélességhez tartozó \"Hood\" elem) + 200 EUR. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon, kazettába zárva.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -12025,7 +11805,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár + a táblázat 10. sora (a szélességhez tartozó \"Hood\" elem) + 200 EUR. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon, kazettába zárva.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -12202,7 +11982,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár + a táblázat 10. sora (a szélességhez tartozó \"Hood\" elem) + 200 EUR. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon, kazettába zárva.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -12355,7 +12135,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár + a táblázat 10. sora (a szélességhez tartozó \"Hood\" elem) + 200 EUR. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon, kazettába zárva.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -13888,43 +13668,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_hydra_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_hydra_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_hydra_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -13956,6 +13699,126 @@
           "name": "Okosotthon vezérlő",
           "excludeFromPercentBase": true,
           "group": "Érzékelők és vezérlés"
+        },
+        {
+          "id": "x_hydra_glass_a",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a szélesség oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó szélesség − 30 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "front_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_a_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_a_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "dimOffsets": {
+            "widthCm": -30
+          },
+          "excludeFromPercentBase": true,
+          "mountTypes": [
+            "Lábak nélkül"
+          ]
+        },
+        {
+          "id": "x_hydra_glass_b",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a kinyúlás oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó kinyúlás − 8.5 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "side_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "mountTypes": [
+            "Lábak nélkül"
+          ],
+          "dimOffsets": {
+            "projectionCm": -8.5
+          },
+          "excludeFromPercentBase": true
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
@@ -14026,7 +13889,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: (katalógusár + a táblázat 11. sora, a szélességhez tartozó \"Hood\" elem) - 10%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "1 modul 500 cm-ig (elöl 2 láb), 2 modul 900 cm-ig (3 láb), 3 modul 1300 cm-ig (4 láb). Profilok: gerenda 14×13 cm, oszlop 13×10 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -14164,7 +14027,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár + a táblázat 11. sora, a szélességhez tartozó \"Hood\" elem) - 10%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "1 modul 500 cm-ig (elöl 2 láb), 2 modul 900 cm-ig (3 láb), 3 modul 1300 cm-ig (4 láb). Profilok: gerenda 14×13 cm, oszlop 13×10 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -14313,7 +14176,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár + a táblázat 11. sora, a szélességhez tartozó \"Hood\" elem) - 10%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "1 modul 500 cm-ig (elöl 2 láb), 2 modul 900 cm-ig (3 láb), 3 modul 1300 cm-ig (4 láb). Profilok: gerenda 14×13 cm, oszlop 13×10 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -16035,67 +15898,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_a100_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_a100_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_a100_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_a100_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -16250,7 +16052,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: katalógusár - 10%.",
+          "description": "Profilok: gerenda 11×11 cm, oszlop 11×11 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -16397,7 +16199,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 10%.",
+          "description": "Profilok: gerenda 11×11 cm, oszlop 11×11 cm.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -18505,67 +18307,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_keplan_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_keplan_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_keplan_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_keplan_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -18711,7 +18452,7 @@
       ],
       "materials": [
         {
-          "description": "ISOLA 2A (falhoz rögzítve, 63-64. o.). Ár: katalógusár - 30%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. 700 cm kinyúlás felett 4 lábbal.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -18936,7 +18677,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "ISOLA 2 (különálló, 60-61. o.). Ár: katalógusár - 30%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. 700 cm kinyúlás felett 6 lábbal.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -19161,7 +18902,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "ISOLA 2T (lábak nélkül, 66. o.). Ár: (katalógusár + 1000 EUR) - 30%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -21427,67 +21168,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_isola_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_isola_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_isola_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_isola_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -21629,7 +21309,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: katalógusár + 200 EUR (modulonként a katalógusár, a +200 EUR egyszer).",
+          "description": "Meglévő szerkezetre szerelhető, motorral elhúzható, feszített vászon.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -23299,6 +22979,120 @@
             "heightCm": -10
           },
           "excludeFromPercentBase": true
+        },
+        {
+          "id": "x_vtens_glass_a",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a szélesség oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó szélesség − 30 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "front_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_a_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_a_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "dimOffsets": {
+            "widthCm": -30
+          },
+          "excludeFromPercentBase": true
+        },
+        {
+          "id": "x_vtens_glass_b",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a kinyúlás oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó kinyúlás − 8.5 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "side_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "dimOffsets": {
+            "projectionCm": -8.5
+          },
+          "excludeFromPercentBase": true
         }
       ],
       "createdAt": "2026-10-19T08:18:53.225Z",
@@ -23368,7 +23162,7 @@
       ],
       "materials": [
         {
-          "description": "A motort az ár tartalmazza. Ár: katalógusár - 10% (több modulnál modulonként).",
+          "description": "Az ár tartalmazza a motort (Somfy IO, modulonként 1 db).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -24858,6 +24652,120 @@
           "dimOffsets": {
             "projectionCm": -11,
             "heightCm": -10
+          },
+          "excludeFromPercentBase": true
+        },
+        {
+          "id": "x_vvzip_glass_a",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a szélesség oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó szélesség − 30 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "front_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_a_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_a_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "dimOffsets": {
+            "widthCm": -30
+          },
+          "excludeFromPercentBase": true
+        },
+        {
+          "id": "x_vvzip_glass_b",
+          "name": "Keret nélküli, elcsúsztatható üvegfalrendszer a kinyúlás oldalára (10 mm edzett üveg, szereléssel)",
+          "description": "Nettó kinyúlás − 8.5 cm × magasság, sávos m² ár (≤8,5 m²: 257, ≤13,5 m²: 210, felette 200 EUR/m²); az ár tartalmazza a 12% szerelést.",
+          "itemRole": "optional",
+          "defaultSelected": false,
+          "pricingMode": "tiered_m2",
+          "currency": "EUR",
+          "dimensionSource": "side_wall",
+          "basePrice": 1,
+          "unitPrice": 1,
+          "defaultQuantity": 1,
+          "unitLabel": "m²",
+          "m2Tiers": [
+            {
+              "maxM2": 8.5,
+              "pricePerM2": 257
+            },
+            {
+              "maxM2": 13.5,
+              "pricePerM2": 210
+            },
+            {
+              "maxM2": 999,
+              "pricePerM2": 200
+            }
+          ],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1.12,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1.25,
+          "defaultNote": "Opció",
+          "photos": [
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_1",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_photo.jpg",
+              "titleAbove": "",
+              "captionBelow": "Keret nélküli, elcsúsztatható üvegfalrendszer",
+              "widthPct": 75,
+              "align": "center"
+            },
+            {
+              "id": "iphoto_legacy_sb400_glass_b_wall_2",
+              "imageUrl": "/uploads/legacy/_cache/_uveg_rails.png",
+              "titleAbove": "",
+              "captionBelow": "Sínrendszer (3-5 sínes kivitel)",
+              "widthPct": 75,
+              "align": "center"
+            }
+          ],
+          "dimOffsets": {
+            "projectionCm": -8.5
           },
           "excludeFromPercentBase": true
         }
@@ -26854,40 +26762,6 @@
           "id": "x_polifix_led_spot",
           "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) - db",
           "excludeFromPercentBase": true
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_polifix_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_polifix_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
@@ -30009,40 +29883,6 @@
           "id": "x_glassfix_led_spot",
           "name": "LED spot világítás a tetőtartó gerendák belső felén (szabályozható, COB LED spot, meleg fehér) - db",
           "excludeFromPercentBase": true
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_glassfix_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_glassfix_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
         }
       ],
       "createdAt": "2026-10-19T08:32:48.167Z",
@@ -30561,7 +30401,7 @@
         {
           "id": "mat_zip_a",
           "name": "Külön szerelt oldalsó árnyékoló a szélesség oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db",
-          "description": "Ár: szélesség × magasság Az ár a Somfy IO motort tartalmazza.",
+          "description": "Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -31196,7 +31036,7 @@
         {
           "id": "mat_zip_b",
           "name": "Külön szerelt oldalsó árnyékoló a kinyúlás oldalára - Refleksol 120 ZIP, Serge 600 ponyva, Somfy IO motor, távirányító - 1 db",
-          "description": "Ár: kinyúlás × magasság Az ár a Somfy IO motort tartalmazza.",
+          "description": "Az ár a Somfy IO motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -31869,7 +31709,7 @@
         {
           "id": "mat_vertica_a",
           "name": "Felső gerendába integrált oldalsó árnyékoló a szélesség oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db",
-          "description": "Ár: szélesség × magasság",
+          "description": "",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -32033,7 +31873,7 @@
         {
           "id": "mat_vertica_b",
           "name": "Felső gerendába integrált oldalsó árnyékoló a kinyúlás oldalára - Vertica PRIME ZIP, Soltis 92 ponyva, Somfy IO motor - 1 db",
-          "description": "Ár: kinyúlás × magasság",
+          "description": "",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -32299,7 +32139,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: (katalógusár - 827 EUR fali levonás) - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -32719,7 +32559,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 1902 EUR fali levonás) - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -33139,7 +32979,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 1902 EUR fali levonás) - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -33475,7 +33315,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -33895,7 +33735,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -34315,7 +34155,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -34651,7 +34491,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Kedry Neos 1T (lábak nélkül). Ár: katalógusár - 30%.",
+          "description": "Alumínium váz, 0-135° között forgatható lamellák, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -36256,67 +36096,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_neos_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_neos_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_neos_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_neos_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -36485,7 +36264,7 @@
       ],
       "materials": [
         {
-          "description": "Ár: (katalógusár - 1791 EUR fali levonás) - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -36712,7 +36491,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -36939,7 +36718,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37166,7 +36945,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: (katalógusár - 2429 EUR fali levonás) - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37393,7 +37172,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37620,7 +37399,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -37847,7 +37626,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -38074,7 +37853,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "Ár: katalógusár - 25%.",
+          "description": "Alumínium szerkezet, motorral elhúzható PVC vászon, rejtett esővíz-elvezetés. Az ár a motort nem tartalmazza (külön tétel).",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -40392,67 +40171,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_isola3_infra",
-          "name": "Infrafűtés (2000 W, távirányítóval, szabályozható teljesítmény)",
-          "excludeFromPercentBase": true,
-          "group": "Fűtés",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_isola3_infra",
-              "imageUrl": "/uploads/catalog-2026/heaters/photo-1.jpg",
-              "titleAbove": "",
-              "captionBelow": "HELIOSA Wide Angle 2000 W infra hősugárzó",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 250,
-          "unitPrice": 250,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_isola3_rain",
-          "name": "Esőérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_isola3_wind",
           "name": "Szélérzékelő",
           "excludeFromPercentBase": true,
@@ -40596,7 +40314,7 @@
       ],
       "materials": [
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + a táblázat 13. sora, a szélességhez tartozó \"Hood\" elem) - 20%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon. Az ár a motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -40751,7 +40469,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + a táblázat 13. sora, a szélességhez tartozó \"Hood\" elem) - 20%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon. Az ár a motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -40949,7 +40667,7 @@
           "colorTitle": "Alapszínek (felár nélkül)"
         },
         {
-          "description": "A motort az ár tartalmazza. Ár: (katalógusár + a táblázat 13. sora, a szélességhez tartozó \"Hood\" elem) - 20%. A mérettábla már tartalmazza a Hood árát.",
+          "description": "Alumínium szerkezet, motorral elhúzható, feszített vászon. Az ár a motort tartalmazza.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -42480,43 +42198,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_xtesa_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_xtesa_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_xtesa_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -42596,7 +42277,7 @@
       "photos": [],
       "materials": [
         {
-          "description": "Ár: katalógusár + 142 EUR (2 modulnál modulonként a katalógusár, a +142 EUR egyszer).",
+          "description": "Alumínium szerkezet, összecsukható karok.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -43154,43 +42835,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_madeira_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_madeira_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_madeira_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -43265,7 +42909,7 @@
       "photos": [],
       "materials": [
         {
-          "description": "Ár: katalógusár + 142 EUR (2 modulnál modulonként a katalógusár, a +142 EUR egyszer).",
+          "description": "Alumínium szerkezet, összecsukható karok.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -43829,43 +43473,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_corsica_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_corsica_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_corsica_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -43940,7 +43547,7 @@
       "photos": [],
       "materials": [
         {
-          "description": "Ár: katalógusár + 142 EUR (2 modulnál modulonként a katalógusár, a +142 EUR egyszer).",
+          "description": "Alumínium szerkezet, összecsukható karok.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -44481,43 +44088,6 @@
           "fixedSurcharge": 0,
           "listPriceMultiplier": 1.25,
           "defaultNote": "Opció",
-          "id": "x_jamaica_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_jamaica_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
           "id": "x_jamaica_sun",
           "name": "Napfényérzékelő",
           "excludeFromPercentBase": true,
@@ -44592,7 +44162,7 @@
       "photos": [],
       "materials": [
         {
-          "description": "Ár: katalógusár + 142 EUR (2 modulnál modulonként a katalógusár, a +142 EUR egyszer).",
+          "description": "Alumínium szerkezet, összecsukható karok.",
           "itemRole": "base",
           "defaultSelected": true,
           "pricingMode": "matrix_cm",
@@ -45115,43 +44685,6 @@
           "choiceGroup": "Érzékelők",
           "choiceMulti": true,
           "choiceLabel": "Eső"
-        },
-        {
-          "description": "",
-          "itemRole": "optional",
-          "defaultSelected": false,
-          "pricingMode": "fixed",
-          "currency": "EUR",
-          "dimensionSource": "roof",
-          "basePrice": 200,
-          "unitPrice": 200,
-          "defaultQuantity": 1,
-          "unitLabel": "db",
-          "m2Tiers": [],
-          "percentageRate": 0,
-          "minPrice": 1,
-          "multiplier": 1,
-          "extraDiscountPct": 0,
-          "fixedSurcharge": 0,
-          "listPriceMultiplier": 1.25,
-          "defaultNote": "Opció",
-          "id": "x_australia_wind",
-          "name": "Szélérzékelő",
-          "excludeFromPercentBase": true,
-          "group": "Érzékelők és vezérlés",
-          "choiceGroup": "Érzékelők",
-          "choiceMulti": true,
-          "choiceLabel": "Szél",
-          "photos": [
-            {
-              "id": "ph_cat2026_x_australia_wind",
-              "imageUrl": "/uploads/catalog-2026/automation/photo-5.jpg",
-              "titleAbove": "",
-              "captionBelow": "Somfy Eolis Wirefree IO szélérzékelő",
-              "widthPct": 75,
-              "align": "center"
-            }
-          ]
         },
         {
           "description": "",
