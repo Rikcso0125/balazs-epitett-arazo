@@ -12533,7 +12533,7 @@
         },
         {
           "id": "mat_hydra_motor",
-          "name": "Motor - Somfy Sunilus IO 55/17",
+          "name": "Motor - Somfy Sunilus IO 55/17 (modulonként 1 db)",
           "description": "",
           "itemRole": "base",
           "defaultSelected": true,
@@ -12554,7 +12554,7 @@
           "defaultNote": "",
           "photos": [],
           "excludeFromPercentBase": true,
-          "perModule": false
+          "perModule": true
         },
         {
           "id": "mat_hydra_remote",
@@ -12602,7 +12602,33 @@
           "listPriceMultiplier": 1,
           "defaultNote": "",
           "photos": [],
-          "excludeFromPercentBase": true
+          "excludeFromPercentBase": true,
+          "maxModules": 1
+        },
+        {
+          "id": "mat_hydra_install_2",
+          "name": "Szerelés, programozás",
+          "description": "",
+          "itemRole": "base",
+          "defaultSelected": true,
+          "pricingMode": "fixed",
+          "currency": "EUR",
+          "dimensionSource": "roof",
+          "basePrice": 1500,
+          "unitPrice": 800,
+          "defaultQuantity": 1,
+          "unitLabel": "db",
+          "m2Tiers": [],
+          "percentageRate": 0,
+          "minPrice": 1,
+          "multiplier": 1,
+          "extraDiscountPct": 0,
+          "fixedSurcharge": 0,
+          "listPriceMultiplier": 1,
+          "defaultNote": "",
+          "photos": [],
+          "excludeFromPercentBase": true,
+          "minModules": 2
         },
         {
           "id": "mat_hydra_gift_sensor",
