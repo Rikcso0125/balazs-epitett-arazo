@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowLeft,
+  ArrowRight,
   ArrowUp,
   Check,
   Download,
@@ -45,7 +46,7 @@ import {
   roundHuf,
 } from '@/lib/pricing-engine';
 import { AdjustmentsEditor, PriceSummaryLine } from '@/components/PricingWidgets';
-import { AutoTextarea, btn, labelCls, PageHeader } from '@/components/ui';
+import { AutoTextarea, btn, labelCls, PageHeader, Stepper } from '@/components/ui';
 import {
   DimensionSource,
   MountType,
@@ -196,6 +197,7 @@ export function PdfBlockEditorView({
   const [dropAt, setDropAt] = useState<number | null>(null);
   // Alapból minden szakasz össze van csukva; a nyitottakat tartjuk számon
   const [openBlocks, setOpenBlocks] = useState<Record<string, boolean>>({});
+  const [editorStep, setEditorStep] = useState<1 | 2 | 3>(2);
   const [outlineDrag, setOutlineDrag] = useState<number | null>(null);
   const [outlineDrop, setOutlineDrop] = useState<number | null>(null);
   const [outlineMenuOpen, setOutlineMenuOpen] = useState(false);
@@ -690,6 +692,68 @@ export function PdfBlockEditorView({
     }
   };
 
+  const renderPreviewCard = (heightCls: string) => (
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="px-4 py-2 border-b border-slate-200 flex items-center justify-between">
+              <span className="text-[13px] font-medium text-slate-600 inline-flex items-center gap-2">
+                Előnézet
+                {(previewLoading || needsPreviewRefresh) && (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
+                )}
+              </span>
+              {pdfPreviewUrl && (
+                <button
+                  type="button"
+                  onClick={() => setFullscreenPreview(true)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100"
+                  title="Teljes képernyő"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className={`${heightCls} bg-slate-100 flex items-center justify-center`}>
+              {pdfPreviewUrl ? (
+                <iframe
+                  src={pdfPreviewUrl}
+                  title="PDF Előnézet"
+                  className="w-full h-full border-0"
+                />
+              ) : (
+                <div className="text-xs text-slate-500">
+                  PDF előnézet készítése...
+                </div>
+              )}
+            </div>
+          </div>
+  );
+
+  // Lépések: ügyfél és méret → tartalom → előnézet és küldés
+  const EDITOR_STEPS = [
+    { num: 1 as const, label: 'Ügyfél és méret', short: 'Ügyfél' },
+    { num: 2 as const, label: 'Tartalom', short: 'Tartalom' },
+    { num: 3 as const, label: 'Előnézet és küldés', short: 'Küldés' },
+  ];
+  const stepNav = (
+    <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-slate-200">
+      {editorStep > 1 ? (
+        <button type="button" onClick={() => setEditorStep((st) => (st - 1) as 1 | 2 | 3)} className={btn.ghost}>
+          <ArrowLeft className="w-4 h-4" />
+          Vissza
+        </button>
+      ) : (
+        <span />
+      )}
+      {editorStep < 3 && (
+        <button type="button" onClick={() => setEditorStep((st) => (st + 1) as 1 | 2 | 3)} className={btn.primary}>
+          Tovább: {EDITOR_STEPS[editorStep].label}
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -698,7 +762,7 @@ export function PdfBlockEditorView({
             ? `Ajánlat ${initialQuote.quoteNumber || ''}`
             : 'Ajánlat szerkesztése'
         }
-        subtitle="Minden szöveg és ár átírható. A jobb oldalon a PDF előnézete látszik."
+        subtitle="Három lépés: ügyfél és méret, tartalom, végül előnézet és küldés. Minden szöveg és ár átírható."
         actions={
           <>
             {onBackToWizard && (
@@ -716,31 +780,13 @@ export function PdfBlockEditorView({
               <Save className="w-4 h-4" />
               Mentés
             </button>
-            <button
-              type="button"
-              disabled={savingPdf}
-              onClick={() => handleSaveAndDownload('download')}
-              className={btn.secondary}
-            >
-              <Download className="w-4 h-4" />
-              PDF
-            </button>
-            {onSendQuote && (
-              <button
-                type="button"
-                disabled={savingPdf}
-                onClick={() => handleSaveAndDownload('send')}
-                className={btn.primary}
-                title="Mentés, majd küldés e-mailben PDF melléklettel"
-              >
-                <Send className="w-4 h-4" />
-                {savingPdf ? 'Mentés…' : 'Küldés'}
-              </button>
-            )}
           </>
         }
-      />
+      >
+        <Stepper steps={EDITOR_STEPS} current={editorStep} onSelect={(n) => setEditorStep(n)} />
+      </PageHeader>
 
+      {editorStep === 1 && (<>
       {/* Customer Name Automation & Dimensions Quick Bar */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-start">
@@ -911,6 +957,10 @@ export function PdfBlockEditorView({
         </div>
       </div>
 
+      {stepNav}
+      </>)}
+
+      {editorStep === 2 && (<>
       {/* Add Block Toolbar */}
       <div className="flex flex-wrap items-center gap-1">
         <span className="text-[13px] text-slate-500 mr-1">Hozzáadás:</span>
@@ -2284,44 +2334,49 @@ export function PdfBlockEditorView({
           {renderInsertBar(blocks.length)}
         </div>
 
-        {/* RIGHT COLUMN: Sticky Live A4 PDF Preview */}
-        <div className="min-w-0 xl:sticky xl:top-4 space-y-3">
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-            <div className="px-4 py-2 border-b border-slate-200 flex items-center justify-between">
-              <span className="text-[13px] font-medium text-slate-600 inline-flex items-center gap-2">
-                Előnézet
-                {(previewLoading || needsPreviewRefresh) && (
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
-                )}
-              </span>
-              {pdfPreviewUrl && (
-                <button
-                  type="button"
-                  onClick={() => setFullscreenPreview(true)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100"
-                  title="Teljes képernyő"
-                >
-                  <Maximize2 className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+        {/* RIGHT COLUMN: élő PDF előnézet (széles képernyőn a tartalom mellett) */}
+        <div className="hidden xl:block min-w-0 xl:sticky xl:top-4">{renderPreviewCard('h-[720px]')}</div>
+      </div>
+      {stepNav}
+      </>)}
 
-            <div className="h-[720px] bg-slate-100 flex items-center justify-center">
-              {pdfPreviewUrl ? (
-                <iframe
-                  src={pdfPreviewUrl}
-                  title="PDF Előnézet"
-                  className="w-full h-full border-0"
-                />
-              ) : (
-                <div className="text-xs text-slate-500">
-                  PDF előnézet készítése...
-                </div>
-              )}
+      {editorStep === 3 && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-slate-950">Kész az ajánlat?</div>
+              <p className="text-[13px] text-slate-600">
+                Nézd át az előnézetet, majd töltsd le a PDF-et vagy küldd el e-mailben. Letöltés és küldés előtt automatikusan ment.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={savingPdf}
+              onClick={() => handleSaveAndDownload('download')}
+              className={btn.secondary}
+            >
+              <Download className="w-4 h-4" />
+              PDF
+            </button>
+            {onSendQuote && (
+              <button
+                type="button"
+                disabled={savingPdf}
+                onClick={() => handleSaveAndDownload('send')}
+                className={btn.primary}
+                title="Mentés, majd küldés e-mailben PDF melléklettel"
+              >
+                <Send className="w-4 h-4" />
+                {savingPdf ? 'Mentés…' : 'Küldés'}
+              </button>
+            )}
             </div>
           </div>
+          {renderPreviewCard('h-[75vh] min-h-[480px]')}
+          {stepNav}
         </div>
-      </div>
+      )}
 
       {/* Fullscreen PDF Modal */}
       {fullscreenPreview && pdfPreviewUrl && (
