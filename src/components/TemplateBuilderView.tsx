@@ -2,6 +2,7 @@
 
 import { thumbUrl } from '@/lib/thumb';
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -96,13 +97,16 @@ function SubTabs<T extends string>({
   tabs: [T, string][];
 }) {
   return (
-    <div className="flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200 overflow-x-auto whitespace-nowrap">
+    <div
+      className="grid sm:flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200"
+      style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+    >
       {tabs.map(([id, label]) => (
         <button
           key={id}
           type="button"
           onClick={() => onChange(id)}
-          className={`shrink-0 px-3 py-1.5 rounded-lg text-sm transition ${
+          className={`min-w-0 px-1.5 sm:px-3 py-1.5 rounded-lg text-[13px] sm:text-sm leading-tight text-center break-words transition ${
             value === id ? 'bg-white text-slate-950 font-semibold shadow-sm' : 'text-slate-600 hover:text-slate-950'
           }`}
         >
@@ -894,7 +898,7 @@ export function TemplateBuilderView({
       {/* ===================================================================== */}
       {/* CATEGORY MODAL                                                        */}
       {/* ===================================================================== */}
-      {categoryModalOpen && (
+      {categoryModalOpen && createPortal(
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -1062,20 +1066,30 @@ export function TemplateBuilderView({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ===================================================================== */}
       {/* 5-STEP TEMPLATE & PRODUCT BUILDER WIZARD MODAL                        */}
       {/* ===================================================================== */}
-      {wizardOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-stretch sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
-          <div className="bg-white sm:rounded-2xl max-w-6xl w-full h-[100dvh] sm:h-auto sm:max-h-[94vh] flex flex-col shadow-2xl sm:border border-slate-200 overflow-hidden">
+      {wizardOpen && createPortal(
+        <div className="fixed inset-0 z-[150] bg-slate-900/70 backdrop-blur-sm flex items-stretch sm:items-center justify-center p-0 sm:p-4 overscroll-contain">
+          <div className="bg-white sm:rounded-2xl max-w-6xl w-full h-full sm:h-auto sm:max-h-[94vh] flex flex-col shadow-2xl sm:border border-slate-200 overflow-hidden">
             {/* Wizard Top Header */}
             <div className="px-4 sm:px-6 pt-3 sm:pt-5 pb-2 sm:pb-3 flex items-center justify-between gap-2">
               <h2 className="min-w-0 text-base sm:text-xl font-semibold text-slate-950 break-words">
                 {editingTemplateId ? tplName || 'Sablon' : 'Új sablon'}
               </h2>
+              <div className="flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                disabled={!tplName.trim() || !tplCategoryId || savingTemplate}
+                onClick={handleSaveTemplateFinal}
+                className="sm:hidden px-3 py-1.5 rounded-lg bg-slate-900 text-white text-sm font-semibold disabled:opacity-50"
+              >
+                {savingTemplate ? 'Mentés…' : 'Mentés'}
+              </button>
               <button
                 type="button"
                 onClick={() => closeWizard()}
@@ -1084,6 +1098,7 @@ export function TemplateBuilderView({
               >
                 <X className="w-5 h-5" />
               </button>
+              </div>
             </div>
 
             {/* Lépések: mindig mind az öt látszik (telefonon rövid címkével) */}
@@ -1188,12 +1203,17 @@ export function TemplateBuilderView({
                       </div>
                     )}
                     {categories.length > 1 && (
-                      <details open={tplAlsoInCategoryIds.length > 0} className="group">
+                      <details className="group">
                         <summary className="cursor-pointer select-none text-[13px] font-medium text-slate-700 mb-1.5">
                           Megjelenik más kategóriákban is
-                          {tplAlsoInCategoryIds.length > 0 && (
-                            <span className="ml-1 text-slate-500 font-normal">({tplAlsoInCategoryIds.length})</span>
-                          )}
+                          <span className="ml-1 text-slate-500 font-normal">
+                            {tplAlsoInCategoryIds.length
+                              ? `: ${categories
+                                  .filter((c) => tplAlsoInCategoryIds.includes(c.id))
+                                  .map((c) => c.name)
+                                  .join(', ')}`
+                              : '(nincs)'}
+                          </span>
                         </summary>
                         <div className="flex flex-wrap gap-1.5">
                           {categories
@@ -3550,7 +3570,7 @@ export function TemplateBuilderView({
             </div>
 
             {/* Wizard Footer */}
-            <div className="border-t border-slate-200 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+            <div className="border-t border-slate-200 px-3 sm:px-6 pt-2.5 sm:py-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center justify-between gap-2">
               <button
                 type="button"
                 onClick={() =>
@@ -3587,7 +3607,8 @@ export function TemplateBuilderView({
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

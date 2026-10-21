@@ -49,6 +49,80 @@ export function SavedQuotesListView({
     );
   });
 
+  // Státuszválasztó és műveletek: a táblázat és a telefonos kártyák közösen használják
+  const statusControl = (q: QuoteRecord) => (
+    <>
+                      <select
+                        value={q.status}
+                        onChange={(e) =>
+                          onUpdateStatus(q.id, e.target.value as QuoteStatus)
+                        }
+                        className={`px-2 py-1 rounded-full border text-xs font-medium ${
+                          STATUS_CONFIG[q.status]?.badgeClass || ''
+                        }`}
+                      >
+                        {Object.entries(STATUS_CONFIG).map(([k, v]) => (
+                          <option key={k} value={k}>
+                            {v.label}
+                          </option>
+                        ))}
+                      </select>
+                      {(q.openCount || 0) > 0 ? (
+                        <div className="text-xs text-slate-500 mt-1">
+                          Megnyitva {q.openCount}× · utoljára{' '}
+                          {new Date(q.lastOpenedAt || '').toLocaleDateString('hu-HU')}
+                        </div>
+                      ) : q.sentAt ? (
+                        <div className="text-xs text-slate-500 mt-1">
+                          Kiküldve {new Date(q.sentAt).toLocaleDateString('hu-HU')}
+                        </div>
+                      ) : null}
+    </>
+  );
+  const quoteActions = (q: QuoteRecord) => (
+                      <div className="inline-flex items-center gap-0.5">
+                        <button
+                          type="button"
+                          onClick={() => onSendQuote(q)}
+                          title="Küldés e-mailben"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
+                        >
+                          <Send className="w-4 h-4" />
+                        </button>
+                        <a
+                          href={`/api/quotes/${q.id}/pdf?download=1`}
+                          title="PDF letöltése"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
+                        >
+                          <Download className="w-4 h-4" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => onDuplicateQuote(q)}
+                          title="Árajánlat duplikálása"
+                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
+                        >
+                          <Copy className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                `Biztosan törlöd ${q.customerName} árajánlatát?`
+                              )
+                            ) {
+                              onDeleteQuote(q.id);
+                            }
+                          }}
+                          title="Törlés"
+                          className="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+  );
+
   return (
     <div className="space-y-5">
       <PageHeader
@@ -83,33 +157,35 @@ export function SavedQuotesListView({
                 className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 bg-slate-50 text-[13px]"
               />
             </div>
-            <div className="inline-flex flex-wrap gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200">
+            <div className="grid grid-cols-5 sm:inline-flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200">
               {(
                 [
-                  ['all', `Összes ${quotes.length}`],
-                  ['piszkozat', `Piszkozat ${countBy('piszkozat')}`],
-                  ['kikuldve', `Kiküldve ${countBy('kikuldve')}`],
-                  ['megnyitva', `Megnyitva ${countBy('megnyitva')}`],
-                  ['elfogadva', `Elfogadva ${countBy('elfogadva')}`],
-                ] as [QuoteStatus | 'all', string][]
-              ).map(([key, label]) => (
+                  ['all', 'Összes', quotes.length],
+                  ['piszkozat', 'Piszkozat', countBy('piszkozat')],
+                  ['kikuldve', 'Kiküldve', countBy('kikuldve')],
+                  ['megnyitva', 'Megnyitva', countBy('megnyitva')],
+                  ['elfogadva', 'Elfogadva', countBy('elfogadva')],
+                ] as [QuoteStatus | 'all', string, number][]
+              ).map(([key, label, n]) => (
                 <button
                   key={key}
                   type="button"
                   onClick={() => setStatusFilter(key)}
-                  className={`px-2.5 py-1 rounded-lg text-[13px] transition ${
+                  aria-pressed={statusFilter === key}
+                  className={`min-w-0 flex flex-col sm:flex-row items-center sm:gap-1.5 px-1 sm:px-2.5 py-1 rounded-lg transition ${
                     statusFilter === key
                       ? 'bg-white text-slate-950 font-semibold shadow-sm'
                       : 'text-slate-600 hover:text-slate-950'
                   }`}
                 >
-                  {label}
+                  <span className="text-[11px] sm:text-[13px] leading-tight truncate max-w-full">{label}</span>
+                  <span className="text-sm sm:text-[13px] tabular-nums">{n}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse text-[13px]">
               <thead>
                 <tr className="bg-slate-100 text-slate-400 border-b border-slate-200 uppercase text-xs tracking-wide">
@@ -159,83 +235,54 @@ export function SavedQuotesListView({
                       </div>
                     </td>
                     <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-                      <select
-                        value={q.status}
-                        onChange={(e) =>
-                          onUpdateStatus(q.id, e.target.value as QuoteStatus)
-                        }
-                        className={`px-2 py-1 rounded-full border text-xs font-medium ${
-                          STATUS_CONFIG[q.status]?.badgeClass || ''
-                        }`}
-                      >
-                        {Object.entries(STATUS_CONFIG).map(([k, v]) => (
-                          <option key={k} value={k}>
-                            {v.label}
-                          </option>
-                        ))}
-                      </select>
-                      {(q.openCount || 0) > 0 ? (
-                        <div className="text-xs text-slate-500 mt-1">
-                          Megnyitva {q.openCount}× · utoljára{' '}
-                          {new Date(q.lastOpenedAt || '').toLocaleDateString('hu-HU')}
-                        </div>
-                      ) : q.sentAt ? (
-                        <div className="text-xs text-slate-500 mt-1">
-                          Kiküldve {new Date(q.sentAt).toLocaleDateString('hu-HU')}
-                        </div>
-                      ) : null}
+                      {statusControl(q)}
                     </td>
                     <td
                       className="py-3.5 px-4 text-right"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <div className="inline-flex items-center gap-0.5">
-                        <button
-                          type="button"
-                          onClick={() => onSendQuote(q)}
-                          title="Küldés e-mailben"
-                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
-                        >
-                          <Send className="w-4 h-4" />
-                        </button>
-                        <a
-                          href={`/api/quotes/${q.id}/pdf?download=1`}
-                          title="PDF letöltése"
-                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
-                        >
-                          <Download className="w-4 h-4" />
-                        </a>
-                        <button
-                          type="button"
-                          onClick={() => onDuplicateQuote(q)}
-                          title="Árajánlat duplikálása"
-                          className="p-2 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100"
-                        >
-                          <Copy className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                `Biztosan törlöd ${q.customerName} árajánlatát?`
-                              )
-                            ) {
-                              onDeleteQuote(q.id);
-                            }
-                          }}
-                          title="Törlés"
-                          className="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                      {quoteActions(q)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
+          {/* Telefon: ajánlatonként egy kártya */}
+          <ul className="md:hidden divide-y divide-slate-200 border-t border-slate-200">
+            {filtered.map((q) => (
+              <li key={q.id} className="px-4 py-3">
+                <button
+                  type="button"
+                  onClick={() => onEditQuoteInPdfEditor(q)}
+                  className="w-full text-left flex items-start justify-between gap-3"
+                >
+                  <div className="min-w-0">
+                    <div className="font-semibold text-slate-950 break-words">{q.customerName}</div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {q.quoteNumber} · {q.city} · {q.widthCm} × {q.projectionCm} cm
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      {new Date(q.updatedAt || q.createdAt).toLocaleDateString('hu-HU')}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="font-semibold text-slate-950 tabular-nums whitespace-nowrap">
+                      {formatDotNumber(q.primaryTotalEur)} EUR
+                    </div>
+                    <div className="text-xs text-slate-500 tabular-nums whitespace-nowrap">
+                      {formatDotNumber(q.primaryTotalHuf)} Ft
+                    </div>
+                  </div>
+                </button>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="min-w-0">{statusControl(q)}</div>
+                  {quoteActions(q)}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
